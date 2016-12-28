@@ -1,0 +1,19 @@
+{
+  "name": "square1-web",
+  "version": "1.0.0",
+  "description": "Front end for the square1 lead tracking and resource management system.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wolfspace/square1-web.git"
+  },
+  "author": "Mike Rourke",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/wolfspace/square1-web/issues"
+  },
+  "homepage": "https://github.com/wolfspace/square1-web#readme"
+}

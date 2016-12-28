@@ -65,3 +65,4 @@ modules.xml
 # Other
 *.DS_Store
 /deploy.sh
+build

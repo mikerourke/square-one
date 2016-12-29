@@ -2,30 +2,19 @@
  * This is the development server used for testing.  The production application
  *      will be communicating with a separate API.
  */
-import express from 'express';
+import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
-import path from 'path';
 import config from '../webpack.config.dev';
 
-const port = 3000;
-const app = express();
 const compiler = webpack(config);
 
-app.use(require('webpack-dev-middleware')(compiler, {
+let server = new WebpackDevServer(compiler, {
+    contentBase: config.devServer.contentBase,
+    hot: true,
     noInfo: true,
+    filename: config.output.filename,
     publicPath: config.output.publicPath
-}));
-
-app.use(require('webpack-hot-middleware')(compiler));
-
-app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../src/index.html'));
 });
-
-app.listen(port, function(err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log('Server started...');
-    }
+server.listen(8080, "localhost", function() {
+    console.log('Server loaded.');
 });

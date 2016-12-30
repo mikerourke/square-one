@@ -1,38 +1,45 @@
 {
-    "name": "square1-web",
-    "version": "0.0.1",
-    "description": "Front end for the square1 lead tracking and resource management system.",
-    "scripts": {
-        "start": "babel-node tools/server.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/wolfspace/square1-web"
-    },
-    "author": "Mike Rourke",
-    "license": "GPL-3.0",
-    "bugs": {
-        "url": "https://github.com/wolfspace/square1-web/issues"
-    },
-    "homepage": "https://github.com/wolfspace/square1-web#readme",
-    "dependencies": {
-        "react": "^15.4.1",
-        "react-dom": "^15.4.1",
-        "react-redux": "^5.0.1",
-        "react-router": "^3.0.0",
-        "react-router-redux": "^4.0.7",
-        "redux": "^3.6.0"
-    },
-    "devDependencies": {
-        "babel-cli": "^6.18.0",
-        "babel-core": "^6.21.0",
-        "babel-loader": "^6.2.10",
-        "babel-preset-es2015": "^6.18.0",
-        "babel-preset-react": "^6.16.0",
-        "babel-preset-react-hmre": "^1.1.1",
-        "babel-register": "^6.18.0",
-        "npm-run-all": "^3.1.2",
-        "webpack": "^1.14.0",
-        "webpack-dev-server": "^1.16.2"
-    }
+  "name": "square1-web",
+  "version": "0.0.1",
+  "description": "Front end for the square1 lead tracking and resource management system.",
+  "scripts": {
+    "start": "babel-node tools/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wolfspace/square1-web"
+  },
+  "author": "Mike Rourke",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/wolfspace/square1-web/issues"
+  },
+  "homepage": "https://github.com/wolfspace/square1-web#readme",
+  "dependencies": {
+    "material-ui": "^0.16.6",
+    "react": "^15.4.1",
+    "react-addons-css-transition-group": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-redux": "^5.0.1",
+    "react-router": "^3.0.0",
+    "react-router-redux": "^4.0.7",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "babel-register": "^6.18.0",
+    "css-loader": "^0.26.1",
+    "file-loader": "^0.9.0",
+    "npm-run-all": "^3.1.2",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  }
 }

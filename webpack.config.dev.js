@@ -4,7 +4,7 @@ import path from 'path';
 export default {
     debug: true,
     devtool: 'inline-source-map',
-    noInfo: false,
+    noInfo: true,
     entry: [
         'webpack-dev-server/client?http://localhost:8080/',
         path.resolve(__dirname, 'src/index')
@@ -49,5 +49,10 @@ export default {
                 loader: "url?limit=10000&mimetype=image/svg+xml"
             }
         ]
+    },
+    resolve: {
+        alias: {
+            components: path.resolve(__dirname, 'src', 'components')
+        }
     }
 };

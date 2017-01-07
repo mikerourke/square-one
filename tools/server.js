@@ -15,6 +15,7 @@ let server = new WebpackDevServer(compiler, {
     filename: config.output.filename,
     publicPath: config.output.publicPath
 });
+
 server.listen(process.env.PORT, function() {
     console.log('Server loaded.');
 });

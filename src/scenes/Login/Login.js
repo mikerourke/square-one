@@ -7,7 +7,19 @@ import Dialog from 'material-ui/Dialog';
 
 const styles = {
     form: {
-        textAlign: 'center'
+        width: '100px',
+        height: '100px',
+        position: 'absolute',
+        top: '0',
+        bottom: '0',
+        left: '0',
+        right: '0',
+        margin: 'auto'
+    },
+    
+    centerFlex: {
+        display: 'flex',
+        justifyContent: 'center'
     }
 };
 
@@ -40,49 +52,28 @@ class Login extends React.Component {
     }
     
     render() {
-        const actions = [
-            <FlatButton
-                label="Cancel"
-                primary={true}
-                onTouchTap={this.handleClose}
-            />,
-            <FlatButton
-                label="Submit"
-                primary={true}
-                onTouchTap={this.handleClose}
-            />
-        ];
         
         return (
-            <div>
-                <RaisedButton label="Login" onTouchTap={this.handleOpen} />
-                <Dialog
-                    title="Test"
-                    actions={actions}
-                    modal={true}
-                    open={this.state.open}>
-                    
-                    <form className="login" 
-                          style={styles.form} 
-                          onSubmit={this.handleSubmit}>
-                        <TextField 
-                            ref="username"
-                            floatingLabelText="Login"
-                        />
-                        <br/>
-                        <TextField
-                            ref="password"
-                            floatingLabelText="Password"
-                            type="password"
-                        />
-                        <br/>
-                        <RaisedButton 
-                            label="Login" 
-                            onClick={this.handleSubmit} 
-                            onTouchTap={this.handleSubmit}
-                        />
-                    </form>
-                </Dialog>
+            <div style={styles.centerFlex}>
+                <form className="login" 
+                      onSubmit={this.handleSubmit}>
+                    <TextField 
+                        ref="username"
+                        floatingLabelText="Login"
+                    />
+                    <br/>
+                    <TextField
+                        ref="password"
+                        floatingLabelText="Password"
+                        type="password"
+                    />
+                    <br/>
+                    <RaisedButton 
+                        label="Login" 
+                        onClick={this.handleSubmit} 
+                        onTouchTap={this.handleSubmit}
+                    />
+                </form>
             </div>
         );
     }

@@ -1,63 +1,33 @@
 import React, { PropTypes } from 'react';
 
 import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
 
-const styles = {
-    form: {
-        width: '100px',
-        height: '100px',
-        position: 'absolute',
-        top: '0',
-        bottom: '0',
-        left: '0',
-        right: '0',
-        margin: 'auto'
-    },
-    
-    centerFlex: {
-        display: 'flex',
-        justifyContent: 'center'
-    }
-};
+import { globalStyles } from '../styles';
+
 
 class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {
-            open: false
-        };
-        
+    constructor(props, context) {
+        super(props, context);
+
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
-        this.handleClose = this.handleClose.bind(this);
     }
     
     handleSubmit(event) {
         event.preventDefault();
         const username = this.refs.username.getValue();
         const password = this.refs.password.getValue();
-        console.log(`User: ${username} Password: ${password}`);
+        this.context.router.push('/leads');
     }
-    
-    handleOpen() {
-        this.setState({open: true});
-    }
-    
-    handleClose() {
-        this.setState({open: false});
-    }
-    
+
     render() {
-        
         return (
-            <div style={styles.centerFlex}>
+            <div style={globalStyles.formContainer}>
+                <Paper style={globalStyles.paper}>
                 <form className="login" 
                       onSubmit={this.handleSubmit}>
-                    <TextField 
+                    <TextField
                         ref="username"
                         floatingLabelText="Login"
                     />
@@ -68,12 +38,14 @@ class Login extends React.Component {
                         type="password"
                     />
                     <br/>
-                    <RaisedButton 
+                    <FlatButton
+                        style={globalStyles.flatButton}
                         label="Login" 
                         onClick={this.handleSubmit} 
                         onTouchTap={this.handleSubmit}
                     />
                 </form>
+                </Paper>
             </div>
         );
     }
@@ -82,6 +54,10 @@ class Login extends React.Component {
 Login.propTypes = {
     username: PropTypes.string,
     password: PropTypes.string
+};
+
+Login.contextTypes = {
+    router: PropTypes.object
 };
 
 export default Login;

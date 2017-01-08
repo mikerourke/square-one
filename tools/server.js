@@ -6,6 +6,7 @@ import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import config from '../webpack.config.dev';
 
+const port = process.env.PORT || 8080;
 const compiler = webpack(config);
 
 let server = new WebpackDevServer(compiler, {
@@ -16,6 +17,6 @@ let server = new WebpackDevServer(compiler, {
     publicPath: config.output.publicPath
 });
 
-server.listen(process.env.PORT, function() {
+server.listen(port, function() {
     console.log('Server loaded.');
 });

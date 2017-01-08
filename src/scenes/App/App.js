@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
-import { ActionHome } from 'material-ui/svg-icons';
+import { ActionAccountCircle } from 'material-ui/svg-icons';
 
-import theme from './theme';
+import { muiTheme } from '../styles';
 import Sidebar from './components/Sidebar';
 
 const styles= {
@@ -34,27 +34,23 @@ class App extends React.Component {
     }
     
     handleToggle() {
-        this.setState({
-            open: !this.state.open
-        });
+        this.setState({open: !this.state.open});
     }
     
     handleClose() {
-        this.setState({
-            open: false
-        });
+        this.setState({open: false});
     }
     
     render() {
         return (
-            <MuiThemeProvider muiTheme={theme}>
+            <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
                     <AppBar 
-                        iconElementRight={<ActionHome style={styles.icon} />}
+                        iconElementRight={<ActionAccountCircle style={styles.icon} />}
                         onLeftIconButtonTouchTap={this.handleToggle}
                     />
                     <Sidebar open={this.state.open}
-                             onToggleDrawer={this.handleToggle}
+                             handleToggle={this.handleToggle}
                              iconStyle={styles.icon}
                     />
                     <div style={styles.body}>

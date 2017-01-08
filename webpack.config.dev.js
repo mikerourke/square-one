@@ -6,9 +6,9 @@ export default {
     devtool: 'inline-source-map',
     noInfo: true,
     entry: [
+        './src/index.js',
         'webpack/hot/dev-server',
         'webpack-dev-server/client?http://localhost:8080/',
-        path.resolve(__dirname, 'src/index')
     ],
     target: 'web',
     output: {
@@ -53,7 +53,7 @@ export default {
     },
     resolve: {
         alias: {
-            components: path.resolve(__dirname, 'src', 'components')
+            scenes: path.resolve(__dirname, 'src/scenes/')
         }
     }
 };

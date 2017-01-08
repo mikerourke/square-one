@@ -10,25 +10,25 @@ import {
     ActionSettings 
 } from 'material-ui/svg-icons';
 
-const Sidebar = ({open, onToggleDrawer, iconStyle}) => (
+const Sidebar = ({open, handleToggle, iconStyle}) => (
     <div>
         <Drawer 
             open={open}
-            onRequestChange={onToggleDrawer}>
+            onRequestChange={handleToggle}>
             <AppBar
                 iconElementLeft={<NavigationClose style={iconStyle} />}
-                onLeftIconButtonTouchTap={onToggleDrawer}
+                onLeftIconButtonTouchTap={handleToggle}
             />
             <Menu>
                 <MenuItem 
                     primaryText="Leads" 
                     leftIcon={<SocialPeople />} 
-                    onTouchTap={onToggleDrawer}
+                    onTouchTap={handleToggle}
                 />
                 <MenuItem 
                     primaryText="Settings" 
                     leftIcon={<ActionSettings />}
-                    onTouchTap={onToggleDrawer}
+                    onTouchTap={handleToggle}
                 />
             </Menu>
         </Drawer>
@@ -37,7 +37,7 @@ const Sidebar = ({open, onToggleDrawer, iconStyle}) => (
 
 Sidebar.propTypes = {
     open: PropTypes.bool,
-    onToggleDrawer: PropTypes.func,
+    handleToggle: PropTypes.func,
     iconStyle: PropTypes.object
 };
 

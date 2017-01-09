@@ -1,0 +1,25 @@
+{
+    "leads": [
+      {
+        "id": "steve-leadsman",
+        "firstName": "Steve",
+        "lastName": "Leadsman"
+      },
+      {
+        "id": "nancy-leadelstein",
+        "firstName": "Nancy",
+        "lastName": "Leadelstein"
+      },
+      {
+        "id": "paco-leadrojo",
+        "firstName": "Paco",
+        "lastName": "Leadrojo"
+      }
+    ],
+    "users": [
+      {
+        "id": "mike",
+        "password": "mike"
+      }
+    ]
+}

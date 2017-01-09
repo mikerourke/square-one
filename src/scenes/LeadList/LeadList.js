@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as leadActions from 'data/leads/actions';
 import { Link } from 'react-router';
 
 import { ContentAddCircleOutline } from 'material-ui/svg-icons';
 import IconButton from 'material-ui/IconButton';
 import DataTables from 'material-ui-datatables';
-
-import LeadApi from '../../services/api/mockLeads';
 
 const tableColumns = [
     {
@@ -26,22 +27,7 @@ const tableColumns = [
     }
 ];
 
-const leads = LeadApi.getAllLeadsAsync();
-
-const tableData = [
-    {
-        firstName: leads[0].firstName,
-        lastName: leads[0].lastName
-    },
-    {
-        firstName: leads[1].firstName,
-        lastName: leads[1].lastName
-    },
-    {
-        firstName: leads[2].firstName,
-        lastName: leads[2].lastName
-    }
-];
+const tableData = [];
 
 class LeadList extends React.Component {
     constructor(props, context) {
@@ -157,4 +143,18 @@ class LeadList extends React.Component {
     }
 }
 
-export default LeadList;
+LeadList.propTypes = {
+    leads: PropTypes.array
+};
+
+function mapStateToProps(state) {
+    return {
+        leads: state.leads
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(leadActions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeadList);

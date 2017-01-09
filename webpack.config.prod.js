@@ -3,27 +3,22 @@ import path from 'path';
 
 export default {
     debug: true,
-    devtool: 'inline-source-map',
-    noInfo: true,
-    entry: [
-        './src/index.js',
-        'webpack/hot/dev-server',
-        'webpack-dev-server/client?http://localhost:8081/',
-    ],
+    devtool: 'source-map',
+    noInfo: false,
+    entry: './src/index',
     target: 'web',
-    // Note: Physical files are only output by the production build
-    // task `npm run build`.
     output: {
         path: __dirname + '/build',
-        publicPath: 'http://localhost:8081/',
+        publicPath: '/',
         filename: 'bundle.js'
     },
     devServer: {
-        contentBase: path.resolve(__dirname, 'src')
+        contentBase: './build'
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.UglifyJsPlugin()
     ],
     module: {
         loaders: [
@@ -33,12 +28,9 @@ export default {
                 loaders: ['babel']
             },
             {
-                test: /(\.css)$/,
-                loaders: ['style', 'css']
-            },
-            {
                 test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "file"},
+                loader: "file"
+            },
             {
                 test: /\.(woff|woff2)$/,
                 loader: "url?prefix=font/&limit=5000"
@@ -52,11 +44,5 @@ export default {
                 loader: "url?limit=10000&mimetype=image/svg+xml"
             }
         ]
-    },
-    resolve: {
-        alias: {
-            scenes: path.resolve(__dirname, 'src/scenes/'),
-            data: path.resolve(__dirname, 'src/data')
-        }
     }
 };

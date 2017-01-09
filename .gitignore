@@ -34,6 +34,7 @@ dictionaries
 
 # Optional npm cache directory
 .npm
+.yarnclean
 
 # Optional REPL history
 .node_repl_history

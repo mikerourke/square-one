@@ -11,5 +11,6 @@ export default (
         <Route path="login" component={Login} />
         <Route path="leads" component={LeadList} />
         <Route path="lead" component={LeadManagement} />
+        <Route path="lead/:id" component={LeadManagement} />
     </Route>
 );

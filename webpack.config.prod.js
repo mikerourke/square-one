@@ -8,7 +8,7 @@ export default {
     entry: './src/index',
     target: 'web',
     output: {
-        path: __dirname + '/build',
+        path: __dirname + '/client',
         publicPath: '/',
         filename: 'bundle.js'
     },

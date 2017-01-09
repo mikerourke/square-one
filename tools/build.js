@@ -14,10 +14,10 @@ import colors from 'colors';
 
 process.env.NODE_ENV = 'production';
 
-console.log('Copying index.html to build directory...'.blue);
+console.log('Copying index.html to client directory...'.blue);
 
 fs.createReadStream('../src/index.html')
-    .pipe(fs.createWriteStream('../build/index.html'));
+    .pipe(fs.createWriteStream('../client/index.html'));
 
 console.log('Generating minified bundle for production via Webpack. ' +
             'This will take a moment...'.blue);
@@ -43,7 +43,7 @@ webpack(webpackConfig).run((err, stats) => {
 
     // Build succeeded:
     console.log('Your app has been compiled in production mode and ' +
-                'written to /build.'.green);
+                'written to /client.'.green);
 
     return 0;
 });

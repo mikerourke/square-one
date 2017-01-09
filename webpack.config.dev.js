@@ -14,7 +14,7 @@ export default {
     // Note: Physical files are only output by the production build
     // task `npm run build`.
     output: {
-        path: __dirname + '/build',
+        path: __dirname + '/client',
         publicPath: 'http://localhost:8081/',
         filename: 'bundle.js'
     },

@@ -61,6 +61,7 @@ dictionaries
 *.iml
 modules.xml
 .idea/misc.xml
+.idea/terminal.xml
 ### End WebStorm ###
 
 # Other

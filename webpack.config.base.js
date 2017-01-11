@@ -4,7 +4,7 @@ import path from 'path';
 export default {
     target: 'web',
     output: {
-        path: __dirname + '/client',
+        path: path.resolve(__dirname, 'client'),
         publicPath: '/',
         filename: 'bundle.js'
     },
@@ -38,9 +38,10 @@ export default {
         ]
     },
     resolve: {
-        alias: {
-            scenes: path.resolve(__dirname, 'src/scenes/'),
-            data: path.resolve(__dirname, 'src/data')
-        }
+        root: path.resolve(__dirname, 'src'),
+        modules: [
+            path.resolve(__dirname, 'src'),
+            'node_modules'
+        ]
     }
 };

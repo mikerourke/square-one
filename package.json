@@ -5,7 +5,7 @@
   "scripts": {
     "api": "node_modules/.bin/json-server --watch db.json --port 8082",
     "start": "babel-node tools/server.js",
-    "lint": "node_modules/.bin/esw webpack.config.* src tools",
+    "lint": "node_modules/.bin/esw webpack.config.* src tools --color",
     "lint:watch": "npm run lint --watch",
     "build:remove-folder": "node_modules/.bin/rimraf ./client",
     "build:prepare-folder": "npm run build:remove-folder && mkdir client",

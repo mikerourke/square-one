@@ -13,8 +13,8 @@ const productionConfig = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-            // This has effect on the React library size:
-            'NODE_ENV': JSON.stringify('production'),
+                // This has effect on the React library size:
+                NODE_ENV: JSON.stringify('production'),
             }
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
@@ -36,11 +36,11 @@ const productionConfig = {
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
         new CompressionPlugin({
-          asset: "[path].gz[query]",
-          algorithm: "gzip",
-          test: /\.js$|\.css$|\.html$/,
-          threshold: 10240,
-          minRatio: 0,
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0,
         })
     ]
 };

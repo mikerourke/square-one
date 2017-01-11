@@ -7,10 +7,11 @@
     "start": "babel-node tools/server.js",
     "lint": "node_modules/.bin/esw webpack.config.* src tools",
     "lint:watch": "npm run lint --watch",
-    "build:remove-folder": "node_modules/.bin/rimraf ./build",
-    "build:prepare-folder": "npm run build:remove-folder && mkdir build",
-    "prebuild": "npm-run-all build:prepare-folder test lint",
-    "build": "babel-node tools/build.js"
+    "build:remove-folder": "node_modules/.bin/rimraf ./client",
+    "build:prepare-folder": "npm run build:remove-folder && mkdir client",
+    "prebuild": "npm-run-all build:prepare-folder",
+    "build:run": "babel-node tools/build.js",
+    "build": "npm run build:prepare-folder && npm run build:run"
   },
   "repository": {
     "type": "git",
@@ -47,6 +48,7 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-1": "^6.16.0",
     "babel-register": "^6.18.0",
+    "compression-webpack-plugin": "^0.3.2",
     "css-loader": "^0.26.1",
     "eslint": "^3.13.0",
     "eslint-plugin-import": "^2.2.0",

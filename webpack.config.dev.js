@@ -1,7 +1,7 @@
 import webpack from 'webpack';
-import path from 'path';
+import baseConfig from './webpack.config.base';
 
-export default {
+const developmentConfig = {
     debug: true,
     devtool: 'inline-source-map',
     noInfo: true,
@@ -10,53 +10,13 @@ export default {
         'webpack/hot/dev-server',
         'webpack-dev-server/client?http://localhost:8081/',
     ],
-    target: 'web',
-    // Note: Physical files are only output by the production build
-    // task `npm run build`.
-    output: {
-        path: __dirname + '/client',
-        publicPath: 'http://localhost:8081/',
-        filename: 'bundle.js'
-    },
     devServer: {
-        contentBase: path.resolve(__dirname, 'src')
+        contentBase: './src'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin()
-    ],
-    module: {
-        loaders: [
-            {
-                test: /\.js$/,
-                include: path.join(__dirname, 'src'),
-                loaders: ['babel']
-            },
-            {
-                test: /(\.css)$/,
-                loaders: ['style', 'css']
-            },
-            {
-                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "file"},
-            {
-                test: /\.(woff|woff2)$/,
-                loader: "url?prefix=font/&limit=5000"
-            },
-            {
-                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=application/octet-stream"
-            },
-            {
-                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-                loader: "url?limit=10000&mimetype=image/svg+xml"
-            }
-        ]
-    },
-    resolve: {
-        alias: {
-            scenes: path.resolve(__dirname, 'src/scenes/'),
-            data: path.resolve(__dirname, 'src/data')
-        }
-    }
+    ]
 };
+
+export default Object.assign({}, baseConfig, developmentConfig);

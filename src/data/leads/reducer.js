@@ -1,32 +1,31 @@
 import {
-    CREATE_LEAD, CREATE_LEAD_SUCCESS, CREATE_LEAD_FAILURE,
-    DELETE_LEAD, DELETE_LEAD_SUCCESS, DELETE_LEAD_FAILURE,
-    UPDATE_LEAD, UPDATE_LEAD_SUCCESS, UPDATE_LEAD_FAILURE,
-    GET_ALL_LEADS, GET_ALL_LEADS_SUCCESS, GET_ALL_LEADS_FAILURE
+    CREATE_LEAD, CREATE_LEAD_SUCCESS, CREATE_LEAD_FAIL,
+    DELETE_LEAD, DELETE_LEAD_SUCCESS, DELETE_LEAD_FAIL,
+    UPDATE_LEAD, UPDATE_LEAD_SUCCESS, UPDATE_LEAD_FAIL,
+    GET_ALL_LEADS, GET_ALL_LEADS_SUCCESS, GET_ALL_LEADS_FAIL
 } from './actionTypes';
 
-export default function leadReducer(state = [], action) {
+const initialState = {leads: []};
+
+const leads = (state = initialState, action) => {
     switch (action.type) {
         case CREATE_LEAD:
             return [
                 ...state,
-                Object.assign({}, action.lead)
+                Object.assign({}, action.payload.data)
             ];
 
         case UPDATE_LEAD:
             return [
                 ...state.filter(lead => lead.id !== action.lead.id),
-                Object.assign({}, action.req.data.leadId)
+                Object.assign({}, action.payload.data)
             ];
 
-        case GET_ALL_LEADS:
-            console.log(JSON.stringify(action));
-            return [
-                ...state,
-                action.result
-            ];
+        case GET_ALL_LEADS_SUCCESS:
+            return Object.assign({}, state, {leads:action.payload.data});
 
         default:
             return state;
     }
 };
+export default leads;

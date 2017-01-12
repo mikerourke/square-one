@@ -1,7 +1,8 @@
 import {
-    GET_USER, GET_USER_INFO, GET_USER_INFO_SUCCESS, GET_USER_INFO_FAILURE,
-    LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE,
-    LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAILURE
+    GET_USER,
+    GET_USER_INFO,
+    LOGIN,
+    LOGOUT,
 } from './actionTypes';
 
 export function getUser(value) {
@@ -12,24 +13,37 @@ export function getUser(value) {
 }
 
 export function getUserInfo(user) {
-    console.log('From function getUserInfo');
     return {
-        types: [ GET_USER_INFO, GET_USER_INFO_SUCCESS, GET_USER_INFO_FAILURE ],
-        promise: client => client.get(`users/${user.username}`)
+        type: GET_USER_INFO,
+        payload: {
+            request: {
+                type: 'get',
+                url: `/users/${user.id}`,
+            }
+        }
     };
 }
 
 export function auth(username, password) {
-    console.log('From function auth');
     return {
-        types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE ],
-        promise: client => client.get(`users/${username}`)
+        type: LOGIN,
+        payload: {
+            request: {
+                type: 'get',
+                url: `/users/${username}`,
+            }
+        }
     };
 }
 
 export function logout(user) {
     return {
-        types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAILURE ],
-        promise: client => client.get(`users/${user.username}`)
+        type: LOGOUT,
+        payload: {
+            request: {
+                type: 'get',
+                url: `/users/${user.id}`,
+            }
+        }
     }
 }

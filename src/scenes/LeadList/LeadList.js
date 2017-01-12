@@ -27,16 +27,14 @@ const tableColumns = [
     }
 ];
 
-const tableData = [];
-
 class LeadList extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.rows = tableData;
+        this.rows = this.props.leads;
         this.state = {
             data: this.rows,
-            count: this.rows.length,
+            count: 50,
             page: 1,
             rowSize: 10,
         };
@@ -105,13 +103,18 @@ class LeadList extends React.Component {
         //TODO: Add functionality to handle going to the next page.
         // Note: This will need to accommodate for the row count being displayed.
         const nextPage = this.state.page + 1;
-        this.setState({
-            // data: nextRows,
-            page: nextPage
-        })
+        //this.setState({
+        //    // data: nextRows,
+        //    page: nextPage
+        //})
+        this.props.getAllLeads().then(() => {
+            this.setState({data: this.props.leads});
+        });
     }
 
     render() {
+        const { leads, getAllLeads } = this.props;
+
         return (
             <div>
                 <DataTables

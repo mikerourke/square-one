@@ -1,12 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import createMiddleware from '../services/api/middleware/clientMiddleware';
-// import rootReducer from '../reducers';
-import rootReducer from '../data/reducer';
+import rootReducer from '../reducers';
+import axiosMiddleware from 'redux-axios-middleware';
 import thunk from 'redux-thunk';
 
 export default function configureStore(client, initialState) {
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    const middleware = [createMiddleware(client), thunk];
+    // Setup the Redux Dev Tools in Chrome:
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
+                             compose;
+    const middleware = [axiosMiddleware(client), thunk];
 
     return createStore (
         rootReducer,

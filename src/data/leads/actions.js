@@ -1,34 +1,57 @@
 import {
-    CREATE_LEAD, CREATE_LEAD_SUCCESS, CREATE_LEAD_FAILURE,
-    DELETE_LEAD, DELETE_LEAD_SUCCESS, DELETE_LEAD_FAILURE,
-    UPDATE_LEAD, UPDATE_LEAD_SUCCESS, UPDATE_LEAD_FAILURE,
-    GET_ALL_LEADS, GET_ALL_LEADS_SUCCESS, GET_ALL_LEADS_FAILURE
+    CREATE_LEAD,
+    DELETE_LEAD,
+    UPDATE_LEAD,
+    GET_ALL_LEADS,
 } from './actionTypes';
 
 export function createLead(lead) {
     return {
-        types: [ CREATE_LEAD, CREATE_LEAD_SUCCESS, CREATE_LEAD_FAILURE ],
-        promise: client => client.post('/leads', {data: lead})
+        type: CREATE_LEAD,
+        payload: {
+            request: {
+                type: 'get',
+                url: `/leads/${lead.id}`,
+            }
+        }
     };
 }
 
 export function deleteLead(id) {
     return {
-        types: [ DELETE_LEAD, DELETE_LEAD_SUCCESS, DELETE_LEAD_FAILURE ],
-        promise: client => client.del('/leads')
+        type: DELETE_LEAD,
+        payload: {
+            request: {
+                type: 'delete',
+                url: `/leads/${id}`,
+            }
+        }
     };
 }
 
 export function updateLead(lead) {
     return {
-        types: [ UPDATE_LEAD, UPDATE_LEAD_SUCCESS, UPDATE_LEAD_FAILURE ],
-        promise: client => client.post('/leads', {data: lead})
+        type: UPDATE_LEAD,
+        payload: {
+            request: {
+                type: 'patch',
+                data: {
+                    // TODO: Add data to update lead.
+                },
+                url: `/leads/${lead.id}`,
+            }
+        }
     };
 }
 
 export function getAllLeads() {
     return {
-        types: [ GET_ALL_LEADS, GET_ALL_LEADS_SUCCESS, GET_ALL_LEADS_FAILURE ],
-        promise: client => client.get('/leads')
+        type: GET_ALL_LEADS,
+        payload: {
+            request: {
+                type: 'get',
+                url: `/leads`,
+            }
+        }
     };
 }

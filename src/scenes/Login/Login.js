@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as userActions from 'data/users/actions';
@@ -11,7 +11,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { globalStyles } from '../styles';
 
 
-class Login extends React.Component {
+class Login extends Component {
     constructor(props, context) {
         super(props, context);
 
@@ -23,12 +23,14 @@ class Login extends React.Component {
         const username = this.refs.username.getValue();
         const password = this.refs.password.getValue();
         this.props.auth(username, password);
-        this.props.getAllLeads().then(leads => {
+        this.props.getAllLeads().then(() => {
             this.context.router.push('/leads');
         });
     }
 
     render() {
+        const { leads, user } = this.props;
+
         return (
             <div style={globalStyles.formContainer}>
                 <Paper style={globalStyles.paper}>

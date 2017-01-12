@@ -23,8 +23,9 @@ class Login extends React.Component {
         const username = this.refs.username.getValue();
         const password = this.refs.password.getValue();
         this.props.auth(username, password);
-        this.props.getAllLeads();
-        this.context.router.push('/leads');
+        this.props.getAllLeads().then(leads => {
+            this.context.router.push('/leads');
+        });
     }
 
     render() {

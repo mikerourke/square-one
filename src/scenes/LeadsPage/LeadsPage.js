@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as leadActions from 'data/leads/actions';
@@ -12,22 +12,23 @@ const tableColumns = [
     {
         key: 'id',
         style: {
-            width: '0px'
+            width: '0px',
+            fontSize: '0px',
         }
     },
     {
         key: 'firstName',
         label: 'First Name',
-        sortable: true
+        sortable: true,
     },
     {
         key: 'lastName',
         label: 'Last Name',
-        sortable: true
+        sortable: true,
     }
 ];
 
-class LeadList extends React.Component {
+class LeadsPage extends Component {
     constructor(props, context) {
         super(props, context);
 
@@ -78,7 +79,6 @@ class LeadList extends React.Component {
 
     handleCellClick(rowIndex, columnIndex, row, column) {
         console.log(row);
-
     }
 
     handleRowSizeChange(index, value) {
@@ -103,13 +103,10 @@ class LeadList extends React.Component {
         //TODO: Add functionality to handle going to the next page.
         // Note: This will need to accommodate for the row count being displayed.
         const nextPage = this.state.page + 1;
-        //this.setState({
-        //    // data: nextRows,
-        //    page: nextPage
-        //})
-        this.props.getAllLeads().then(() => {
-            this.setState({data: this.props.leads});
-        });
+        this.setState({
+           // data: nextRows,
+           page: nextPage
+        })
     }
 
     render() {
@@ -146,18 +143,14 @@ class LeadList extends React.Component {
     }
 }
 
-LeadList.propTypes = {
+LeadsPage.propTypes = {
     leads: PropTypes.array
 };
 
-function mapStateToProps(state) {
-    return {
-        leads: state.leads
-    };
-}
+const mapStateToProps = state => ({
+    leads: state.leads,
+});
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(leadActions, dispatch);
-}
+const mapDispatchToProps = dispatch => bindActionCreators(leadActions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeadList);
+export default connect(mapStateToProps, mapDispatchToProps)(LeadsPage);

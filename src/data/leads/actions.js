@@ -10,8 +10,13 @@ export function createLead(lead) {
         type: CREATE_LEAD,
         payload: {
             request: {
-                type: 'get',
-                url: `/leads/${lead.id}`,
+                type: 'post',
+                url: '/leads',
+                data: {
+                    id: '231',
+                    firstName: lead.firstName,
+                    lastName: lead.lastName,
+                }
             }
         }
     };

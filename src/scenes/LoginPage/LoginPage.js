@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as userActions from 'data/users/actions';
-import * as leadActions from 'data/leads/actions';
+import { auth } from 'data/user/actions';
+import { getAllLeads } from 'data/leads/actions';
 
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
@@ -11,10 +11,9 @@ import FlatButton from 'material-ui/FlatButton';
 import { globalStyles } from '../styles';
 
 
-class Login extends Component {
+class LoginPage extends Component {
     constructor(props, context) {
         super(props, context);
-
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -29,8 +28,6 @@ class Login extends Component {
     }
 
     render() {
-        const { leads, user } = this.props;
-
         return (
             <div style={globalStyles.formContainer}>
                 <Paper style={globalStyles.paper}>
@@ -60,25 +57,23 @@ class Login extends Component {
     }
 }
 
-Login.propTypes = {
+LoginPage.propTypes = {
     username: PropTypes.string,
-    password: PropTypes.string
+    password: PropTypes.string,
 };
 
-Login.contextTypes = {
+LoginPage.contextTypes = {
     router: PropTypes.object
 };
 
-function mapStateToProps(state) {
-    return {
-        leads: state.leads,
-        user: state.user
-    };
-}
+const mapStateToProps = (state) => ({
+    leads: state.leads,
+    user: state.user,
+});
 
-function mapDispatchToProps(dispatch) {
-    const actions = Object.assign({}, userActions, leadActions);
+const mapDispatchToProps = (dispatch) => {
+    const actions = {auth, getAllLeads};
     return bindActionCreators(actions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

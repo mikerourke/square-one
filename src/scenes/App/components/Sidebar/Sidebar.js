@@ -4,15 +4,15 @@ import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import { 
-    NavigationClose, 
-    SocialPeople, 
-    ActionSettings 
+import {
+    NavigationClose,
+    SocialPeople,
+    ActionSettings
 } from 'material-ui/svg-icons';
 
 const Sidebar = ({open, handleToggle, iconStyle}) => (
     <div>
-        <Drawer 
+        <Drawer
             open={open}
             onRequestChange={handleToggle}>
             <AppBar
@@ -20,13 +20,13 @@ const Sidebar = ({open, handleToggle, iconStyle}) => (
                 onLeftIconButtonTouchTap={handleToggle}
             />
             <Menu>
-                <MenuItem 
-                    primaryText="Leads" 
-                    leftIcon={<SocialPeople />} 
+                <MenuItem
+                    primaryText="Leads"
+                    leftIcon={<SocialPeople />}
                     onTouchTap={handleToggle}
                 />
-                <MenuItem 
-                    primaryText="Settings" 
+                <MenuItem
+                    primaryText="Settings"
                     leftIcon={<ActionSettings />}
                     onTouchTap={handleToggle}
                 />
@@ -37,8 +37,8 @@ const Sidebar = ({open, handleToggle, iconStyle}) => (
 
 Sidebar.propTypes = {
     open: PropTypes.bool,
-    handleToggle: PropTypes.func,
-    iconStyle: PropTypes.object
+    handleToggle: PropTypes.func.isRequired,
+    iconStyle: PropTypes.object.isRequired,
 };
 
 export default Sidebar;

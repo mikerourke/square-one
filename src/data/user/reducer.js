@@ -4,7 +4,12 @@ import {
     LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL,
 } from './actionTypes';
 
-export default function userReducer(state = {}, action) {
+const initialState = {
+    username: '',
+    password: '',
+};
+
+const user = (state = initialState, action) => {
     switch(action.type) {
         case GET_USER:
             return state;
@@ -16,7 +21,10 @@ export default function userReducer(state = {}, action) {
 
         case LOGIN_SUCCESS:
             return Object.assign({}, state, {
-                error: null
+                error: null,
+                token: null,
+                username: action.payload.data.username,
+                password: action.payload.data.password,
             });
 
         case LOGIN_FAIL:
@@ -28,3 +36,5 @@ export default function userReducer(state = {}, action) {
             return state;
     }
 }
+
+export default user;

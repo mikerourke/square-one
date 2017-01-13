@@ -5,27 +5,26 @@ import {
     GET_ALL_LEADS, GET_ALL_LEADS_SUCCESS, GET_ALL_LEADS_FAIL
 } from './actionTypes';
 
-const initialState = {leads: []};
-
-const leads = (state = initialState, action) => {
+const leads = (state = [], action) => {
     switch (action.type) {
-        case CREATE_LEAD:
+        case CREATE_LEAD_SUCCESS:
             return [
                 ...state,
                 Object.assign({}, action.payload.data)
             ];
 
-        case UPDATE_LEAD:
+        case UPDATE_LEAD_SUCCESS:
             return [
                 ...state.filter(lead => lead.id !== action.lead.id),
                 Object.assign({}, action.payload.data)
             ];
 
         case GET_ALL_LEADS_SUCCESS:
-            return Object.assign({}, state, {leads:action.payload.data});
+            return action.payload.data;
 
         default:
             return state;
     }
 };
+
 export default leads;

@@ -3,7 +3,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
-import { getAllLeads } from './data/leads/actions';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import axios from 'axios';
 import configureStore from './store/configureStore';

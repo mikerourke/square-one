@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import GoogleMapLoader from 'react-google-maps-loader';
 import GooglePlacesSuggest from 'react-google-places-suggest';
 import TextField from 'material-ui/TextField';
@@ -6,7 +6,7 @@ import 'react-google-places-suggest/lib/index.css';
 
 const API_KEY = 'AIzaSyAkiq1bkZask4elXgU_BnM7d6xzjGMXw0A';
 
-class LocationSearchBox extends React.Component {
+class LocationSearchBox extends Component {
     constructor(props, context) {
         super(props, context);
 

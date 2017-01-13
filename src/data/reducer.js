@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import leadReducer from './leads/reducer';
-import userReducer from './users/reducer';
+import leads from './leads/reducer';
+import user from './user/reducer';
 
 const dataReducer = combineReducers({
-    leadReducer,
-    userReducer
+    leads,
+    user
 });
 
 export default dataReducer;

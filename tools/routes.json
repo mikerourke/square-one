@@ -1,5 +1,5 @@
 {
-  "/": "/api/",
+  "/": "/api",
   "/api/leads/:id": "/leads/:id",
   "/api/:category": "/posts/:id?category=:category"
 }

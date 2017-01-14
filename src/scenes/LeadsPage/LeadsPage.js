@@ -146,8 +146,6 @@ const mapStateToProps = state => ({
     leads: state.leads,
 });
 
-const mapDispatchToProps = dispatch => {
-    bindActionCreators(leadActions, dispatch);
-};
+const mapDispatchToProps = dispatch => bindActionCreators(leadActions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeadsPage);

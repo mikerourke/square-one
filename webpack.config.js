@@ -2,12 +2,11 @@ import webpack from 'webpack';
 import path from 'path';
 
 const isDevelopment = (process.env.NODE_ENV !== 'production');
-// const port = process.env.PORT || 8081;
-const port = 8081;
+const port = process.env.PORT || 8081;
 
 const baseConfig = {
     debug: (isDevelopment),
-    noInfo: true,
+    noInfo: (!isDevelopment),
     target: 'web',
     output: {
         path: path.resolve(__dirname, 'client'),
@@ -92,8 +91,8 @@ const productionConfig = {
     ]
 };
 
-const configToUse = isDevelopment 
-                  ? developmentConfig 
+const configToUse = isDevelopment
+                  ? developmentConfig
                   : productionConfig;
 
 export default Object.assign({}, baseConfig, configToUse);

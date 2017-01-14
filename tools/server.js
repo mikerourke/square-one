@@ -14,8 +14,9 @@ const port = process.env.PORT || 8081;
 const compiler = webpack(config);
 
 new WebpackDevServer(compiler, {
+    contentBase: config.devServer.contentBase,
     hot: true,
-    quiet: true,
+    quiet: false,
     filename: config.output.filename,
     publicPath: config.output.publicPath,
     historyApiFallback: true,

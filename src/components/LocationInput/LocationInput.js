@@ -6,7 +6,7 @@ import 'react-google-places-suggest/lib/index.css';
 
 const API_KEY = 'AIzaSyAkiq1bkZask4elXgU_BnM7d6xzjGMXw0A';
 
-class LocationSearchBox extends Component {
+class LocationInput extends Component {
     constructor(props, context) {
         super(props, context);
 
@@ -21,15 +21,15 @@ class LocationSearchBox extends Component {
 
     handleSearchChange(event) {
         this.setState({
-            search: event.target.value
-        })
+            search: event.target.value,
+        });
     }
 
     handleSelectSuggest(suggest, coordinate) {
         this.setState({
             search: suggest.description,
-            selectedCoordinate: coordinate
-        })
+            selectedCoordinate: coordinate,
+        });
     }
 
     render() {
@@ -48,11 +48,15 @@ class LocationSearchBox extends Component {
                     onChange={this.handleSearchChange}
                 />
             </GooglePlacesSuggest>
-        )
+        );
     }
 }
 
-export default GoogleMapLoader(LocationSearchBox, {
+LocationInput.propTypes = {
+    googleMaps: PropTypes.object
+};
+
+export default GoogleMapLoader(LocationInput, {
     libraries: ['places'],
     key: API_KEY
 });

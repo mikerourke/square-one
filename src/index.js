@@ -9,8 +9,8 @@ import configureStore from './store/configureStore';
 import routes from './routes';
 
 const client = axios.create({
-    baseURL: 'http://localhost:8082',
-    responseType: 'json',
+    baseURL: "http://localhost:8082",
+    responseType: "json"
 });
 
 const store = configureStore(client);
@@ -22,7 +22,7 @@ render(
     <Provider store={store}>
         <Router history={browserHistory} routes={routes} />
     </Provider>,
-    document.getElementById('app'),
+    document.getElementById('app')
 );
 
 if (module.hot) {

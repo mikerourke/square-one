@@ -5,7 +5,8 @@
  */
 import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
-import config from '../webpack.config.dev';
+import config from '../webpack.config';
+import { green, red } from 'chalk';
 
 /*eslint-disable no-console */
 
@@ -13,15 +14,14 @@ const port = process.env.PORT || 8081;
 const compiler = webpack(config);
 
 new WebpackDevServer(compiler, {
-    contentBase: config.devServer.contentBase,
     hot: true,
-    noInfo: true,
+    quiet: true,
     filename: config.output.filename,
     publicPath: config.output.publicPath,
-    historyApiFallback: true
+    historyApiFallback: true,
 }).listen(port, err => {
     if (err) {
-        return console.log('Error starting server.');
+        return console.log(red('Error starting server.'));
     }
-    console.log('Server loaded.');
+    console.log(green('Server loaded.'));
 });

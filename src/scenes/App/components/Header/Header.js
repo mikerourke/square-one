@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
-
-import AppBar from 'material-ui/AppBar';
 import { ActionAccountCircle } from 'material-ui/svg-icons';
+import AppBar from 'material-ui/AppBar';
 
 const Header = ({handleToggle, iconStyle}) => {
     return (
@@ -9,7 +8,7 @@ const Header = ({handleToggle, iconStyle}) => {
             iconElementRight={<ActionAccountCircle style={iconStyle}/>}
             onLeftIconButtonTouchTap={handleToggle}
         />
-    )
+    );
 };
 
 Header.propTypes = {

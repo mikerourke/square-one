@@ -8,42 +8,42 @@
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
-import webpackConfig from '../webpack.config.prod';
-import colors from 'colors';
+import webpackConfig from '../webpack.config';
+import { blue, green, red, yellow } from 'chalk';
 
 /*eslint-disable no-console */
 
-process.env.NODE_ENV = 'production';
+console.log(blue('Copying index.html to client directory...'));
 
-console.log('Copying index.html to client directory...'.blue);
+const sourceFilePath = path.join(__dirname, '..', 'src/index.html');
+const targetFilePath = path.join(__dirname, '..', 'client/index.html');
+fs.createReadStream(sourceFilePath)
+    .pipe(fs.createWriteStream(targetFilePath));
 
-fs.createReadStream(path.join(__dirname, '..', 'src/index.html'))
-    .pipe(fs.createWriteStream(path.join(__dirname, '..', 'client/index.html')));
-
-console.log('Generating minified bundle for production via Webpack.  This will take a moment...'.blue);
+console.log(blue('Generating minified Webpack bundle.  Please wait...'));
 
 webpack(webpackConfig).run((err, stats) => {
     // Fatal error occurred. Stop here:
     if (err) {
-        console.log(err.bold.red);
+        console.log(red(err));
         return 1;
     }
 
     const jsonStats = stats.toJson();
 
     if (jsonStats.hasErrors) {
-        return jsonStats.errors.map(error => console.log(error.red));
+        return jsonStats.errors.map(error => console.log(red(error)));
     }
 
     if (jsonStats.hasWarnings) {
-        console.log('Webpack generated the following warnings: '.bold.yellow);
-        jsonStats.warnings.map(warning => console.log(warning.yellow));
+        console.log(yellow('Webpack generated the following warnings: '));
+        jsonStats.warnings.map(warning => console.log(yellow(warning)));
     }
 
     console.log(`Webpack stats: ${stats}`);
 
     // Build succeeded:
-    console.log('Your app has been compiled in production mode and written to /client.'.green);
+    console.log(green('Compilation complete, output is in /client.'));
 
     return 0;
 });

@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as leadActions from 'data/leads/actions';
 import { Link } from 'react-router';
-
 import { ContentAddCircleOutline } from 'material-ui/svg-icons';
+import * as leadActions from 'data/leads/actions';
 import IconButton from 'material-ui/IconButton';
 import DataTables from 'material-ui-datatables';
 
@@ -32,10 +31,8 @@ class LeadsPage extends Component {
     constructor(props, context) {
         super(props, context);
 
-        this.rows = this.props.leads;
         this.state = {
-            data: this.rows,
-            count: 50,
+            data: this.props.leads,
             page: 1,
             rowSize: 10,
         };
@@ -90,28 +87,26 @@ class LeadsPage extends Component {
 
     handlePreviousPageClick() {
         //TODO: Add function to handle going to the previous page.
-        // Note: This will need to accommodate for the row count being displayed.
+        // Note: This will need to accommodate for the row count displayed.
         let currentPage = this.state.page;
         const previousPage = (currentPage === 1) ? 1 : currentPage - 1;
         this.setState({
             // data: previousRows,
             page: previousPage
-        })
+        });
     }
 
     handleNextPageClick() {
         //TODO: Add functionality to handle going to the next page.
-        // Note: This will need to accommodate for the row count being displayed.
+        // Note: This will need to accommodate for the row count displayed.
         const nextPage = this.state.page + 1;
         this.setState({
-           // data: nextRows,
-           page: nextPage
-        })
+            // data: nextRows,
+            page: nextPage
+        });
     }
 
     render() {
-        const { leads, getAllLeads } = this.props;
-
         return (
             <div>
                 <DataTables
@@ -131,9 +126,9 @@ class LeadsPage extends Component {
                     onRowSizeChange={this.handleRowSizeChange}
                     rowSize={this.state.rowSize}
                     page={this.state.page}
-                    count={this.state.count}
+                    count={this.state.rowSize}
                     toolbarIconRight = {[
-                        <IconButton>
+                        <IconButton key={'goToLead'}>
                             <Link to={'/lead'}><ContentAddCircleOutline/></Link>
                         </IconButton>
                     ]}
@@ -151,6 +146,8 @@ const mapStateToProps = state => ({
     leads: state.leads,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(leadActions, dispatch);
+const mapDispatchToProps = dispatch => {
+    bindActionCreators(leadActions, dispatch);
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeadsPage);

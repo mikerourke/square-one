@@ -3,17 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as leadActions from 'data/leads/actions';
 
-import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
-
-import LocationSearchBox from './components/LocationSearchBox';
-import Dropdown from './components/Dropdown';
-import LeadForm from './components/LeadForm'
+import LeadDetailsForm from './components/LeadDetailsForm';
 
 import { globalStyles } from '../styles';
 
-const formStyles = globalStyles.twoColumnForm;
 const paperStyle = Object.assign({}, globalStyles.paper, {width: '90%'});
 
 class ManageLeadPage extends Component {
@@ -36,7 +30,7 @@ class ManageLeadPage extends Component {
         return (
             <div style={globalStyles.formContainer}>
                 <Paper style={paperStyle}>
-                    <LeadForm handleSubmit={this.handleSubmit} />
+                    <LeadDetailsForm handleSubmit={this.handleSubmit} />
                 </Paper>
             </div>
         );
@@ -55,6 +49,8 @@ const mapStateToProps = state => ({
     leads: state.leads,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(leadActions, dispatch);
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators(leadActions, dispatch);
+};
 
-export default ManageLeadPage;
+export default connect(mapStateToProps, mapDispatchToProps)(ManageLeadPage);

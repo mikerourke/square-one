@@ -81,7 +81,7 @@
     "no-underscore-dangle": 0,
     "no-alert": 0,
     "no-lone-blocks": 0,
-    "react/display-name": [1, {"ignoreTranspilerName": false}],
+    "react/display-name": 0,
     "react/forbid-prop-types": [1, {"forbid": ["any"]}],
     // It seems a little antiquated to ensure filenames end with JSX:
     "react/jsx-filename-extension": 0,

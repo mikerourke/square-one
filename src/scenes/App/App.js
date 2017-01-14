@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { muiTheme } from '../styles';
-import Sidebar from './components/Sidebar';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 
 const styles = {
     icon: {
@@ -19,7 +18,7 @@ const styles = {
     },
 };
 
-class App extends Component {
+export class App extends Component {
     constructor(props) {
         super(props);
 

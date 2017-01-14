@@ -1,17 +1,17 @@
 {
     "leads": [
       {
-        "id": "steve-leadsman",
+        "id": 1,
         "firstName": "Steve",
         "lastName": "Leadsman"
       },
       {
-        "id": "nancy-leadelstein",
+        "id": 2,
         "firstName": "Nancy",
         "lastName": "Leadelstein"
       },
       {
-        "id": "paco-leadrojo",
+        "id": 3,
         "firstName": "Paco",
         "lastName": "Leadrojo"
       }

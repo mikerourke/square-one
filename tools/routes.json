@@ -1,5 +1,6 @@
 {
-  "/": "/api",
-  "/api/leads/:id": "/leads/:id",
-  "/api/:category": "/posts/:id?category=:category"
+  "/api/users": "/users",
+  "/api/users?username=:username": "/users?username=:username",
+  "/api/leads": "/leads",
+  "/api/leads/:id": "/api/leads/:id"
 }

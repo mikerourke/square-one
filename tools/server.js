@@ -16,7 +16,7 @@ const compiler = webpack(config);
 new WebpackDevServer(compiler, {
     contentBase: config.devServer.contentBase,
     hot: true,
-    quiet: false,
+    quiet: true,
     filename: config.output.filename,
     publicPath: config.output.publicPath,
     historyApiFallback: true,
@@ -24,5 +24,5 @@ new WebpackDevServer(compiler, {
     if (err) {
         return console.log(red('Error starting server.'));
     }
-    console.log(green('Server loaded.'));
+    console.log(green(`Server running on port ${port}.`));
 });

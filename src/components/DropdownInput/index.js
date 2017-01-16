@@ -2,23 +2,32 @@ import React, { PropTypes } from 'react';
 import SelectField from 'material-ui/SelectField';
 import { globalStyles } from 'scenes/styles';
 
-const DropdownInput = props => (
+const DropdownInput = (
+    {
+        input,
+        label,
+        meta: { touched, error },
+        children,
+        ...custom
+    }) => (
     <SelectField
+        tabIndex="0"
         style={globalStyles.input}
-        floatingLabelText={props.label}
-        errorText={props.touched && props.error}
-        {...props}
-        onChange={(event, index, value) => props.handleChange(value)} 
+        floatingLabelText={label}
+        errorText={touched && error}
+        {...input}
+        onChange={(event, index, value) => input.onChange(value)}
+        children={children}
+        {...custom}
     />
 );
 
 DropdownInput.propTypes = {
+    input: PropTypes.object,
     label: PropTypes.string.isRequired,
-    handleChange: PropTypes.func.isRequired,
-    options: PropTypes.arrayOf(PropTypes.object),
-    value: PropTypes.string,
     touched: PropTypes.string,
     error: PropTypes.string,
+    children: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default DropdownInput;

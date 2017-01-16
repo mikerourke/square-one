@@ -14,7 +14,7 @@ export class LoginPage extends Component {
         super(props, context);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    
+
     handleSubmit(event) {
         event.preventDefault();
         const username = this.refs.username.getValue();
@@ -74,6 +74,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     const actions = {auth, getAllLeads};
     return bindActionCreators(actions, dispatch);
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

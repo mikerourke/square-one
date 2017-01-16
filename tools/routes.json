@@ -1,6 +1,4 @@
 {
-  "/api/users": "/users",
-  "/api/users?username=:username": "/users?username=:username",
-  "/api/leads": "/leads",
-  "/api/leads/:id": "/api/leads/:id"
+  "/users/:username": "/users?username=:username",
+  "/lead/:id": "/leads?id=:id"
 }

@@ -19,8 +19,8 @@ const styles = {
 };
 
 export class App extends Component {
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             open: false,
@@ -30,9 +30,12 @@ export class App extends Component {
     }
 
     handleToggle() {
-        this.setState({
-            open: !this.state.open,
-        });
+        const isLogged = false;
+        if (isLogged) {
+            this.setState({
+                open: !this.state.open,
+            });
+        }
     }
 
     render() {
@@ -57,6 +60,10 @@ export class App extends Component {
 
 App.propTypes = {
     children: PropTypes.object
+};
+
+App.contextTypes = {
+    router: PropTypes.object,
 };
 
 const mapStateToProps = state => ({

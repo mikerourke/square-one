@@ -9,7 +9,12 @@ import {
     ActionSettings
 } from 'material-ui/svg-icons';
 
-const Sidebar = ({open, handleToggle, iconStyle}) => (
+const Sidebar = (
+    {
+        open,
+        handleToggle,
+        iconStyle
+    }) => (
     <div>
         <Drawer
             open={open}
@@ -22,12 +27,10 @@ const Sidebar = ({open, handleToggle, iconStyle}) => (
                 <MenuItem
                     primaryText="Leads"
                     leftIcon={<SocialPeople />}
-                    onTouchTap={handleToggle}
                 />
                 <MenuItem
                     primaryText="Settings"
                     leftIcon={<ActionSettings />}
-                    onTouchTap={handleToggle}
                 />
             </Menu>
         </Drawer>

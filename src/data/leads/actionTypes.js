@@ -10,6 +10,10 @@ export const UPDATE_LEAD = 'square1/leads/UPDATE_LEAD';
 export const UPDATE_LEAD_SUCCESS = 'square1/leads/UPDATE_LEAD_SUCCESS';
 export const UPDATE_LEAD_FAIL = 'square1/leads/UPDATE_LEAD_FAIL';
 
+export const GET_LEAD = 'square1/leads/GET_LEAD';
+export const GET_LEAD_SUCCESS = 'square1/leads/GET_LEAD_SUCCESS';
+export const GET_LEAD_FAIL = 'square1/leads/GET_LEAD_FAIL';
+
 export const GET_ALL_LEADS = 'square1/leads/GET_ALL_LEADS';
 export const GET_ALL_LEADS_SUCCESS = 'square1/leads/GET_ALL_LEADS_SUCCESS';
 export const GET_ALL_LEADS_FAIL = 'square1/leads/GET_ALL_LEADS_FAIL';

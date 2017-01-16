@@ -23,8 +23,8 @@ const user = (state = initialState, action) => {
             return Object.assign({}, state, {
                 error: null,
                 token: null,
-                username: action.payload.data.username,
-                password: action.payload.data.password,
+                username: action.payload.data[0].id,
+                password: action.payload.data[0].password,
             });
 
         case LOGIN_FAIL:
@@ -35,6 +35,6 @@ const user = (state = initialState, action) => {
         default:
             return state;
     }
-}
+};
 
 export default user;

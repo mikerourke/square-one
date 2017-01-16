@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { ContentAddCircleOutline } from 'material-ui/svg-icons';
 import * as leadActions from 'data/leads/actions';
+import { getList } from 'data/lists/actions';
 import IconButton from 'material-ui/IconButton';
 import DataTables from 'material-ui-datatables';
 
@@ -16,23 +17,40 @@ const tableColumns = [
         }
     },
     {
-        key: 'firstName',
-        label: 'First Name',
+        key: 'leadName',
+        label: 'Lead Name',
         sortable: true,
     },
     {
-        key: 'lastName',
-        label: 'Last Name',
+        key: 'description',
+        label: 'Description',
+        sortable: false,
+    },
+    {
+        key: 'status',
+        label: 'Status',
         sortable: true,
-    }
+    },
 ];
+
+const listableLeads = existingLeads => {
+    return existingLeads.map(lead => {
+        return {
+            id: lead.id,
+            leadName: lead.leadName,
+            description: lead.description,
+            status: lead.status,
+        }
+    })
+};
 
 class LeadsPage extends Component {
     constructor(props, context) {
         super(props, context);
 
+        this.leadsInList = listableLeads(this.props.leads);
         this.state = {
-            data: this.props.leads,
+            data: this.leadsInList,
             page: 1,
             rowSize: 10,
         };
@@ -43,22 +61,28 @@ class LeadsPage extends Component {
         this.handleRowSizeChange = this.handleRowSizeChange.bind(this);
         this.handlePreviousPageClick = this.handlePreviousPageClick.bind(this);
         this.handleNextPageClick = this.handleNextPageClick.bind(this);
+        this.handleAddLeadClick = this.handleAddLeadClick.bind(this);
     }
 
     handleFilterValueChange(value) {
         const rows = this.state.data;
-        const filteredList = rows.filter(rowItem => {
-            let countFound = 0;
-            Object.keys(rowItem).forEach(key => {
-                const rowValue = rowItem[key].toString().toLowerCase();
-                if (rowValue.includes(value.toLowerCase())) {
-                    countFound  += 1;
-                }
+        let filteredList = [];
+        if (!value || value === '') {
+            filteredList = this.leadsInList;
+        } else {
+            filteredList = rows.filter(rowItem => {
+                let countFound = 0;
+                Object.keys(rowItem).forEach(key => {
+                    const rowValue = rowItem[key].toString().toLowerCase();
+                    if (rowValue.includes(value.toLowerCase())) {
+                        countFound += 1;
+                    }
+                });
+                return (countFound > 0);
             });
-            return (countFound > 0);
-        });
+        }
 
-        this.setState({data: value === '' ? this.rows : filteredList});
+        this.setState({data: filteredList});
     }
 
     handleSortOrderChange(key, order) {
@@ -75,7 +99,7 @@ class LeadsPage extends Component {
     }
 
     handleCellClick(rowIndex, columnIndex, row, column) {
-        console.log(row);
+        this.context.router.push(`lead/${row.id}`);
     }
 
     handleRowSizeChange(index, value) {
@@ -106,6 +130,13 @@ class LeadsPage extends Component {
         });
     }
 
+    handleAddLeadClick(event) {
+        event.preventDefault();
+        this.props.getList('sources').then(() => {
+            this.context.router.push('/lead');
+        })
+    }
+
     render() {
         return (
             <div>
@@ -129,7 +160,7 @@ class LeadsPage extends Component {
                     count={this.state.rowSize}
                     toolbarIconRight = {[
                         <IconButton key={'goToLead'}>
-                            <Link to={'/lead'}><ContentAddCircleOutline/></Link>
+                            <Link onClick={this.handleAddLeadClick}><ContentAddCircleOutline/></Link>
                         </IconButton>
                     ]}
                 />
@@ -139,13 +170,22 @@ class LeadsPage extends Component {
 }
 
 LeadsPage.propTypes = {
-    leads: PropTypes.array
+    leads: PropTypes.array,
+    getList: PropTypes.func,
+};
+
+LeadsPage.contextTypes = {
+    router: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
     leads: state.leads,
+    lists: state.lists,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators(leadActions, dispatch);
+const mapDispatchToProps = dispatch => {
+    const actions = { getList };
+    return bindActionCreators(actions, dispatch);
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeadsPage);

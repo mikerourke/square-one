@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { getLead } from 'data/leads/actions';
 import { globalStyles } from 'scenes/styles';
 import FlatButton from 'material-ui/FlatButton';
 import MenuItem from 'material-ui/MenuItem';
@@ -9,50 +10,47 @@ import TextInput from 'components/TextInput';
 
 const formStyles = globalStyles.twoColumnForm;
 
-const sources = [
+const LeadDetailsForm = (
     {
-        value: '1',
-        label: 'Scott'
-    },
-    {
-        value: '2',
-        label: 'Mike'
-    }
-];
-
-const LeadDetailsForm = ({handleSubmit}) => (
+        handleSubmit,
+        load,
+        sources,
+        handleChange,
+        lead,
+    }) => (
     <form style={formStyles.wrapper}
           onSubmit={handleSubmit}>
         <div style={formStyles.leftSide}>
             <div>
-                <Field name="firstName" 
+                <Field name="leadName"
                        component={TextInput}
                        style={globalStyles.input}
-                       label="First Name" />
+                       label="Lead Name"/>
             </div>
             <div>
-                <Field name="lastName" 
+                <Field name="lastName"
                        component={TextInput}
                        style={globalStyles.input}
-                       label="Last Name" />
+                       label="Last Name"/>
             </div>
             <div>
-                <Field name="source" 
+                <Field name="source"
                        component={DropdownInput}
+                       style={globalStyles.input}
                        label="Source">
                     {sources.map(source => {
-                        return (<MenuItem key={source.value} 
-                                          value={source.value}
-                                          primaryText={source.label}
-                                />);
+                        return (<MenuItem key={source.id}
+                                          value={source.id}
+                                          primaryText={source.value}
+                        />);
                     })}
                 </Field>
             </div>
             <div>
-                <Field name="leadFee" 
+                <Field name="leadFee"
                        component={TextInput}
                        style={globalStyles.input}
-                       label="Lead Fee" />
+                       label="Lead Fee"/>
             </div>
             <div>
                 <FlatButton
@@ -67,9 +65,14 @@ const LeadDetailsForm = ({handleSubmit}) => (
 );
 
 LeadDetailsForm.propTypes = {
-    handleSubmit: PropTypes.func.isRequired    
+    handleSubmit: PropTypes.func.isRequired,
+    load: PropTypes.func,
+    sources: PropTypes.array,
+    handleChange: PropTypes.func.isRequired,
+    lead: PropTypes.object,
 };
 
 export default reduxForm({
     form: 'leadDetails'
 })(LeadDetailsForm);
+

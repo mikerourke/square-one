@@ -5,12 +5,12 @@ import {
     LOGOUT,
 } from './actionTypes';
 
-export const getUser = (value) => ({
+export const getUser = value => ({
     type: GET_USER,
     payload: value,
 });
 
-export const getUserInfo = (user) => ({
+export const getUserInfo = user => ({
     type: GET_USER_INFO,
     payload: {
         request: {
@@ -30,7 +30,7 @@ export const auth = (username, password) => ({
     }
 });
 
-export const logout = (user) => ({
+export const logout = user => ({
     type: LOGOUT,
     payload: {
         request: {

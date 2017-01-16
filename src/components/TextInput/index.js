@@ -1,18 +1,24 @@
 import React, { PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
-const TextInput = props => (
+const TextInput = (
+    {
+        input,
+        label,
+        meta: { touched, error },
+        ...custom
+    }) => (
     <TextField
-        hintText={props.hint && props.label}
-        floatingLabelText={props.label}
-        errorText={props.touched && props.error}
-        {...props}
+        floatingLabelText={label}
+        errorText={touched && error}
+        {...input}
+        {...custom}
     />
 );
 
 TextInput.propTypes = {
-    hint: PropTypes.string.isRequired,
-    label: PropTypes.string,
+    input: PropTypes.object,
+    label: PropTypes.string.isRequired,
     touched: PropTypes.string,
     error: PropTypes.string,
 };

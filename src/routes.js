@@ -1,9 +1,6 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import App from './scenes/App';
-import LoginPage from './scenes/LoginPage';
-import LeadsPage from './scenes/LeadsPage';
-import ManageLeadPage from './scenes/ManageLeadPage';
+import { App, LoginPage, LeadsPage, ManageLeadPage } from './scenes';
 
 export default (
     <Route path="/" component={App}>

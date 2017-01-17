@@ -63,6 +63,18 @@
         {"id": 4, "value": "HomeAdvisor"},
         {"id": 5, "value": "Saw Sign"}
       ]
+    },
+    {
+      "id": 2,
+      "listName": "leadStatuses",
+      "displayName": "Lead Statuses",
+      "items": [
+        {"id": 1, "value": "New"},
+        {"id": 2, "value": "Selling"},
+        {"id": 3, "value": "Won"},
+        {"id": 4, "value": "Qualified"},
+        {"id": 5, "value": "Lost"}
+      ]
     }
   ]
 }

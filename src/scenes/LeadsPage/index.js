@@ -178,10 +178,14 @@ LeadsPage.contextTypes = {
     router: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-    leads: state.leads,
-    lists: state.lists,
-});
+const mapStateToProps = state => {
+    const leadsArray = Object.values(state.leads);
+
+    return {
+        leads: leadsArray,
+        lists: state.lists,
+    }
+};
 
 const mapDispatchToProps = dispatch => {
     const actions = { getList };

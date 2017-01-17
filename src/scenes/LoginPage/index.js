@@ -17,10 +17,11 @@ export class LoginPage extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        const { auth, getAllLeads } = this.props.actions;
         const username = this.refs.username.getValue();
         const password = this.refs.password.getValue();
-        this.props.auth(username, password);
-        this.props.getAllLeads().then(() => {
+        auth(username, password);
+        getAllLeads().then(() => {
             this.context.router.push('/leads');
         });
     }
@@ -29,24 +30,23 @@ export class LoginPage extends Component {
         return (
             <div style={globalStyles.formContainer}>
                 <Paper style={globalStyles.paper}>
-                    <form className="login"
-                          onSubmit={this.handleSubmit}>
+                    <form
+                        onSubmit={this.handleSubmit}>
                         <TextField
                             ref="username"
                             floatingLabelText="Login"
                         />
-                        <br/>
+                        <br />
                         <TextField
                             ref="password"
                             floatingLabelText="Password"
                             type="password"
                         />
-                        <br/>
+                        <br />
                         <FlatButton
                             style={globalStyles.flatButton}
                             label="Login"
-                            onClick={this.handleSubmit}
-                            onTouchTap={this.handleSubmit}
+                            type="submit"
                         />
                     </form>
                 </Paper>
@@ -58,8 +58,7 @@ export class LoginPage extends Component {
 LoginPage.propTypes = {
     username: PropTypes.string,
     password: PropTypes.string,
-    auth: PropTypes.func,
-    getAllLeads: PropTypes.func,
+    actions: PropTypes.object,
 };
 
 LoginPage.contextTypes = {
@@ -71,9 +70,8 @@ const mapStateToProps = state => ({
     user: state.user,
 });
 
-const mapDispatchToProps = dispatch => {
-    const actions = {auth, getAllLeads};
-    return bindActionCreators(actions, dispatch);
-};
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators({ auth, getAllLeads }, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -11,11 +11,10 @@ export const createLead = lead => ({
     payload: {
         request: {
             type: 'post',
-            url: '/leads',
+            url: '/lead',
             data: {
                 id: '231',
-                firstName: lead.firstName,
-                lastName: lead.lastName,
+                leadName: lead.leadName,
             }
         }
     }
@@ -26,7 +25,7 @@ export const deleteLead = id => ({
     payload: {
         request: {
             type: 'delete',
-            url: `/leads/${id}`,
+            url: `/lead/${id}`,
         }
     }
 });
@@ -38,15 +37,16 @@ export const updateLead = lead => ({
             type: 'patch',
             data: {
                 // TODO: Add data to update lead.
+                leadName: lead.leadName,
             },
-            url: `/leads/${lead.id}`,
-        }
+            url: `/lead/${lead.id}`,
+        },
     }
 });
 
 export const getLead = id => ({
-    type: GET_ALL_LEADS,
-    id
+    type: GET_LEAD,
+    id,
 });
 
 export const getAllLeads = () => ({
@@ -56,5 +56,5 @@ export const getAllLeads = () => ({
             type: 'get',
             url: `/leads`,
         }
-    }
+    },
 });

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as leadActions from 'data/leads/actions';
 import { globalStyles } from 'scenes/styles';
 import LeadDetailsForm from './components/LeadDetailsForm';
 
@@ -16,22 +17,30 @@ class ManageLeadPage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange() {
-
+    handleChange(event, keyOrNewValue, payload) {
+        const fieldName = payload ? 'source' : event.target.name;
+        const fieldValue = payload ? payload : keyOrNewValue;
+        let lead = this.state.lead;
+        lead[fieldName] = fieldValue;
+        return this.setState({lead: lead});
     }
 
     handleSubmit(event) {
-        this.context.router.push('/leads');
+        event.preventDefault();
+        const { updateLead } = this.props.actions;
+        updateLead(this.state.lead).then(() => {
+            this.context.router.push('/leads');
+        });
     }
 
     render() {
-        const { lists } = this.props;
+        const { sources } = this.props;
         return (
             <div style={globalStyles.formContainer}>
                 <LeadDetailsForm
-                    sources={lists.sources}
                     handleChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
+                    sources={sources}
                     lead={this.state.lead}
                 />
             </div>
@@ -40,32 +49,26 @@ class ManageLeadPage extends Component {
 }
 
 ManageLeadPage.propTypes = {
-    isNew: PropTypes.bool,
+    lead: PropTypes.object,
+    sources: PropTypes.array,
+    actions: PropTypes.object,
 };
 
 ManageLeadPage.contextTypes = {
-    router: PropTypes.object
-};
-
-const getLeadById = (leads, id) => {
-    const lead = leads.filter(lead => lead.id === id);
-    if (lead) {
-        return lead[0];
-    } else {
-        return null;
-    }
+    router: PropTypes.object,
 };
 
 const mapStateToProps = (state, ownProps) => {
     const leadId = ownProps.params.id;
-    let lead = {};
-    if (leadId && state.leads.length > 0) {
-        lead = getLeadById(state.leads, leadId);
-    }
+    let lead = state.leads[leadId];
     return {
         lead: lead,
-        lists: state.lists,
+        sources: state.lists.sources,
     }
 };
 
-export default connect(mapStateToProps)(ManageLeadPage);
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(leadActions, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ManageLeadPage);

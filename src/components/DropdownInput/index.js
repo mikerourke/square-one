@@ -1,32 +1,43 @@
 import React, { PropTypes } from 'react';
 import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import { globalStyles } from 'scenes/styles';
 
 const DropdownInput = (
     {
-        input,
+        name,
         label,
-        meta: { touched, error },
+        value,
+        handleChange,
         children,
-        ...custom
     }) => (
     <SelectField
         tabIndex="0"
         style={globalStyles.input}
+        name={name}
         floatingLabelText={label}
-        errorText={touched && error}
-        {...input}
-        onChange={(event, index, value) => input.onChange(value)}
-        children={children}
-        {...custom}
-    />
+        onChange={handleChange}
+        value={value}>
+        {children.map(child => {
+            return (
+                <MenuItem
+                    key={child.id}
+                    value={child.value}
+                    primaryText={child.value}
+                />
+            );
+        })}
+    </SelectField>
 );
 
 DropdownInput.propTypes = {
-    input: PropTypes.object,
+    name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    touched: PropTypes.string,
-    error: PropTypes.string,
+    value: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+    ]),
+    handleChange: PropTypes.func,
     children: PropTypes.arrayOf(PropTypes.object),
 };
 

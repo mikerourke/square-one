@@ -1,63 +1,58 @@
 import React, { PropTypes } from 'react';
-import { Field, reduxForm } from 'redux-form';
 import { getLead } from 'data/leads/actions';
 import { globalStyles } from 'scenes/styles';
 import FlatButton from 'material-ui/FlatButton';
 import MenuItem from 'material-ui/MenuItem';
-import LocationInput from 'components/LocationInput';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
 import DropdownInput from 'components/DropdownInput';
-import TextInput from 'components/TextInput';
+import LocationInput from 'components/LocationInput';
 
 const formStyles = globalStyles.twoColumnForm;
 
 const LeadDetailsForm = (
     {
-        handleSubmit,
-        load,
-        sources,
         handleChange,
+        handleSubmit,
+        sources,
         lead,
     }) => (
-    <form style={formStyles.wrapper}
-          onSubmit={handleSubmit}>
+    <form
+        style={formStyles.wrapper}
+        onSubmit={handleSubmit}>
         <div style={formStyles.leftSide}>
             <div>
-                <Field name="leadName"
-                       component={TextInput}
-                       style={globalStyles.input}
-                       label="Lead Name"/>
+                <TextField
+                    name="leadName"
+                    floatingLabelText="Lead Name"
+                    style={globalStyles.input}
+                    value={lead.leadName}
+                    onChange={handleChange}
+                />
             </div>
             <div>
-                <Field name="lastName"
-                       component={TextInput}
-                       style={globalStyles.input}
-                       label="Last Name"/>
+                <DropdownInput
+                    name="source"
+                    label="Source"
+                    value={lead.source}
+                    handleChange={handleChange}
+                    children={sources}
+                />
             </div>
             <div>
-                <Field name="source"
-                       component={DropdownInput}
-                       style={globalStyles.input}
-                       label="Source">
-                    {sources.map(source => {
-                        return (<MenuItem key={source.id}
-                                          value={source.id}
-                                          primaryText={source.value}
-                        />);
-                    })}
-                </Field>
-            </div>
-            <div>
-                <Field name="leadFee"
-                       component={TextInput}
-                       style={globalStyles.input}
-                       label="Lead Fee"/>
+                <TextField
+                    name="leadFee"
+                    floatingLabelText="Lead Fee"
+                    style={globalStyles.input}
+                    value={lead.leadFee}
+                    onChange={handleChange}
+                />
             </div>
             <div>
                 <FlatButton
+                    type="submit"
                     style={globalStyles.flatButton}
                     label="Save"
-                    onClick={handleSubmit}
-                    onTouchTap={handleSubmit}
                 />
             </div>
         </div>
@@ -65,14 +60,11 @@ const LeadDetailsForm = (
 );
 
 LeadDetailsForm.propTypes = {
+    handleChange: PropTypes.func,
     handleSubmit: PropTypes.func.isRequired,
-    load: PropTypes.func,
     sources: PropTypes.array,
-    handleChange: PropTypes.func.isRequired,
     lead: PropTypes.object,
 };
 
-export default reduxForm({
-    form: 'leadDetails'
-})(LeadDetailsForm);
+export default LeadDetailsForm;
 

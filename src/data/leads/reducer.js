@@ -5,26 +5,31 @@ import {
     GET_LEAD, GET_ALL_LEADS, GET_ALL_LEADS_SUCCESS, GET_ALL_LEADS_FAIL,
 } from './actionTypes';
 
-const leads = (state = [], action) => {
+const normalizeLeads = leadArray => {
+    let leadGroup = {};
+    leadArray.forEach(lead => {
+        leadGroup[lead.id] = lead;
+    });
+    return leadGroup;
+};
+
+const leads = (state = {}, action) => {
     switch (action.type) {
         case CREATE_LEAD_SUCCESS:
-            return [
-                ...state,
-                Object.assign({}, action.payload.data)
-            ];
+            return Object.assign({}, ...state, action.payload.data);
 
         case UPDATE_LEAD_SUCCESS:
-            return [
-                ...state.filter(lead => lead.id !== action.lead.id),
-                Object.assign({}, action.payload.data)
-            ];
+            // TODO: Fix issue with state being overwritten.
+            let filteredLeads = Object.keys(state).filter(lead => lead.id !== action.payload.data.id);
+            return Object.assign({},
+                normalizeLeads(filteredLeads),
+                action.payload.data);
 
         case GET_LEAD:
-            return Object.assign({},
-                state.find(lead => lead.id === action.id));
+            return state[action.id];
 
         case GET_ALL_LEADS_SUCCESS:
-            return action.payload.data;
+            return normalizeLeads(action.payload.data);
 
         default:
             return state;

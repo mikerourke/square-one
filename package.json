@@ -4,7 +4,7 @@
   "description": "Front end for the square1 lead tracking and resource management system.",
   "scripts": {
     "api": "json-server --watch tools/db.json --routes tools/routes.json --port 8082",
-    "start": "NODE_ENV=development babel-node tools/server.js",
+    "start": "babel-node tools/server.js",
     "lint": "esw webpack.config.* src tools --color || exit 0",
     "lint:watch": "npm run lint --watch",
     "build:remove-folder": "rimraf ./client",
@@ -37,8 +37,8 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-axios-middleware": "^3.0.0",
-    "redux-form": "^6.4.3",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "reselect": "^2.5.4"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

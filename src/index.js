@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import config from 'config';
 import React from 'react';
 import { render } from 'react-dom';
 import { Router, browserHistory } from 'react-router';
@@ -10,7 +11,7 @@ import routes from './routes';
 import { getAllLists } from './data/lists/actions';
 
 const client = axios.create({
-    baseURL: 'http://localhost:8082',
+    baseURL: `http://${config.host}:${config.api.port}/api`,
     responseType: 'json',
 });
 

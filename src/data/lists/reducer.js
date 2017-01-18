@@ -21,11 +21,7 @@ const lists = (state = initialState, action) => {
             });
 
         case GET_ALL_LISTS_SUCCESS:
-            let normalizedLists = {};
-            action.payload.data.forEach(list => {
-                normalizedLists[list.listName] = list.items;
-            });
-            return normalizedLists;
+            return action.payload.data;
 
         default:
             return state;

@@ -3,19 +3,26 @@
  *      will be communicating with a separate API.
  * @module server
  */
+import config from 'config';
 import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
-import config from '../webpack.config';
+import webpackConfig from '../webpack.config';
 import { green, red } from 'chalk';
 
 /*eslint-disable no-console */
 
-const port = process.env.PORT || 8081;
-const compiler = webpack(config);
+const port = config.spa.port;
+
+webpackConfig.entry.concat([
+    `webpack-dev-server/client?http://${config.host}:${port}/`,
+    'webpack/hot/dev-server',
+]);
+
+const compiler = webpack(webpackConfig);
 
 new WebpackDevServer(compiler, {
     contentBase: 'src/',
-    publicPath: config.output.publicPath,
+    publicPath: webpackConfig.output.publicPath,
     stats: {
         chunkModules: false,
         colors: true,
@@ -29,5 +36,3 @@ new WebpackDevServer(compiler, {
     }
     console.log(green(`Server running on port ${port}.`));
 });
-
-

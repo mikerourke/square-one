@@ -59,10 +59,10 @@ ManageLeadPage.contextTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const leadId = ownProps.params.id;
-    let lead = state.leads[leadId];
+    const leadId = ownProps.params.id.toString();
+    let existingLead = state.leads.find(lead => lead.id.toString() === leadId);
     return {
-        lead: lead,
+        lead: existingLead,
         sources: state.lists.sources,
     }
 };

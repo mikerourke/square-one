@@ -1,0 +1,10 @@
+{
+  "environment": "development",
+  "host": "localhost",
+  "api": {
+    "port": 8082
+  },
+  "spa": {
+    "port": 8081
+  }
+}

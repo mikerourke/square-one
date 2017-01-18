@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { ContentAddCircleOutline } from 'material-ui/svg-icons';
-import * as leadActions from 'data/leads/actions';
 import { getList } from 'data/lists/actions';
 import IconButton from 'material-ui/IconButton';
 import DataTables from 'material-ui-datatables';
@@ -99,7 +98,7 @@ class LeadsPage extends Component {
     }
 
     handleCellClick(rowIndex, columnIndex, row, column) {
-        this.context.router.push(`lead/${row.id}`);
+        this.context.router.push(`leads/${row.id}`);
     }
 
     handleRowSizeChange(index, value) {
@@ -133,7 +132,7 @@ class LeadsPage extends Component {
     handleAddLeadClick(event) {
         event.preventDefault();
         this.props.getList('sources').then(() => {
-            this.context.router.push('/lead');
+            this.context.router.push('/leads/add');
         })
     }
 
@@ -159,9 +158,8 @@ class LeadsPage extends Component {
                     page={this.state.page}
                     count={this.state.rowSize}
                     toolbarIconRight = {[
-                        <IconButton key={'goToLead'}>
-                            <Link onClick={this.handleAddLeadClick}><ContentAddCircleOutline/></Link>
-                        </IconButton>
+                        <ContentAddCircleOutline
+                            onClick={this.handleAddLeadClick}/>
                     ]}
                 />
             </div>
@@ -178,14 +176,10 @@ LeadsPage.contextTypes = {
     router: PropTypes.object,
 };
 
-const mapStateToProps = state => {
-    const leadsArray = Object.values(state.leads);
-
-    return {
-        leads: leadsArray,
-        lists: state.lists,
-    }
-};
+const mapStateToProps = state => ({
+    leads: state.leads,
+    lists: state.lists,
+});
 
 const mapDispatchToProps = dispatch => {
     const actions = { getList };

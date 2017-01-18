@@ -3,14 +3,12 @@
   "version": "0.0.1",
   "description": "Front end for the square1 lead tracking and resource management system.",
   "scripts": {
-    "api": "json-server --watch tools/db.json --routes tools/routes.json --port 8082",
-    "start": "PORT=8081 API_PORT=8082 babel-node tools/server.js",
+    "api": "babel-node tools/apiServer.js",
+    "start": "babel-node tools/server.js",
     "lint": "esw webpack.config.* src tools --color || exit 0",
     "lint:watch": "npm run lint --watch",
-    "build:remove-folder": "rimraf ./client",
-    "build:prepare-folder": "npm run build:remove-folder && mkdir client",
-    "build:run": "NODE_ENV=production babel-node tools/build.js",
-    "build": "npm run build:prepare-folder && npm run build:run"
+    "prebuild": "rm -rf client && mkdir client",
+    "build": "NODE_ENV=production babel-node tools/build.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +22,7 @@
   "homepage": "https://github.com/wolfspace/square1-web#readme",
   "dependencies": {
     "axios": "^0.15.3",
+    "config": "^1.24.0",
     "material-ui": "^0.16.6",
     "material-ui-datatables": "^0.16.4",
     "normalizr": "^3.1.0",
@@ -37,8 +36,7 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-axios-middleware": "^3.0.0",
-    "redux-thunk": "^2.1.0",
-    "reselect": "^2.5.4"
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -60,8 +58,8 @@
     "eslint-plugin-react": "^6.9.0",
     "eslint-watch": "^2.1.14",
     "file-loader": "^0.9.0",
+    "json-loader": "^0.5.4",
     "json-server": "^0.9.4",
-    "rimraf": "^2.5.4",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",

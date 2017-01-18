@@ -1,5 +1,13 @@
-import webpack from 'webpack';
+import config from 'config';
+import fs from 'fs';
 import path from 'path';
+import webpack from 'webpack';
+
+// This will take the current NODE_ENV, and save the config file to
+// 'client/config.json'.  The webpack alias below will then build that file
+// into the client build.
+fs.writeFileSync(path.resolve(__dirname, 'client/config.json'),
+    JSON.stringify(config));
 
 const isDevelopment = (process.env.NODE_ENV !== 'production');
 
@@ -7,6 +15,7 @@ const baseConfig = {
     debug: (isDevelopment),
     noInfo: (!isDevelopment),
     target: 'web',
+    entry: ['./src/index'],
     output: {
         path: path.resolve(__dirname, 'client'),
         filename: 'bundle.js',
@@ -21,6 +30,9 @@ const baseConfig = {
             test: /(\.css)$/,
             loaders: ['style', 'css']
         }, {
+            test: /\.json$/,
+            loader: 'json-loader'
+        },{
             test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
             loader: 'file'
         }, {
@@ -44,16 +56,14 @@ const baseConfig = {
             'node_modules',
         ],
         extensions: ['', '.js', ],
+        alias: {
+            config: path.resolve(__dirname, 'client/config.json'),
+        },
     }
 };
 
 const developmentConfig = {
     devtool: 'inline-source-map',
-    entry: [
-        './src/index.js',
-        'webpack/hot/dev-server',
-        `webpack-dev-server/client?http://localhost:${process.env.PORT}/`,
-    ],
     plugins: baseConfig.plugins.concat([
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin()
@@ -62,7 +72,6 @@ const developmentConfig = {
 
 const productionConfig = {
     devtool: 'source-map',
-    entry: './src/index',
     plugins: baseConfig.plugins.concat([
         new webpack.DefinePlugin({
             'process.env': {
@@ -91,7 +100,7 @@ const productionConfig = {
 };
 
 const configToUse = isDevelopment ?
-    developmentConfig :
-    productionConfig;
+                    developmentConfig :
+                    productionConfig;
 
 export default Object.assign({}, baseConfig, configToUse);

@@ -6,14 +6,15 @@ import {
     GET_ALL_LEADS,
 } from './actionTypes';
 
+const BASE_URL = '/leads';
+
 export const createLead = lead => ({
     type: CREATE_LEAD,
     payload: {
         request: {
             type: 'post',
-            url: '/lead',
+            url: BASE_URL,
             data: {
-                id: '231',
                 leadName: lead.leadName,
             }
         }
@@ -25,7 +26,7 @@ export const deleteLead = id => ({
     payload: {
         request: {
             type: 'delete',
-            url: `/lead/${id}`,
+            url: `${BASE_URL}/${id}`,
         }
     }
 });
@@ -34,19 +35,25 @@ export const updateLead = lead => ({
     type: UPDATE_LEAD,
     payload: {
         request: {
-            type: 'patch',
+            type: 'post',
             data: {
                 // TODO: Add data to update lead.
                 leadName: lead.leadName,
+                source: lead.source,
             },
-            url: `/lead/${lead.id}`,
+            url: `${BASE_URL}/${lead.id}`,
         },
     }
 });
 
 export const getLead = id => ({
     type: GET_LEAD,
-    id,
+    payload: {
+        request: {
+            type: 'get',
+            url:`${BASE_URL}/${id}`,
+        }
+    },
 });
 
 export const getAllLeads = () => ({
@@ -54,7 +61,7 @@ export const getAllLeads = () => ({
     payload: {
         request: {
             type: 'get',
-            url: `/leads`,
+            url: BASE_URL,
         }
     },
 });

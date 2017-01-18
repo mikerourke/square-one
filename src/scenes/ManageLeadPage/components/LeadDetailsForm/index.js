@@ -2,9 +2,7 @@ import React, { PropTypes } from 'react';
 import { getLead } from 'data/leads/actions';
 import { globalStyles } from 'scenes/styles';
 import FlatButton from 'material-ui/FlatButton';
-import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
 import DropdownInput from 'components/DropdownInput';
 import LocationInput from 'components/LocationInput';
 

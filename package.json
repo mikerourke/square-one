@@ -4,7 +4,7 @@
   "description": "Front end for the square1 lead tracking and resource management system.",
   "scripts": {
     "api": "json-server --watch tools/db.json --routes tools/routes.json --port 8082",
-    "start": "babel-node tools/server.js",
+    "start": "PORT=8081 API_PORT=8082 babel-node tools/server.js",
     "lint": "esw webpack.config.* src tools --color || exit 0",
     "lint:watch": "npm run lint --watch",
     "build:remove-folder": "rimraf ./client",

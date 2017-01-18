@@ -8,7 +8,7 @@
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
-import webpackConfig from '../webpack.config';
+import config from '../webpack.config';
 import { blue, green, red, yellow } from 'chalk';
 
 /*eslint-disable no-console */
@@ -22,7 +22,7 @@ fs.createReadStream(sourceFilePath)
 
 console.log(blue('Generating minified Webpack bundle.  Please wait...'));
 
-webpack(webpackConfig).run((err, stats) => {
+webpack(config).run((err, stats) => {
     // Fatal error occurred. Stop here:
     if (err) {
         console.log(red(err));

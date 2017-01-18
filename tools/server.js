@@ -14,11 +14,14 @@ const port = process.env.PORT || 8081;
 const compiler = webpack(config);
 
 new WebpackDevServer(compiler, {
-    contentBase: config.devServer.contentBase,
+    contentBase: 'src/',
+    publicPath: config.output.publicPath,
+    stats: {
+        chunkModules: false,
+        colors: true,
+    },
     hot: true,
     quiet: false,
-    filename: config.output.filename,
-    publicPath: config.output.publicPath,
     historyApiFallback: true,
 }).listen(port, err => {
     if (err) {
@@ -26,3 +29,5 @@ new WebpackDevServer(compiler, {
     }
     console.log(green(`Server running on port ${port}.`));
 });
+
+

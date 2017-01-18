@@ -2,7 +2,6 @@ import webpack from 'webpack';
 import path from 'path';
 
 const isDevelopment = (process.env.NODE_ENV !== 'production');
-const port = process.env.PORT || 8081;
 
 const baseConfig = {
     debug: (isDevelopment),
@@ -10,8 +9,8 @@ const baseConfig = {
     target: 'web',
     output: {
         path: path.resolve(__dirname, 'client'),
+        filename: 'bundle.js',
         publicPath: '/',
-        filename: 'bundle.js'
     },
     module: {
         loaders: [{
@@ -35,12 +34,16 @@ const baseConfig = {
             loader: 'url?limit=10000&mimetype=image/svg+xml'
         }]
     },
+    plugins: [
+        new webpack.optimize.DedupePlugin(),
+    ],
     resolve: {
         root: path.resolve(__dirname, 'src'),
         modules: [
             path.resolve(__dirname, 'src'),
-            'node_modules'
-        ]
+            'node_modules',
+        ],
+        extensions: ['', '.js', ],
     }
 };
 
@@ -49,21 +52,18 @@ const developmentConfig = {
     entry: [
         './src/index.js',
         'webpack/hot/dev-server',
-        `webpack-dev-server/client?http://localhost:${port}/`,
+        `webpack-dev-server/client?http://localhost:${process.env.PORT}/`,
     ],
-    devServer: {
-        contentBase: './src'
-    },
-    plugins: [
+    plugins: baseConfig.plugins.concat([
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin()
-    ]
+    ])
 };
 
 const productionConfig = {
     devtool: 'source-map',
     entry: './src/index',
-    plugins: [
+    plugins: baseConfig.plugins.concat([
         new webpack.DefinePlugin({
             'process.env': {
                 // This has effect on the React library size:
@@ -72,7 +72,6 @@ const productionConfig = {
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
             mangle: true,
             compress: {
@@ -88,11 +87,11 @@ const productionConfig = {
             exclude: [/\.min\.js$/gi] // Skip pre-minified libs
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-    ]
+    ]),
 };
 
-const configToUse = isDevelopment
-                  ? developmentConfig
-                  : productionConfig;
+const configToUse = isDevelopment ?
+    developmentConfig :
+    productionConfig;
 
 export default Object.assign({}, baseConfig, configToUse);

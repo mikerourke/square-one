@@ -70,3 +70,5 @@ modules.xml
 build
 client
 doc
+local.json
+.ssl/

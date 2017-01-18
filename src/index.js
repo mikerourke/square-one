@@ -10,8 +10,8 @@ import routes from './routes';
 import { getAllLists } from './data/lists/actions';
 
 const client = axios.create({
-    baseURL: "http://localhost:8082",
-    responseType: "json"
+    baseURL: 'http://localhost:8082',
+    responseType: 'json',
 });
 
 const store = configureStore(client);

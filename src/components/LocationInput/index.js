@@ -12,7 +12,7 @@ class LocationInput extends Component {
 
         this.state = {
             search: '',
-            selectedCoordinate: null
+            selectedCoordinate: null,
         };
 
         this.handleSearchChange = this.handleSearchChange.bind(this);
@@ -41,8 +41,7 @@ class LocationInput extends Component {
                 onSelectSuggest={this.handleSelectSuggest}
                 search={search}>
                 <TextField
-                    ref="searchField"
-                    style={{width: "100%"}}
+                    style={{ width: '100%' }}
                     value={search}
                     floatingLabelText="Address"
                     onChange={this.handleSearchChange}
@@ -53,10 +52,10 @@ class LocationInput extends Component {
 }
 
 LocationInput.propTypes = {
-    googleMaps: PropTypes.object
+    googleMaps: PropTypes.object.isRequired,
 };
 
 export default GoogleMapLoader(LocationInput, {
     libraries: ['places'],
-    key: API_KEY
+    key: API_KEY,
 });

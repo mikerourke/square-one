@@ -11,23 +11,21 @@ const DropdownInput = (
         handleChange,
         children,
     }) => (
-    <SelectField
-        tabIndex="0"
-        style={globalStyles.input}
-        name={name}
-        floatingLabelText={label}
-        onChange={handleChange}
-        value={value}>
-        {children.map(child => {
-            return (
+        <SelectField
+            tabIndex="0"
+            style={globalStyles.input}
+            name={name}
+            floatingLabelText={label}
+            onChange={handleChange}
+            value={value}>
+            {children.map(child => (
                 <MenuItem
                     key={child.id}
                     value={child.value}
                     primaryText={child.value}
                 />
-            );
-        })}
-    </SelectField>
+            ))}
+        </SelectField>
 );
 
 DropdownInput.propTypes = {
@@ -37,8 +35,13 @@ DropdownInput.propTypes = {
         PropTypes.string,
         PropTypes.number,
     ]),
-    handleChange: PropTypes.func,
+    handleChange: PropTypes.func.isRequired,
     children: PropTypes.arrayOf(PropTypes.object),
+};
+
+DropdownInput.defaultProps = {
+    value: '',
+    children: [],
 };
 
 export default DropdownInput;

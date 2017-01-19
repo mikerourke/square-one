@@ -25,26 +25,26 @@ const baseConfig = {
         loaders: [{
             test: /\.js$/,
             include: path.join(__dirname, 'src'),
-            loaders: ['babel']
+            loaders: ['babel'],
         }, {
             test: /(\.css)$/,
-            loaders: ['style', 'css']
+            loaders: ['style', 'css'],
         }, {
             test: /\.json$/,
-            loader: 'json-loader'
-        },{
+            loader: 'json-loader',
+        }, {
             test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'file'
+            loader: 'file',
         }, {
             test: /\.(woff|woff2)$/,
-            loader: 'url?prefix=font/&limit=5000'
+            loader: 'url?prefix=font/&limit=5000',
         }, {
             test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/octet-stream'
+            loader: 'url?limit=10000&mimetype=application/octet-stream',
         }, {
             test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=image/svg+xml'
-        }]
+            loader: 'url?limit=10000&mimetype=image/svg+xml',
+        }],
     },
     plugins: [
         new webpack.optimize.DedupePlugin(),
@@ -55,19 +55,19 @@ const baseConfig = {
             path.resolve(__dirname, 'src'),
             'node_modules',
         ],
-        extensions: ['', '.js', ],
+        extensions: ['', '.js'],
         alias: {
             config: path.resolve(__dirname, 'client/config.json'),
         },
-    }
+    },
 };
 
 const developmentConfig = {
     devtool: 'inline-source-map',
     plugins: baseConfig.plugins.concat([
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
-    ])
+        new webpack.NoErrorsPlugin(),
+    ]),
 };
 
 const productionConfig = {
@@ -77,7 +77,7 @@ const productionConfig = {
             'process.env': {
                 // This has effect on the React library size:
                 NODE_ENV: JSON.stringify('production'),
-            }
+            },
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
@@ -93,7 +93,7 @@ const productionConfig = {
             output: {
                 comments: false,
             },
-            exclude: [/\.min\.js$/gi] // Skip pre-minified libs
+            exclude: [/\.min\.js$/gi], // Skip pre-minified libs
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
     ]),

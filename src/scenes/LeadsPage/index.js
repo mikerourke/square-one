@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { ContentAddCircleOutline } from 'material-ui/svg-icons';
 import { getList } from 'data/lists/actions';
+import { Map } from 'immutable';
 import IconButton from 'material-ui/IconButton';
 import DataTables from 'material-ui-datatables';
 
@@ -33,9 +34,9 @@ const tableColumns = [
 ];
 
 const listableLeads = existingLeads => {
-    return existingLeads.map(lead => {
+    return existingLeads.entrySeq().map(([key, lead]) => {
         return {
-            id: lead.id,
+            id: key,
             leadName: lead.leadName,
             description: lead.description,
             status: lead.status,
@@ -168,8 +169,8 @@ class LeadsPage extends Component {
 }
 
 LeadsPage.propTypes = {
-    leads: PropTypes.array,
-    getList: PropTypes.func,
+    leads: PropTypes.instanceOf(Map).isRequired,
+    getList: PropTypes.func.isRequired,
 };
 
 LeadsPage.contextTypes = {

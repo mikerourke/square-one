@@ -10,7 +10,18 @@
       "address": "",
       "description": "This is a lead",
       "comments": "Cash money",
-      "status": "New"
+      "status": "New",
+      "appointments": [
+        {
+          "id": 1,
+          "subject": "Appointment Test 1",
+          "startAt": "2013-10-21T13:00:00.419Z",
+          "endAt": "2013-10-21T15:00:00.419Z",
+          "appointmentFor": "Who knows?",
+          "emailAlert": "Alert, yo!",
+          "isAllDay": false
+        }
+      ]
     },
     {
       "id": 2,
@@ -35,9 +46,6 @@
       "description": "This is a third lead",
       "comments": "Cash money",
       "status": "New"
-    },
-    {
-      "id": 4
     }
   ],
   "users": [

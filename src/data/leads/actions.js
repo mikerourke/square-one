@@ -5,6 +5,16 @@ import {
     GET_LEAD,
     GET_ALL_LEADS,
 } from './actionTypes';
+import axios from 'axios';
+import { leadListSchema } from '../schema';
+import { normalize } from 'normalizr';
+
+const defaultTransform = axios.defaults.transformResponse;
+
+const normalizedResponse = (data) => {
+
+    return defaultTransform.concat((data) => normalize(data, leadListSchema));
+}
 
 const BASE_URL = '/leads';
 
@@ -16,9 +26,9 @@ export const createLead = lead => ({
             url: BASE_URL,
             data: {
                 leadName: lead.leadName,
-            }
-        }
-    }
+            },
+        },
+    },
 });
 
 export const deleteLead = id => ({
@@ -27,8 +37,8 @@ export const deleteLead = id => ({
         request: {
             type: 'delete',
             url: `${BASE_URL}/${id}`,
-        }
-    }
+        },
+    },
 });
 
 export const updateLead = lead => ({
@@ -36,14 +46,14 @@ export const updateLead = lead => ({
     payload: {
         request: {
             type: 'post',
+            url: `${BASE_URL}/${lead.id}`,
             data: {
                 // TODO: Add data to update lead.
                 leadName: lead.leadName,
                 source: lead.source,
             },
-            url: `${BASE_URL}/${lead.id}`,
         },
-    }
+    },
 });
 
 export const getLead = id => ({
@@ -51,8 +61,8 @@ export const getLead = id => ({
     payload: {
         request: {
             type: 'get',
-            url:`${BASE_URL}/${id}`,
-        }
+            url: `${BASE_URL}/${id}`,
+        },
     },
 });
 
@@ -62,6 +72,8 @@ export const getAllLeads = () => ({
         request: {
             type: 'get',
             url: BASE_URL,
-        }
+            transformResponse: defaultTransform.concat(data =>
+                normalize(data, leadListSchema))
+        },
     },
 });

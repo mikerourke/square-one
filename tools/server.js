@@ -3,13 +3,13 @@
  *      will be communicating with a separate API.
  * @module server
  */
+import { green, red } from 'chalk';
 import config from 'config';
 import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config';
-import { green, red } from 'chalk';
 
-/*eslint-disable no-console */
+/* eslint-disable no-console */
 
 const port = config.spa.port;
 
@@ -30,9 +30,9 @@ new WebpackDevServer(compiler, {
     hot: true,
     quiet: false,
     historyApiFallback: true,
-}).listen(port, err => {
+}).listen(port, (err) => {
     if (err) {
         return console.log(red('Error starting server.'));
     }
-    console.log(green(`Server running on port ${port}.`));
+    return console.log(green(`Server running on port ${port}.`));
 });

@@ -5,25 +5,30 @@ import {
     GET_LEAD, GET_LEAD_SUCCESS, GET_LEAD_FAIL,
     GET_ALL_LEADS, GET_ALL_LEADS_SUCCESS, GET_ALL_LEADS_FAIL,
 } from './actionTypes';
+import { Lead } from './model';
+import { Map, fromJS } from 'immutable';
 
-const leads = (state = [], action) => {
-    let leadItem = {};
+const initialState = new Map();
+
+const mergeEntities = (state, newLeads) =>
+    state.merge(newLeads.map(lead => new Lead(lead)));
+
+const leads = (state = initialState, action) => {
+    let leadItem;
     switch (action.type) {
         case CREATE_LEAD_SUCCESS:
             leadItem = action.payload.data[0];
-            return [...state, leadItem];
+            return state.push(new Lead(leadItem));
 
         case GET_LEAD_SUCCESS:
         case UPDATE_LEAD_SUCCESS:
             leadItem = action.payload.data[0];
-            return [
-                ...state.filter(lead =>
-                    lead.id.toString() !== leadItem.id.toString()),
-                leadItem
-            ];
+            return state.set(leadItem.id, new Lead(leadItem));
+
 
         case GET_ALL_LEADS_SUCCESS:
-            return action.payload.data;
+            const responseData = action.payload.data;
+            return mergeEntities(state, fromJS(responseData.entities.leads));
 
         default:
             return state;

@@ -4,16 +4,14 @@
  * @module apiServer
  * @link https://github.com/typicode/json-server
  */
-import config from 'config';
+import { blue } from 'chalk';
 import path from 'path';
 import jsonServer from 'json-server';
-import { blue } from 'chalk';
 
-/*eslint-disable no-console */
+/* eslint-disable no-console */
 const port = process.env.API_PORT || 8082;
 
-let server = jsonServer.create();
-
+const server = jsonServer.create();
 const middlewares = jsonServer.defaults();
 server.use(middlewares);
 server.use(jsonServer.bodyParser);

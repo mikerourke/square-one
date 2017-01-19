@@ -3,24 +3,28 @@ import TextField from 'material-ui/TextField';
 
 const TextInput = (
     {
-        input,
+        name,
         label,
-        meta: { touched, error },
-        ...custom
+        value,
+        handleChange,
     }) => (
-    <TextField
-        floatingLabelText={label}
-        errorText={touched && error}
-        {...input}
-        {...custom}
-    />
+        <TextField
+            name={name}
+            floatingLabelText={label}
+            value={value}
+            onChange={handleChange}
+        />
 );
 
 TextInput.propTypes = {
-    input: PropTypes.object,
+    name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    touched: PropTypes.string,
-    error: PropTypes.string,
+    value: PropTypes.string,
+    handleChange: PropTypes.func.isRequired,
+};
+
+TextInput.defaultProps = {
+    value: '',
 };
 
 export default TextInput;

@@ -5,13 +5,13 @@
  *      React/Redux Pluralsight course.
  * @module build
  */
+import { blue, green, red, yellow } from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import config from '../webpack.config';
-import { blue, green, red, yellow } from 'chalk';
 
-/*eslint-disable no-console */
+/* eslint-disable no-console */
 
 console.log(blue('Copying index.html to client directory...'));
 

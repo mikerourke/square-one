@@ -5,16 +5,11 @@ import {
     GET_LEAD,
     GET_ALL_LEADS,
 } from './actionTypes';
-import axios from 'axios';
-import { leadListSchema } from '../schema';
+import { leadSchema } from '../schema';
 import { normalize } from 'normalizr';
+import axios from 'axios';
 
 const defaultTransform = axios.defaults.transformResponse;
-
-const normalizedResponse = (data) => {
-
-    return defaultTransform.concat((data) => normalize(data, leadListSchema));
-}
 
 const BASE_URL = '/leads';
 
@@ -73,7 +68,7 @@ export const getAllLeads = () => ({
             type: 'get',
             url: BASE_URL,
             transformResponse: defaultTransform.concat(data =>
-                normalize(data, leadListSchema))
+                normalize(data, leadSchema))
         },
     },
 });

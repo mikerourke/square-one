@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Front end for the square1 lead tracking and resource management system.",
   "scripts": {
-    "api": "babel-node tools/apiServer.js",
+    "api": "nodemon tools/apiServer.js --exec babel-node",
     "start": "babel-node tools/server.js",
     "lint": "esw webpack.config.* src tools --color || exit 0",
     "lint:watch": "npm run lint --watch",
@@ -66,6 +66,7 @@
     "json-loader": "^0.5.4",
     "json-server": "^0.9.4",
     "mocha": "^3.2.0",
+    "nodemon": "^1.11.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",

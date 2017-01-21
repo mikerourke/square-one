@@ -10,26 +10,26 @@ const initialState = {
 };
 
 const user = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case GET_USER:
             return state;
 
         case GET_USER_INFO_SUCCESS:
             return Object.assign({}, state, {
-                info: action.payload.data
+                info: action.payload.data,
             });
 
         case LOGIN_SUCCESS:
             return Object.assign({}, state, {
                 error: null,
                 token: null,
-                username: action.payload.data[0].id,
-                password: action.payload.data[0].password,
+                username: action.payload.data.id,
+                password: action.payload.data.password,
             });
 
         case LOGIN_FAIL:
             return Object.assign({}, state, {
-                error: action
+                error: action,
             });
 
         default:

@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as leadActions from 'data/leads/actions';
+import { getSetting } from 'data/settings/actions';
 import { globalStyles } from 'scenes/styles';
+import { Map } from 'immutable';
 import LeadDetailsForm from './components/LeadDetailsForm';
 
 class ManageLeadPage extends Component {
@@ -10,19 +12,23 @@ class ManageLeadPage extends Component {
         super(props, context);
 
         this.state = {
-            lead: Object.assign({}, props.lead),
+            lead: props.lead,
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentWillMount() {
+        console.log('Test!');
+    }
+
     handleChange(event, keyOrNewValue, payload) {
         const fieldName = payload ? 'source' : event.target.name;
-        const fieldValue = payload ? payload : keyOrNewValue;
-        let lead = this.state.lead;
+        const fieldValue = payload || keyOrNewValue;
+        const lead = this.state.lead;
         lead[fieldName] = fieldValue;
-        return this.setState({lead: lead});
+        return this.setState({ lead });
     }
 
     handleSubmit(event) {
@@ -40,7 +46,7 @@ class ManageLeadPage extends Component {
                 <LeadDetailsForm
                     handleChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
-                    sources={sources}
+                    sources={sources.data}
                     lead={this.state.lead}
                 />
             </div>
@@ -50,8 +56,12 @@ class ManageLeadPage extends Component {
 
 ManageLeadPage.propTypes = {
     lead: PropTypes.object,
-    sources: PropTypes.array,
-    actions: PropTypes.object,
+    sources: PropTypes.instanceOf(Map).isRequired,
+    actions: PropTypes.object.isRequired,
+};
+
+ManageLeadPage.defaultProps = {
+    lead: {},
 };
 
 ManageLeadPage.contextTypes = {
@@ -59,16 +69,22 @@ ManageLeadPage.contextTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-    const leadId = ownProps.params.id.toString();
-    let existingLead = state.leads.find(lead => lead.id.toString() === leadId);
-    return {
-        lead: existingLead,
-        sources: state.lists.sources,
+    let leadOnPage = {};
+    if (ownProps.params.id) {
+        const leadId = ownProps.params.id.toString();
+        leadOnPage = state.leads.get(leadId);
     }
+    return {
+        lead: leadOnPage,
+        sources: state.settings.get('sources'),
+    };
 };
 
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(leadActions, dispatch)
-});
+const mapDispatchToProps = (dispatch) => {
+    const combinedActions = Object.assign({}, leadActions, { getSetting });
+    return {
+        actions: bindActionCreators(combinedActions, dispatch),
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageLeadPage);

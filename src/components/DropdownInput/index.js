@@ -9,7 +9,7 @@ const DropdownInput = (
         label,
         value,
         handleChange,
-        children,
+        selections,
     }) => (
         <SelectField
             tabIndex="0"
@@ -18,11 +18,11 @@ const DropdownInput = (
             floatingLabelText={label}
             onChange={handleChange}
             value={value}>
-            {children.map(child => (
+            {selections.map(selection => (
                 <MenuItem
-                    key={child.id}
-                    value={child.value}
-                    primaryText={child.value}
+                    key={selection.id}
+                    value={selection.value}
+                    primaryText={selection.value}
                 />
             ))}
         </SelectField>
@@ -36,12 +36,12 @@ DropdownInput.propTypes = {
         PropTypes.number,
     ]),
     handleChange: PropTypes.func.isRequired,
-    children: PropTypes.arrayOf(PropTypes.object),
+    selections: PropTypes.arrayOf(PropTypes.object),
 };
 
 DropdownInput.defaultProps = {
     value: '',
-    children: [],
+    selections: [],
 };
 
 export default DropdownInput;

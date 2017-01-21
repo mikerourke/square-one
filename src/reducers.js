@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import {
     leadsReducer,
-    listsReducer,
+    settingsReducer,
     userReducer,
 } from './data/reducer';
 
 const rootReducer = combineReducers({
     leads: leadsReducer,
-    lists: listsReducer,
+    settings: settingsReducer,
     user: userReducer,
 });
 

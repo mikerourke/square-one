@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators({ auth, getAllLeads }, dispatch)
+    actions: bindActionCreators({ auth, getAllLeads }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

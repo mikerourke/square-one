@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { ContentAddCircleOutline } from 'material-ui/svg-icons';
-import { getList } from 'data/lists/actions';
 import { Map } from 'immutable';
 import IconButton from 'material-ui/IconButton';
 import DataTables from 'material-ui-datatables';
@@ -14,7 +13,7 @@ const tableColumns = [
         style: {
             width: '0px',
             fontSize: '0px',
-        }
+        },
     },
     {
         key: 'leadName',
@@ -33,22 +32,12 @@ const tableColumns = [
     },
 ];
 
-const listableLeads = existingLeads => {
-    return existingLeads.entrySeq().map(([key, lead]) => {
-        return {
-            id: key,
-            leadName: lead.leadName,
-            description: lead.description,
-            status: lead.status,
-        }
-    })
-};
-
 class LeadsPage extends Component {
     constructor(props, context) {
         super(props, context);
 
-        this.leadsInList = listableLeads(this.props.leads);
+        // The data needs to be an array in order to populate the data table:
+        this.leadsInList = Object.values(this.props.leads.toJS());
         this.state = {
             data: this.leadsInList,
             page: 1,
@@ -61,7 +50,6 @@ class LeadsPage extends Component {
         this.handleRowSizeChange = this.handleRowSizeChange.bind(this);
         this.handlePreviousPageClick = this.handlePreviousPageClick.bind(this);
         this.handleNextPageClick = this.handleNextPageClick.bind(this);
-        this.handleAddLeadClick = this.handleAddLeadClick.bind(this);
     }
 
     handleFilterValueChange(value) {
@@ -70,9 +58,9 @@ class LeadsPage extends Component {
         if (!value || value === '') {
             filteredList = this.leadsInList;
         } else {
-            filteredList = rows.filter(rowItem => {
+            filteredList = rows.filter((rowItem) => {
                 let countFound = 0;
-                Object.keys(rowItem).forEach(key => {
+                Object.keys(rowItem).forEach((key) => {
                     const rowValue = rowItem[key].toString().toLowerCase();
                     if (rowValue.includes(value.toLowerCase())) {
                         countFound += 1;
@@ -82,7 +70,7 @@ class LeadsPage extends Component {
             });
         }
 
-        this.setState({data: filteredList});
+        this.setState({ data: filteredList });
     }
 
     handleSortOrderChange(key, order) {
@@ -90,12 +78,12 @@ class LeadsPage extends Component {
         const sortedList = rows.sort((a, b) => {
             let sortValue = (a[key] > b[key]) ? 1 : -1;
             if (order === 'desc') {
-                sortValue = sortValue * -1;
+                sortValue *= -1;
             }
             return sortValue;
         });
 
-        this.setState({data: sortedList});
+        this.setState({ data: sortedList });
     }
 
     handleCellClick(rowIndex, columnIndex, row, column) {
@@ -103,38 +91,31 @@ class LeadsPage extends Component {
     }
 
     handleRowSizeChange(index, value) {
-        //TODO: Ensure this doesn't cause issues with page count.
+        // TODO: Ensure this doesn't cause issues with page count.
         this.setState({
-            rowSize: value
+            rowSize: value,
         });
     }
 
     handlePreviousPageClick() {
-        //TODO: Add function to handle going to the previous page.
+        // TODO: Add function to handle going to the previous page.
         // Note: This will need to accommodate for the row count displayed.
-        let currentPage = this.state.page;
+        const currentPage = this.state.page;
         const previousPage = (currentPage === 1) ? 1 : currentPage - 1;
         this.setState({
             // data: previousRows,
-            page: previousPage
+            page: previousPage,
         });
     }
 
     handleNextPageClick() {
-        //TODO: Add functionality to handle going to the next page.
+        // TODO: Add functionality to handle going to the next page.
         // Note: This will need to accommodate for the row count displayed.
         const nextPage = this.state.page + 1;
         this.setState({
             // data: nextRows,
-            page: nextPage
+            page: nextPage,
         });
-    }
-
-    handleAddLeadClick(event) {
-        event.preventDefault();
-        this.props.getList('sources').then(() => {
-            this.context.router.push('/leads/add');
-        })
     }
 
     render() {
@@ -158,9 +139,10 @@ class LeadsPage extends Component {
                     rowSize={this.state.rowSize}
                     page={this.state.page}
                     count={this.state.rowSize}
-                    toolbarIconRight = {[
-                        <ContentAddCircleOutline
-                            onClick={this.handleAddLeadClick}/>
+                    toolbarIconRight={[
+                        <Link to={'/courses/add'}>
+                            <ContentAddCircleOutline />
+                        </Link>
                     ]}
                 />
             </div>
@@ -170,7 +152,6 @@ class LeadsPage extends Component {
 
 LeadsPage.propTypes = {
     leads: PropTypes.instanceOf(Map).isRequired,
-    getList: PropTypes.func.isRequired,
 };
 
 LeadsPage.contextTypes = {
@@ -179,12 +160,6 @@ LeadsPage.contextTypes = {
 
 const mapStateToProps = state => ({
     leads: state.leads,
-    lists: state.lists,
 });
 
-const mapDispatchToProps = dispatch => {
-    const actions = { getList };
-    return bindActionCreators(actions, dispatch);
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LeadsPage);
+export default connect(mapStateToProps)(LeadsPage);

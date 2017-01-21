@@ -1,10 +1,9 @@
 import { schema } from 'normalizr';
 
 const lead = new schema.Entity('leads');
-export const leadSchema = [ lead ];
+export const leadSchema = [lead];
 
-const list = new schema.Entity('lists');
-const item = new schema.Entity('items', {
-    listName: list,
+const setting = new schema.Entity('settings', {}, {
+    idAttribute: 'settingName',
 });
-export const listItemSchema = [ list ];
+export const settingSchema = [setting];

@@ -8,7 +8,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import axios from 'axios';
 import configureStore from './store/configureStore';
 import routes from './routes';
-import { getAllLists } from './data/lists/actions';
+import { getAllSettings } from './data/settings/actions';
 
 const client = axios.create({
     baseURL: `http://${config.host}:${config.api.port}/api`,
@@ -16,7 +16,7 @@ const client = axios.create({
 });
 
 const store = configureStore(client);
-store.dispatch(getAllLists());
+store.dispatch(getAllSettings());
 
 // Required by Material UI library for mobile tap actions:
 injectTapEventPlugin();
@@ -25,7 +25,7 @@ render(
     <Provider store={store}>
         <Router history={browserHistory} routes={routes} />
     </Provider>,
-    document.getElementById('app')
+    document.getElementById('app'),
 );
 
 if (module.hot) {

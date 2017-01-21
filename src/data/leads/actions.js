@@ -19,9 +19,7 @@ export const createLead = lead => ({
         request: {
             type: 'post',
             url: BASE_URL,
-            data: {
-                leadName: lead.leadName,
-            },
+            data: lead,
         },
     },
 });
@@ -40,13 +38,9 @@ export const updateLead = lead => ({
     type: UPDATE_LEAD,
     payload: {
         request: {
-            type: 'post',
+            type: 'patch',
             url: `${BASE_URL}/${lead.id}`,
-            data: {
-                // TODO: Add data to update lead.
-                leadName: lead.leadName,
-                source: lead.source,
-            },
+            data: lead,
         },
     },
 });
@@ -68,7 +62,7 @@ export const getAllLeads = () => ({
             type: 'get',
             url: BASE_URL,
             transformResponse: defaultTransform.concat(data =>
-                normalize(data, leadSchema))
+                normalize(data, leadSchema)),
         },
     },
 });

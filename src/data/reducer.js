@@ -1,9 +1,9 @@
 import leadsReducer from './leads/reducer';
-import listsReducer from './lists/reducer';
+import settingsReducer from './settings/reducer';
 import userReducer from './user/reducer';
 
 export {
     leadsReducer,
-    listsReducer,
+    settingsReducer,
     userReducer,
 };

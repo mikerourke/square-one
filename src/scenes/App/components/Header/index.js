@@ -1,19 +1,24 @@
 import React, { PropTypes } from 'react';
-import { ActionAccountCircle } from 'material-ui/svg-icons';
 import AppBar from 'material-ui/AppBar';
+import MaterialButton from 'components/MaterialButton';
 
-const Header = ({handleToggle, iconStyle}) => {
-    return (
+const Header = (
+    {
+        handleToggle,
+    }) => (
         <AppBar
-            iconElementRight={<ActionAccountCircle style={iconStyle}/>}
+            iconElementRight={
+                <MaterialButton
+                    iconName="account_circle"
+                    color="white"
+                />
+            }
             onLeftIconButtonTouchTap={handleToggle}
         />
-    );
-};
+);
 
 Header.propTypes = {
     handleToggle: PropTypes.func.isRequired,
-    iconStyle: PropTypes.object.isRequired,
 };
 
 export default Header;

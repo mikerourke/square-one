@@ -17,7 +17,8 @@ const LeadDetailsForm = (
     }) => (
         <form
             style={formStyles.wrapper}
-            onSubmit={handleSubmit}>
+            onSubmit={handleSubmit}
+        >
             <div style={formStyles.leftSide}>
                 <div>
                     <TextField

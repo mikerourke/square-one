@@ -6,14 +6,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
 const styles = {
-    icon: {
-        color: 'white',
-        cursor: 'pointer',
-        width: '24px',
-        height: '48px',
-        padding: '0 8px',
-    },
-    body : {
+    body: {
         paddingLeft: '24px',
     },
 };
@@ -30,12 +23,9 @@ export class App extends Component {
     }
 
     handleToggle() {
-        const isLogged = false;
-        if (isLogged) {
-            this.setState({
-                open: !this.state.open,
-            });
-        }
+        this.setState({
+            open: !this.state.open,
+        });
     }
 
     render() {
@@ -43,11 +33,10 @@ export class App extends Component {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
-                    <Header handleToggle={this.handleToggle}
-                            iconStyle={styles.icon} />
-                    <Sidebar open={this.state.open}
-                             handleToggle={this.handleToggle}
-                             iconStyle={styles.icon}
+                    <Header handleToggle={this.handleToggle} />
+                    <Sidebar
+                        open={this.state.open}
+                        handleToggle={this.handleToggle}
                     />
                     <div style={styles.body}>
                         {children}
@@ -59,7 +48,12 @@ export class App extends Component {
 }
 
 App.propTypes = {
-    children: PropTypes.object
+    children: PropTypes.object.isRequired,
+    user: PropTypes.object,
+};
+
+App.defaultProps = {
+    user: {},
 };
 
 App.contextTypes = {
@@ -67,7 +61,7 @@ App.contextTypes = {
 };
 
 const mapStateToProps = state => ({
-    user: state.user
+    user: state.user,
 });
 
 export default connect(mapStateToProps)(App);

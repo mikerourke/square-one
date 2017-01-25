@@ -90,10 +90,6 @@
     "react/display-name": 0,
     "react/forbid-prop-types": [1, {"forbid": ["any"]}],
     "react/jsx-boolean-value": 0,
-    "react/jsx-closing-bracket-location": [1, {
-      "selfClosing": "tag-aligned",
-      "nonEmpty": "after-props"}
-    ],
     // It seems a little antiquated to ensure filenames end with JSX:
     "react/jsx-filename-extension": 0,
     "react/jsx-indent": [1, 4],

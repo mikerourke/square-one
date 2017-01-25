@@ -7,14 +7,13 @@ import {
 import db from '../../tools/db.json';
 
 describe('Schema', () => {
-    it('successfully normalizes lead entities', () => {
+    it('Normalizes Lead entities', () => {
         const normalizedData = normalize(db.leads, leadSchema);
         expect(normalizedData).to.contain.all.keys(['entities', 'result']);
     });
 
-    it('successfully normalizes setting array entities', () => {
+    it('Normalizes Settings entities', () => {
         const normalizedData = normalize(db.settings, settingSchema);
-        console.log(normalizedData);
         expect(normalizedData).to.contain.all.keys(['entities', 'result']);
     });
 });

@@ -19,10 +19,6 @@ class ManageLeadPage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentWillMount() {
-        console.log('Test!');
-    }
-
     handleChange(event, keyOrNewValue, payload) {
         const fieldName = payload ? 'source' : event.target.name;
         const fieldValue = payload || keyOrNewValue;

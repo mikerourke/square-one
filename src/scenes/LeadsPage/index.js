@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { ContentAddCircleOutline } from 'material-ui/svg-icons';
 import { Map } from 'immutable';
+import MaterialButton from 'components/MaterialButton';
 import IconButton from 'material-ui/IconButton';
 import DataTables from 'material-ui-datatables';
 
@@ -140,8 +141,8 @@ class LeadsPage extends Component {
                     page={this.state.page}
                     count={this.state.rowSize}
                     toolbarIconRight={[
-                        <Link to={'/courses/add'}>
-                            <ContentAddCircleOutline />
+                        <Link to={'/leads/add'}>
+                            <MaterialButton iconName="add_circle_outline" />
                         </Link>
                     ]}
                 />

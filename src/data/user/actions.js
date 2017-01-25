@@ -5,6 +5,8 @@ import {
     LOGOUT,
 } from './actionTypes';
 
+const BASE_URL = '/users';
+
 export const getUser = value => ({
     type: GET_USER,
     payload: value,
@@ -15,9 +17,9 @@ export const getUserInfo = user => ({
     payload: {
         request: {
             type: 'get',
-            url: `/users?username=${user.username}`,
-        }
-    }
+            url: `${BASE_URL}?username=${user.username}`,
+        },
+    },
 });
 
 export const auth = (username, password) => ({
@@ -25,9 +27,9 @@ export const auth = (username, password) => ({
     payload: {
         request: {
             type: 'get',
-            url: `/users?username=${username}`,
-        }
-    }
+            url: `${BASE_URL}?username=${username}`,
+        },
+    },
 });
 
 export const logout = user => ({
@@ -35,7 +37,7 @@ export const logout = user => ({
     payload: {
         request: {
             type: 'get',
-            url: `/users?username=${user.username}`,
-        }
-    }
+            url: `${BASE_URL}?username=${user.username}`,
+        },
+    },
 });

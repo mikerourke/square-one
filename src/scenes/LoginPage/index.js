@@ -17,11 +17,7 @@ export class LoginPage extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { auth, getAllLeads } = this.props.actions;
-        const username = this.refs.username.getValue();
-        const password = this.refs.password.getValue();
-        auth(username, password);
-        getAllLeads().then(() => {
+        this.props.actions.getAllLeads().then(() => {
             this.context.router.push('/leads');
         });
     }
@@ -31,14 +27,13 @@ export class LoginPage extends Component {
             <div style={globalStyles.formContainer}>
                 <Paper style={globalStyles.paper}>
                     <form
-                        onSubmit={this.handleSubmit}>
+                        onSubmit={this.handleSubmit}
+                    >
                         <TextField
-                            ref="username"
                             floatingLabelText="Login"
                         />
                         <br />
                         <TextField
-                            ref="password"
                             floatingLabelText="Password"
                             type="password"
                         />
@@ -56,8 +51,6 @@ export class LoginPage extends Component {
 }
 
 LoginPage.propTypes = {
-    username: PropTypes.string,
-    password: PropTypes.string,
     actions: PropTypes.object,
 };
 

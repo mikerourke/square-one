@@ -46,7 +46,8 @@
     }
   ],
   "users": [{
-    "id": "mike",
+    "id": 1,
+    "username": "mike",
     "password": "mike"
   }],
   "settings": [
@@ -54,7 +55,6 @@
       "id": 1,
       "category": "lists",
       "settingName": "sources",
-      "isDataArray": true,
       "data": [{
           "id": 1,
           "value": "Did work in area"
@@ -81,7 +81,6 @@
       "id": 2,
       "category": "lists",
       "settingName": "leadStatuses",
-      "isDataArray": true,
       "data": [{
           "id": 1,
           "value": "New"
@@ -103,6 +102,16 @@
           "value": "Lost"
         }
       ]
+    },
+    {
+      "id": 3,
+      "category": "general",
+      "settingName": "companyInfo",
+      "data": {
+        "companyName": "Legend",
+        "address": "123 Company Lane",
+        "phone": "(630) 123-5555"
+      }
     }
   ]
 }

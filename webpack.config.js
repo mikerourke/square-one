@@ -2,6 +2,8 @@ import config from 'config';
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
+import { StatsWriterPlugin } from 'webpack-stats-plugin';
+import Visualizer from 'webpack-visualizer-plugin';
 
 // This will take the current NODE_ENV, and save the config file to
 // 'client/config.json'.  The webpack alias below will then build that file
@@ -46,9 +48,6 @@ const baseConfig = {
             loader: 'url?limit=10000&mimetype=image/svg+xml',
         }],
     },
-    plugins: [
-        new webpack.optimize.DedupePlugin(),
-    ],
     resolve: {
         root: path.resolve(__dirname, 'src'),
         modules: [
@@ -64,15 +63,15 @@ const baseConfig = {
 
 const developmentConfig = {
     devtool: 'inline-source-map',
-    plugins: baseConfig.plugins.concat([
+    plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
-    ]),
+    ],
 };
 
 const productionConfig = {
     devtool: 'source-map',
-    plugins: baseConfig.plugins.concat([
+    plugins: [
         new webpack.DefinePlugin({
             'process.env': {
                 // This has effect on the React library size:
@@ -80,6 +79,7 @@ const productionConfig = {
             },
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
+        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             mangle: true,
@@ -96,7 +96,18 @@ const productionConfig = {
             exclude: [/\.min\.js$/gi], // Skip pre-minified libs
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-    ]),
+        new StatsWriterPlugin({
+            transform: (data, opts) => {
+                const stats = opts.compiler.getStats().toJson({
+                    chunkModules: true,
+                });
+                return JSON.stringify(stats, null, 2);
+            },
+        }),
+        new Visualizer({
+            filename: './statistics.html',
+        }),
+    ],
 };
 
 const configToUse = isDevelopment ?

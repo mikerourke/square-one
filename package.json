@@ -7,7 +7,7 @@
     "start": "babel-node tools/server.js",
     "lint": "esw webpack.config.* src tools --color || exit 0",
     "lint:watch": "npm run lint --watch",
-    "test": "mocha --opts ./mocha.opts src/**/*.test.js || exit 0",
+    "test": "find ./src -name '*.test.js' | xargs mocha --opts ./mocha.opts || exit 0",
     "test:watch": "npm run test -- --watch",
     "prebuild": "rm -rf client && mkdir client",
     "build": "NODE_ENV=production babel-node tools/build.js"
@@ -70,7 +70,9 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "^1.16.2",
+    "webpack-stats-plugin": "^0.1.4",
+    "webpack-visualizer-plugin": "^0.1.10"
   },
   "babel": {
     "presets": [

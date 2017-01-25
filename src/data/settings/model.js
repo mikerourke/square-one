@@ -1,9 +1,16 @@
-import { Record, Map } from 'immutable';
+import { Record, List } from 'immutable';
 
-export const Setting = new Record({
+export default class Setting extends Record({
     id: null,
     category: '',
     settingName: '',
-    isDataArray: false,
-    data: new Map(),
-});
+    data: undefined,
+}) {
+    getData() {
+        const settingData = this.data;
+        if (List.isList(settingData)) {
+            return settingData.toArray().map(dataItem => dataItem.get('value'));
+        }
+        return settingData.toJS();
+    }
+}

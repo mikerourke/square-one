@@ -5,7 +5,7 @@ import {
     GET_LEAD,
     GET_ALL_LEADS,
 } from './actionTypes';
-import { leadSchema } from '../schema';
+import { leadSchema } from './model';
 import { normalize } from 'normalizr';
 import axios from 'axios';
 
@@ -19,7 +19,7 @@ export const createLead = lead => ({
         request: {
             type: 'post',
             url: BASE_URL,
-            data: lead,
+            data: JSON.stringify(lead.toJS()),
         },
     },
 });
@@ -39,8 +39,8 @@ export const updateLead = lead => ({
     payload: {
         request: {
             type: 'patch',
-            url: `${BASE_URL}/${lead.id}`,
-            data: lead,
+            url: `${BASE_URL}/${lead.get('id')}`,
+            data: JSON.stringify(lead.toJS()),
         },
     },
 });

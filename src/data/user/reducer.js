@@ -3,12 +3,13 @@ import {
     LOGIN, LOGIN_SUCCESS, LOGIN_FAIL,
     LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL,
 } from './actionTypes';
-import { User } from './model';
+import User from './model';
 
 const initialState = new User();
 
 const user = (state = initialState, action) => {
-    switch (action.type) {
+    const { type, payload } = action;
+    switch (type) {
         case GET_USER:
             return state;
 
@@ -18,9 +19,9 @@ const user = (state = initialState, action) => {
 
         case LOGIN_SUCCESS:
             return state.merge({
-                id: action.payload.data.id,
-                username: action.payload.data.username,
-                password: action.payload.data.password,
+                id: payload.data.id,
+                username: payload.data.username,
+                password: payload.data.password,
                 error: null,
                 token: null,
             });

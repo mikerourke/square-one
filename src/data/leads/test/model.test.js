@@ -1,7 +1,8 @@
 import { expect } from 'chai';
+import { normalize } from 'normalizr';
 import { fromJS } from 'immutable';
-import Lead from '../model';
-import db from '../../../../tools/db.json';
+import Lead, { leadSchema } from '../model';
+import mockDb from '../../../../tools/api/db.json';
 
 /**
  * Helper method that finds the specified lead in the db.json file and
@@ -10,11 +11,16 @@ import db from '../../../../tools/db.json';
  * @returns {Record}
  */
 const getLeadFromId = (leadId) => {
-    const leadFromDb = db.leads.find(lead => lead.id === leadId);
+    const leadFromDb = mockDb.leads.find(lead => lead.id === leadId);
     return new Lead(fromJS(leadFromDb));
 };
 
 describe('Lead Model', () => {
+    it('Normalizes Lead entities', () => {
+        const normalizedData = normalize(mockDb.leads, leadSchema);
+        expect(normalizedData).to.contain.all.keys(['entities', 'result']);
+    });
+
     it('Successfully creates a Lead record', () => {
         const leadRecord = getLeadFromId(1);
         expect(leadRecord.get('source')).to.equal('Other');

@@ -1,6 +1,6 @@
-import leadsReducer from './leads/reducer';
-import settingsReducer from './settings/reducer';
-import userReducer from './user/reducer';
+import { leadsReducer } from './leads';
+import { settingsReducer } from './settings';
+import { userReducer } from './user';
 
 export {
     leadsReducer,

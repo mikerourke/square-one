@@ -1,17 +1,31 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { muiTheme } from '../styles';
+import { User } from 'data/user';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
-const styles = {
+const style = {
     body: {
         paddingLeft: '24px',
     },
 };
 
 export class App extends Component {
+    static propTypes = {
+        children: PropTypes.object.isRequired,
+        user: PropTypes.instanceOf(User),
+    };
+
+    static defaultProps = {
+        user: new User(),
+    };
+
+    static contextTypes = {
+        router: PropTypes.object,
+    };
+
     constructor(props, context) {
         super(props, context);
 
@@ -38,7 +52,7 @@ export class App extends Component {
                         open={this.state.open}
                         handleToggle={this.handleToggle}
                     />
-                    <div style={styles.body}>
+                    <div style={style.body}>
                         {children}
                     </div>
                 </div>
@@ -46,19 +60,6 @@ export class App extends Component {
         );
     }
 }
-
-App.propTypes = {
-    children: PropTypes.object.isRequired,
-    user: PropTypes.object,
-};
-
-App.defaultProps = {
-    user: {},
-};
-
-App.contextTypes = {
-    router: PropTypes.object,
-};
 
 const mapStateToProps = state => ({
     user: state.user,

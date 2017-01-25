@@ -1,7 +1,8 @@
 import { expect } from 'chai';
+import { normalize } from 'normalizr';
 import { fromJS } from 'immutable';
-import Setting from '../model';
-import db from '../../../../tools/db.json';
+import Setting, { settingSchema } from '../model';
+import mockDb from '../../../../tools/api/db.json';
 
 /**
  * Helper method that finds the specified setting in the db.json file and
@@ -10,12 +11,17 @@ import db from '../../../../tools/db.json';
  * @returns {Record}
  */
 const getSettingFromName = (settingName) => {
-    const settingFromDb = db.settings.find(setting =>
+    const settingFromDb = mockDb.settings.find(setting =>
         setting.settingName === settingName);
     return new Setting(fromJS(settingFromDb));
 };
 
 describe('Settings Model', () => {
+    it('Normalizes Settings entities', () => {
+        const normalizedData = normalize(mockDb.settings, settingSchema);
+        expect(normalizedData).to.contain.all.keys(['entities', 'result']);
+    });
+
     it('Successfully creates a Setting record', () => {
         const sources = getSettingFromName('sources');
         expect(sources.get('category')).to.equal('lists');

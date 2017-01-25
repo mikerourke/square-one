@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { ContentAddCircleOutline } from 'material-ui/svg-icons';
 import { Map } from 'immutable';
 import MaterialButton from 'components/MaterialButton';
-import IconButton from 'material-ui/IconButton';
 import DataTables from 'material-ui-datatables';
 
 const tableColumns = [
@@ -34,6 +31,14 @@ const tableColumns = [
 ];
 
 class LeadsPage extends Component {
+    static propTypes = {
+        leads: PropTypes.instanceOf(Map).isRequired,
+    };
+
+    static contextTypes = {
+        router: PropTypes.object,
+    };
+
     constructor(props, context) {
         super(props, context);
 
@@ -143,21 +148,13 @@ class LeadsPage extends Component {
                     toolbarIconRight={[
                         <Link to={'/leads/add'}>
                             <MaterialButton iconName="add_circle_outline" />
-                        </Link>
+                        </Link>,
                     ]}
                 />
             </div>
         );
     }
 }
-
-LeadsPage.propTypes = {
-    leads: PropTypes.instanceOf(Map).isRequired,
-};
-
-LeadsPage.contextTypes = {
-    router: PropTypes.object,
-};
 
 const mapStateToProps = state => ({
     leads: state.leads,

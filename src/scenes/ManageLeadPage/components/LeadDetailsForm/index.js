@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import { getLead } from 'data/leads/actions';
+import { Lead } from 'data/leads';
+import { Setting } from 'data/settings';
 import { globalStyles } from 'scenes/styles';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -35,7 +36,7 @@ const LeadDetailsForm = (
                         label="Source"
                         value={lead.get('source')}
                         handleChange={handleChange}
-                        selections={sources}
+                        selections={sources.get('data')}
                     />
                 </div>
                 <div>
@@ -61,12 +62,12 @@ const LeadDetailsForm = (
 LeadDetailsForm.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    sources: PropTypes.array.isRequired,
-    lead: PropTypes.object,
+    sources: PropTypes.instanceOf(Setting).isRequired,
+    lead: PropTypes.instanceOf(Lead),
 };
 
 LeadDetailsForm.defaultProps = {
-    lead: {},
+    lead: new Lead(),
 };
 
 export default LeadDetailsForm;

@@ -3,7 +3,7 @@ import {
     GET_ALL_SETTINGS,
     UPDATE_SETTING,
 } from './actionTypes';
-import { settingSchema } from '../schema';
+import { settingSchema } from './model';
 import { normalize } from 'normalizr';
 import axios from 'axios';
 

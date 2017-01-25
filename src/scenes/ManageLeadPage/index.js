@@ -1,13 +1,26 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as leadActions from 'data/leads/actions';
-import { getSetting } from 'data/settings/actions';
+import { Lead, leadActions } from 'data/leads';
+import { Setting, settingsActions } from 'data/settings';
 import { globalStyles } from 'scenes/styles';
-import { Map } from 'immutable';
 import LeadDetailsForm from './components/LeadDetailsForm';
 
 class ManageLeadPage extends Component {
+    static propTypes = {
+        lead: PropTypes.instanceOf(Lead),
+        sources: PropTypes.instanceOf(Setting).isRequired,
+        actions: PropTypes.object.isRequired,
+    };
+
+    static defaultProps = {
+        lead: new Lead(),
+    };
+
+    static contextTypes = {
+        router: PropTypes.object,
+    };
+
     constructor(props, context) {
         super(props, context);
 
@@ -23,7 +36,7 @@ class ManageLeadPage extends Component {
         const fieldName = payload ? 'source' : event.target.name;
         const fieldValue = payload || keyOrNewValue;
         const lead = this.state.lead;
-        lead[fieldName] = fieldValue;
+        lead.set(fieldName, fieldValue);
         return this.setState({ lead });
     }
 
@@ -50,20 +63,6 @@ class ManageLeadPage extends Component {
     }
 }
 
-ManageLeadPage.propTypes = {
-    lead: PropTypes.object,
-    sources: PropTypes.instanceOf(Map).isRequired,
-    actions: PropTypes.object.isRequired,
-};
-
-ManageLeadPage.defaultProps = {
-    lead: {},
-};
-
-ManageLeadPage.contextTypes = {
-    router: PropTypes.object,
-};
-
 const mapStateToProps = (state, ownProps) => {
     let leadOnPage = {};
     if (ownProps.params.id) {
@@ -77,7 +76,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-    const combinedActions = Object.assign({}, leadActions, { getSetting });
+    const combinedActions = Object.assign({}, leadActions, settingsActions);
     return {
         actions: bindActionCreators(combinedActions, dispatch),
     };

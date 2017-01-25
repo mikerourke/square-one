@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import { List } from 'immutable';
 import { globalStyles } from 'scenes/styles';
+import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
 
 const DropdownInput = (
     {
@@ -17,12 +18,13 @@ const DropdownInput = (
             name={name}
             floatingLabelText={label}
             onChange={handleChange}
-            value={value}>
-            {selections.map(selection => (
+            value={value}
+        >
+            {selections.forEach(selection => (
                 <MenuItem
-                    key={selection.id}
-                    value={selection.value}
-                    primaryText={selection.value}
+                    key={selection.get('id')}
+                    value={selection.get('value')}
+                    primaryText={selection.get('value')}
                 />
             ))}
         </SelectField>
@@ -36,12 +38,11 @@ DropdownInput.propTypes = {
         PropTypes.number,
     ]),
     handleChange: PropTypes.func.isRequired,
-    selections: PropTypes.arrayOf(PropTypes.object),
+    selections: PropTypes.instanceOf(List).isRequired,
 };
 
 DropdownInput.defaultProps = {
     value: '',
-    selections: [],
 };
 
 export default DropdownInput;

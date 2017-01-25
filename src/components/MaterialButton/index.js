@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import IconButton from 'material-ui/IconButton';
 
-const buttonStyle = color => ({
+const getStyle = color => ({
     cursor: 'pointer',
     padding: 0,
     color,
@@ -13,7 +13,7 @@ const MaterialButton = (
         color,
     }) => (
         <IconButton
-            iconStyle={buttonStyle(color)}
+            iconStyle={getStyle(color)}
             iconClassName="material-icons"
         >
             {iconName}

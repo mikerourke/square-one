@@ -26,8 +26,9 @@ const baseConfig = {
     module: {
         loaders: [{
             test: /\.js$/,
+            exclude: /node_modules/,
             include: path.join(__dirname, 'src'),
-            loaders: ['babel'],
+            loader: 'babel',
         }, {
             test: /(\.css)$/,
             loaders: ['style', 'css'],

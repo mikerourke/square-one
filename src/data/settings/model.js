@@ -1,4 +1,10 @@
+import { schema } from 'normalizr';
 import { Record, List } from 'immutable';
+
+const setting = new schema.Entity('settings', {}, {
+    idAttribute: 'settingName',
+});
+export const settingSchema = [setting];
 
 export default class Setting extends Record({
     id: null,

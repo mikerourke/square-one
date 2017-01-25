@@ -23,6 +23,9 @@ dictionaries
 # WebStorm Configuration
 .idea
 
+# Bash
+*.stackdump
+
 # Other
 *.DS_Store
 client

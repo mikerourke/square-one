@@ -1,12 +1,21 @@
+import config from 'config';
 import React, { Component, PropTypes } from 'react';
 import GoogleMapLoader from 'react-google-maps-loader';
 import GooglePlacesSuggest from 'react-google-places-suggest';
 import TextField from 'material-ui/TextField';
 import 'react-google-places-suggest/lib/index.css';
 
-const API_KEY = 'AIzaSyAkiq1bkZask4elXgU_BnM7d6xzjGMXw0A';
+const style = {
+    textField: {
+        width: '100%',
+    },
+};
 
 class LocationInput extends Component {
+    static propTypes = {
+        googleMaps: PropTypes.object.isRequired,
+    };
+
     constructor(props, context) {
         super(props, context);
 
@@ -39,9 +48,10 @@ class LocationInput extends Component {
             <GooglePlacesSuggest
                 googleMaps={googleMaps}
                 onSelectSuggest={this.handleSelectSuggest}
-                search={search}>
+                search={search}
+            >
                 <TextField
-                    style={{ width: '100%' }}
+                    style={style.textField}
                     value={search}
                     floatingLabelText="Address"
                     onChange={this.handleSearchChange}
@@ -51,11 +61,7 @@ class LocationInput extends Component {
     }
 }
 
-LocationInput.propTypes = {
-    googleMaps: PropTypes.object.isRequired,
-};
-
 export default GoogleMapLoader(LocationInput, {
     libraries: ['places'],
-    key: API_KEY,
+    key: config.googleMapsApiKey,
 });

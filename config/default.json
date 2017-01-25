@@ -6,5 +6,6 @@
   },
   "spa": {
     "port": 8081
-  }
+  },
+  "googleMapsApiKey": "AIzaSyAkiq1bkZask4elXgU_BnM7d6xzjGMXw0A"
 }

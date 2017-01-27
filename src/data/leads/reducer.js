@@ -5,10 +5,10 @@ import {
     GET_LEAD, GET_LEAD_SUCCESS, GET_LEAD_FAIL,
     GET_ALL_LEADS, GET_ALL_LEADS_SUCCESS, GET_ALL_LEADS_FAIL,
 } from './actionTypes';
-import { Map, fromJS } from 'immutable';
+import { OrderedMap, fromJS } from 'immutable';
 import Lead from './model';
 
-const initialState = new Map();
+const initialState = OrderedMap();
 
 const mergeEntities = (state, newLeads) =>
     state.merge(newLeads.map(lead => new Lead(lead)));

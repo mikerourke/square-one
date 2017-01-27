@@ -15,7 +15,7 @@ export default class Lead extends Record({
     description: '',
     comments: '',
     status: '',
-    appointments: undefined,
+    appointments: new List(),
 }) {
     getAppointments() {
         const appointmentItems = this.appointments;

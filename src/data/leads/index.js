@@ -1,9 +1,11 @@
 import Lead from './model';
-import leadsReducer from './reducer';
-import * as leadActions from './actions';
+import reducer from './reducer';
+import * as actions from './actions';
+import * as actionTypes from './actionTypes';
 
 export {
     Lead,
-    leadsReducer,
-    leadActions,
-}
+    reducer,
+    actions,
+    actionTypes,
+};

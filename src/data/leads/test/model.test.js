@@ -16,18 +16,18 @@ const getLeadFromId = (leadId) => {
 };
 
 describe('Lead Model', () => {
-    it('Normalizes Lead entities', () => {
+    it('normalizes Lead entities', () => {
         const normalizedData = normalize(mockDb.leads, leadSchema);
         expect(normalizedData).to.contain.all.keys(['entities', 'result']);
     });
 
-    it('Successfully creates a Lead record', () => {
+    it('successfully creates a Lead record', () => {
         const leadRecord = getLeadFromId(1);
-        expect(leadRecord.get('source')).to.equal('Other');
+        expect(leadRecord.source).to.equal('Other');
     });
 
-    it('Puts the appointments from a Lead into an array of objects', () => {
+    it('puts the appointments from a Lead into an array of objects', () => {
         const leadRecord = getLeadFromId(1);
-        expect(leadRecord.getAppointments()).to.have.lengthOf(1);
+        expect(leadRecord.appointments.size).to.equal(1);
     });
 });

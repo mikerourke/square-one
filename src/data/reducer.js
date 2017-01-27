@@ -1,4 +1,4 @@
-import { leadsReducer } from './leads';
+import { reducer as leadsReducer } from './leads';
 import { settingsReducer } from './settings';
 import { userReducer } from './user';
 

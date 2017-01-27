@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Front end for the square1 lead tracking and resource management system.",
   "scripts": {
-    "api": "nodemon tools/api/apiServer.js --exec babel-node",
+    "api": "babel-node tools/api/apiServer.js",
+    "api:watch": "nodemon tools/api/apiServer.js --exec babel-node",
     "start": "babel-node tools/server.js",
     "lint": "esw webpack.config.* src tools --color || exit 0",
     "lint:watch": "npm run lint --watch",
@@ -34,6 +35,7 @@
     "react-dom": "^15.4.1",
     "react-google-maps-loader": "^2.0.2",
     "react-google-places-suggest": "^2.0.1",
+    "react-immutable-proptypes": "^2.1.0",
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",
     "react-tap-event-plugin": "^2.0.1",
@@ -42,6 +44,7 @@
     "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.7.1",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
@@ -68,6 +71,7 @@
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "redux-logger": "^2.7.4",
+    "redux-mock-store": "^1.2.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",

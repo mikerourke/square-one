@@ -1,9 +1,11 @@
 import Setting from './model';
-import settingsReducer from './reducer';
-import * as settingsActions from './actions';
+import reducer from './reducer';
+import * as actions from './actions';
+import * as actionTypes from './actionTypes';
 
 export {
     Setting,
-    settingsReducer,
-    settingsActions,
+    reducer,
+    actions,
+    actionTypes,
 };

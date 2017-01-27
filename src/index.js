@@ -5,12 +5,12 @@ import { render } from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import Axios from 'axios';
+import axios from 'axios';
 import configureStore from './store/configureStore';
 import routes from './routes';
 import { getAllSettings } from './data/settings/actions';
 
-const client = Axios.create({
+const client = axios.create({
     baseURL: `http://${config.host}:${config.api.port}/api`,
     responseType: 'json',
 });

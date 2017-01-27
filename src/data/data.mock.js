@@ -1,4 +1,3 @@
-import config from 'config';
 import configureStore from 'redux-mock-store';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';

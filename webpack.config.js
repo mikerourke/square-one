@@ -58,6 +58,7 @@ const baseConfig = {
         extensions: ['', '.js'],
         alias: {
             config: path.resolve(__dirname, 'client/config.json'),
+            scenes: path.resolve(__dirname, 'src/scenes'),
         },
     },
 };

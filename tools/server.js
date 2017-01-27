@@ -1,7 +1,6 @@
 /**
  * This is the development server used for testing.  The production application
  *      will be communicating with a separate API.
- * @module server
  */
 import { green, red } from 'chalk';
 import config from 'config';

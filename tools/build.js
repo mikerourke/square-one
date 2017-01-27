@@ -3,7 +3,6 @@
  *      production build action.  Cheerio is used to add the global stylesheet
  *      to the top of the file.  This code was taken from Cory House's
  *      React/Redux Pluralsight course.
- * @module build
  */
 import { blue, green, red, yellow } from 'chalk';
 import fs from 'fs';

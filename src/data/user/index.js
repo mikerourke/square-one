@@ -1,9 +1,11 @@
 import User from './model';
-import userReducer from './reducer';
-import * as userActions from './actions';
+import reducer from './reducer';
+import * as actions from './actions';
+import * as actionTypes from './actionTypes';
 
 export {
     User,
-    userReducer,
-    userActions,
+    reducer,
+    actions,
+    actionTypes,
 };

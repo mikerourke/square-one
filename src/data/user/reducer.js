@@ -7,7 +7,7 @@ import User from './model';
 
 const initialState = new User();
 
-const user = (state = initialState, action) => {
+export default (state = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
         case GET_USER:
@@ -18,10 +18,11 @@ const user = (state = initialState, action) => {
             return state;
 
         case LOGIN_SUCCESS:
+            const { id, username, password } = payload.data;
             return state.merge({
-                id: payload.data.id,
-                username: payload.data.username,
-                password: payload.data.password,
+                id,
+                username,
+                password,
                 error: null,
                 token: null,
             });
@@ -33,5 +34,3 @@ const user = (state = initialState, action) => {
             return state;
     }
 };
-
-export default user;

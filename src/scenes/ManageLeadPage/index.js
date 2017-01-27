@@ -1,15 +1,17 @@
 import React, { Component, PropTypes } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import Immutable from 'immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Lead, leadActions } from 'data/leads';
-import { Setting, settingsActions } from 'data/settings';
+import { Lead, actions as leadActions } from 'data/leads';
+import { Setting, actions as settingsActions } from 'data/settings';
 import { globalStyles } from 'scenes/styles';
 import LeadDetailsForm from './components/LeadDetailsForm';
 
 class ManageLeadPage extends Component {
     static propTypes = {
-        lead: PropTypes.instanceOf(Lead),
-        sources: PropTypes.instanceOf(Setting).isRequired,
+        lead: ImmutablePropTypes.record,
+        sourcesList: PropTypes.array.isRequired,
         actions: PropTypes.object.isRequired,
     };
 
@@ -35,9 +37,8 @@ class ManageLeadPage extends Component {
     handleChange(event, keyOrNewValue, payload) {
         const fieldName = payload ? 'source' : event.target.name;
         const fieldValue = payload || keyOrNewValue;
-        const lead = this.state.lead;
-        lead.set(fieldName, fieldValue);
-        return this.setState({ lead });
+        const updatedLead = this.state.lead.set(fieldName, fieldValue);
+        return this.setState({ lead: updatedLead });
     }
 
     handleSubmit(event) {
@@ -49,13 +50,13 @@ class ManageLeadPage extends Component {
     }
 
     render() {
-        const { sources } = this.props;
+        const { sourcesList } = this.props;
         return (
             <div style={globalStyles.formContainer}>
                 <LeadDetailsForm
                     handleChange={this.handleChange}
                     handleSubmit={this.handleSubmit}
-                    sources={sources.data}
+                    sourcesList={sourcesList}
                     lead={this.state.lead}
                 />
             </div>
@@ -64,14 +65,14 @@ class ManageLeadPage extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    let leadOnPage = {};
+    let leadOnPage = new Lead();
     if (ownProps.params.id) {
         const leadId = ownProps.params.id.toString();
         leadOnPage = state.leads.get(leadId);
     }
     return {
         lead: leadOnPage,
-        sources: state.settings.get('sources'),
+        sourcesList: state.settings.get('sources').getData(),
     };
 };
 

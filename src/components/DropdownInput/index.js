@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { List } from 'immutable';
 import { globalStyles } from 'scenes/styles';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
@@ -20,11 +19,11 @@ const DropdownInput = (
             onChange={handleChange}
             value={value}
         >
-            {selections.forEach(selection => (
+            {selections.map(selection => (
                 <MenuItem
-                    key={selection.get('id')}
-                    value={selection.get('value')}
-                    primaryText={selection.get('value')}
+                    key={selection.id}
+                    value={selection.value}
+                    primaryText={selection.value}
                 />
             ))}
         </SelectField>
@@ -38,11 +37,12 @@ DropdownInput.propTypes = {
         PropTypes.number,
     ]),
     handleChange: PropTypes.func.isRequired,
-    selections: PropTypes.instanceOf(List).isRequired,
+    selections: PropTypes.array.isRequired,
 };
 
 DropdownInput.defaultProps = {
     value: '',
+    selections: [],
 };
 
 export default DropdownInput;

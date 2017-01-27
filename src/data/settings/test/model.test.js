@@ -27,7 +27,7 @@ describe('Settings Model', () => {
         expect(sources.get('category')).to.equal('lists');
     });
 
-    it('Puts the "data" from a list Setting into an array', () => {
+    it('puts the "data" from a list Setting into an array', () => {
         const sources = getSettingFromName('sources');
         expect(sources.getData()).to.have.lengthOf(5);
     });

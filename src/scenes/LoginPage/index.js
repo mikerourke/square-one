@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { userActions } from 'data/user';
-import { leadActions } from 'data/leads';
+import { actions as userActions } from 'data/user';
+import { actions as leadActions } from 'data/leads';
 import { globalStyles } from '../styles';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';

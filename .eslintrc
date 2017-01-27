@@ -63,6 +63,9 @@
     "indent": [1, 4, {"SwitchCase": 1}],
     "no-case-declarations": 0,
 
+    // I'm handling this on a case-by-case basis:
+    "newline-per-chained-call": 0,
+
     // Fixes for Redux and other issues:
     "import/default": 0,
     "import/extensions": 0,

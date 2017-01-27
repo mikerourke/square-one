@@ -11,6 +11,8 @@ const style = {
     },
 };
 
+// TODO: Add pre-population for this input (need coordinates?).
+
 class LocationInput extends Component {
     static propTypes = {
         googleMaps: PropTypes.object.isRequired,

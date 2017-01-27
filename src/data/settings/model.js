@@ -15,7 +15,7 @@ export default class Setting extends Record({
     getData() {
         const settingData = this.data;
         if (List.isList(settingData)) {
-            return settingData.toArray().map(dataItem => dataItem.get('value'));
+            return settingData.toArray().map(dataItem => dataItem.toJS());
         }
         return settingData.toJS();
     }

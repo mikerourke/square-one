@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Map } from 'immutable';
@@ -32,7 +33,7 @@ const tableColumns = [
 
 class LeadsPage extends Component {
     static propTypes = {
-        leads: PropTypes.instanceOf(Map).isRequired,
+        leads: ImmutablePropTypes.orderedMap.isRequired,
     };
 
     static contextTypes = {

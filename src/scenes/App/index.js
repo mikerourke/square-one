@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { muiTheme } from '../styles';
 import { User } from 'data/user';
@@ -15,7 +16,7 @@ const style = {
 export class App extends Component {
     static propTypes = {
         children: PropTypes.object.isRequired,
-        user: PropTypes.instanceOf(User),
+        user: ImmutablePropTypes.record,
     };
 
     static defaultProps = {

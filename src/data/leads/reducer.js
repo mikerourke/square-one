@@ -13,7 +13,7 @@ const initialState = OrderedMap();
 const mergeEntities = (state, newLeads) =>
     state.merge(newLeads.map(lead => new Lead(lead)));
 
-const leads = (state = initialState, action) => {
+export default (state = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
         case CREATE_LEAD_SUCCESS:
@@ -33,5 +33,3 @@ const leads = (state = initialState, action) => {
             return state;
     }
 };
-
-export default leads;

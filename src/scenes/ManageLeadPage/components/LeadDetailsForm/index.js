@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Lead } from 'data/leads';
 import { Setting } from 'data/settings';
 import { globalStyles } from 'scenes/styles';
@@ -13,7 +14,7 @@ const LeadDetailsForm = (
     {
         handleChange,
         handleSubmit,
-        sources,
+        sourcesList,
         lead,
     }) => (
         <form
@@ -26,7 +27,7 @@ const LeadDetailsForm = (
                         name="leadName"
                         floatingLabelText="Lead Name"
                         style={globalStyles.input}
-                        value={lead.get('leadName')}
+                        value={lead && lead.leadName}
                         onChange={handleChange}
                     />
                 </div>
@@ -34,9 +35,9 @@ const LeadDetailsForm = (
                     <DropdownInput
                         name="source"
                         label="Source"
-                        value={lead.get('source')}
+                        value={lead && lead.source}
                         handleChange={handleChange}
-                        selections={sources.get('data')}
+                        selections={sourcesList}
                     />
                 </div>
                 <div>
@@ -44,7 +45,7 @@ const LeadDetailsForm = (
                         name="leadFee"
                         floatingLabelText="Lead Fee"
                         style={globalStyles.input}
-                        value={lead.get('leadFee')}
+                        value={lead && lead.leadFee}
                         onChange={handleChange}
                     />
                 </div>
@@ -56,17 +57,25 @@ const LeadDetailsForm = (
                     />
                 </div>
             </div>
+            <div style={formStyles.rightSide}>
+                <div>
+                    <LocationInput
+                        value={lead.address}
+                    />
+                </div>
+            </div>
         </form>
 );
 
 LeadDetailsForm.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    sources: PropTypes.instanceOf(Setting).isRequired,
-    lead: PropTypes.instanceOf(Lead),
+    sourcesList: PropTypes.array.isRequired,
+    lead: ImmutablePropTypes.record,
 };
 
 LeadDetailsForm.defaultProps = {
+    sourcesList: [],
     lead: new Lead(),
 };
 

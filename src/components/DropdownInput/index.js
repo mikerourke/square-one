@@ -1,7 +1,12 @@
 import React, { PropTypes } from 'react';
-import { globalStyles } from 'scenes/styles';
+import { globalStyle } from 'scenes/styles';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
+
+const dropdownStyle = {
+    width: '90%',
+    margin: '0',
+};
 
 const DropdownInput = (
     {
@@ -13,7 +18,7 @@ const DropdownInput = (
     }) => (
         <SelectField
             tabIndex="0"
-            style={globalStyles.input}
+            style={dropdownStyle}
             name={name}
             floatingLabelText={label}
             onChange={handleChange}

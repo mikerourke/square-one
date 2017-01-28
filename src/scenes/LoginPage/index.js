@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actions as userActions } from 'data/user';
 import { actions as leadActions } from 'data/leads';
-import { globalStyles } from '../styles';
+import { globalStyle } from '../styles';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
@@ -32,8 +32,8 @@ export class LoginPage extends Component {
 
     render() {
         return (
-            <div style={globalStyles.formContainer}>
-                <Paper style={globalStyles.paper}>
+            <div style={globalStyle.formContainer}>
+                <Paper style={globalStyle.paper}>
                     <form
                         onSubmit={this.handleSubmit}
                     >
@@ -47,7 +47,7 @@ export class LoginPage extends Component {
                         />
                         <br />
                         <FlatButton
-                            style={globalStyles.flatButton}
+                            style={globalStyle.flatButton}
                             label="Login"
                             type="submit"
                         />

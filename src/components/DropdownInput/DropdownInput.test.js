@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import DropdownInput from './index';
 
-const setup = () => {
+const setup = (value = '') => {
     const menuItems = [
         { id: 1, value: 'Value 1' },
         { id: 2, value: 'Value 2' },
@@ -13,7 +13,7 @@ const setup = () => {
     const props = {
         name: 'DropdownTest',
         label: 'Test',
-        value: 'Value',
+        value,
         handleChange: () => {},
         selections: menuItems,
     };

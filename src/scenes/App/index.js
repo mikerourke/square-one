@@ -9,7 +9,7 @@ import Sidebar from './components/Sidebar';
 
 const style = {
     body: {
-        paddingLeft: '24px',
+        padding: '10px',
     },
 };
 

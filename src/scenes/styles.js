@@ -13,7 +13,14 @@ export const muiTheme = getMuiTheme({
     },
 });
 
-export const globalStyles = {
+const columnSideStyle = {
+    flex: '1 0',
+    margin: '0 auto',
+    width: '400px',
+    minWidth: '400px',
+};
+
+export const globalStyle = {
     flatButton: {
         marginTop: '3em',
         backgroundColor: grey700,
@@ -31,18 +38,16 @@ export const globalStyles = {
         padding: '3em',
     },
     twoColumnForm: {
-        wrapper: {
+        container: {
+            marginTop: '3em',
             display: 'flex',
             flexFlow: 'row wrap',
             justifyContent: 'center',
         },
-        leftSide: {
-            flex: '0',
-            margin: '0 auto',
-        },
-        rightSide: {
-            flex: '1 1 0',
-            margin: '0 auto',
+        leftSide: Object.assign({}, columnSideStyle, { maxWidth: '600px' }),
+        rightSide: Object.assign({}, columnSideStyle, { maxWidth: '800px' }),
+        input: {
+            width: '90%',
         },
     },
 };

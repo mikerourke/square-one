@@ -19,7 +19,7 @@ export const createLead = lead => ({
         request: {
             type: 'post',
             url: BASE_URL,
-            data: JSON.stringify(lead.toJS()),
+            data: JSON.stringify(lead),
         },
     },
 });
@@ -39,8 +39,8 @@ export const updateLead = lead => ({
     payload: {
         request: {
             type: 'patch',
-            url: `${BASE_URL}/${lead.get('id')}`,
-            data: JSON.stringify(lead.toJS()),
+            url: `${BASE_URL}/${lead.id}`,
+            data: JSON.stringify(lead),
         },
     },
 });

@@ -1,8 +1,9 @@
 {
-  "leads": [{
+  "leads": [
+    {
       "id": 1,
       "leadName": "Steve Leadsman",
-      "source": "Other",
+      "source": "Facebook",
       "leadFee": 25,
       "phone": "(630) 123-4567",
       "email": "steve@leads.com",
@@ -10,15 +11,17 @@
       "description": "This is a lead",
       "comments": "Cash money",
       "status": "New",
-      "appointments": [{
-        "id": 1,
-        "subject": "Appointment Test 1",
-        "startAt": "2013-10-21T13:00:00.419Z",
-        "endAt": "2013-10-21T15:00:00.419Z",
-        "appointmentFor": "Who knows?",
-        "emailAlert": "Alert, yo!",
-        "isAllDay": false
-      }]
+      "appointments": [
+        {
+          "id": 1,
+          "subject": "Appointment Test 1",
+          "startAt": "2013-10-21T13:00:00.419Z",
+          "endAt": "2013-10-21T15:00:00.419Z",
+          "appointmentFor": "Who knows?",
+          "emailAlert": "Alert, yo!",
+          "isAllDay": false
+        }
+      ]
     },
     {
       "id": 2,
@@ -45,17 +48,20 @@
       "status": "New"
     }
   ],
-  "users": [{
-    "id": 1,
-    "username": "mike",
-    "password": "mike"
-  }],
+  "users": [
+    {
+      "id": 1,
+      "username": "mike",
+      "password": "mike"
+    }
+  ],
   "settings": [
     {
       "id": 1,
       "category": "lists",
       "settingName": "sources",
-      "data": [{
+      "data": [
+        {
           "id": 1,
           "value": "Did work in area"
         },
@@ -81,7 +87,8 @@
       "id": 2,
       "category": "lists",
       "settingName": "leadStatuses",
-      "data": [{
+      "data": [
+        {
           "id": 1,
           "value": "New"
         },

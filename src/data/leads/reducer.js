@@ -17,12 +17,10 @@ export default (state = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
         case CREATE_LEAD_SUCCESS:
-            return state.push(new Lead(fromJS(payload.data)));
-
         case GET_LEAD_SUCCESS:
         case UPDATE_LEAD_SUCCESS:
             const newLead = payload.data;
-            return state.set(newLead.id, new Lead(fromJS(newLead.data)));
+            return state.set(newLead.id, new Lead(fromJS(newLead)));
 
 
         case GET_ALL_LEADS_SUCCESS:

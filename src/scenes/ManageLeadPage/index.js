@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Immutable from 'immutable';
+import { toJS } from 'immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Lead, actions as leadActions } from 'data/leads';
 import { Setting, actions as settingsActions } from 'data/settings';
-import { globalStyles } from 'scenes/styles';
+import { globalStyle } from 'scenes/styles';
 import LeadDetailsForm from './components/LeadDetailsForm';
 
 class ManageLeadPage extends Component {
@@ -43,8 +43,12 @@ class ManageLeadPage extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { updateLead } = this.props.actions;
-        updateLead(this.state.lead).then(() => {
+        const { createLead, updateLead } = this.props.actions;
+        const leadEntity = this.state.lead.toJS();
+        const performAction = leadEntity.id === 0 ?
+                              createLead :
+                              updateLead;
+        performAction(leadEntity).then(() => {
             this.context.router.push('/leads');
         });
     }
@@ -52,14 +56,12 @@ class ManageLeadPage extends Component {
     render() {
         const { sourcesList } = this.props;
         return (
-            <div style={globalStyles.formContainer}>
-                <LeadDetailsForm
-                    handleChange={this.handleChange}
-                    handleSubmit={this.handleSubmit}
-                    sourcesList={sourcesList}
-                    lead={this.state.lead}
-                />
-            </div>
+            <LeadDetailsForm
+                handleChange={this.handleChange}
+                handleSubmit={this.handleSubmit}
+                sourcesList={sourcesList}
+                lead={this.state.lead}
+            />
         );
     }
 }

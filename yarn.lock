@@ -898,7 +898,7 @@ babel-register@^6.18.0, babel-register@^6.22.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
-babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.20.0, babel-runtime@^6.22.0:
+babel-runtime@^6.11.6, babel-runtime@^6.18.0, babel-runtime@^6.20.0, babel-runtime@^6.22.0, babel-runtime@^6.6.1:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.22.0.tgz#1cf8b4ac67c77a4ddb0db2ae1f74de52ac4ca611"
   dependencies:
@@ -1213,10 +1213,6 @@ clap@^1.0.9:
   resolved "https://registry.yarnpkg.com/clap/-/clap-1.1.2.tgz#316545bf22229225a2cecaa6824cd2f56a9709ed"
   dependencies:
     chalk "^1.1.3"
-
-classnames@^2.1.3:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
 cli-boxes@^1.0.0:
   version "1.0.0"
@@ -3260,10 +3256,6 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-little-loader@~0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/little-loader/-/little-loader-0.1.1.tgz#516207701524e795feafa8e64cfc6881af39503f"
-
 load-json-file@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-1.1.0.tgz#956905708d58b4bab4c2261b04f59f31c99374c0"
@@ -3508,7 +3500,14 @@ material-ui-datatables@^0.16.4:
     babel-runtime "^6.18.0"
     material-ui "^0.16.0"
 
-material-ui@^0.16.0, material-ui@^0.16.6:
+material-ui-geosuggest@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/material-ui-geosuggest/-/material-ui-geosuggest-0.5.0.tgz#8ff876da6f6763e8a1d2770abbcf394de5286aee"
+  dependencies:
+    babel-runtime "^6.6.1"
+    material-ui "^0.16.7"
+
+material-ui@^0.16.0, material-ui@^0.16.6, material-ui@^0.16.7:
   version "0.16.7"
   resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-0.16.7.tgz#5ec5080d5f227817092c449105df9cbc8807941c"
   dependencies:
@@ -4521,18 +4520,6 @@ react-event-listener@^0.4.0:
     babel-runtime "^6.20.0"
     react-addons-shallow-compare "^15.4.2"
     warning "^3.0.0"
-
-react-google-maps-loader@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/react-google-maps-loader/-/react-google-maps-loader-2.0.2.tgz#1195b418899826676a2e09a9a7692605fb06ea8a"
-  dependencies:
-    little-loader "~0.1.0"
-
-react-google-places-suggest@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-google-places-suggest/-/react-google-places-suggest-2.0.1.tgz#4807d71be53831596887adc1c7b7443b58d51aaa"
-  dependencies:
-    classnames "^2.1.3"
 
 react-immutable-proptypes@^2.1.0:
   version "2.1.0"

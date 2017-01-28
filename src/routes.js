@@ -7,7 +7,7 @@ export default (
         <IndexRoute component={LoginPage} />
         <Route path="login" component={LoginPage} />
         <Route path="leads" component={LeadsPage} />
-        <Route path="leads/add" component={ManageLeadPage} />
+        <Route path="leads/new" component={ManageLeadPage} />
         <Route path="leads/:id" component={ManageLeadPage} />
     </Route>
 );

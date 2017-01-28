@@ -5,10 +5,10 @@ const leadEntity = new schema.Entity('leads');
 export const leadSchema = [leadEntity];
 
 export default class Lead extends Record({
-    id: null,
+    id: 0,
     leadName: '',
     source: '',
-    leadFee: null,
+    leadFee: 0,
     phone: '',
     email: '',
     address: '',

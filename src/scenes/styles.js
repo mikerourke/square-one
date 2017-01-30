@@ -1,53 +1,69 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {
-    grey700,
-    grey800,
-    grey900,
-} from 'material-ui/styles/colors';
+import * as muiColors from 'material-ui/styles/colors';
 
 export const muiTheme = getMuiTheme({
     palette: {
-        primary1Color: grey700,
-        primary2Color: grey800,
-        pickerHeaderColor: grey700,
+        primary1Color: muiColors.grey500,
+        primary2Color: muiColors.grey700,
+        primary3Color: muiColors.lightBlue700,
+        accent1Color: muiColors.lightBlue500,
+        accent2Color: muiColors.lightBlue100,
+        accent3Color: muiColors.lightBlue700,
+        textColor: muiColors.grey900,
+        alternateTextColor: muiColors.grey100,
+        borderColor: muiColors.grey400,
+        pickerHeaderColor: muiColors.grey500,
     },
 });
 
 const columnSideStyle = {
     flex: '1 0',
     margin: '0 auto',
-    width: '400px',
     minWidth: '400px',
+    width: '400px',
 };
 
-export const globalStyle = {
-    flatButton: {
-        marginTop: '3em',
-        backgroundColor: grey700,
-        color: 'white',
+const defaultTopMargin = '2em';
+
+export default {
+    body: {
+        padding: '10px',
+    },
+    button: {
+        marginTop: defaultTopMargin,
     },
     formContainer: {
         display: 'flex',
+        flexFlow: 'row wrap',
         justifyContent: 'center',
-        marginTop: '3em',
+        marginTop: defaultTopMargin,
+    },
+    iconButton: {
+        cursor: 'pointer',
+        padding: 0,
     },
     input: {
         margin: '0 1em',
+        width: '90%',
+    },
+    menuItemIcon: {
+        marginRight: '24px',
     },
     paper: {
         padding: '3em',
     },
     twoColumnForm: {
-        container: {
-            marginTop: '3em',
-            display: 'flex',
-            flexFlow: 'row wrap',
-            justifyContent: 'center',
-        },
-        leftSide: Object.assign({}, columnSideStyle, { maxWidth: '600px' }),
-        rightSide: Object.assign({}, columnSideStyle, { maxWidth: '800px' }),
-        input: {
-            width: '90%',
+        leftSide: Object.assign({},
+            columnSideStyle, {
+                maxWidth: '600px',
+            }),
+        rightSide: Object.assign({},
+            columnSideStyle, {
+                maxWidth: '800px',
+            }),
+        firstButton: {
+            marginTop: defaultTopMargin,
+            marginLeft: '1em',
         },
     },
 };

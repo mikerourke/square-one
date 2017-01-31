@@ -19,6 +19,7 @@ export const muiTheme = getMuiTheme({
 const columnSideStyle = {
     flex: '1 0',
     margin: '0 auto',
+    maxWidth: '600px',
     minWidth: '400px',
     width: '400px',
 };
@@ -55,11 +56,9 @@ export default {
     twoColumnForm: {
         leftSide: Object.assign({},
             columnSideStyle, {
-                maxWidth: '600px',
             }),
         rightSide: Object.assign({},
             columnSideStyle, {
-                maxWidth: '800px',
             }),
         firstButton: {
             marginTop: defaultTopMargin,

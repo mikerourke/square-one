@@ -30,6 +30,11 @@ export class App extends Component {
         };
 
         this.handleToggle = this.handleToggle.bind(this);
+        this.handleSidebarTouchTap = this.handleSidebarTouchTap.bind(this);
+    }
+
+    handleSidebarTouchTap(event) {
+
     }
 
     handleToggle() {
@@ -46,6 +51,7 @@ export class App extends Component {
                     <Header handleToggle={this.handleToggle} />
                     <Sidebar
                         open={this.state.open}
+                        handleTouchTap={this.handleSidebarTouchTap}
                         handleToggle={this.handleToggle}
                     />
                     <div style={styles.body}>

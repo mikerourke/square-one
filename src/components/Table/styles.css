@@ -22,10 +22,6 @@
     content: "\E5DB";
 }
 
-.ReactTable.-striped .rt-tr.-odd {
-    background: #E1F5FE; /* lightBlue50 */
-}
-
 .ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
     background: #B3E5FC; /* lightBlue100 */
     cursor: pointer;

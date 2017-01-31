@@ -12,6 +12,7 @@ fs.writeFileSync(path.resolve(__dirname, 'client/config.json'),
     JSON.stringify(config));
 
 const isDevelopment = (process.env.NODE_ENV !== 'production');
+console.log(isDevelopment);
 
 const baseConfig = {
     debug: (isDevelopment),

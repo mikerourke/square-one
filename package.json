@@ -12,7 +12,8 @@
     "test": "find ./src -name '*.test.js' | xargs mocha --opts ./mocha.opts || exit 0",
     "test:watch": "npm run test -- --watch",
     "prebuild": "rm -rf client && mkdir client",
-    "build": "NODE_ENV=production babel-node tools/build.js"
+    "build": "NODE_ENV=production babel-node tools/build.js",
+    "build:windows": "set NODE_ENV=production && babel-node tools/build.js"
   },
   "repository": {
     "type": "git",

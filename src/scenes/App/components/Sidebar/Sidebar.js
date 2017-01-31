@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import Drawer from 'material-ui/Drawer';
 import FontIcon from 'material-ui/FontIcon';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
+import { List, ListItem } from 'material-ui/List';
 import styles from 'scenes/styles';
 
 const Sidebar = (
     {
         open,
+        handleTouchTap,
         handleToggle,
     }) => (
         <div>
@@ -16,20 +16,22 @@ const Sidebar = (
                 docked={false}
                 onRequestChange={handleToggle}
             >
-                <Menu>
-                    <MenuItem
+                <List>
+                    <ListItem
                         primaryText="Leads"
+                        onTouchTap={handleTouchTap}
                         leftIcon={
                             <FontIcon
                                 className="material-icons"
                                 style={styles.menuItemIcon}
                             >
-                                settings
+                                recent_actors
                             </FontIcon>
                         }
                     />
-                    <MenuItem
+                    <ListItem
                         primaryText="Settings"
+                        onTouchTap={handleTouchTap}
                         leftIcon={
                             <FontIcon
                                 className="material-icons"
@@ -39,13 +41,14 @@ const Sidebar = (
                             </FontIcon>
                         }
                     />
-                </Menu>
+                </List>
             </Drawer>
         </div>
 );
 
 Sidebar.propTypes = {
     open: PropTypes.bool,
+    handleTouchTap: PropTypes.func.isRequired,
     handleToggle: PropTypes.func.isRequired,
 };
 

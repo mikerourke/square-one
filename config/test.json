@@ -1,1 +1,6 @@
-{}
+{
+  "environment": "test",
+  "api": {
+    "port": 8080
+  }
+}

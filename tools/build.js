@@ -10,9 +10,7 @@ import path from 'path';
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config';
 
-/* eslint-disable no-console */
-
-process.env.NODE_ENV = 'production';
+/* eslint-disable */
 
 console.log(blue('Copying index.html to client directory...'));
 

@@ -15,8 +15,8 @@ export default (state = initialState, action) => {
     const { type, payload } = action;
     switch (type) {
         case GET_SETTING_SUCCESS:
-            const newSetting = payload.data;
-            return state.set(newSetting.id, new Setting(newSetting));
+            const { data } = payload;
+            return state.set(data.id, new Setting(data));
 
         case GET_ALL_SETTINGS_SUCCESS:
             const { settings } = payload.data.entities;

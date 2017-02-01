@@ -3,7 +3,10 @@ import { Record } from 'immutable';
 export default class User extends Record({
     id: null,
     username: '',
-    password: '',
+    firstName: '',
+    lastName: '',
+    title: '',
+    isLoggedIn: false,
     error: null,
     token: null,
 }) {

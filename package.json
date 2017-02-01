@@ -6,13 +6,15 @@
     "api": "babel-node tools/api/apiServer.js",
     "api:watch": "nodemon tools/api/apiServer.js --exec babel-node",
     "check-deps": "babel-node tools/checkDependencies.js",
-    "start": "babel-node tools/server.js",
+    "start": "NODE_ENV=development babel-node tools/server.js",
     "lint": "esw webpack.config.* src tools --color || exit 0",
     "lint:watch": "npm run lint --watch",
     "test": "find ./src -name '*.test.js' | xargs mocha --opts ./mocha.opts || exit 0",
     "test:watch": "npm run test -- --watch",
     "prebuild": "rm -rf client && mkdir client",
     "build": "NODE_ENV=production babel-node tools/build.js",
+    "build:test": "NODE_ENV=test babel-node tools/build.js",
+    "build:stats": "GET_STATS=true npm run build",
     "build:windows": "set NODE_ENV=production && babel-node tools/build.js"
   },
   "repository": {

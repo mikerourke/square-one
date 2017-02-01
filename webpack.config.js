@@ -5,18 +5,21 @@ import webpack from 'webpack';
 import { StatsWriterPlugin } from 'webpack-stats-plugin';
 import Visualizer from 'webpack-visualizer-plugin';
 
-// This will take the current NODE_ENV, and save the config file to
-// 'client/config.json'.  The webpack alias below will then build that file
-// into the client build.
+/* eslint-disable */
+
+/*
+ * This will take the current NODE_ENV, and save the config file to
+ * 'client/config.json'.  The webpack alias below will then build that file
+ * into the client build.
+ */
 fs.writeFileSync(path.resolve(__dirname, 'client/config.json'),
     JSON.stringify(config));
 
-const isDevelopment = (process.env.NODE_ENV !== 'production');
-console.log(isDevelopment);
+const isDevelopment = (process.env.NODE_ENV == 'development');
 
 const baseConfig = {
     debug: (isDevelopment),
-    noInfo: (!isDevelopment),
+    noInfo: true,
     target: 'web',
     entry: ['./src/index'],
     output: {
@@ -72,8 +75,8 @@ const developmentConfig = {
     ],
 };
 
-const productionConfig = {
-    devtool: 'source-map',
+let buildConfig = {
+    devtool: 'eval',
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
@@ -99,6 +102,20 @@ const productionConfig = {
             exclude: [/\.min\.js$/gi], // Skip pre-minified libs
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
+
+    ],
+};
+
+/*
+ * Generates statistics for bundle (size allocation for each library).  The
+ * GET_STATS environment variable is set in the build:stats script in the
+ * package.json.
+ * Note:
+ * For some reason, concat() isn't working for the Webpack plugins.  Using the
+ * Array.push() method gets the job done.
+ */
+if (process.env.GET_STATS == 'true') {
+    buildConfig.plugins.push(
         new StatsWriterPlugin({
             transform: (data, opts) => {
                 const stats = opts.compiler.getStats().toJson({
@@ -106,15 +123,18 @@ const productionConfig = {
                 });
                 return JSON.stringify(stats, null, 2);
             },
-        }),
+        })
+    );
+
+    buildConfig.plugins.push(
         new Visualizer({
             filename: './statistics.html',
-        }),
-    ],
-};
+        })
+    );
+}
 
 const configToUse = isDevelopment ?
                     developmentConfig :
-                    productionConfig;
+                    buildConfig;
 
 export default Object.assign({}, baseConfig, configToUse);

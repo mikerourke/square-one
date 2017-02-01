@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
             return state;
 
         case LOGIN_SUCCESS:
-            const { id, username, password } = payload.data;
+            const { data } = payload;
             return state.merge({
                 id,
                 username,

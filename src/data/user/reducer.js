@@ -20,9 +20,12 @@ export default (state = initialState, action) => {
         case LOGIN_SUCCESS:
             const { data } = payload;
             return state.merge({
-                id,
-                username,
-                password,
+                id: data.id,
+                username: data.username,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                title: data.title,
+                isLoggedIn: data.isLoggedIn,
                 error: null,
                 token: null,
             });

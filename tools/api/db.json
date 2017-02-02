@@ -52,6 +52,10 @@
     {
       "id": 1,
       "username": "mike",
+      "firstName": "Mike",
+      "lastName": "Rourke",
+      "title": "Warlock",
+      "isLoggedIn": "false",
       "password": "mike"
     }
   ],

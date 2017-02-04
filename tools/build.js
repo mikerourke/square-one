@@ -12,44 +12,87 @@ import webpackConfig from '../webpack.config';
 
 /* eslint-disable */
 
-console.log(blue('Copying index.html to client directory...'));
+/**
+ * Writes the content of the index.html file in "src" directory to the 
+ *      output folder.  The "vendor.bundle.js" line needs to be added to the 
+ *      file for the production release.
+ */
+const createHtmlFile = () => {
+    console.log(blue('Creating index.html...'));
+    
+    return new Promise((resolve, reject) => {
+        const sourcePath = path.join(__dirname, '..', 'src/index.html');
+        const targetPath = path.join(__dirname, '..', 'client/index.html');
+        
+        fs.readFile(sourcePath, 'utf8', (error, data) => {
+            if (error) {
+                reject(`Index file read error: ${error}`);
+            }
+            const lineToFind = /<script src="\/bundle.js"><\/script>/g;
+            const replacementLine = 
+                '<script src="/bundle.js"></script>\n' +
+                '\t\t<script src="/vendor.bundle.js"></script>\n';
+            const updatedText = data.replace(lineToFind, replacementLine);
+            
+            fs.writeFile(targetPath, updatedText, 'utf8', (error) => {
+                if (error) {
+                    reject(`Index file write error: ${error}`);
+                }
+                console.log(green('File write successful for index.html.'));
+                
+                resolve();
+            });
+        });
+    });
+};
 
-const sourceHtmlPath = path.join(__dirname, '..', 'src/index.html');
-const targetHtmlPath = path.join(__dirname, '..', 'client/index.html');
-fs.createReadStream(sourceHtmlPath)
-    .pipe(fs.createWriteStream(targetHtmlPath));
+const copyFavicon = () => {
+    console.log(blue('Copying favicon.ico to client directory...'));
+    
+    return new Promise((resolve, reject) => {
+        const sourcePath = path.join(__dirname, '..', 'src/favicon.ico');
+        const targetPath = path.join(__dirname, '..', 'client/favicon.ico');
+        fs.createReadStream(sourcePath)
+            .pipe(fs.createWriteStream(targetPath));
+            
+        console.log(green('File write sucessful for favicon.ico.'));
+        
+        resolve();
+    });
+};
 
-console.log(blue('Copying favicon.ico to client directory...'));
+const generateBundles = () => {
+    console.log(blue('Generating minified Webpack bundle.  Please wait...'));
+    
+    return new Promise((resolve, reject) => {
+        webpack(webpackConfig).run((error, stats) => {
+            // Fatal error occurred. Stop here:
+            if (error) {
+                reject(`Webpack error: ${error}`);
+            }
+        
+            const jsonStats = stats.toJson();
+        
+            if (jsonStats.hasErrors) {
+                return jsonStats.errors.map(error => console.log(red(error)));
+            }
+        
+            if (jsonStats.hasWarnings) {
+                console.log(yellow('Webpack generated the following warnings: '));
+                jsonStats.warnings.map(warning => console.log(yellow(warning)));
+            }
+        
+            console.log(`Webpack stats: ${stats}`);
+            
+            // Build succeeded:
+            console.log(green('Compilation complete, output is in /client.'));
+        
+            resolve();
+        });
+    });
+};
 
-const sourceFaviconPath = path.join(__dirname, '..', 'src/favicon.ico');
-const targetFaviconPath = path.join(__dirname, '..', 'client/favicon.ico');
-fs.createReadStream(sourceFaviconPath)
-    .pipe(fs.createWriteStream(targetFaviconPath));
-
-console.log(blue('Generating minified Webpack bundle.  Please wait...'));
-
-webpack(webpackConfig).run((err, stats) => {
-    // Fatal error occurred. Stop here:
-    if (err) {
-        console.log(red(err));
-        return 1;
-    }
-
-    const jsonStats = stats.toJson();
-
-    if (jsonStats.hasErrors) {
-        return jsonStats.errors.map(error => console.log(red(error)));
-    }
-
-    if (jsonStats.hasWarnings) {
-        console.log(yellow('Webpack generated the following warnings: '));
-        jsonStats.warnings.map(warning => console.log(yellow(warning)));
-    }
-
-    console.log(`Webpack stats: ${stats}`);
-
-    // Build succeeded:
-    console.log(green('Compilation complete, output is in /client.'));
-
-    return 0;
-});
+createHtmlFile()
+    .then(copyFavicon)
+    .then(generateBundles)
+    .catch(error => console.log(red(error)));

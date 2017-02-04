@@ -2,8 +2,10 @@ import config from 'config';
 import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { StatsWriterPlugin } from 'webpack-stats-plugin';
 import Visualizer from 'webpack-visualizer-plugin';
+const packageFile = require('./package.json');
 
 /* eslint-disable */
 
@@ -18,10 +20,8 @@ fs.writeFileSync(path.resolve(__dirname, 'client/config.json'),
 const isDevelopment = (process.env.NODE_ENV == 'development');
 
 const baseConfig = {
-    debug: (isDevelopment),
     noInfo: true,
     target: 'web',
-    entry: ['./src/index'],
     output: {
         path: path.resolve(__dirname, 'client'),
         filename: 'bundle.js',
@@ -35,7 +35,7 @@ const baseConfig = {
             loader: 'babel',
         }, {
             test: /(\.css)$/,
-            loaders: ['style', 'css'],
+            loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
         }, {
             test: /\.json$/,
             loader: 'json-loader',
@@ -53,6 +53,9 @@ const baseConfig = {
             loader: 'url?limit=10000&mimetype=image/svg+xml',
         }],
     },
+    plugins: [
+        new ExtractTextPlugin('styles.css'),
+    ],
     resolve: {
         root: path.resolve(__dirname, 'src'),
         modules: [
@@ -68,42 +71,61 @@ const baseConfig = {
 };
 
 const developmentConfig = {
+    debug: true,
     devtool: 'inline-source-map',
-    plugins: [
+    entry: ['./src/index'],
+    plugins: baseConfig.plugins.concat([
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
-    ],
+    ]),
 };
 
 let buildConfig = {
-    devtool: 'eval',
-    plugins: [
+    debug: false,
+    entry: {
+        app: path.resolve(__dirname, 'src/index.js'),
+        vendor: Object.keys(packageFile.dependencies),
+    },
+    plugins: baseConfig.plugins.concat([
         new webpack.DefinePlugin({
             'process.env': {
                 // This has effect on the React library size:
                 NODE_ENV: JSON.stringify('production'),
             },
         }),
+        new webpack.IgnorePlugin(
+            /^\.\/locale$/, [/moment$/]
+        ),
         new webpack.optimize.AggressiveMergingPlugin(),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            chunks: ['vendor'],
+            filename: 'vendor.bundle.js',
+            minChunks: Infinity
+        }),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.UglifyJsPlugin({
-            mangle: true,
+            sourceMap: false,
             compress: {
-                warnings: false,
+                dead_code: true,
+                if_return: true,
+                join_vars: true,
                 pure_getters: true,
+                sequences: false,
+                screw_ie8: true,
                 unsafe: true,
                 unsafe_comps: true,
-                screw_ie8: true,
+                unused: true,
+                warnings: false,
             },
+            mangle: true,
             output: {
                 comments: false,
             },
             exclude: [/\.min\.js$/gi], // Skip pre-minified libs
         }),
-        new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-
-    ],
+    ]),
 };
 
 /*

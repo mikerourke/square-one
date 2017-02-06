@@ -9,7 +9,6 @@
       "email": "steve@leads.com",
       "address": "123 U.S. 1, Salisbury, MA, United States",
       "description": "This is a lead",
-      "comments": "Cash money",
       "status": "New",
       "appointments": [
         {
@@ -32,7 +31,6 @@
       "email": "nancy@leads.com",
       "address": "",
       "description": "This is another lead",
-      "comments": "Cash money",
       "status": "Existing"
     },
     {
@@ -44,7 +42,6 @@
       "email": "paco@leads.com",
       "address": "",
       "description": "This is a third lead",
-      "comments": "Cash money",
       "status": "New"
     }
   ],

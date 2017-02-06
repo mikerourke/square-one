@@ -2,23 +2,35 @@ import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Lead } from 'data/leads';
 import { Setting } from 'data/settings';
-import styles from 'scenes/styles';
+import Divider from 'material-ui/Divider';
+import FontIcon from 'material-ui/FontIcon';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
-import DropdownInput from 'components/DropdownInput';
 import LocationInput from 'components/LocationInput';
+import PaperHeader from 'components/PaperHeader';
+import globalStyles from 'scenes/styles';
 
-const LeadDetailsForm = (
-    {
-        handleChange,
-        handleSubmit,
-        sourcesList,
-        lead,
-    }) => (
-        <form onSubmit={handleSubmit}>
-            <div style={styles.formContainer}>
-                <div style={styles.twoColumnForm.leftSide}>
-                    <div>
+const styles = Object.assign({}, globalStyles, {
+    formContainer: Object.assign({}, globalStyles.formContainer, {
+        marginLeft: globalStyles.spacing.gutterLess,
+    }),
+});
+
+const LeadDetailsForm = ({
+    handleChange,
+    handleSubmit,
+    sourcesList,
+    lead,
+}) => (
+    <div>
+        <Paper style={styles.paper}>
+            <PaperHeader title="Lead Details" />
+            <form onSubmit={handleSubmit}>
+                <div style={styles.formContainer}>
+                    <div style={styles.twoColumnForm.leftSide}>
                         <TextField
                             name="leadName"
                             floatingLabelText="Lead Name"
@@ -26,17 +38,21 @@ const LeadDetailsForm = (
                             value={lead.leadName}
                             onChange={handleChange}
                         />
-                    </div>
-                    <div>
-                        <DropdownInput
+                        <SelectField
                             name="source"
-                            label="Source"
+                            floatingLabelText="Source"
+                            style={styles.input}
                             value={lead.source}
-                            handleChange={handleChange}
-                            selections={sourcesList}
-                        />
-                    </div>
-                    <div>
+                            onChange={handleChange}
+                        >
+                            {sourcesList.map(selection => (
+                                <MenuItem
+                                    key={selection.id}
+                                    value={selection.value}
+                                    primaryText={selection.value}
+                                />
+                            ))}
+                        </SelectField>
                         <TextField
                             name="leadFee"
                             floatingLabelText="Lead Fee"
@@ -44,10 +60,22 @@ const LeadDetailsForm = (
                             value={lead.leadFee === 0 ? '' : lead.leadFee}
                             onChange={handleChange}
                         />
+                        <TextField
+                            name="phone"
+                            floatingLabelText="Phone"
+                            style={styles.input}
+                            value={lead.phone}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            name="email"
+                            floatingLabelText="Email"
+                            style={styles.input}
+                            value={lead.email}
+                            onChange={handleChange}
+                        />
                     </div>
-                </div>
-                <div style={styles.twoColumnForm.rightSide}>
-                    <div>
+                    <div style={styles.twoColumnForm.rightSide}>
                         <LocationInput
                             name="address"
                             label="Address"
@@ -57,14 +85,23 @@ const LeadDetailsForm = (
                         />
                     </div>
                 </div>
-            </div>
-            <br />
-            <RaisedButton
-                type="submit"
-                label="Save"
-                style={styles.twoColumnForm.firstButton}
-            />
-        </form>
+                <TextField
+                    name="description"
+                    floatingLabelText="Description"
+                    style={styles.twoColumnForm.fullWidthInput}
+                    value={lead.description}
+                    onChange={handleChange}
+                />
+                <div style={styles.twoColumnForm.firstButton}>
+                    <RaisedButton
+                        primary={true}
+                        type="submit"
+                        label="Save"
+                    />
+                </div>
+            </form>
+        </Paper>
+    </div>
 );
 
 LeadDetailsForm.propTypes = {

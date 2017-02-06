@@ -8,6 +8,10 @@ import { Setting, actions as settingsActions } from 'data/settings';
 import LeadDetailsForm from './components/LeadDetailsForm';
 
 class ManageLeadPage extends Component {
+    static contextTypes = {
+        router: PropTypes.object,
+    };
+
     static propTypes = {
         lead: ImmutablePropTypes.record,
         sourcesList: PropTypes.array.isRequired,
@@ -16,10 +20,6 @@ class ManageLeadPage extends Component {
 
     static defaultProps = {
         lead: new Lead(),
-    };
-
-    static contextTypes = {
-        router: PropTypes.object,
     };
 
     constructor(props, context) {

@@ -78,6 +78,7 @@
     "import/no-named-as-default": 0,
     "import/no-named-as-default-member": 0,
     "import/no-unresolved": 0,
+    "jsx-a11y/no-marquee": 0,
 
     // Existing from React/Redux Pluralsight Course:
     // Note: I removed rules that were already present in the Airbnb style.

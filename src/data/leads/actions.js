@@ -17,9 +17,9 @@ export const createLead = lead => ({
     type: CREATE_LEAD,
     payload: {
         request: {
-            type: 'post',
+            method: 'post',
             url: BASE_URL,
-            data: JSON.stringify(lead),
+            data: lead,
         },
     },
 });
@@ -28,7 +28,7 @@ export const deleteLead = id => ({
     type: DELETE_LEAD,
     payload: {
         request: {
-            type: 'delete',
+            method: 'delete',
             url: `${BASE_URL}/${id}`,
         },
     },
@@ -38,9 +38,9 @@ export const updateLead = lead => ({
     type: UPDATE_LEAD,
     payload: {
         request: {
-            type: 'patch',
+            method: 'patch',
             url: `${BASE_URL}/${lead.id}`,
-            data: JSON.stringify(lead),
+            data: lead,
         },
     },
 });
@@ -49,7 +49,7 @@ export const getLead = id => ({
     type: GET_LEAD,
     payload: {
         request: {
-            type: 'get',
+            method: 'get',
             url: `${BASE_URL}/${id}`,
         },
     },
@@ -59,7 +59,7 @@ export const getAllLeads = () => ({
     type: GET_ALL_LEADS,
     payload: {
         request: {
-            type: 'get',
+            method: 'get',
             url: BASE_URL,
             transformResponse: defaultTransform.concat(data =>
                 normalize(data, leadSchema)),

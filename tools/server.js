@@ -2,21 +2,14 @@
  * This is the development server used for testing.  The production application
  *      will be communicating with a separate API.
  */
+/* eslint-disable no-console */
 import { green, red } from 'chalk';
 import config from 'config';
 import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config';
 
-/* eslint-disable no-console */
-
 const port = config.spa.port;
-
-webpackConfig.entry.concat([
-    `webpack-dev-server/client?http://${config.host}:${port}/`,
-    'webpack/hot/dev-server',
-]);
-
 const compiler = webpack(webpackConfig);
 
 new WebpackDevServer(compiler, {

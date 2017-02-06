@@ -1,14 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { muiTheme } from '../styles';
 import { User } from 'data/user';
-import styles from 'scenes/styles';
+import { muiTheme } from '../styles';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
+const styles = {
+    body: {
+        margin: '8px',
+    },
+};
+
 export class App extends Component {
+    static contextTypes = {
+        router: PropTypes.object,
+    };
+
     static propTypes = {
         children: PropTypes.object.isRequired,
         user: ImmutablePropTypes.record,
@@ -16,10 +25,6 @@ export class App extends Component {
 
     static defaultProps = {
         user: new User(),
-    };
-
-    static contextTypes = {
-        router: PropTypes.object,
     };
 
     constructor(props, context) {
@@ -48,7 +53,9 @@ export class App extends Component {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
-                    <Header handleToggle={this.handleToggle} />
+                    <Header
+                        handleToggle={this.handleToggle}
+                    />
                     <Sidebar
                         open={this.state.open}
                         handleTouchTap={this.handleSidebarTouchTap}

@@ -16,7 +16,7 @@ export const getUserInfo = user => ({
     type: GET_USER_INFO,
     payload: {
         request: {
-            type: 'get',
+            method: 'get',
             url: `${BASE_URL}?username=${user.username}`,
         },
     },
@@ -26,7 +26,7 @@ export const auth = (username, password) => ({
     type: LOGIN,
     payload: {
         request: {
-            type: 'get',
+            method: 'get',
             url: `${BASE_URL}?username=${username}`,
         },
     },
@@ -36,7 +36,7 @@ export const logout = user => ({
     type: LOGOUT,
     payload: {
         request: {
-            type: 'get',
+            method: 'get',
             url: `${BASE_URL}?username=${user.username}`,
         },
     },

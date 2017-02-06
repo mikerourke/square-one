@@ -6,16 +6,40 @@ import { actions as leadActions } from 'data/leads';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import styles from 'scenes/styles';
+import Logo from 'components/Logo';
+import globalStyles from 'scenes/styles';
 
+const styles = Object.assign({}, globalStyles, {
+    formContainer: Object.assign({}, globalStyles.formContainer, {
+        flexFlow: 'none',
+    }),
+    formHeader: {
+        container: {
+            display: 'flex',
+            alignItems: 'center',
+        },
+        text: {
+            fontSize: '24px',
+            paddingLeft: globalStyles.spacing.gutterLess,
+        },
+    },
+    paper: Object.assign({}, globalStyles.paper, {
+        marginTop: globalStyles.spacing.gutterMore,
+        padding: globalStyles.spacing.gutterMore,
+        width: '350px',
+    }),
+    textField: {
+        width: '100%',
+    },
+});
 
 export class LoginPage extends Component {
-    static propTypes = {
-        actions: PropTypes.object.isRequired,
-    };
-
     static contextTypes = {
         router: PropTypes.object,
+    };
+
+    static propTypes = {
+        actions: PropTypes.object.isRequired,
     };
 
     constructor(props, context) {
@@ -34,27 +58,30 @@ export class LoginPage extends Component {
         return (
             <div style={styles.formContainer}>
                 <Paper style={styles.paper}>
-                    <form
-                        onSubmit={this.handleSubmit}
-                    >
-                        <div>
-                            <TextField
-                                floatingLabelText="Login"
+                    <form onSubmit={this.handleSubmit}>
+                        <div style={styles.formHeader.container}>
+                            <Logo
+                                width="24px"
+                                height="24px"
                             />
+                            <span style={styles.formHeader.text}>
+                                SQUARE1
+                            </span>
                         </div>
-                        <div>
-                            <TextField
-                                floatingLabelText="Password"
-                                type="password"
-                            />
-                        </div>
-                        <div>
-                            <RaisedButton
-                                label="Login"
-                                type="submit"
-                                style={styles.button}
-                            />
-                        </div>
+                        <TextField
+                            style={styles.textField}
+                            floatingLabelText="Login"
+                        />
+                        <TextField
+                            style={styles.textField}
+                            floatingLabelText="Password"
+                            type="password"
+                        />
+                        <RaisedButton
+                            label="Login"
+                            type="submit"
+                            style={styles.button}
+                        />
                     </form>
                 </Paper>
             </div>

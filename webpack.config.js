@@ -1,3 +1,4 @@
+/* eslint-disable */
 import config from 'config';
 import fs from 'fs';
 import path from 'path';
@@ -5,9 +6,9 @@ import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import { StatsWriterPlugin } from 'webpack-stats-plugin';
 import Visualizer from 'webpack-visualizer-plugin';
-const packageFile = require('./package.json');
 
-/* eslint-disable */
+const configFile = require('./config/default.json');
+const packageFile = require('./package.json');
 
 /*
  * This will take the current NODE_ENV, and save the config file to
@@ -51,6 +52,9 @@ const baseConfig = {
         }, {
             test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
             loader: 'url?limit=10000&mimetype=image/svg+xml',
+        }, {
+            test: /\.(jpg|png)$/,
+            loader: 'file',
         }],
     },
     plugins: [
@@ -73,7 +77,11 @@ const baseConfig = {
 const developmentConfig = {
     debug: true,
     devtool: 'inline-source-map',
-    entry: ['./src/index'],
+    entry: [
+        `webpack-dev-server/client?http://${configFile.host}:${configFile.spa.port}/`,
+        'webpack/hot/dev-server',
+        './src/index',
+    ],
     plugins: baseConfig.plugins.concat([
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
@@ -147,7 +155,6 @@ if (process.env.GET_STATS == 'true') {
             },
         })
     );
-
     buildConfig.plugins.push(
         new Visualizer({
             filename: './statistics.html',

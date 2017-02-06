@@ -15,7 +15,7 @@ export const getSetting = settingName => ({
     type: GET_SETTING,
     payload: {
         request: {
-            type: 'get',
+            method: 'get',
             url: `${BASE_URL}/${settingName}`,
         },
     },
@@ -25,7 +25,7 @@ export const getAllSettings = () => ({
     type: GET_ALL_SETTINGS,
     payload: {
         request: {
-            type: 'get',
+            method: 'get',
             url: BASE_URL,
             transformResponse: defaultTransform.concat(data =>
                 normalize(data, settingSchema)),

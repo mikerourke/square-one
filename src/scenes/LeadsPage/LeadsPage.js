@@ -38,8 +38,9 @@ class LeadsPage extends Component {
         this.handleCellClick = this.handleCellClick.bind(this);
     }
 
-    handleCellClick(row, event) {
-        this.context.router.push(`leads/${row.id}`);
+    handleCellClick(event, rowInfo) {
+        const { id } = rowInfo.row;
+        this.context.router.push(`leads/${id}`);
     }
 
     render() {

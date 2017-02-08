@@ -20,7 +20,7 @@ const createHtmlFile = () => {
     console.log(blue('Creating index.html...'));
 
     return new Promise((resolve, reject) => {
-        const sourcePath = path.join(__dirname, '..', 'src/index.html');
+        const sourcePath = path.join(__dirname, '..', 'src/www/index.html');
         const targetPath = path.join(__dirname, '..', 'client/index.html');
 
         fs.readFile(sourcePath, 'utf8', (error, data) => {
@@ -48,8 +48,8 @@ const createHtmlFile = () => {
 const copyFavicon = () => {
     console.log(blue('Copying favicon.ico to client directory...'));
 
-    return new Promise((resolve, reject) => {
-        const sourcePath = path.join(__dirname, '..', 'src/favicon.ico');
+    return new Promise((resolve) => {
+        const sourcePath = path.join(__dirname, '..', 'src/www/favicon.ico');
         const targetPath = path.join(__dirname, '..', 'client/favicon.ico');
         fs.createReadStream(sourcePath)
             .pipe(fs.createWriteStream(targetPath));

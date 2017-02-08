@@ -18,8 +18,6 @@ const packageFile = require('./package.json');
 fs.writeFileSync(path.resolve(__dirname, 'client/config.json'),
     JSON.stringify(config));
 
-const isDevelopment = (process.env.NODE_ENV == 'development');
-
 const baseConfig = {
     noInfo: true,
     target: 'web',
@@ -162,7 +160,7 @@ if (process.env.GET_STATS == 'true') {
     );
 }
 
-const configToUse = isDevelopment ?
+const configToUse = (process.env.NODE_ENV == 'development') ?
                     developmentConfig :
                     buildConfig;
 

@@ -2,13 +2,13 @@ import { expect } from 'chai';
 import { normalize } from 'normalizr';
 import { fromJS } from 'immutable';
 import Lead, { leadSchema } from '../model';
-import mockDb from '../../../../tools/api/db.json';
+import { mockDb } from '../../data.mock';
 
 /**
  * Helper method that finds the specified lead in the db.json file and
  *      converts it to an Immutable Record representing a Lead entity.
  * @param {number} leadId Id number of the lead to find.
- * @returns {Record}
+ * @returns {Lead}
  */
 const getLeadFromId = (leadId) => {
     const leadFromDb = mockDb.leads.find(lead => lead.id === leadId);

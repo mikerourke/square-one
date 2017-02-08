@@ -6,7 +6,7 @@
     border-right: none  !important;
     box-shadow: none    !important;
     font-family: "Roboto";
-    font-size: var(--fontSize);
+    font-size: 14px;
     text-align: left    !important;
 }
 

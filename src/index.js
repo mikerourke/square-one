@@ -9,7 +9,7 @@ import axios from 'axios';
 import configureStore from './store/configureStore';
 import routes from './routes';
 import { getAllSettings } from './data/settings/actions';
-import './styles.css';
+import './www/styles.css';
 
 const client = axios.create({
     baseURL: `http://${config.host}:${config.api.port}/api`,

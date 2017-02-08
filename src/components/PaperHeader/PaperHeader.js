@@ -1,24 +1,23 @@
 import React, { PropTypes } from 'react';
-import globalStyles from 'scenes/styles';
+import styled from 'styled-components';
+import muiTheme from 'scenes/theme';
 
-const styles = Object.assign({}, globalStyles, {
-    header: {
-        alignItems: 'center',
-        backgroundColor: globalStyles.palette.canvasColor,
-        color: globalStyles.palette.textColor,
-        display: 'flex',
-        fontSize: globalStyles.typography.headerSize,
-        height: '56px',
-        padding: `0 ${globalStyles.spacing.gutterStandard}`,
-    },
-});
+const Wrapper = styled.div`
+    align-items: center;
+    background-color: ${muiTheme.palette.canvasColor};
+    color: ${muiTheme.palette.textColor};
+    display: flex;
+    font-size: 24px;
+    height: 56px;
+    padding: 0 24px;
+`;
 
 const PaperHeader = ({
     title,
 }) => (
-    <div style={styles.header}>
+    <Wrapper>
         {title}
-    </div>
+    </Wrapper>
 );
 
 PaperHeader.propTypes = {

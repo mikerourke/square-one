@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 import ReactTable from 'react-table';
 import TableHeader from './TableHeader';

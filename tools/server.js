@@ -5,16 +5,18 @@
 /* eslint-disable no-console */
 import { green, red } from 'chalk';
 import config from 'config';
+import path from 'path';
 import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import webpackConfig from '../webpack.config';
 
 const port = config.spa.port;
+const buildPath = path.resolve(__dirname, '..', 'src/www');
 const compiler = webpack(webpackConfig);
 
 new WebpackDevServer(compiler, {
-    contentBase: 'src/',
-    publicPath: webpackConfig.output.publicPath,
+    contentBase: buildPath,
+    outputPath: buildPath,
     stats: {
         chunkModules: false,
         colors: true,

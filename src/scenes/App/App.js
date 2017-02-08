@@ -2,16 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { User } from 'data/user';
-import { muiTheme } from '../styles';
+import muiTheme from '../theme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
+import styled from 'styled-components';
 
-const styles = {
-    body: {
-        margin: '8px',
-    },
-};
+const AppContainer = styled.div`
+    margin: 8px;
+`;
 
 export class App extends Component {
     static contextTypes = {
@@ -39,7 +38,7 @@ export class App extends Component {
     }
 
     handleSidebarTouchTap(event) {
-
+        // TODO: Write code to handle menu events.
     }
 
     handleToggle() {
@@ -61,9 +60,9 @@ export class App extends Component {
                         handleTouchTap={this.handleSidebarTouchTap}
                         handleToggle={this.handleToggle}
                     />
-                    <div style={styles.body}>
+                    <AppContainer>
                         {children}
-                    </div>
+                    </AppContainer>
                 </div>
             </MuiThemeProvider>
         );

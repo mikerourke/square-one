@@ -2,13 +2,13 @@ import { expect } from 'chai';
 import { normalize } from 'normalizr';
 import { fromJS } from 'immutable';
 import Setting, { settingSchema } from '../model';
-import mockDb from '../../../../tools/api/db.json';
+import { mockDb } from '../../data.mock';
 
 /**
  * Helper method that finds the specified setting in the db.json file and
  *      converts it to an Immutable Record representing a Setting entity.
  * @param {string} settingName Name of the setting to search for in the file.
- * @returns {Record}
+ * @returns {Setting}
  */
 const getSettingFromName = (settingName) => {
     const settingFromDb = mockDb.settings.find(setting =>

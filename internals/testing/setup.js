@@ -11,9 +11,9 @@
 
 /* eslint-disable */
 
-import chai from 'chai';
-import chaiImmutable from 'chai-immutable';
-import jsdom from 'jsdom';
+const chai = require('chai');
+const chaiImmutable = require('chai-immutable');
+const jsdom = require('jsdom');
 
 // Ensure Chai is accommodating for immutable data structures:
 chai.use(chaiImmutable);

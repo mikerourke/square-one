@@ -5,12 +5,13 @@
  *      React/Redux Pluralsight course.
  */
 /* eslint-disable */
-import { blue, green, red, yellow } from 'chalk';
-import fs from 'fs';
-import path from 'path';
-import webpack from 'webpack';
-import webpackConfig from '../webpack.config';
+const { blue, green, red, yellow } = require('chalk');
+const fs = require('fs');
+const path = require('path');
+const webpack = require('webpack');
+const webpackConfig = require('../webpack/webpack.prod.babel');
 
+process.env.NODE_ENV = 'production';
 /**
  * Writes the content of the index.html file in "src" directory to the
  *      output folder.  The "vendor.bundle.js" line needs to be added to the
@@ -20,8 +21,8 @@ const createHtmlFile = () => {
     console.log(blue('Creating index.html...'));
 
     return new Promise((resolve, reject) => {
-        const sourcePath = path.join(__dirname, '..', 'src/www/index.html');
-        const targetPath = path.join(__dirname, '..', 'client/index.html');
+        const sourcePath = path.resolve(process.cwd(), 'src/www/index.html');
+        const targetPath = path.resolve(process.cwd(), 'client/index.html');
 
         fs.readFile(sourcePath, 'utf8', (error, data) => {
             if (error) {
@@ -49,8 +50,8 @@ const copyFavicon = () => {
     console.log(blue('Copying favicon.ico to client directory...'));
 
     return new Promise((resolve) => {
-        const sourcePath = path.join(__dirname, '..', 'src/www/favicon.ico');
-        const targetPath = path.join(__dirname, '..', 'client/favicon.ico');
+        const sourcePath = path.resolve(process.cwd(), 'src/www/favicon.ico');
+        const targetPath = path.resolve(process.cwd(), 'client/favicon.ico');
         fs.createReadStream(sourcePath)
             .pipe(fs.createWriteStream(targetPath));
 

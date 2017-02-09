@@ -1,15 +1,15 @@
 /**
  * This is a server that mocks the database using json-server.  The records
  *      are stored in the "db.json" file.
- * @module apiServer
  * @link https://github.com/typicode/json-server
  */
-import { blue } from 'chalk';
-import path from 'path';
-import jsonServer from 'json-server';
-import routes from './routes.json';
 
 /* eslint-disable */
+
+const { blue } = require('chalk');
+const path = require('path');
+const jsonServer = require('json-server');
+const routes = require('./routes.json');
 
 const port = process.env.API_PORT || 8082;
 

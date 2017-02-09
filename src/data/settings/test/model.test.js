@@ -5,7 +5,7 @@ import Setting, { settingSchema } from '../model';
 import { mockDb } from '../../data.mock';
 
 /**
- * Helper method that finds the specified setting in the db.json file and
+ * Helper method that finds the specified setting in the mock database and
  *      converts it to an Immutable Record representing a Setting entity.
  * @param {string} settingName Name of the setting to search for in the file.
  * @returns {Setting}

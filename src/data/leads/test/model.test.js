@@ -5,7 +5,7 @@ import Lead, { leadSchema } from '../model';
 import { mockDb } from '../../data.mock';
 
 /**
- * Helper method that finds the specified lead in the db.json file and
+ * Helper method that finds the specified lead in the mock database and
  *      converts it to an Immutable Record representing a Lead entity.
  * @param {number} leadId Id number of the lead to find.
  * @returns {Lead}

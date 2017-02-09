@@ -1,4 +1,3 @@
-import config from 'config';
 import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from '../reducers';
 import axiosMiddleware from 'redux-axios-middleware';

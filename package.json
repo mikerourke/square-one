@@ -3,19 +3,17 @@
   "version": "0.0.1",
   "description": "Front end for the square1 lead tracking and resource management system.",
   "scripts": {
-    "api": "babel-node tools/api/apiServer.js",
-    "api:watch": "nodemon tools/api/apiServer.js --exec babel-node",
-    "check-deps": "babel-node tools/checkDependencies.js",
-    "start": "NODE_ENV=development babel-node tools/server.js",
+    "api": "node internals/api/server.js",
+    "api:watch": "nodemon internals/api/server.js",
+    "start": "NODE_ENV=development node internals/server",
     "lint": "esw webpack.config.* src tools --color || exit 0",
     "lint:watch": "npm run lint --watch",
     "test": "find ./src -name '*.test.js' | xargs mocha --opts ./mocha.opts || exit 0",
     "test:watch": "npm run test -- --watch",
     "prebuild": "rm -rf client && mkdir client",
-    "build": "NODE_ENV=production babel-node tools/build.js",
-    "build:test": "NODE_ENV=test babel-node tools/build.js",
-    "build:stats": "GET_STATS=true npm run build",
-    "build:windows": "set NODE_ENV=production && babel-node tools/build.js"
+    "build": "NODE_ENV=production node internals/scripts/build.js",
+    "build:test": "NODE_ENV=test node internals/scripts/build.js",
+    "build:stats": "GET_STATS=true npm run build"
   },
   "repository": {
     "type": "git",
@@ -29,7 +27,6 @@
   "homepage": "https://github.com/wolfspace/square1-web#readme",
   "dependencies": {
     "axios": "^0.15.3",
-    "config": "^1.25.1",
     "immutable": "^3.8.1",
     "material-ui": "^0.16.6",
     "material-ui-geosuggest": "^0.5.0",
@@ -79,6 +76,7 @@
     "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.4.2",
     "redux-mock-store": "^1.2.2",
+    "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
     "styled-components": "^1.4.3",
     "url-loader": "^0.5.7",
@@ -92,9 +90,6 @@
       "react",
       "es2015",
       "stage-1"
-    ],
-    "plugins": [
-      "webpack-alias"
     ],
     "env": {
       "development": {

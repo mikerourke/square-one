@@ -3,35 +3,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actions as userActions } from 'data/user';
 import { actions as leadActions } from 'data/leads';
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
 import Logo from 'components/Logo';
 import globalStyles from 'scenes/styles';
-
-const styles = Object.assign({}, globalStyles, {
-    formContainer: Object.assign({}, globalStyles.formContainer, {
-        flexFlow: 'none',
-    }),
-    formHeader: {
-        container: {
-            display: 'flex',
-            alignItems: 'center',
-        },
-        text: {
-            fontSize: '24px',
-            paddingLeft: globalStyles.spacing.gutterLess,
-        },
-    },
-    paper: Object.assign({}, globalStyles.paper, {
-        marginTop: globalStyles.spacing.gutterMore,
-        padding: globalStyles.spacing.gutterMore,
-        width: '350px',
-    }),
-    textField: {
-        width: '100%',
-    },
-});
+import {
+    Button,
+    Container,
+    Header,
+    HeaderText,
+    Paper,
+    TextInput,
+} from './components';
 
 export class LoginPage extends Component {
     static contextTypes = {
@@ -56,35 +37,32 @@ export class LoginPage extends Component {
 
     render() {
         return (
-            <div style={styles.formContainer}>
-                <Paper style={styles.paper}>
+            <Container>
+                <Paper>
                     <form onSubmit={this.handleSubmit}>
-                        <div style={styles.formHeader.container}>
+                        <Header>
                             <Logo
                                 width="24px"
                                 height="24px"
                             />
-                            <span style={styles.formHeader.text}>
+                            <HeaderText>
                                 SQUARE1
-                            </span>
-                        </div>
-                        <TextField
-                            style={styles.textField}
+                            </HeaderText>
+                        </Header>
+                        <TextInput
                             floatingLabelText="Login"
                         />
-                        <TextField
-                            style={styles.textField}
+                        <TextInput
                             floatingLabelText="Password"
                             type="password"
                         />
-                        <RaisedButton
+                        <Button
                             label="Login"
                             type="submit"
-                            style={styles.button}
                         />
                     </form>
                 </Paper>
-            </div>
+            </Container>
         );
     }
 }

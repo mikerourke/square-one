@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { User } from 'data/user';
-import muiTheme from '../theme';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import styled from 'styled-components';
+import muiTheme from '../theme';
+import { User } from 'data/user';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import styled from 'styled-components';
 
 const AppContainer = styled.div`
     margin: 8px;

@@ -1,16 +1,12 @@
 import React, { PropTypes } from 'react';
-import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import styled from 'styled-components';
-
-const StyledAppBar = styled(AppBar)`
-    box-shadow: none;
-`;
+import AppBar from './AppBar';
 
 const Header = ({
     handleToggle,
 }) => (
-    <StyledAppBar
+    <AppBar
         iconElementRight={
             <IconButton iconClassName="material-icons">
                 account_circle

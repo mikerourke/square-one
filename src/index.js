@@ -1,14 +1,22 @@
+/**
+ * Entry point for the application.  The assets associated with the client
+ *      bundle are located in the "www" folder.
+ */
 import 'babel-polyfill';
+
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import { Router, browserHistory } from 'react-router';
 import axios from 'axios';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import configureStore from './store/configureStore';
 import routes from './routes';
 import { getAllSettings } from './data/settings/actions';
+
+// Import web assets:
 import './www/styles.css';
+import '!file-loader?name=[name].[ext]!./www/favicon.ico'; // eslint-disable-line
 
 const apiHost = process.env.IP || 'localhost';
 const apiPort = process.env.API_PORT || 8082;

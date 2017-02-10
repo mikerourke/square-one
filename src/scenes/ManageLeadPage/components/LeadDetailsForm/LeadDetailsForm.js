@@ -2,22 +2,22 @@ import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Lead } from 'data/leads';
 import { Setting } from 'data/settings';
-import Divider from 'material-ui/Divider';
-import FontIcon from 'material-ui/FontIcon';
 import MenuItem from 'material-ui/MenuItem';
-import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
+import Paper from 'components/Paper';
 import LocationInput from 'components/LocationInput';
 import PaperHeader from 'components/PaperHeader';
-import globalStyles from 'scenes/styles';
+import {
+    Column,
+    Container,
+    SelectInput,
+    TextInput,
+} from 'components/TwoColumnForm';
+import styled from 'styled-components';
 
-const styles = Object.assign({}, globalStyles, {
-    formContainer: Object.assign({}, globalStyles.formContainer, {
-        marginLeft: globalStyles.spacing.gutterLess,
-    }),
-});
+const FirstButtonWrapper = styled.div`
+    padding: 16px 0 16px 24px;
+`;
 
 const LeadDetailsForm = ({
     handleChange,
@@ -26,22 +26,20 @@ const LeadDetailsForm = ({
     lead,
 }) => (
     <div>
-        <Paper style={styles.paper}>
+        <Paper>
             <PaperHeader title="Lead Details" />
             <form onSubmit={handleSubmit}>
-                <div style={styles.formContainer}>
-                    <div style={styles.twoColumnForm.leftSide}>
-                        <TextField
+                <Container>
+                    <Column>
+                        <TextInput
                             name="leadName"
                             floatingLabelText="Lead Name"
-                            style={styles.input}
                             value={lead.leadName}
                             onChange={handleChange}
                         />
-                        <SelectField
+                        <SelectInput
                             name="source"
                             floatingLabelText="Source"
-                            style={styles.input}
                             value={lead.source}
                             onChange={handleChange}
                         >
@@ -52,53 +50,48 @@ const LeadDetailsForm = ({
                                     primaryText={selection.value}
                                 />
                             ))}
-                        </SelectField>
-                        <TextField
+                        </SelectInput>
+                        <TextInput
                             name="leadFee"
                             floatingLabelText="Lead Fee"
-                            style={styles.input}
                             value={lead.leadFee === 0 ? '' : lead.leadFee}
                             onChange={handleChange}
                         />
-                        <TextField
+                        <TextInput
                             name="phone"
                             floatingLabelText="Phone"
-                            style={styles.input}
                             value={lead.phone}
                             onChange={handleChange}
                         />
-                        <TextField
+                        <TextInput
                             name="email"
                             floatingLabelText="Email"
-                            style={styles.input}
                             value={lead.email}
                             onChange={handleChange}
                         />
-                    </div>
-                    <div style={styles.twoColumnForm.rightSide}>
+                    </Column>
+                    <Column>
                         <LocationInput
                             name="address"
                             label="Address"
-                            style={styles.input}
                             value={lead.address}
                             handleChange={handleChange}
                         />
-                    </div>
-                </div>
-                <TextField
+                    </Column>
+                </Container>
+                <TextInput
                     name="description"
                     floatingLabelText="Description"
-                    style={styles.twoColumnForm.fullWidthInput}
                     value={lead.description}
                     onChange={handleChange}
                 />
-                <div style={styles.twoColumnForm.firstButton}>
+                <FirstButtonWrapper>
                     <RaisedButton
                         primary={true}
                         type="submit"
                         label="Save"
                     />
-                </div>
+                </FirstButtonWrapper>
             </form>
         </Paper>
     </div>

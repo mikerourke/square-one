@@ -1,4 +1,9 @@
+/**
+ * Development webpack configuration called by internals/server.js.
+ */
+
 /* eslint-disable */
+
 const webpack = require('webpack');
 const baseConfig = require('./webpack.base.babel');
 

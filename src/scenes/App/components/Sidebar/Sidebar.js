@@ -1,30 +1,13 @@
 import React, { PropTypes } from 'react';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
-import FontIcon from 'material-ui/FontIcon';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Logo from 'components/Logo';
-import globalStyles from 'scenes/styles';
-
-const headerTextColor = globalStyles.palette.alternateTextColor;
-const styles = Object.assign({}, globalStyles, {
-    header: {
-        backgroundColor: globalStyles.palette.accent1Color,
-        color: headerTextColor,
-        height: '144px',
-        paddingLeft: '24px',
-    },
-    headerIcon: {
-        color: headerTextColor,
-        marginTop: '24px',
-        fontSize: '56px',
-    },
-    headerDetail: {
-        marginTop: '12px',
-        fontSize: '14px',
-    },
-});
+import MenuItemIcon from 'components/MenuItemIcon';
+import Header from './Header';
+import HeaderDetail from './HeaderDetail';
+import HeaderIcon from './HeaderIcon';
 
 const Sidebar = ({
     open,
@@ -38,17 +21,14 @@ const Sidebar = ({
             docked={false}
             onRequestChange={handleToggle}
         >
-            <div style={styles.header}>
-                <FontIcon
-                    className="material-icons"
-                    style={styles.headerIcon}
-                >
+            <Header>
+                <HeaderIcon className="material-icons">
                     face
-                </FontIcon>
-                <div style={styles.headerDetail}>
+                </HeaderIcon>
+                <HeaderDetail>
                     {userEmail}
-                </div>
-            </div>
+                </HeaderDetail>
+            </Header>
             <List>
                 <Subheader>Enterprise</Subheader>
                 <ListItem
@@ -56,12 +36,9 @@ const Sidebar = ({
                     primaryText="Leads"
                     onTouchTap={handleTouchTap}
                     leftIcon={
-                        <FontIcon
-                            className="material-icons"
-                            style={styles.menuItemIcon}
-                        >
+                        <MenuItemIcon className="material-icons">
                             recent_actors
-                        </FontIcon>
+                        </MenuItemIcon>
                     }
                 />
                 <Divider />
@@ -71,12 +48,9 @@ const Sidebar = ({
                     primaryText="General"
                     onTouchTap={handleTouchTap}
                     leftIcon={
-                        <FontIcon
-                            className="material-icons"
-                            style={styles.menuItemIcon}
-                        >
+                        <MenuItemIcon className="material-icons">
                             settings
-                        </FontIcon>
+                        </MenuItemIcon>
                     }
                 />
                 <ListItem
@@ -84,12 +58,9 @@ const Sidebar = ({
                     primaryText="Customize"
                     onTouchTap={handleTouchTap}
                     leftIcon={
-                        <FontIcon
-                            className="material-icons"
-                            style={styles.menuItemIcon}
-                        >
+                        <MenuItemIcon className="material-icons">
                             create
-                        </FontIcon>
+                        </MenuItemIcon>
                     }
                 />
                 <ListItem
@@ -97,12 +68,9 @@ const Sidebar = ({
                     primaryText="Lists"
                     onTouchTap={handleTouchTap}
                     leftIcon={
-                        <FontIcon
-                            className="material-icons"
-                            style={styles.menuItemIcon}
-                        >
+                        <MenuItemIcon className="material-icons">
                             format_list_bulleted
-                        </FontIcon>
+                        </MenuItemIcon>
                     }
                 />
             </List>

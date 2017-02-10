@@ -1,6 +1,12 @@
+/**
+ * Production webpack configuration called by internals/build.js.
+ */
+
 /* eslint-disable */
+
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { StatsWriterPlugin } = require('webpack-stats-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 const baseConfig = require('./webpack.base.babel');
@@ -37,6 +43,10 @@ const plugins = baseConfig.plugins.concat([
         },
         exclude: [/\.min\.js$/gi], // Skip pre-minified libs
     }),
+    new HtmlWebpackPlugin({
+        template: path.resolve(process.cwd(), 'src/www/index.html'),
+        inject: true,
+    })
 ]);
 
 /*

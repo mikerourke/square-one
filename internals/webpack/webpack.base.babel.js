@@ -20,6 +20,9 @@ module.exports = {
             test: /(\.css)$/,
             loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
         }, {
+            test: /\.html$/,
+            loader: 'html-loader',
+        },{
             test: /\.json$/,
             loader: 'json-loader',
         }, {

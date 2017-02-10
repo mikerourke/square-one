@@ -1,7 +1,7 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import * as muiColors from 'material-ui/styles/colors';
 
-const palette = {
+export const palette = {
     primary1Color: muiColors.grey500,
     primary2Color: muiColors.grey700,
     primary3Color: muiColors.grey100,

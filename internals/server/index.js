@@ -12,16 +12,15 @@ const webpack = require('webpack');
 const webpackConfig = require('../webpack/webpack.dev.babel');
 
 const port = process.env.PORT || 8081;
-const buildPath = path.resolve(process.cwd(), 'src/www');
+const buildPath = path.join(process.cwd(), 'src/www');
 const compiler = webpack(webpackConfig);
 
 new WebpackDevServer(compiler, {
     compress: true,
     contentBase: buildPath,
-    clientLogLevel: 'none',
+    clientLogLevel: 'error',
     historyApiFallback: true,
     hot: true,
-    outputPath: buildPath,
     // TODO: Setup proxy for API.
     // proxy: {
     //     '/api': {
@@ -32,6 +31,8 @@ new WebpackDevServer(compiler, {
     stats: {
         chunkModules: false,
         colors: true,
+        errors: true,
+        errorDetails: true,
     },
 }).listen(port, (err) => {
     if (err) {

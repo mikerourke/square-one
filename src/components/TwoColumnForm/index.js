@@ -1,11 +1,15 @@
 import Column from './Column';
 import Container from './Container';
-import SelectInput from './SelectInput';
-import TextInput from './TextInput';
+import {
+    LocationInput,
+    SelectInput,
+    TextInput,
+} from './Inputs';
 
 export {
     Column,
     Container,
+    LocationInput,
     SelectInput,
     TextInput,
 };

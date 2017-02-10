@@ -1,33 +1,46 @@
+/**
+ * Base webpack configuration with options used by the development and
+ *      production configurations.
+ */
+
 /* eslint-disable */
+
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    target: 'web',
     output: {
-        path: path.resolve(process.cwd(), 'client'),
         filename: 'bundle.js',
+        path: path.resolve(process.cwd(), 'client'),
         publicPath: '/',
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.js$/,
-            include: path.join(process.cwd(), 'src'),
             exclude: /node_modules/,
-            loader: 'babel',
+            loader: 'babel-loader',
+            query: {
+                presets: [
+                    ['es2015', {modules: false}],
+                    'latest',
+                    'react',
+                    'stage-0',
+                ],
+            }
         }, {
             test: /(\.css)$/,
-            loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+            use: ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: 'css-loader',
+                publicPath: '/client'
+            }),
         }, {
             test: /\.html$/,
-            loader: 'html-loader',
-        },{
-            test: /\.json$/,
-            loader: 'json-loader',
+            use: 'html-loader',
         }, {
             test: /\.(eot|svg|ttf|woff|woff2|jpg|png|gif)$/,
-            loader: 'file',
+            use: 'file-loader',
         }],
     },
     plugins: [
@@ -36,17 +49,20 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             },
         }),
-        new ExtractTextPlugin('styles.css'),
+        new ExtractTextPlugin({
+            filename: 'styles.css',
+            disable: false,
+        }),
     ],
     resolve: {
-        root: path.resolve(process.cwd(), 'src'),
         modules: [
-            path.resolve(process.cwd(), 'src'),
+            path.join(process.cwd(), 'src'),
             'node_modules',
         ],
-        extensions: ['', '.js'],
+        extensions: ['.js'],
         alias: {
             scenes: path.resolve(process.cwd(), 'src/scenes'),
         },
     },
+    target: 'web',
 };

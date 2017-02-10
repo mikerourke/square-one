@@ -5,11 +5,11 @@ import { Setting } from 'data/settings';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'components/Paper';
-import LocationInput from 'components/LocationInput';
 import PaperHeader from 'components/PaperHeader';
 import {
     Column,
     Container,
+    LocationInput,
     SelectInput,
     TextInput,
 } from 'components/TwoColumnForm';
@@ -25,76 +25,74 @@ const LeadDetailsForm = ({
     sourcesList,
     lead,
 }) => (
-    <div>
-        <Paper>
-            <PaperHeader title="Lead Details" />
-            <form onSubmit={handleSubmit}>
-                <Container>
-                    <Column>
-                        <TextInput
-                            name="leadName"
-                            floatingLabelText="Lead Name"
-                            value={lead.leadName}
-                            onChange={handleChange}
-                        />
-                        <SelectInput
-                            name="source"
-                            floatingLabelText="Source"
-                            value={lead.source}
-                            onChange={handleChange}
-                        >
-                            {sourcesList.map(selection => (
-                                <MenuItem
-                                    key={selection.id}
-                                    value={selection.value}
-                                    primaryText={selection.value}
-                                />
-                            ))}
-                        </SelectInput>
-                        <TextInput
-                            name="leadFee"
-                            floatingLabelText="Lead Fee"
-                            value={lead.leadFee === 0 ? '' : lead.leadFee}
-                            onChange={handleChange}
-                        />
-                        <TextInput
-                            name="phone"
-                            floatingLabelText="Phone"
-                            value={lead.phone}
-                            onChange={handleChange}
-                        />
-                        <TextInput
-                            name="email"
-                            floatingLabelText="Email"
-                            value={lead.email}
-                            onChange={handleChange}
-                        />
-                    </Column>
-                    <Column>
-                        <LocationInput
-                            name="address"
-                            label="Address"
-                            value={lead.address}
-                            handleChange={handleChange}
-                        />
-                    </Column>
-                </Container>
-                <TextInput
-                    name="description"
-                    floatingLabelText="Description"
-                    value={lead.description}
-                    onChange={handleChange}
-                />
-                <FirstButtonWrapper>
-                    <RaisedButton
-                        primary={true}
-                        type="submit"
-                        label="Save"
+    <Paper>
+        <PaperHeader title="Lead Details" />
+        <form onSubmit={handleSubmit}>
+            <Container>
+                <Column>
+                    <TextInput
+                        name="leadName"
+                        floatingLabelText="Lead Name"
+                        value={lead.leadName}
+                        onChange={handleChange}
                     />
-                </FirstButtonWrapper>
-            </form>
-        </Paper>
-    </div>
+                    <SelectInput
+                        name="source"
+                        floatingLabelText="Source"
+                        value={lead.source}
+                        onChange={handleChange}
+                    >
+                        {sourcesList.map(selection => (
+                            <MenuItem
+                                key={selection.id}
+                                value={selection.value}
+                                primaryText={selection.value}
+                            />
+                        ))}
+                    </SelectInput>
+                    <TextInput
+                        name="leadFee"
+                        floatingLabelText="Lead Fee"
+                        value={lead.leadFee === 0 ? '' : lead.leadFee}
+                        onChange={handleChange}
+                    />
+                    <TextInput
+                        name="phone"
+                        floatingLabelText="Phone"
+                        value={lead.phone}
+                        onChange={handleChange}
+                    />
+                    <TextInput
+                        name="email"
+                        floatingLabelText="Email"
+                        value={lead.email}
+                        onChange={handleChange}
+                    />
+                </Column>
+                <Column>
+                    <LocationInput
+                        name="address"
+                        floatingLabelText="Address"
+                        value={lead.address}
+                        onChange={handleChange}
+                    />
+                </Column>
+            </Container>
+            <TextInput
+                name="description"
+                floatingLabelText="Description"
+                value={lead.description}
+                onChange={handleChange}
+            />
+            <FirstButtonWrapper>
+                <RaisedButton
+                    primary={true}
+                    type="submit"
+                    label="Save"
+                />
+            </FirstButtonWrapper>
+        </form>
+    </Paper>
 );
 
 LeadDetailsForm.propTypes = {

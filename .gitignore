@@ -32,3 +32,4 @@ client
 doc
 local.json
 .ssl/
+stats.json

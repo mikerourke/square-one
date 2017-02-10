@@ -10,23 +10,17 @@ import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 import GoogleMapsLoader from 'google-maps';
 
-class LocationInput extends Component {
+class LocationField extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
-        label: PropTypes.string.isRequired,
+        floatingLabelText: PropTypes.string.isRequired,
         value: PropTypes.string,
-        hintText: PropTypes.string,
-        style: PropTypes.object,
-        handleChange: PropTypes.func.isRequired,
+        onChange: PropTypes.func.isRequired,
         onPlaceChange: PropTypes.func,
     };
 
     static defaultProps = {
         value: '',
-        hintText: '',
-        style: {
-            width: '95%',
-        },
         onPlaceChange: () => {},
     };
 
@@ -52,13 +46,8 @@ class LocationInput extends Component {
 
     render() {
         const {
-            name,
-            label,
-            value,
-            hintText,
-            style,
-            handleChange,
             onPlaceChange,
+            ...props
         } = this.props;
 
         if (onPlaceChange !== this.onPlaceChange) {
@@ -67,15 +56,10 @@ class LocationInput extends Component {
 
         return (
             <TextField
-                name={name}
-                floatingLabelText={label}
-                value={value}
-                hintText={hintText}
-                style={style}
-                onChange={handleChange}
+                {...props}
             />
         );
     }
 }
 
-export default LocationInput;
+export default LocationField;

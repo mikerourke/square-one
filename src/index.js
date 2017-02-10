@@ -15,8 +15,10 @@ import routes from './routes';
 import { getAllSettings } from './data/settings/actions';
 
 // Import web assets:
+/* eslint-disable */
 import './www/styles.css';
-import '!file-loader?name=[name].[ext]!./www/favicon.ico'; // eslint-disable-line
+import '!file-loader?name=[name].[ext]!./www/favicon.ico';
+/* eslint-enable */
 
 const apiHost = process.env.IP || 'localhost';
 const apiPort = process.env.API_PORT || 8082;

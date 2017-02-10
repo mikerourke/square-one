@@ -2,15 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import styled from 'styled-components';
 import muiTheme from '../theme';
 import { User } from 'data/user';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-
-const AppContainer = styled.div`
-    margin: 8px;
-`;
 
 export class App extends Component {
     static contextTypes = {
@@ -60,9 +55,9 @@ export class App extends Component {
                         handleTouchTap={this.handleSidebarTouchTap}
                         handleToggle={this.handleToggle}
                     />
-                    <AppContainer>
+                    <div>
                         {children}
-                    </AppContainer>
+                    </div>
                 </div>
             </MuiThemeProvider>
         );

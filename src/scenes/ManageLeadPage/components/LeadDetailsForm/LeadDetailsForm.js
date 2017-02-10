@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { Lead } from 'data/leads';
-import { Setting } from 'data/settings';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import styled from 'styled-components';
+import { Lead } from 'data/leads';
+import { Setting } from 'data/settings';
 import Paper from 'components/Paper';
 import PaperHeader from 'components/PaperHeader';
 import {
@@ -13,7 +14,6 @@ import {
     SelectInput,
     TextInput,
 } from 'components/TwoColumnForm';
-import styled from 'styled-components';
 
 const FirstButtonWrapper = styled.div`
     padding: 16px 0 16px 24px;

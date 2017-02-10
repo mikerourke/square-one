@@ -1,16 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import Paper from 'material-ui/Paper';
 import ReactTable from 'react-table';
-import TableHeader from './TableHeader';
-import globalStyles from 'scenes/styles';
+import styled from 'styled-components';
 import 'react-table/react-table.css';
+import Paper from 'components/Paper';
+import TableHeader from './TableHeader';
 import './styles.css';
 
-const styles = Object.assign({}, globalStyles, {
-    paper: Object.assign({}, globalStyles.paper, {
-        padding: 0,
-    }),
-});
+const StyledPaper = styled(Paper)`
+    padding: 0;
+`;
 
 class Table extends Component {
     static propTypes = {
@@ -25,7 +23,7 @@ class Table extends Component {
 
         return (
             <div>
-                <Paper style={styles.paper}>
+                <StyledPaper>
                     <TableHeader title={title} />
                     <ReactTable
                         className="-striped -highlight"
@@ -37,7 +35,7 @@ class Table extends Component {
                             onClick: event => handleCellClick(event, rowInfo),
                         })}
                     />
-                </Paper>
+                </StyledPaper>
             </div>
         );
     }

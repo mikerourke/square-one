@@ -17,6 +17,8 @@ const server = jsonServer.create();
 const middlewares = jsonServer.defaults();
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
+
+// Generates a random ID when a new record is created:
 server.use((req, res, next) => {
     // TODO: Fix the issue with POST requests not creating a new record.
     if (req.method === 'POST') {
@@ -24,7 +26,9 @@ server.use((req, res, next) => {
         req.body.id = randomId;
     }
     next();
-})
+});
+
+// Use custom routes from routes.json file:
 server.use(jsonServer.rewriter(routes));
 
 const router = jsonServer.router(path.join(__dirname, 'db.json'));

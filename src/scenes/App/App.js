@@ -1,11 +1,18 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import styled from 'styled-components';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import muiTheme from '../theme';
+import { actions as guiActions } from 'data/gui';
 import { User } from 'data/user';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
+
+const AppContainer = styled.div`
+    margin: 0 8px;
+`;
 
 export class App extends Component {
     static contextTypes = {
@@ -13,7 +20,9 @@ export class App extends Component {
     };
 
     static propTypes = {
+        actions: PropTypes.object.isRequired,
         children: PropTypes.object.isRequired,
+        gui: PropTypes.object.isRequired,
         user: ImmutablePropTypes.record,
     };
 
@@ -24,10 +33,6 @@ export class App extends Component {
     constructor(props, context) {
         super(props, context);
 
-        this.state = {
-            open: false,
-        };
-
         this.handleToggle = this.handleToggle.bind(this);
         this.handleSidebarTouchTap = this.handleSidebarTouchTap.bind(this);
     }
@@ -37,13 +42,12 @@ export class App extends Component {
     }
 
     handleToggle() {
-        this.setState({
-            open: !this.state.open,
-        });
+        const { toggleAppSidebar } = this.props.actions;
+        toggleAppSidebar();
     }
 
     render() {
-        const { children } = this.props;
+        const { gui, children } = this.props;
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
@@ -51,13 +55,13 @@ export class App extends Component {
                         handleToggle={this.handleToggle}
                     />
                     <Sidebar
-                        open={this.state.open}
+                        open={gui.appSidebarOpen}
                         handleTouchTap={this.handleSidebarTouchTap}
                         handleToggle={this.handleToggle}
                     />
-                    <div>
+                    <AppContainer>
                         {children}
-                    </div>
+                    </AppContainer>
                 </div>
             </MuiThemeProvider>
         );
@@ -65,7 +69,12 @@ export class App extends Component {
 }
 
 const mapStateToProps = state => ({
+    gui: state.gui,
     user: state.user,
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(guiActions, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

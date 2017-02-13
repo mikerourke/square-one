@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { normalize } from 'normalizr';
 import { fromJS } from 'immutable';
 import Lead, { leadSchema } from '../model';
@@ -18,16 +17,17 @@ const getLeadFromId = (leadId) => {
 describe('Lead Model', () => {
     it('normalizes Lead entities', () => {
         const normalizedData = normalize(mockDb.leads, leadSchema);
+        // TODO: Fix this test.
         expect(normalizedData).to.contain.all.keys(['entities', 'result']);
     });
 
     it('successfully creates a Lead record', () => {
         const leadRecord = getLeadFromId(1);
-        expect(leadRecord.source).to.equal('Other');
+        expect(leadRecord.source).toEqual('Other');
     });
 
     it('puts the appointments from a Lead into an array of objects', () => {
         const leadRecord = getLeadFromId(1);
-        expect(leadRecord.appointments.size).to.equal(1);
+        expect(leadRecord.appointments.size).toEqual(1);
     });
 });

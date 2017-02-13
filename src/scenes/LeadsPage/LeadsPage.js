@@ -5,21 +5,26 @@ import Table from 'components/Table';
 
 const tableColumns = [
     {
-        accessor: 'id',
+        key: 'id',
         show: false,
+        style: {
+            fontSize: 0,
+            width: 0,
+        },
     },
     {
-        accessor: 'leadName',
-        header: 'Lead Name',
+        key: 'leadName',
+        label: 'Lead Name',
+        sortable: true,
     },
     {
-        accessor: 'description',
-        header: 'Description',
-        sortable: false,
+        key: 'description',
+        label: 'Description',
     },
     {
-        accessor: 'status',
-        header: 'Status',
+        key: 'status',
+        label: 'Status',
+        sortable: true,
     },
 ];
 
@@ -34,13 +39,12 @@ class LeadsPage extends Component {
 
     constructor(props, context) {
         super(props, context);
-
         this.handleCellClick = this.handleCellClick.bind(this);
     }
 
-    handleCellClick(event, rowInfo) {
-        const { id } = rowInfo.row;
-        this.context.router.push(`leads/${id}`);
+    handleCellClick(rowIndex, columnIndex, row, column) {
+        const { push } = this.context.router;
+        push(`leads/${row.id}`);
     }
 
     render() {

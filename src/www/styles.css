@@ -27,4 +27,14 @@
 
 body {
     background-color: var(--grey100);
+    margin: 0;
+}
+
+/* Hide the "Powered by Google" under places autocomplete */
+.pac-container:after {
+    background-image: none !important;
+    content: none !important;
+    display: none !important;
+    font-size: 10px;
+    height: 0px;
 }

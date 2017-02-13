@@ -4,15 +4,12 @@ import { connect } from 'react-redux';
 import { actions as userActions } from 'data/user';
 import { actions as leadActions } from 'data/leads';
 import Logo from 'components/Logo';
-import globalStyles from 'scenes/styles';
-import {
-    Button,
-    Container,
-    Header,
-    HeaderText,
-    Paper,
-    TextInput,
-} from './components';
+import Button from './components/Button';
+import Container from './components/Container';
+import Header from './components/Header';
+import HeaderText from './components/HeaderText';
+import Paper from './components/Paper';
+import TextInput from './components/TextInput';
 
 export class LoginPage extends Component {
     static contextTypes = {
@@ -30,8 +27,10 @@ export class LoginPage extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.actions.getAllLeads().then(() => {
-            this.context.router.push('/leads');
+        const { getAllLeads } = this.props.actions;
+        const { push } = this.context.router;
+        getAllLeads().then(() => {
+            push('/leads');
         });
     }
 

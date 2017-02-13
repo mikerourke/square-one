@@ -1,4 +1,7 @@
-import Column from './Column';
+import {
+    LeftColumn,
+    RightColumn,
+} from './Columns';
 import Container from './Container';
 import {
     LocationInput,
@@ -7,7 +10,8 @@ import {
 } from './Inputs';
 
 export {
-    Column,
+    LeftColumn,
+    RightColumn,
     Container,
     LocationInput,
     SelectInput,

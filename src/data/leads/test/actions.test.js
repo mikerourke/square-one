@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import {
     actions as leadActions,
     actionTypes as types,
@@ -18,8 +17,8 @@ describe('Lead Actions', () => {
 
         store.dispatch(leadActions.getLead(1)).then(() => {
             const actions = store.getActions();
-            expect(actions[0].type).to.equal(types.GET_LEAD);
-            expect(actions[1].type).to.equal(types.GET_LEAD_SUCCESS);
+            expect(actions[0].type).toEqual(types.GET_LEAD);
+            expect(actions[1].type).toEqual(types.GET_LEAD_SUCCESS);
             done();
         });
     });
@@ -32,8 +31,8 @@ describe('Lead Actions', () => {
 
         store.dispatch(leadActions.getLead(2)).then(() => {
             const actions = store.getActions();
-            expect(actions[0].type).to.equal(types.GET_LEAD);
-            expect(actions[1].type).to.equal(types.GET_LEAD_FAIL);
+            expect(actions[0].type).toEqual(types.GET_LEAD);
+            expect(actions[1].type).toEqual(types.GET_LEAD_FAIL);
             done();
         });
     });
@@ -54,8 +53,8 @@ describe('Lead Actions', () => {
 
             store.dispatch(leadActions.getAllLeads()).then(() => {
                 const actions = store.getActions();
-                expect(actions[0].type).to.equal(types.GET_ALL_LEADS);
-                expect(actions[1].type).to.equal(types.GET_ALL_LEADS_SUCCESS);
+                expect(actions[0].type).toEqual(types.GET_ALL_LEADS);
+                expect(actions[1].type).toEqual(types.GET_ALL_LEADS_SUCCESS);
                 done();
             });
         });

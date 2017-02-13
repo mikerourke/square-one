@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import IconButton from 'material-ui/IconButton';
-import AppBar from './AppBar';
+import AppBar from './components/AppBar';
 
 const Header = ({
     handleToggle,

@@ -7,7 +7,7 @@ const Wrapper = styled.div`
     background-color: ${muiTheme.palette.canvasColor};
     color: ${muiTheme.palette.textColor};
     display: flex;
-    font-size: 24px;
+    font-size: 20px;
     height: 56px;
     padding: 0 24px;
 `;

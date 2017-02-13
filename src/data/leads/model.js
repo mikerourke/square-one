@@ -1,5 +1,5 @@
 import { schema } from 'normalizr';
-import { Record, List } from 'immutable';
+import { Record, List, Map } from 'immutable';
 
 const leadEntity = new schema.Entity('leads');
 export const leadSchema = [leadEntity];
@@ -12,6 +12,7 @@ export default class Lead extends Record({
     phone: '',
     email: '',
     address: '',
+    location: new Map(),
     description: '',
     comments: '',
     status: '',

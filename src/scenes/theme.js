@@ -6,7 +6,7 @@ export const palette = {
     primary2Color: muiColors.grey700,
     primary3Color: muiColors.grey100,
     accent1Color: muiColors.blueA200,
-    accent2Color: muiColors.green500,
+    accent2Color: muiColors.blue100,
     accent3Color: muiColors.blue500,
     textColor: muiColors.grey900,
     alternateTextColor: muiColors.white,

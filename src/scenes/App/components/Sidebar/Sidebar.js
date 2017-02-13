@@ -1,13 +1,15 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
-import { List, ListItem } from 'material-ui/List';
+import { Menu, MenuItem } from 'material-ui/Menu';
 import Subheader from 'material-ui/Subheader';
 import Logo from 'components/Logo';
 import MenuItemIcon from 'components/MenuItemIcon';
-import Header from './Header';
-import HeaderDetail from './HeaderDetail';
-import HeaderIcon from './HeaderIcon';
+import Header from './components/Header';
+import HeaderDetail from './components/HeaderDetail';
+import HeaderIcon from './components/HeaderIcon';
+import LinkedMenuItem from 'components/LinkedMenuItem';
 
 const Sidebar = ({
     open,
@@ -29,51 +31,34 @@ const Sidebar = ({
                     {userEmail}
                 </HeaderDetail>
             </Header>
-            <List>
-                <Subheader>Enterprise</Subheader>
-                <ListItem
-                    id="enterprise:leads"
-                    primaryText="Leads"
-                    onTouchTap={handleTouchTap}
-                    leftIcon={
-                        <MenuItemIcon className="material-icons">
-                            recent_actors
-                        </MenuItemIcon>
-                    }
+            <Menu>
+                <LinkedMenuItem
+                    id="home"
+                    linkTo="/"
+                    primaryText="Home"
+                    iconName="home"
                 />
                 <Divider />
-                <Subheader>Settings</Subheader>
-                <ListItem
-                    id="settings:general"
-                    primaryText="General"
-                    onTouchTap={handleTouchTap}
-                    leftIcon={
-                        <MenuItemIcon className="material-icons">
-                            settings
-                        </MenuItemIcon>
-                    }
+                <LinkedMenuItem
+                    id="leads"
+                    linkTo="/leads"
+                    primaryText="Leads"
+                    iconName="recent_actors"
                 />
-                <ListItem
-                    id="settings:customize"
-                    primaryText="Customize"
-                    onTouchTap={handleTouchTap}
-                    leftIcon={
-                        <MenuItemIcon className="material-icons">
-                            create
-                        </MenuItemIcon>
-                    }
+                <LinkedMenuItem
+                    id="reportBuilder"
+                    linkTo="/"
+                    primaryText="Report Builder"
+                    iconName="insert_drive_file"
                 />
-                <ListItem
-                    id="settings:lists"
-                    primaryText="Lists"
-                    onTouchTap={handleTouchTap}
-                    leftIcon={
-                        <MenuItemIcon className="material-icons">
-                            format_list_bulleted
-                        </MenuItemIcon>
-                    }
+                <Divider />
+                <LinkedMenuItem
+                    id="settings"
+                    linkTo="/"
+                    primaryText="Settings"
+                    iconName="settings"
                 />
-            </List>
+            </Menu>
         </Drawer>
     </div>
 );

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { normalize } from 'normalizr';
 import { fromJS } from 'immutable';
 import Setting, { settingSchema } from '../model';
@@ -19,21 +18,24 @@ const getSettingFromName = (settingName) => {
 describe('Settings Model', () => {
     it('normalizes Settings entities', () => {
         const normalizedData = normalize(mockDb.settings, settingSchema);
+        // TODO: Fix this test.
         expect(normalizedData).to.contain.all.keys(['entities', 'result']);
     });
 
     it('creates a Setting record', () => {
         const sources = getSettingFromName('sources');
-        expect(sources.get('category')).to.equal('lists');
+        expect(sources.get('category')).toEqual('lists');
     });
 
     it('puts the "data" from a list Setting into an array', () => {
         const sources = getSettingFromName('sources');
+        // TODO: Fix this test.
         expect(sources.getData()).to.have.lengthOf(5);
     });
 
     it('puts the "data" from a non-list Setting into a valid object', () => {
         const companyInfo = getSettingFromName('companyInfo');
+        // TODO: Fix this test.
         expect(companyInfo.getData()).to.have.all.keys(
             [
                 'companyName',

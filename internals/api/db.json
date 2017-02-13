@@ -8,6 +8,10 @@
       "phone": "(630) 123-4567",
       "email": "steve@leads.com",
       "address": "123 U.S. 1, Salisbury, MA, United States",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      },
       "description": "This is a lead",
       "status": "New",
       "appointments": [
@@ -20,7 +24,8 @@
           "emailAlert": "Alert, yo!",
           "isAllDay": false
         }
-      ]
+      ],
+      "comments": ""
     },
     {
       "id": 2,
@@ -30,6 +35,10 @@
       "phone": "(630) 123-4567",
       "email": "nancy@leads.com",
       "address": "",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      },
       "description": "This is another lead",
       "status": "Existing"
     },
@@ -41,6 +50,10 @@
       "phone": "(630) 123-4567",
       "email": "paco@leads.com",
       "address": "",
+      "location": {
+        "lat": 0,
+        "lng": 0
+      },
       "description": "This is a third lead",
       "status": "New"
     }

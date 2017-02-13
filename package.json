@@ -30,6 +30,7 @@
     "google-maps": "^3.2.1",
     "immutable": "^3.8.1",
     "material-ui": "^0.16.6",
+    "material-ui-datatables": "^0.16.4",
     "normalizr": "^3.2.0",
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.4.1",
@@ -37,7 +38,6 @@
     "react-immutable-proptypes": "^2.1.0",
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",
-    "react-table": "^5.0.3",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-axios-middleware": "^3.0.0",
@@ -48,8 +48,10 @@
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
+    "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-react-transform": "^2.0.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.22.0",
     "babel-plugin-transform-react-constant-elements": "^6.22.0",
     "babel-plugin-transform-react-inline-elements": "^6.22.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.3.2",
@@ -128,6 +130,7 @@
       }
     },
     "rules": {
+      "class-methods-use-this": 0,
       "eol-last": 0,
       "indent": [
         1,

@@ -2,7 +2,7 @@
  * Development webpack configuration called by internals/server/index.js.
  */
 
-/**
+/*
  * External dependencies
  */
 const fs = require('fs');
@@ -10,7 +10,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-/**
+/*
  * Internal dependencies
  */
 const baseConfig = require('./webpack.base.babel');

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
-import muiTheme from 'scenes/theme';
+import muiTheme from 'style/theme';
 
 const Wrapper = styled.div`
     align-items: center;

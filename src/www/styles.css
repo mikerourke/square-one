@@ -11,6 +11,10 @@
     --grey900: #212121;
 }
 
+* {
+    font-family: "Roboto", Arial, sans-serif;
+}
+
 body {
     background-color: var(--grey100);
     margin: 0;

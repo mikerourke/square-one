@@ -3,6 +3,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import MenuItem from 'material-ui/MenuItem';
 import { Lead } from 'data/leads';
 import { Setting } from 'data/settings';
+import FormGeolocation from 'components/forms/form-geolocation';
+import FormColumn from 'components/forms/form-column';
 import {
     LeftColumn,
     RightColumn,
@@ -44,7 +46,7 @@ class LeadDetailsForm extends Component {
         return (
             <form id="lead-details-form">
                 <Container>
-                    <LeftColumn>
+                    <FormColumn columnIndex={0}>
                         <TextInput
                             name="leadName"
                             floatingLabelText="Lead Name"
@@ -83,15 +85,15 @@ class LeadDetailsForm extends Component {
                             value={lead.email}
                             onChange={handleChange}
                         />
-                    </LeftColumn>
-                    <RightColumn>
-                        <LocationInput
+                    </FormColumn>
+                    <FormColumn columnIndex={1}>
+                        <FormGeolocation
                             name="address"
                             floatingLabelText="Address"
                             value={lead.address}
                             onChange={handleChange}
                         />
-                    </RightColumn>
+                    </FormColumn>
                 </Container>
                 <TextInput
                     name="description"

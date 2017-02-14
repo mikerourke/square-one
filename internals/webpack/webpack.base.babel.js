@@ -3,7 +3,7 @@
  *      production configurations.
  */
 
-/**
+/*
  * External dependencies
  */
 const path = require('path');
@@ -18,7 +18,7 @@ module.exports = {
     },
     module: {
         rules: [{
-            test: /\.js$/,
+            test: /\.js$|.jsx$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
             query: {
@@ -60,7 +60,7 @@ module.exports = {
             path.join(process.cwd(), 'src'),
             'node_modules',
         ],
-        extensions: ['.js'],
+        extensions: ['.js', '.jsx'],
         alias: {
             scenes: path.resolve(process.cwd(), 'src/scenes'),
         },

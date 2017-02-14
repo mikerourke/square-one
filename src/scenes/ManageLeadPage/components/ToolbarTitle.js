@@ -3,7 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import { palette } from 'scenes/theme';
+import { palette } from 'style/theme';
 
 const Container = styled.div`
     display: flex;
@@ -26,7 +26,6 @@ const HeaderRow = styled.div`
     float: left;
     font-weight: 300;
     padding: 4px 0;
-    text-rendering: optimizeLegibility;
     width: 200px;
 `;
 

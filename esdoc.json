@@ -1,4 +1,4 @@
 {
-  "source": "./internals",
+  "source": "src",
   "destination": "./docs"
 }

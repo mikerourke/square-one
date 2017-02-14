@@ -3,7 +3,7 @@
  *      will be communicating with a separate API.
  */
 
-/**
+/*
  * External dependencies
  */
 const { green, red } = require('chalk');
@@ -11,7 +11,7 @@ const path = require('path');
 const WebpackDevServer = require('webpack-dev-server');
 const webpack = require('webpack');
 
-/**
+/*
  * Internal dependencies
  */
 const webpackConfig = require('../webpack/webpack.dev.babel');

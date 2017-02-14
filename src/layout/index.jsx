@@ -1,21 +1,21 @@
+/*
+ * External dependencies
+ */
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import muiTheme from '../theme';
+
+/*
+ * Internal dependencies
+ */
+import muiTheme from 'style/theme';
 import { actions as guiActions } from 'data/gui';
-import { User } from 'data/user';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
+import Header from './header';
+import Sidebar from './sidebar';
 
-const AppContainer = styled.div`
-    position: relative;
-    top: 64px;
-`;
-
-export class App extends Component {
+export class Layout extends Component {
     static contextTypes = {
         router: PropTypes.object,
     };
@@ -24,11 +24,6 @@ export class App extends Component {
         actions: PropTypes.object.isRequired,
         children: PropTypes.object.isRequired,
         gui: PropTypes.object.isRequired,
-        user: ImmutablePropTypes.record,
-    };
-
-    static defaultProps = {
-        user: new User(),
     };
 
     constructor(props, context) {
@@ -49,6 +44,11 @@ export class App extends Component {
 
     render() {
         const { gui, children } = this.props;
+        const Container = styled.div`
+            position: relative;
+            top: 64px;
+        `;
+
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
@@ -60,9 +60,9 @@ export class App extends Component {
                         handleTouchTap={this.handleSidebarTouchTap}
                         handleToggle={this.handleToggle}
                     />
-                    <AppContainer>
+                    <Container>
                         {children}
-                    </AppContainer>
+                    </Container>
                 </div>
             </MuiThemeProvider>
         );
@@ -78,4 +78,4 @@ const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(guiActions, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

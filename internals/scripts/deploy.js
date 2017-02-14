@@ -3,7 +3,7 @@
  *      front end is stored in the same directory as the API files.
  */
 
-/**
+/*
  * External dependencies
  */
 const { exec } = require('child_process');

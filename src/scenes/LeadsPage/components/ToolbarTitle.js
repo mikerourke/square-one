@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
-import { palette } from 'scenes/theme';
+import { palette } from 'style/theme';
 
 const Container = styled.div`
     display: flex;
+    align-items: center;
 `;
 
 const HeaderIcon = styled(FontIcon)`
@@ -15,8 +16,6 @@ const HeaderIcon = styled(FontIcon)`
 const HeaderText = styled.div`
     color: ${palette.alternateTextColor};
     font-size: 24px;
-    font-weight: 300;
-    text-rendering: optimizeLegibility;
 `;
 
 const ToolbarTitle = () => (

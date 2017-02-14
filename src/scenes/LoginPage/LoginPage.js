@@ -6,7 +6,7 @@ import Container from './components/Container';
 import ForgotPasswordButton from './components/ForgotPasswordButton';
 import Header from './components/Header';
 import LoginButton from './components/LoginButton';
-import Logo from 'components/Logo';
+import Logo from 'components/logo';
 import Paper from './components/Paper';
 import TextInput from './components/TextInput';
 
@@ -36,8 +36,8 @@ export class LoginPage extends Component {
                 <Paper>
                     <Header>
                         <Logo
-                            width="64px"
-                            height="64px"
+                            width={64}
+                            height={64}
                         />
                     </Header>
                     <form onSubmit={this.handleSubmit}>

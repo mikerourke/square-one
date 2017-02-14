@@ -1,6 +1,7 @@
 import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
-import { App, LoginPage, LeadsPage, ManageLeadPage } from './scenes';
+import Layout from './layout';
+import { LoginPage, LeadsPage, ManageLeadPage } from './scenes';
 import { toggleAppSidebar } from 'data/gui/actions';
 
 export default (history, store) => {
@@ -12,7 +13,7 @@ export default (history, store) => {
 
     return (
         <Router history={history}>
-            <Route path="/" component={App} >
+            <Route path="/" component={Layout} >
                 <IndexRoute component={LoginPage} />
                 <Route path="login" component={LoginPage} />
                 <Route path="leads" component={LeadsPage} />

@@ -1,7 +1,14 @@
+/*
+ * External dependencies
+ */
 import React, { PropTypes } from 'react';
+import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import AppBar from './components/AppBar';
-import { palette } from 'scenes/theme';
+
+/*
+ * Internal dependencies
+ */
+import { palette } from 'style/theme';
 
 const Header = ({
     handleToggle,
@@ -16,6 +23,10 @@ const Header = ({
             </IconButton>
         }
         onLeftIconButtonTouchTap={handleToggle}
+        style={{
+            position: 'fixed',
+            top: 0,
+        }}
     />
 );
 

@@ -1,5 +1,16 @@
+/*
+ * External dependencies
+ */
 import React, { PropTypes } from 'react';
 
+/* eslint-disable max-len */
+
+/**
+ * Scalable graphic for official logo.
+ * @param height {number} Height of the logo in pixels.
+ * @param width {number} Width of the logo in pixels.
+ * @constructor
+ */
 const Logo = ({
     height,
     width,
@@ -7,10 +18,9 @@ const Logo = ({
     <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        width={width}
-        height={height}
+        height={`${height}px`}
+        width={`${width}px`}
         viewBox="0 0 100 100"
-        enableBackground="new 0 0 100 100"
     >
         <path
             id="bottomRight"
@@ -36,13 +46,13 @@ const Logo = ({
 );
 
 Logo.propTypes = {
-    height: PropTypes.string,
-    width: PropTypes.string,
+    height: PropTypes.number,
+    width: PropTypes.number,
 };
 
 Logo.defaultProps = {
-    height: '100px',
-    width: '100px',
+    height: 100,
+    width: 100,
 };
 
 export default Logo;

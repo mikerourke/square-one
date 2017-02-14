@@ -2,10 +2,8 @@ import React, { PropTypes } from 'react';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
 import { Menu } from 'material-ui/Menu';
-import LinkedMenuItem from 'components/LinkedMenuItem';
-import Header from './components/Header';
-import HeaderDetail from './components/HeaderDetail';
-import HeaderIcon from './components/HeaderIcon';
+import LinkedMenuItem from 'components/linked-menu-item';
+import Header from './header';
 
 const Sidebar = ({
     open,
@@ -19,14 +17,7 @@ const Sidebar = ({
             docked={false}
             onRequestChange={handleToggle}
         >
-            <Header>
-                <HeaderIcon className="material-icons">
-                    face
-                </HeaderIcon>
-                <HeaderDetail>
-                    {userEmail}
-                </HeaderDetail>
-            </Header>
+            <Header userEmail={userEmail} />
             <Menu>
                 <LinkedMenuItem
                     id="home"

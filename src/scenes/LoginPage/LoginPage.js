@@ -2,12 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actions as userActions } from 'data/user';
-import { actions as leadActions } from 'data/leads';
-import Logo from 'components/Logo';
-import Button from './components/Button';
 import Container from './components/Container';
+import ForgotPasswordButton from './components/ForgotPasswordButton';
 import Header from './components/Header';
-import HeaderText from './components/HeaderText';
+import LoginButton from './components/LoginButton';
+import Logo from 'components/Logo';
 import Paper from './components/Paper';
 import TextInput from './components/TextInput';
 
@@ -27,27 +26,21 @@ export class LoginPage extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { getAllLeads } = this.props.actions;
         const { push } = this.context.router;
-        getAllLeads().then(() => {
-            push('/leads');
-        });
+        push('/leads');
     }
 
     render() {
         return (
             <Container>
                 <Paper>
+                    <Header>
+                        <Logo
+                            width="64px"
+                            height="64px"
+                        />
+                    </Header>
                     <form onSubmit={this.handleSubmit}>
-                        <Header>
-                            <Logo
-                                width="24px"
-                                height="24px"
-                            />
-                            <HeaderText>
-                                SQUARE1
-                            </HeaderText>
-                        </Header>
                         <TextInput
                             floatingLabelText="Login"
                         />
@@ -55,9 +48,13 @@ export class LoginPage extends Component {
                             floatingLabelText="Password"
                             type="password"
                         />
-                        <Button
+                        <LoginButton
                             label="Login"
+                            primary={true}
                             type="submit"
+                        />
+                        <ForgotPasswordButton
+                            label="Forgot Password?"
                         />
                     </form>
                 </Paper>
@@ -67,15 +64,11 @@ export class LoginPage extends Component {
 }
 
 const mapStateToProps = state => ({
-    leads: state.leads,
     user: state.user,
 });
 
-const mapDispatchToProps = (dispatch) => {
-    const combinedActions = Object.assign({}, userActions, leadActions);
-    return {
-        actions: bindActionCreators(combinedActions, dispatch),
-    };
-};
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(userActions, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

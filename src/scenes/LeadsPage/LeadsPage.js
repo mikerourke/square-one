@@ -1,35 +1,14 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Table from 'components/Table';
-
-const tableColumns = [
-    {
-        key: 'id',
-        show: false,
-        style: {
-            fontSize: 0,
-            width: 0,
-        },
-    },
-    {
-        key: 'leadName',
-        label: 'Lead Name',
-        sortable: true,
-    },
-    {
-        key: 'description',
-        label: 'Description',
-    },
-    {
-        key: 'status',
-        label: 'Status',
-        sortable: true,
-    },
-];
+import { getAllLeads } from 'data/leads/actions';
+import LeadsTable from './components/LeadsTable';
+import PageHeaderToolbar from './components/PageHeaderToolbar';
 
 class LeadsPage extends Component {
     static propTypes = {
+        actions: PropTypes.object.isRequired,
         leads: ImmutablePropTypes.orderedMap.isRequired,
     };
 
@@ -39,6 +18,7 @@ class LeadsPage extends Component {
 
     constructor(props, context) {
         super(props, context);
+        this.props.actions.getAllLeads();
         this.handleCellClick = this.handleCellClick.bind(this);
     }
 
@@ -48,20 +28,18 @@ class LeadsPage extends Component {
     }
 
     render() {
-        const startingData = Object.values(this.props.leads.toJS());
-        const dataForTable = startingData.map(item => ({
-            id: item.id,
-            leadName: item.leadName,
-            description: item.description,
-            status: item.status,
-        }));
+        if (this.props.leads.size === 0) {
+            return (<div>Loading...</div>);
+        }
+
         return (
-            <Table
-                title="Leads"
-                columns={tableColumns}
-                data={dataForTable}
-                handleCellClick={this.handleCellClick}
-            />
+            <div>
+                <PageHeaderToolbar />
+                <LeadsTable
+                    leads={this.props.leads}
+                    handleCellClick={this.handleCellClick}
+                />
+            </div>
         );
     }
 }
@@ -70,4 +48,8 @@ const mapStateToProps = state => ({
     leads: state.leads,
 });
 
-export default connect(mapStateToProps)(LeadsPage);
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators({ getAllLeads }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeadsPage);

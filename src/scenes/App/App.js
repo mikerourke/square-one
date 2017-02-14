@@ -11,7 +11,8 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 
 const AppContainer = styled.div`
-    margin: 0 8px;
+    position: relative;
+    top: 64px;
 `;
 
 export class App extends Component {

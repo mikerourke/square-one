@@ -3,9 +3,14 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { toJS } from 'immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import { Lead, actions as leadActions } from 'data/leads';
 import { Setting, actions as settingsActions } from 'data/settings';
+import Paper from './components/Paper';
 import LeadDetailsForm from './components/LeadDetailsForm';
+import PageHeaderToolbar from './components/PageHeaderToolbar';
+import TabsContainer from './components/TabsContainer';
 
 class ManageLeadPage extends Component {
     static contextTypes = {
@@ -30,7 +35,8 @@ class ManageLeadPage extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSaveTouchTap = this.handleSaveTouchTap.bind(this);
+        this.handleBackTouchTap = this.handleBackTouchTap.bind(this);
     }
 
     handleChange(event, keyOrNewValue, payload) {
@@ -40,27 +46,81 @@ class ManageLeadPage extends Component {
         return this.setState({ lead: updatedLead });
     }
 
-    handleSubmit(event) {
+    handleBackTouchTap(event) {
+        event.preventDefault();
+        browserHistory.push('/leads');
+    }
+
+    handleSaveTouchTap(event) {
         event.preventDefault();
         const { createLead, updateLead } = this.props.actions;
+        const { push } = this.context.router;
         const leadEntity = this.state.lead.toJS();
         const performAction = leadEntity.id === 0 ?
                               createLead :
                               updateLead;
         performAction(leadEntity).then(() => {
-            this.context.router.push('/leads');
+            push('/leads');
         });
     }
 
     render() {
-        const { sourcesList } = this.props;
+        const { lead, sourcesList } = this.props;
+        const styles = {
+            tab: {
+                textTransform: 'none',
+            },
+            tabItemContainer: {
+                width: 384,
+            },
+            tabs: {
+                margin: '0 auto',
+                maxWidth: 1200,
+            },
+        };
         return (
-            <LeadDetailsForm
-                handleChange={this.handleChange}
-                handleSubmit={this.handleSubmit}
-                sourcesList={sourcesList}
-                lead={this.state.lead}
-            />
+            <div>
+                <PageHeaderToolbar
+                    handleBackTouchTap={this.handleBackTouchTap}
+                    handleSaveTouchTap={this.handleSaveTouchTap}
+                    lead={lead}
+                />
+                <TabsContainer>
+                    <Tabs
+                        style={styles.tabs}
+                        tabItemContainerStyle={styles.tabItemContainer}
+                    >
+                        <Tab
+                            label="Details"
+                            style={styles.tab}
+                        >
+                            <Paper>
+                                <LeadDetailsForm
+                                    handleChange={this.handleChange}
+                                    sourcesList={sourcesList}
+                                    lead={this.state.lead}
+                                />
+                            </Paper>
+                        </Tab>
+                        <Tab
+                            label="Appointments"
+                            style={styles.tab}
+                        >
+                            <Paper>
+                                Stuff!
+                            </Paper>
+                        </Tab>
+                        <Tab
+                            label="Messages"
+                            style={styles.tab}
+                        >
+                            <Paper>
+                                Stuff!
+                            </Paper>
+                        </Tab>
+                    </Tabs>
+                </TabsContainer>
+            </div>
         );
     }
 }

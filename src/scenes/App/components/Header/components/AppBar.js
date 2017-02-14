@@ -1,6 +1,7 @@
-import AppBar from 'material-ui/AppBar';
 import styled from 'styled-components';
+import AppBar from 'material-ui/AppBar';
 
 export default styled(AppBar)`
-    box-shadow: none;
+    position: fixed !important;
+    top: 0;
 `;

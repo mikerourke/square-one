@@ -3,11 +3,9 @@ import {
     RightColumn,
 } from './Columns';
 import Container from './Container';
-import {
-    LocationInput,
-    SelectInput,
-    TextInput,
-} from './Inputs';
+import LocationInput from './LocationInput';
+import SelectInput from './SelectInput';
+import TextInput from './TextInput';
 
 export {
     LeftColumn,

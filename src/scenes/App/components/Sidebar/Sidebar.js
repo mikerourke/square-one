@@ -1,15 +1,11 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
-import { Menu, MenuItem } from 'material-ui/Menu';
-import Subheader from 'material-ui/Subheader';
-import Logo from 'components/Logo';
-import MenuItemIcon from 'components/MenuItemIcon';
+import { Menu } from 'material-ui/Menu';
+import LinkedMenuItem from 'components/LinkedMenuItem';
 import Header from './components/Header';
 import HeaderDetail from './components/HeaderDetail';
 import HeaderIcon from './components/HeaderIcon';
-import LinkedMenuItem from 'components/LinkedMenuItem';
 
 const Sidebar = ({
     open,

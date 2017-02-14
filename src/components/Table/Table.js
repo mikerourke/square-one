@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import styled from 'styled-components';
+import { Link } from 'react-router';
+import RaisedButton from 'material-ui/RaisedButton';
 import DataTables from 'material-ui-datatables';
-import Paper from '../Paper';
-
-const StyledPaper = styled(Paper)`
-    padding: 0;
-`;
+import Paper from './Paper';
 
 class Table extends Component {
     static propTypes = {
@@ -98,7 +95,7 @@ class Table extends Component {
         const { columns, handleCellClick, title } = this.props;
         const { data, page, rowSize } = this.state;
         return (
-            <StyledPaper>
+            <Paper>
                 <DataTables
                     columns={columns}
                     count={this.state.rowSize}
@@ -114,11 +111,11 @@ class Table extends Component {
                     rowSize={this.state.rowSize}
                     selectable={false}
                     showCheckboxes={false}
-                    showHeaderToolbar={true}
+                    showHeaderToolbar={false}
                     showRowHover={true}
                     title={title}
                 />
-            </StyledPaper>
+            </Paper>
         );
     }
 }

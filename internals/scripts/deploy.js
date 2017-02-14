@@ -3,8 +3,9 @@
  *      front end is stored in the same directory as the API files.
  */
 
-/* eslint-disable */
-
+/**
+ * External dependencies
+ */
 const { exec } = require('child_process');
 const path = require('path');
 const shell = require('shelljs');

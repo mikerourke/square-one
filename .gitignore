@@ -26,10 +26,14 @@ dictionaries
 # Bash
 *.stackdump
 
-# Other
+# Mac
 *.DS_Store
+
+# Build/documentation directories:
 client
-doc
-local.json
+docs
 .ssl/
+
+# Configuration/build files:
+local.json
 stats.json

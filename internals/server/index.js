@@ -3,12 +3,17 @@
  *      will be communicating with a separate API.
  */
 
-/* eslint-disable */
-
+/**
+ * External dependencies
+ */
 const { green, red } = require('chalk');
 const path = require('path');
 const WebpackDevServer = require('webpack-dev-server');
 const webpack = require('webpack');
+
+/**
+ * Internal dependencies
+ */
 const webpackConfig = require('../webpack/webpack.dev.babel');
 
 const port = process.env.PORT || 8081;
@@ -21,12 +26,6 @@ new WebpackDevServer(compiler, {
     clientLogLevel: 'error',
     historyApiFallback: true,
     hot: true,
-    // TODO: Setup proxy for API.
-    // proxy: {
-    //     '/api': {
-    //         target: `http://localhost:${process.env.API_PORT}`,
-    //     },
-    // },
     quiet: false,
     stats: {
         chunkModules: false,

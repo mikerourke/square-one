@@ -8,7 +8,7 @@ import styled from 'styled-components';
 /*
  * Internal dependencies
  */
-import { palette } from 'style/theme';
+import { palette } from 'style/mui';
 
 const Container = styled.div`
     background-color: ${palette.primary1Color};

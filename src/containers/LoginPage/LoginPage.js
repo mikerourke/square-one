@@ -1,14 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { actions as userActions } from 'data/user';
+import { actions as userActions } from 'modules/user';
 import Container from './components/Container';
 import ForgotPasswordButton from './components/ForgotPasswordButton';
 import Header from './components/Header';
 import LoginButton from './components/LoginButton';
 import Logo from 'components/logo';
-import Paper from './components/Paper';
+import Paper from 'material-ui/Paper';
 import TextInput from './components/TextInput';
+import { inline } from 'style/mui';
 
 export class LoginPage extends Component {
     static contextTypes = {
@@ -33,7 +34,14 @@ export class LoginPage extends Component {
     render() {
         return (
             <Container>
-                <Paper>
+                <Paper
+                    style={{
+                        ...inline.paper,
+                        marginTop: 56,
+                        padding: 32,
+                        width: 350,
+                    }}
+                >
                     <Header>
                         <Logo
                             width={64}

@@ -12,8 +12,12 @@
  */
 import React, { Component, PropTypes } from 'react';
 import GoogleMapsLoader from 'google-maps';
-import TextField from 'material-ui/TextField';
 import styled from 'styled-components';
+import TextField from 'material-ui/TextField';
+
+const MapWrapper = styled.div`
+    height: 352px;
+`;
 
 /**
  * Address input and Google Map component.
@@ -52,62 +56,20 @@ class FormGeolocation extends Component {
 
     constructor(props, context) {
         super(props, context);
-
-        const { lat, lng } = props.initialCenter;
-        this.state = {
-            center: {
-                lat,
-                lng,
-            },
-            areElementsLoaded: false,
-        };
-
-        // Specify the div names for the map and autocomplete fields for
-        // reference in the functions.
-        this.MAP_ID = 'geo-map';
-        this.AUTO_ID = 'geo-address';
+        this.initializeComponents = this.initializeComponents.bind(this);
+        this.onPlaceChanged = this.onPlaceChanged.bind(this);
     }
+
+    state = {
+        center: {
+            lat: this.props.initialCenter.lat,
+            lng: this.props.initialCenter.lng,
+        },
+        areElementsLoaded: false,
+    };
 
     componentDidMount() {
         this.initializeComponents();
-    }
-
-    /**
-     * Load the Google Maps API object and create the Geolocation components
-     *      on the form.
-     */
-    initializeComponents() {
-        this.loadGoogleMaps()
-            .then(this.createMap)
-            .then(this.createMarker)
-            .then(this.createAutocomplete)
-            .then(() => {
-                this.removeTabIndexesFromMap();
-                this.autocomplete.bindTo('bounds', this.map);
-                this.autocomplete.addListener('place_changed', () => {
-                    this.onPlaceChanged();
-                });
-                this.setState({
-                    areElementsLoaded: true,
-                });
-            })
-    }
-
-    /**
-     * Async get the Google Maps API object with the corresponding libraries
-     *      and API key.
-     * @returns {Promise}
-     */
-    loadGoogleMaps() {
-        return new Promise((resolve) => {
-            GoogleMapsLoader.release();
-            GoogleMapsLoader.KEY = 'AIzaSyAkiq1bkZask4elXgU_BnM7d6xzjGMXw0A';
-            GoogleMapsLoader.LIBRARIES = ['places'];
-            GoogleMapsLoader.load((google) => {
-                this.google = google;
-                resolve()
-            });
-        });
     }
 
     /**
@@ -138,6 +100,9 @@ class FormGeolocation extends Component {
             },
         });
 
+        const addressInput = document.getElementById('geo-address');
+        addressInput.value = place.formatted_address;
+
         // If the place had a valid viewport, update the Map element to fit
         // the bounds.  If not, center the Map to the location coordinates
         // and update the zoom.
@@ -154,15 +119,47 @@ class FormGeolocation extends Component {
     }
 
     /**
-     * Prevents the focus from going to any of the links on the Map element
-     *      when the user presses the tab key.
+     * Load the Google Maps API object and create the Geolocation components
+     *      on the form.
      */
-    removeTabIndexesFromMap() {
-        this.google.maps.event.addListener(this.map, 'tilesloaded', () => {
-            const selector = `#${this.MAP_ID} a`;
-            document.querySelectorAll(selector).forEach(element =>
-                element.setAttribute('tabIndex', '999'),
-            );
+    initializeComponents() {
+        const { initialCenter } = this.props;
+        this.loadGoogleMaps(initialCenter)
+            .then(this.createMap)
+            .then(this.createMarker)
+            .then(this.createAutocomplete)
+            .then((googleElements) => {
+                const { google, autocomplete, map, marker } = googleElements;
+                this.google = google;
+                this.autocomplete = autocomplete;
+                this.map = map;
+                this.marker = marker;
+
+                this.removeTabIndexesFromMap();
+                this.autocomplete.bindTo('bounds', this.map);
+                this.autocomplete.addListener('place_changed', () => {
+                    this.onPlaceChanged();
+                });
+                this.setState({
+                    areElementsLoaded: true,
+                });
+            });
+    }
+
+    /**
+     * Async get the Google Maps API object with the corresponding libraries
+     *      and API key.
+     * @returns {Promise}
+     */
+    loadGoogleMaps(initialCenter) {
+        return new Promise((resolve) => {
+            GoogleMapsLoader.release();
+            GoogleMapsLoader.KEY = 'AIzaSyAkiq1bkZask4elXgU_BnM7d6xzjGMXw0A';
+            GoogleMapsLoader.LIBRARIES = ['places'];
+            GoogleMapsLoader.load((google) => {
+                const googleElements = { google, initialCenter };
+                resolve(googleElements);
+            });
         });
     }
 
@@ -170,15 +167,28 @@ class FormGeolocation extends Component {
      * Creates the Map element and attaches it to the rendered div.
      * @returns {Promise}
      */
-    createMap() {
+    createMap(googleElements) {
+        const { google, initialCenter } = googleElements;
         return new Promise((resolve) => {
-            const element = document.getElementById(this.MAP_ID);
-            const { center } = this.state;
-            this.map = new this.google.maps.Map(element, {
+            const element = document.getElementById('geo-map');
+            const map = new google.maps.Map(element, {
                 zoom: 4,
-                center,
+                center: initialCenter,
             });
-            resolve();
+            resolve({ ...googleElements, map });
+        });
+    }
+
+    /**
+     * Prevents the focus from going to any of the links on the Map element
+     *      when the user presses the tab key.
+     */
+    removeTabIndexesFromMap() {
+        this.google.maps.event.addListener(this.map, 'tilesloaded', () => {
+            const selector = `#${'geo-map'} a`;
+            document.querySelectorAll(selector).forEach(element =>
+                element.setAttribute('tabIndex', '999'),
+            );
         });
     }
 
@@ -187,14 +197,15 @@ class FormGeolocation extends Component {
      *      with an address.
      * @returns {Promise}
      */
-    createMarker() {
+    createMarker(googleElements) {
+        const { google, map } = googleElements;
         return new Promise((resolve) => {
-            const { Marker, Point } = this.google.maps;
-            this.marker = new Marker({
-                map: this.map,
+            const { Marker, Point } = google.maps;
+            const marker = new Marker({
+                map,
                 anchorPoint: new Point(0, 0),
             });
-            resolve();
+            resolve({ ...googleElements, marker });
         });
     }
 
@@ -203,12 +214,12 @@ class FormGeolocation extends Component {
      *      rendered div.
      * @returns {Promise}
      */
-    createAutocomplete() {
+    createAutocomplete(googleElements) {
+        const { google } = googleElements;
         return new Promise((resolve) => {
-            const { Autocomplete } = this.google.maps.places;
-            const element = document.getElementById(this.AUTO_ID);
-            this.autocomplete = new Autocomplete(element);
-            resolve();
+            const element = document.getElementById('geo-address');
+            const autocomplete = new google.maps.places.Autocomplete(element);
+            resolve({ ...googleElements, autocomplete });
         });
     }
 
@@ -218,20 +229,16 @@ class FormGeolocation extends Component {
             ...props
         } = this.props;
 
-        const MapWrapper = styled.div`
-            height: 280px;
-            width: 100% !important;
-        `;
-
         return (
             <div>
                 <TextField
-                    id={this.AUTO_ID}
-                    placeholder=""
                     {...props}
+                    fullWidth={true}
+                    id={'geo-address'}
+                    placeholder=""
                 />
                 <MapWrapper
-                    id={this.MAP_ID}
+                    id={'geo-map'}
                 />
             </div>
         );

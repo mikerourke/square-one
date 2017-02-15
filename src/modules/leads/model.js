@@ -16,6 +16,7 @@ export default class Lead extends Record({
     description: '',
     comments: '',
     status: '',
+    assignTo: '',
     appointments: new List(),
 }) {
     getAppointments() {

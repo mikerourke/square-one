@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
-import { getRgbFromHex } from 'style/theme';
+import getRgbFromHex from 'lib/rgb-to-hex';
 
 // TODO: Add search functionality.
 

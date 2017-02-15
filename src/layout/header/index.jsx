@@ -8,7 +8,7 @@ import IconButton from 'material-ui/IconButton';
 /*
  * Internal dependencies
  */
-import { palette } from 'style/theme';
+import { palette } from 'style/mui';
 
 const Header = ({
     handleToggle,

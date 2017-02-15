@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Toolbar } from 'material-ui/Toolbar';
-import { palette } from 'style/theme';
+import { palette } from 'style/mui';
 
 export default styled(Toolbar)`
     align-items: baseline !important;

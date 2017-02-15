@@ -1,8 +1,14 @@
+/*
+ * External dependencies
+ */
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
 import DataTables from 'material-ui-datatables';
-import Paper from './Paper';
+
+/*
+ * Internal dependencies
+ */
+import { inline } from 'style/mui';
 
 class Table extends Component {
     static propTypes = {
@@ -14,13 +20,7 @@ class Table extends Component {
 
     constructor(props, context) {
         super(props, context);
-
-        this.startingData = this.props.data;
-        this.state = {
-            data: this.startingData,
-            page: 1,
-            rowSize: 10,
-        };
+        this.startingData = props.data;
 
         this.handleFilterValueChange = this.handleFilterValueChange.bind(this);
         this.handleNextPageClick = this.handleNextPageClick.bind(this);
@@ -28,6 +28,12 @@ class Table extends Component {
         this.handleRowSizeChange = this.handleRowSizeChange.bind(this);
         this.handleSortOrderChange = this.handleSortOrderChange.bind(this);
     }
+
+    state = {
+        data: this.props.data,
+        page: 1,
+        rowSize: 10,
+    };
 
     handleFilterValueChange(value) {
         const rows = this.startingData;
@@ -55,7 +61,6 @@ class Table extends Component {
         // Note: This will need to accommodate for the row count displayed.
         const nextPage = this.state.page + 1;
         this.setState({
-            // data: nextRows,
             page: nextPage,
         });
     }
@@ -66,7 +71,6 @@ class Table extends Component {
         const currentPage = this.state.page;
         const previousPage = (currentPage === 1) ? 1 : currentPage - 1;
         this.setState({
-            // data: previousRows,
             page: previousPage,
         });
     }
@@ -95,11 +99,17 @@ class Table extends Component {
         const { columns, handleCellClick, title } = this.props;
         const { data, page, rowSize } = this.state;
         return (
-            <Paper>
+            <Paper
+                style={{
+                    ...inline.paper,
+                    top: '-58px',
+                    padding: 0,
+                }}
+            >
                 <DataTables
                     columns={columns}
-                    count={this.state.rowSize}
-                    data={this.state.data}
+                    count={rowSize}
+                    data={data}
                     height={'auto'}
                     onCellClick={handleCellClick}
                     onFilterValueChange={this.handleFilterValueChange}
@@ -107,8 +117,8 @@ class Table extends Component {
                     onPreviousPageClick={this.handlePreviousPageClick}
                     onRowSizeChange={this.handleRowSizeChange}
                     onSortOrderChange={this.handleSortOrderChange}
-                    page={this.state.page}
-                    rowSize={this.state.rowSize}
+                    page={page}
+                    rowSize={rowSize}
                     selectable={false}
                     showCheckboxes={false}
                     showHeaderToolbar={false}

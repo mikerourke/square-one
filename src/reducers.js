@@ -4,7 +4,7 @@ import {
     leadsReducer,
     settingsReducer,
     userReducer,
-} from './data/reducer';
+} from './modules/reducer';
 
 const rootReducer = combineReducers({
     gui: guiReducer,

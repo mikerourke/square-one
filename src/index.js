@@ -12,7 +12,7 @@ import axios from 'axios';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import configureStore from './store/configureStore';
 import renderRoutes from './routes';
-import { getAllSettings } from './data/settings/actions';
+import { getAllSettings } from 'modules/settings/actions';
 
 // Import web assets:
 /* eslint-disable */

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
-import { palette } from 'style/theme';
+import { palette } from 'style/mui';
 
 const Container = styled.div`
     display: flex;

@@ -62,7 +62,7 @@ module.exports = {
         ],
         extensions: ['.js', '.jsx'],
         alias: {
-            scenes: path.resolve(process.cwd(), 'src/scenes'),
+            containers: path.resolve(process.cwd(), 'src/containers'),
         },
     },
     target: 'web',

@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { palette } from 'style/theme';
+import { palette } from 'style/mui';
 import FilterMenu from './FilterMenu';
 import SearchBox from './SearchBox';
 import Toolbar from './Toolbar';

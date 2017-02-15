@@ -3,7 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import { palette } from 'style/theme';
+import { palette } from 'style/mui';
 
 const Container = styled.div`
     display: flex;

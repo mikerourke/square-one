@@ -1,8 +1,8 @@
 import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 import Layout from './layout';
-import { LoginPage, LeadsPage, ManageLeadPage } from './scenes';
-import { toggleAppSidebar } from 'data/gui/actions';
+import { LoginPage, LeadsPage, ManageLeadPage } from './containers';
+import { toggleAppSidebar } from 'modules/gui/actions';
 
 export default (history, store) => {
     history.listen((location) => {

@@ -1,8 +1,15 @@
+/*
+ * External dependencies
+ */
 import React, { Component, PropTypes } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { getAllLeads } from 'data/leads/actions';
+
+/*
+ * Internal dependencies
+ */
+import { getAllLeads } from 'modules/leads/actions';
 import LeadsTable from './components/LeadsTable';
 import PageHeaderToolbar from './components/PageHeaderToolbar';
 

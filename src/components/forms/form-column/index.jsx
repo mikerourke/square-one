@@ -1,13 +1,25 @@
-// External dependencies
+/*
+ * External dependencies
+ */
 import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+/**
+ * Base styled component for the column.
+ */
+const Column = styled.div`
     flex: 1 400px;
     margin: 0 auto;
     min-width: 0px;
 `;
 
+/**
+ * Adds the inline style based on the column index.  A left column (with
+ *      index of 0) has right padding.  A right column (with index of 1) has
+ *      left padding.
+ * @param columnIndex {number} Index of the column (0 for left, 1 for right).
+ * @returns {Object} Inline style for the column.
+ */
 const getStyle = (columnIndex) => {
     if (columnIndex === 0) {
         return { paddingRight: 8 };
@@ -20,18 +32,17 @@ const getStyle = (columnIndex) => {
  * Column on a two-column form.
  * @param children Nodes to display in the column.
  * @param columnIndex {number} Indicates if the column is left or right side.
- * @param props {object} Remaining props for the element.
  * @constructor
  */
 const FormColumn = ({
     children,
     columnIndex,
 }) => (
-    <Container
+    <Column
         style={getStyle(columnIndex)}
     >
         {children}
-    </Container>
+    </Column>
 );
 
 FormColumn.propTypes = {

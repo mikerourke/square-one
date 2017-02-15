@@ -10,10 +10,15 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 /*
  * Internal dependencies
  */
-import muiTheme from 'style/theme';
-import { actions as guiActions } from 'data/gui';
+import { getMuiTheme } from 'style/mui';
+import { actions as guiActions } from 'modules/gui';
 import Header from './header';
 import Sidebar from './sidebar';
+
+const ChildrenContainer = styled.div`
+    position: relative;
+    top: 64px;
+`;
 
 export class Layout extends Component {
     static contextTypes = {
@@ -44,13 +49,9 @@ export class Layout extends Component {
 
     render() {
         const { gui, children } = this.props;
-        const Container = styled.div`
-            position: relative;
-            top: 64px;
-        `;
 
         return (
-            <MuiThemeProvider muiTheme={muiTheme}>
+            <MuiThemeProvider muiTheme={getMuiTheme}>
                 <div>
                     <Header
                         handleToggle={this.handleToggle}
@@ -60,9 +61,9 @@ export class Layout extends Component {
                         handleTouchTap={this.handleSidebarTouchTap}
                         handleToggle={this.handleToggle}
                     />
-                    <Container>
+                    <ChildrenContainer>
                         {children}
-                    </Container>
+                    </ChildrenContainer>
                 </div>
             </MuiThemeProvider>
         );

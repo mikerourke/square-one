@@ -10,6 +10,11 @@ import IconButton from 'material-ui/IconButton';
  */
 import { palette } from 'style/mui';
 
+/**
+ * Header AppBar element for the application layout.
+ * @param {Function} handleToggle Handles the hamburger menu icon press.
+ * @constructor
+ */
 const Header = ({
     handleToggle,
 }) => (

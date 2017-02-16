@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { actions as userActions } from 'modules/user';
+import { actions as userActions } from 'state/user';
 import Container from './components/Container';
 import ForgotPasswordButton from './components/ForgotPasswordButton';
 import Header from './components/Header';

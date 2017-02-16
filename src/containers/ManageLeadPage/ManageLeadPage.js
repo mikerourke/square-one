@@ -13,8 +13,8 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 /*
  * Internal dependencies
  */
-import { Lead, actions as leadActions } from 'modules/leads';
-import { Setting, actions as settingsActions } from 'modules/settings';
+import { Lead, actions as leadActions } from 'state/leads';
+import { Setting, actions as settingsActions } from 'state/settings';
 import LeadDetailsForm from './components/LeadDetailsForm';
 import MessagesModal from './components/MessagesModal';
 import PageHeaderToolbar from './components/PageHeaderToolbar';

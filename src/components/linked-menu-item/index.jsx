@@ -6,6 +6,13 @@ import { Link } from 'react-router';
 import FontIcon from 'material-ui/FontIcon';
 import { MenuItem } from 'material-ui/Menu';
 
+/**
+ * Menu item in the sidebar linked to a route.
+ * @param {string} linkTo Router link for the component.
+ * @param {string} iconName Name of the Material icon.
+ * @param {...Object} props Default props on the Menu Item.
+ * @constructor
+ */
 const LinkedMenuItem = ({
     linkTo,
     iconName,

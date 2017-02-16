@@ -1,13 +1,26 @@
+/*
+ * External dependencies
+ */
 import React, { PropTypes } from 'react';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
 import { Menu } from 'material-ui/Menu';
-import LinkedMenuItem from 'components/linked-menu-item';
-import Header from './header';
 
+/*
+ * Internal dependencies
+ */
+import LinkedMenuItem from 'components/linked-menu-item';
+import SidebarHeader from './sidebar-header';
+
+/**
+ * Sidebar drawer in the application layout.
+ * @param {boolean} [open=false] Indicates if the drawer is open.
+ * @param {Function} handleToggle Handler for when the drawer is toggled.
+ * @param {string} [userEmail=""] Email address of the logged in user.
+ * @constructor
+ */
 const Sidebar = ({
     open,
-    handleTouchTap,
     handleToggle,
     userEmail,
 }) => (
@@ -17,7 +30,7 @@ const Sidebar = ({
             docked={false}
             onRequestChange={handleToggle}
         >
-            <Header userEmail={userEmail} />
+            <SidebarHeader userEmail={userEmail} />
             <Menu>
                 <LinkedMenuItem
                     id="home"
@@ -52,14 +65,13 @@ const Sidebar = ({
 
 Sidebar.propTypes = {
     open: PropTypes.bool,
-    handleTouchTap: PropTypes.func.isRequired,
     handleToggle: PropTypes.func.isRequired,
     userEmail: PropTypes.string,
 };
 
 Sidebar.defaultProps = {
     open: false,
-    userEmail: 'What up, dawg?',
+    userEmail: '',
 };
 
 export default Sidebar;

@@ -1,1 +1,0 @@
-export const TOGGLE_APP_SIDEBAR = 'gui/TOGGLE_APP_SIDEBAR';

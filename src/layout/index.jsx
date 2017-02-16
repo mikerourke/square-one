@@ -11,42 +11,56 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
  * Internal dependencies
  */
 import { getMuiTheme } from 'style/mui';
-import { actions as guiActions } from 'modules/gui';
+import { actions as guiActions } from 'state/gui';
 import Header from './header';
 import Sidebar from './sidebar';
 
+/**
+ * Styled container for the application elements.
+ * @type {StyledComponent}
+ */
 const ChildrenContainer = styled.div`
     position: relative;
     top: 64px;
 `;
 
+/**
+ * Layout container for the application.  This is used to handle navigation
+ *      within the entire application.
+ */
 export class Layout extends Component {
-    static contextTypes = {
-        router: PropTypes.object,
-    };
-
+    /**
+     * @type {Object}
+     * @property {Object} actions Redux actions bound to dispatch.
+     * @property {Node} children Child nodes in layout.
+     * @property {Object} gui Redux state associated with GUI.
+     */
     static propTypes = {
         actions: PropTypes.object.isRequired,
-        children: PropTypes.object.isRequired,
+        children: PropTypes.node.isRequired,
         gui: PropTypes.object.isRequired,
     };
 
+    /**
+     * @param {Object} props Props passed from parent component.
+     * @param {Object} context Context for the component.
+     */
     constructor(props, context) {
         super(props, context);
-
         this.handleToggle = this.handleToggle.bind(this);
-        this.handleSidebarTouchTap = this.handleSidebarTouchTap.bind(this);
     }
 
-    handleSidebarTouchTap(event) {
-        // TODO: Write code to handle menu events.
-    }
-
+    /**
+     * Toggle the visibility of the sidebar.
+     */
     handleToggle() {
         const { toggleAppSidebar } = this.props.actions;
         toggleAppSidebar();
     }
 
+    /**
+     * @returns {ReactElement} JSX for the component.
+     */
     render() {
         const { gui, children } = this.props;
 
@@ -58,7 +72,6 @@ export class Layout extends Component {
                     />
                     <Sidebar
                         open={gui.appSidebarOpen}
-                        handleTouchTap={this.handleSidebarTouchTap}
                         handleToggle={this.handleToggle}
                     />
                     <ChildrenContainer>

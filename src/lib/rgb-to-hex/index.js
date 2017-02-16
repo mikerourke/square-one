@@ -3,7 +3,14 @@
  */
 
 /* eslint-disable no-bitwise */
-export default (hex) => {
+
+/**
+ * Given a hexidecimal string representing a color, returns the corresponding
+ *      R, G, and B values as an object.
+ * @param {string} hex Hexidecimal color value.
+ * @return {{r: number, g: number, b: number}} Object with RGB values.
+ */
+const getRgbFromHex = (hex) => {
     let newHex = hex.replace(/^#/, '');
 
     if (newHex.length === 3) {
@@ -18,3 +25,5 @@ export default (hex) => {
         b: bigInt & 255,
     };
 };
+
+export default getRgbFromHex;

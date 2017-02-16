@@ -10,8 +10,8 @@ import TextField from 'material-ui/TextField';
 /*
  * Internal dependencies
  */
-import { Lead } from 'modules/leads';
-import { Setting } from 'modules/settings';
+import { Lead } from 'state/leads';
+import { Setting } from 'state/settings';
 import FormColumn from 'components/forms/form-column';
 import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';

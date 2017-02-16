@@ -1,3 +1,3 @@
-# square1-web
+# Square1
 
-Front end for the square1 lead tracking and resource management system.
+Lead management and resource tracking system.

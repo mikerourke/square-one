@@ -5,9 +5,10 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 
 /**
- * Base styled component for the column.
+ * Styled container for the column.
+ * @type {StyledComponent}
  */
-const Column = styled.div`
+const Container = styled.div`
     flex: 1 400px;
     margin: 0 auto;
     min-width: 0px;
@@ -20,7 +21,7 @@ const Column = styled.div`
  * @param columnIndex {number} Index of the column (0 for left, 1 for right).
  * @returns {Object} Inline style for the column.
  */
-const getStyle = (columnIndex) => {
+const getInlineStyle = (columnIndex) => {
     if (columnIndex === 0) {
         return { paddingRight: 8 };
     }
@@ -30,24 +31,24 @@ const getStyle = (columnIndex) => {
 
 /**
  * Column on a two-column form.
- * @param children Nodes to display in the column.
- * @param columnIndex {number} Indicates if the column is left or right side.
+ * @param {number} columnIndex Indicates if the column is left or right side.
+ * @param {Node} children Nodes to display in the column.
  * @constructor
  */
 const FormColumn = ({
-    children,
     columnIndex,
+    children,
 }) => (
-    <Column
-        style={getStyle(columnIndex)}
+    <Container
+        style={getInlineStyle(columnIndex)}
     >
         {children}
-    </Column>
+    </Container>
 );
 
 FormColumn.propTypes = {
-    children: PropTypes.node.isRequired,
     columnIndex: PropTypes.number.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default FormColumn;

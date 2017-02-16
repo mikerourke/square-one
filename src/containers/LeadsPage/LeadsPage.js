@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 /*
  * Internal dependencies
  */
-import { getAllLeads } from 'modules/leads/actions';
+import { getAllLeads } from 'state/leads/actions';
 import LeadsTable from './components/LeadsTable';
 import PageHeaderToolbar from './components/PageHeaderToolbar';
 

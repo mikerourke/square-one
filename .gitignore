@@ -31,7 +31,8 @@ dictionaries
 
 # Build/documentation directories:
 client
-docs
+docs/
+!internals/docs/
 .ssl/
 
 # Configuration/build files:

@@ -1,15 +1,31 @@
+/*
+ * External dependencies
+ */
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { actions as userActions } from 'state/user';
-import Container from './components/Container';
-import ForgotPasswordButton from './components/ForgotPasswordButton';
-import Header from './components/Header';
-import LoginButton from './components/LoginButton';
-import Logo from 'components/logo';
+import styled from 'styled-components';
+import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
-import TextInput from './components/TextInput';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
+/*
+ * Internal dependencies
+ */
+import { actions as userActions } from 'state/user';
+import Logo from 'components/logo';
 import { inline } from 'style/mui';
+
+const Container = styled.div`
+    display: flex;
+    flex-flow: none;
+    justify-content: center;
+`;
+
+const HeaderContainer = styled.div`
+    text-align: center;
+`;
 
 export class LoginPage extends Component {
     static contextTypes = {
@@ -42,26 +58,30 @@ export class LoginPage extends Component {
                         width: 350,
                     }}
                 >
-                    <Header>
+                    <HeaderContainer>
                         <Logo
                             width={64}
                             height={64}
                         />
-                    </Header>
+                    </HeaderContainer>
                     <form onSubmit={this.handleSubmit}>
-                        <TextInput
+                        <TextField
                             floatingLabelText="Login"
+                            fullWidth={true}
                         />
-                        <TextInput
+                        <TextField
                             floatingLabelText="Password"
+                            fullWidth={true}
                             type="password"
                         />
-                        <LoginButton
+                        <RaisedButton
+                            fullWidth={true}
                             label="Login"
                             primary={true}
                             type="submit"
                         />
-                        <ForgotPasswordButton
+                        <FlatButton
+                            fullWidth={true}
                             label="Forgot Password?"
                         />
                     </form>

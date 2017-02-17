@@ -1,5 +1,9 @@
-import LeadsPage from './LeadsPage';
-import LoginPage from './LoginPage';
-import ManageLeadPage from './ManageLeadPage';
+import LeadsListPage from './leads-list';
+import LoginPage from './login';
+import ManageLeadPage from './manage-lead';
 
-export { LeadsPage, LoginPage, ManageLeadPage };
+export {
+    LeadsListPage,
+    LoginPage,
+    ManageLeadPage
+};

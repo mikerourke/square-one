@@ -36,7 +36,7 @@ const getInlineStyle = (transparency = 1) => {
  * Search box for filtering table data.
  * @constructor
  */
-const PageHeaderToolbarSearchBox = ({
+const PageHeaderSearchBox = ({
     handleChange,
 }) => (
     <Container id="search-box">
@@ -55,8 +55,8 @@ const PageHeaderToolbarSearchBox = ({
     </Container>
 );
 
-PageHeaderToolbarSearchBox.propTypes = {
+PageHeaderSearchBox.propTypes = {
     handleChange: PropTypes.func.isRequired,
 };
 
-export default PageHeaderToolbarSearchBox;
+export default PageHeaderSearchBox;

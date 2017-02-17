@@ -8,7 +8,7 @@ import { Router, Route, IndexRoute } from 'react-router';
  * Internal dependencies
  */
 import Layout from '../../layout';
-import { LoginPage, LeadsPage, ManageLeadPage } from '../../containers';
+import { LoginPage, LeadsListPage, ManageLeadPage } from '../../containers';
 import { toggleAppSidebar } from 'state/gui/actions';
 
 /**
@@ -33,7 +33,7 @@ const configureRoutes = (history, store) => {
             <Route path="/" component={Layout} >
                 <IndexRoute component={LoginPage} />
                 <Route path="login" component={LoginPage} />
-                <Route path="leads" component={LeadsPage} />
+                <Route path="leads" component={LeadsListPage} />
                 <Route path="leads/new" component={ManageLeadPage} />
                 <Route path="leads/:id" component={ManageLeadPage} />
             </Route>

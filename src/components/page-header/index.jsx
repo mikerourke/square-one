@@ -11,8 +11,10 @@ import {
 /*
  * Internal dependencies
  */
-import PageHeaderToolbarSearchBox from './search-box';
-import PageHeaderToolbarFilterMenu from './filter-menu';
+import { palette } from 'style/mui';
+import PageHeaderFilterMenu from './filter-menu';
+import PageHeaderSearchBox from './search-box';
+import PageHeaderTitle from './title';
 
 const GroupContainer = styled.div`
     display: flex;
@@ -25,13 +27,11 @@ const GroupContainer = styled.div`
 /**
  * Toolbar on the page header.
  */
-class PageHeaderToolbar extends Component {
+class PageHeader extends Component {
     /**
      * @type {Object}
      * @property {Node} [elementButtonsRight=''] Button elements on the right
      *      side of the toolbar.
-     * @property {Node} elementTitleLeft Title element on the left side of the
-     *      toolbar.
      * @property {Array} [filterSelections=[]] Filter options to display (if
      *      applicable).
      * @property {Function} [handleFilterMenuChange=() => {}] Function to
@@ -42,7 +42,6 @@ class PageHeaderToolbar extends Component {
      */
     static propTypes = {
         elementButtonsRight: PropTypes.node,
-        elementTitleLeft: PropTypes.node.isRequired,
         filterSelections: PropTypes.arrayOf(PropTypes.object),
         handleFilterMenuChange: PropTypes.func,
         handleSearchBoxChange: PropTypes.func,
@@ -63,21 +62,21 @@ class PageHeaderToolbar extends Component {
     render() {
         const {
             elementButtonsRight,
-            elementTitleLeft,
             filterSelections,
             handleFilterMenuChange,
             handleSearchBoxChange,
             height,
+            ...props,
         } = this.props;
 
         let searchAndFilterElement = '';
         if (filterSelections.length !== 0) {
             searchAndFilterElement = (
-                <ToolbarGroup>
-                    <PageHeaderToolbarSearchBox
+                <ToolbarGroup style={{ marginLeft: 0 }}>
+                    <PageHeaderSearchBox
                         handleChange={handleSearchBoxChange}
                     />
-                    <PageHeaderToolbarFilterMenu
+                    <PageHeaderFilterMenu
                         handleChange={handleFilterMenuChange}
                         selections={filterSelections}
                     />
@@ -86,10 +85,20 @@ class PageHeaderToolbar extends Component {
         }
 
         return (
-            <Toolbar height={height}>
+            <Toolbar
+                style={{
+                    alignItems: 'baseline',
+                    backgroundColor: palette.primary1Color,
+                    boxShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, ' +
+                               'rgba(0, 0, 0, 0.117647) 0px 1px 4px',
+                    height,
+                }}
+            >
                 <GroupContainer>
-                    <ToolbarGroup firstChild={true}>
-                        {elementTitleLeft}
+                    <ToolbarGroup>
+                        <PageHeaderTitle
+                            {...props}
+                        />
                     </ToolbarGroup>
                     {searchAndFilterElement}
                     <ToolbarGroup>
@@ -101,4 +110,4 @@ class PageHeaderToolbar extends Component {
     }
 }
 
-export default PageHeaderToolbar;
+export default PageHeader;

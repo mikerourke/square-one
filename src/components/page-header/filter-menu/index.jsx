@@ -17,7 +17,7 @@ import { palette } from 'style/mui';
  * @param {Object[]} selections Filter options that populate the dropdown.
  * @constructor
  */
-const PageHeaderToolbarFilterMenu = ({
+const PageHeaderFilterMenu = ({
     handleChange,
     selections,
 }) => (
@@ -42,9 +42,9 @@ const PageHeaderToolbarFilterMenu = ({
     </IconMenu>
 );
 
-PageHeaderToolbarFilterMenu.propTypes = {
+PageHeaderFilterMenu.propTypes = {
     handleChange: PropTypes.func.isRequired,
     selections: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default PageHeaderToolbarFilterMenu;
+export default PageHeaderFilterMenu;

@@ -14,7 +14,5 @@ export default styled.div`
     display: inline-block;
     float: left;
     font-weight: 300;
-    font-size: ${(props) => props.fontSize}px;
     padding: 4px 0;
-    width: 200px;
 `;

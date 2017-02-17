@@ -20,8 +20,8 @@ const HeaderWrapper = styled.div`
     columns: auto 1;
 `;
 
-class PageHeaderToolbarTitle extends Component {
-    propTypes = {
+class PageHeaderTitle extends Component {
+    static propTypes = {
         backArrowTooltip: PropTypes.string,
         handleBackArrowTouchTap: PropTypes.func,
         headerText: PropTypes.string.isRequired,
@@ -29,7 +29,7 @@ class PageHeaderToolbarTitle extends Component {
         titleIconName: PropTypes.string.isRequired,
     };
 
-    defaultProps = {
+    static defaultProps = {
         backArrowTooltip: '',
         handleBackArrowTouchTap: () => {},
         subheaderText: '',
@@ -72,12 +72,16 @@ class PageHeaderToolbarTitle extends Component {
                     {titleIconName}
                 </FontIcon>
                 <HeaderWrapper>
-                    <HeaderRow fontSize={18}>{headerText}</HeaderRow>
-                    <HeaderRow fontSize={14}>{subheaderText}</HeaderRow>
+                    <HeaderRow style={{ fontSize: 18 }}>
+                        {headerText}
+                    </HeaderRow>
+                    <HeaderRow style={{ fontSize: 14 }}>
+                        {subheaderText}
+                    </HeaderRow>
                 </HeaderWrapper>
             </Container>
         )
     }
 }
 
-export default PageHeaderToolbarTitle;
+export default PageHeaderTitle;

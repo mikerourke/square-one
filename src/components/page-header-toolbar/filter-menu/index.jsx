@@ -6,25 +6,31 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 
+/*
+ * Internal dependencies
+ */
+import { palette } from 'style/mui';
+
 /**
  * Dropdown menu containing filters to apply to page data.
- * @param {string} iconColor Color of the filter icon.
+ * @param {Function} handleChange Action to perform when option is selected.
  * @param {Object[]} selections Filter options that populate the dropdown.
  * @constructor
  */
-const FilterMenu = ({
-    iconColor,
+const PageHeaderToolbarFilterMenu = ({
+    handleChange,
     selections,
 }) => (
     <IconMenu
         iconButtonElement={
             <IconButton
                 iconClassName="material-icons"
-                iconStyle={{ color: iconColor }}
+                iconStyle={{ color: palette.alternateTextColor }}
             >
                 filter_list
             </IconButton>
         }
+        onChange={handleChange}
     >
         {selections.map(selection => (
             <MenuItem
@@ -36,9 +42,9 @@ const FilterMenu = ({
     </IconMenu>
 );
 
-FilterMenu.propTypes = {
-    iconColor: PropTypes.string.isRequired,
+PageHeaderToolbarFilterMenu.propTypes = {
+    handleChange: PropTypes.func.isRequired,
     selections: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-export default FilterMenu;
+export default PageHeaderToolbarFilterMenu;

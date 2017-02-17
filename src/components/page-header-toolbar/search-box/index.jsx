@@ -1,7 +1,7 @@
 /*
  * External dependencies
  */
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
@@ -9,6 +9,7 @@ import TextField from 'material-ui/TextField';
 /*
  * Internal dependencies
  */
+import { palette } from 'style/mui';
 import getRgbFromHex from 'lib/rgb-to-hex';
 
 /**
@@ -21,12 +22,11 @@ const Container = styled.div`
 
 /**
  * Sets the color and transparency of the IconButton inline.
- * @param {string} iconColor Name of the color to apply to the element.
  * @param {number} [transparency=1] Transparency value of the icon.
  * @returns {Object} Inline style for the column.
  */
-const getInlineStyle = (iconColor, transparency = 1) => {
-    const { r, g, b } = getRgbFromHex(iconColor);
+const getInlineStyle = (transparency = 1) => {
+    const { r, g, b } = getRgbFromHex(palette.alternateTextColor);
     return {
         color: `rgba(${r},${g},${b},${transparency})`,
     };
@@ -34,36 +34,29 @@ const getInlineStyle = (iconColor, transparency = 1) => {
 
 /**
  * Search box for filtering table data.
- * @param {string} id Id of the container for reference.
- * @param {string} [iconColor="white"] Color of the Search icon.
  * @constructor
  */
-const SearchBox = ({
-    id,
-    iconColor,
+const PageHeaderToolbarSearchBox = ({
+    handleChange,
 }) => (
-    <Container id={id}>
+    <Container id="search-box">
         <IconButton
             iconClassName="material-icons"
-            iconStyle={getInlineStyle(iconColor)}
+            iconStyle={getInlineStyle()}
         >
             search
         </IconButton>
         <TextField
             hintText="Search"
-            hintStyle={getInlineStyle(iconColor, 0.5)}
-            inputStyle={getInlineStyle(iconColor)}
+            hintStyle={getInlineStyle(0.5)}
+            inputStyle={getInlineStyle()}
+            onChange={handleChange}
         />
     </Container>
 );
 
-SearchBox.propTypes = {
-    id: PropTypes.string.isRequired,
-    iconColor: PropTypes.string,
+PageHeaderToolbarSearchBox.propTypes = {
+    handleChange: PropTypes.func.isRequired,
 };
 
-SearchBox.defaultProps = {
-    iconColor: 'white',
-};
-
-export default SearchBox;
+export default PageHeaderToolbarSearchBox;

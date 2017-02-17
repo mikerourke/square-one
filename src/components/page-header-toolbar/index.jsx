@@ -8,6 +8,12 @@ import {
     ToolbarGroup
 } from 'material-ui/Toolbar';
 
+/*
+ * Internal dependencies
+ */
+import PageHeaderToolbarSearchBox from './search-box';
+import PageHeaderToolbarFilterMenu from './filter-menu';
+
 const GroupContainer = styled.div`
     display: flex;
     align-items: flex-start;
@@ -19,52 +25,75 @@ const GroupContainer = styled.div`
 /**
  * Toolbar on the page header.
  */
-class HeaderToolbar extends Component {
+class PageHeaderToolbar extends Component {
     /**
-     * React propTypes
      * @type {Object}
+     * @property {Node} [elementButtonsRight=''] Button elements on the right
+     *      side of the toolbar.
+     * @property {Node} elementTitleLeft Title element on the left side of the
+     *      toolbar.
+     * @property {Array} [filterSelections=[]] Filter options to display (if
+     *      applicable).
+     * @property {Function} [handleFilterMenuChange=() => {}] Function to
+     *      perform when an option is selected from the Filter Menu.
+     * @property {Function} [handleSearchBoxChange=() => {}] Function to
+     *      perform when text is entered into the Search Box.
      * @property {number} [height=144] Height of the toolbar in pixels.
-     * @property {Node} leftElement Element to show in the left-hand Toolbar
-     *      Group.
-     * @property {Node} [middleElement={}] Element to show in the center Toolbar
-     *      Group.
-     * @property {Node} rightElement Element to show in the right-hand Toolbar
-     *      Group.
      */
     static propTypes = {
+        elementButtonsRight: PropTypes.node,
+        elementTitleLeft: PropTypes.node.isRequired,
+        filterSelections: PropTypes.arrayOf(PropTypes.object),
+        handleFilterMenuChange: PropTypes.func,
+        handleSearchBoxChange: PropTypes.func,
         height: PropTypes.number,
-        leftElement: PropTypes.object.isRequired,
-        middleElement: PropTypes.object,
-        rightElement: PropTypes.object.isRequired,
     };
 
     /**
      * @ignore
      */
     static defaultProps = {
+        elementButtonsRight: '',
+        filterSelections: [],
+        handleFilterMenuChange: () => {},
+        handleSearchBoxChange: () => {},
         height: 144,
-        middleElement: {},
     };
 
     render() {
         const {
+            elementButtonsRight,
+            elementTitleLeft,
+            filterSelections,
+            handleFilterMenuChange,
+            handleSearchBoxChange,
             height,
-            leftElement,
-            middleElement,
-            rightElement,
         } = this.props;
+
+        let searchAndFilterElement = '';
+        if (filterSelections.length !== 0) {
+            searchAndFilterElement = (
+                <ToolbarGroup>
+                    <PageHeaderToolbarSearchBox
+                        handleChange={handleSearchBoxChange}
+                    />
+                    <PageHeaderToolbarFilterMenu
+                        handleChange={handleFilterMenuChange}
+                        selections={filterSelections}
+                    />
+                </ToolbarGroup>
+            )
+        }
 
         return (
             <Toolbar height={height}>
                 <GroupContainer>
                     <ToolbarGroup firstChild={true}>
-                        {leftElement}
+                        {elementTitleLeft}
                     </ToolbarGroup>
+                    {searchAndFilterElement}
                     <ToolbarGroup>
-                        {middleElement}
-                    </ToolbarGroup>
-                    <ToolbarGroup>
-                        {rightElement}
+                        {elementButtonsRight}
                     </ToolbarGroup>
                 </GroupContainer>
             </Toolbar>
@@ -72,4 +101,4 @@ class HeaderToolbar extends Component {
     }
 }
 
-export default HeaderToolbar;
+export default PageHeaderToolbar;

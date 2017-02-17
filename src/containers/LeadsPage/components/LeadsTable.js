@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Table from 'components/Table';
+import Table from 'components/DataTable';
 
 const tableColumns = [
     {

@@ -9,6 +9,7 @@ import Paper from 'material-ui/Paper';
  * Internal dependencies
  */
 import { inline } from 'style/mui';
+import TableToolbar from './toolbar';
 
 /**
  * Table with pagination, sorting, and filtering capabilities.
@@ -16,67 +17,136 @@ import { inline } from 'style/mui';
 class Table extends Component {
     static propTypes = {
         columns: PropTypes.array.isRequired,
-        data: PropTypes.array.isRequired,
+        filterSelections: PropTypes.array,
         handleCellClick: PropTypes.func.isRequired,
-        handlePageChange: PropTypes.func.isRequired,
-        handleRowSizeChange: PropTypes.func.isRequired,
-        handleSortOrderChange: PropTypes.func.isRequired,
-        page: PropTypes.number,
-        rowSize: PropTypes.number,
+        tableData: PropTypes.array,
     };
 
     static defaultProps = {
-        page: 1,
-        rowSize: 10,
+        filterSelections: [],
+        tableData: [],
     };
 
     constructor(props, context) {
         super(props, context);
+        this.startingData = props.tableData;
+
+        this.handleFilterMenuChange = this.handleFilterMenuChange.bind(this);
         this.handleNextPageClick = this.handleNextPageClick.bind(this);
         this.handlePreviousPageClick = this.handlePreviousPageClick.bind(this);
+        this.handleRowSizeChange = this.handleRowSizeChange.bind(this);
+        this.handleSearchBoxChange = this.handleSearchBoxChange.bind(this);
+        this.handleSortOrderChange = this.handleSortOrderChange.bind(this);
+    }
+
+    state = {
+        data: this.props.tableData,
+        page: 1,
+        rowSize: 10,
+    };
+
+    handleFilterMenuChange(event, key, payload) {
+        // TODO: Write code to handle filter menu.
     }
 
     handleNextPageClick() {
-        const { handlePageChange } = this.props;
-        handlePageChange('next');
+        // TODO: Add functionality to handle going to the next page.
+        // Note: This will need to accommodate for the row count displayed.
+        const nextPage = this.state.page + 1;
+        this.setState({
+            page: nextPage,
+        });
     }
 
     handlePreviousPageClick() {
-        const { handlePageChange } = this.props;
-        handlePageChange('previous');
+        // TODO: Add function to handle going to the previous page.
+        // Note: This will need to accommodate for the row count displayed.
+        const currentPage = this.state.page;
+        const previousPage = (currentPage === 1) ? 1 : currentPage - 1;
+        this.setState({
+            page: previousPage,
+        });
+    }
+
+    handleRowSizeChange(index, value) {
+        // TODO: Ensure this doesn't cause issues with page count.
+        this.setState({
+            rowSize: value,
+        });
+    }
+
+    handleSearchBoxChange(event, newValue) {
+        const rows = this.startingData;
+        let filteredList = [];
+        if (!newValue || newValue === '') {
+            filteredList = this.startingData;
+        } else {
+            filteredList = rows.filter((rowItem) => {
+                let countFound = 0;
+                Object.keys(rowItem).forEach((key) => {
+                    const rowValue = rowItem[key].toString().toLowerCase();
+                    if (rowValue.includes(newValue.toLowerCase())) {
+                        countFound += 1;
+                    }
+                });
+                return (countFound > 0);
+            });
+        }
+
+        this.setState({ data: filteredList });
+    }
+
+    handleSortOrderChange(key, order) {
+        const sortedList = this.state.data.slice().sort((a, b) => {
+            let sortValue = (a[key] > b[key]) ? 1 : -1;
+            if (order === 'desc') {
+                sortValue *= -1;
+            }
+            return sortValue;
+        });
+
+        this.setState({ data: sortedList });
     }
 
     render() {
         const {
             handleCellClick,
-            handlePageChange,
-            handleRowSizeChange,
-            handleSortOrderChange,
-            ...props,
+            columns,
+            filterSelections,
         } = this.props;
+
+        const { ...state } = this.state;
         return (
-            <Paper
-                style={{
-                    ...inline.paper,
-                    top: '-58px',
-                    padding: 0,
-                }}
-            >
-                <DataTables
-                    count={20}
-                    height={'auto'}
-                    onCellClick={handleCellClick}
-                    onNextPageClick={this.handleNextPageClick}
-                    onPreviousPageClick={this.handlePreviousPageClick}
-                    onRowSizeChange={handleRowSizeChange}
-                    onSortOrderChange={handleSortOrderChange}
-                    selectable={false}
-                    showCheckboxes={false}
-                    showHeaderToolbar={false}
-                    showRowHover={true}
-                    {...props}
+            <div>
+                <TableToolbar
+                    handleFilterMenuChange={this.handleFilterMenuChange}
+                    handleSearchBoxChange={this.handleSearchBoxChange}
+                    filterSelections={filterSelections}
                 />
+                <Paper
+                    style={{
+                        ...inline.paper,
+                        top: 0,
+                        padding: 0,
+                    }}
+                >
+                    <DataTables
+                        columns={columns}
+                        count={20}
+                        height={'auto'}
+                        onCellClick={handleCellClick}
+                        onNextPageClick={this.handleNextPageClick}
+                        onPreviousPageClick={this.handlePreviousPageClick}
+                        onRowSizeChange={this.handleRowSizeChange}
+                        onSortOrderChange={this.handleSortOrderChange}
+                        selectable={false}
+                        showCheckboxes={false}
+                        showHeaderToolbar={false}
+                        showRowHover={true}
+                        {...state}
+                    />
             </Paper>
+            </div>
         );
     }
 }

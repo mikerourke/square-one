@@ -6,6 +6,7 @@ export default {
         margin: '0 auto 24px auto',
         padding: 24,
         position: 'relative',
+        width: '95%',
     },
     tab: {
         textTransform: 'none',

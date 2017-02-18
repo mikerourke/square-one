@@ -13,7 +13,9 @@ import RaisedButton from 'material-ui/RaisedButton';
  */
 import { getAllLeads } from 'state/leads/actions';
 import tableColumns from './table-columns';
-import SearchableListPage from '../templates/searchable-list-page';
+import PageHeader from 'components/page-header';
+import PageHeaderTitle from 'components/page-header-title';
+import Table from 'components/table';
 
 class LeadsList extends Component {
     static propTypes = {
@@ -27,8 +29,8 @@ class LeadsList extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.getTableData();
         this.handleCellClick = this.handleCellClick.bind(this);
+        this.getTableData();
     }
 
     state = {
@@ -36,16 +38,11 @@ class LeadsList extends Component {
         leadsArray: [],
     };
 
-    handleCellClick(rowIndex, columnIndex, row, column) {
-        const { push } = this.context.router;
-        push(`leads/${row.id}`);
-    }
-
     getFilterSelections() {
         return [
-            {id: 1, value: 'Test1'},
-            {id: 2, value: 'Test2'},
-        ]
+            { id: 1, value: 'Test1' },
+            { id: 2, value: 'Test2' },
+        ];
     }
 
     getTableData() {
@@ -62,9 +59,14 @@ class LeadsList extends Component {
             this.setState({
                 isLoading: false,
                 leadsArray: result,
-            })
-        })
-    };
+            });
+        });
+    }
+
+    handleCellClick(rowIndex, columnIndex, row, column) {
+        const { push } = this.context.router;
+        push(`leads/${row.id}`);
+    }
 
     render() {
         const { isLoading, leadsArray } = this.state;
@@ -74,20 +76,32 @@ class LeadsList extends Component {
             </Link>
         );
 
-        if (isLoading) {
+        const headerTitle = (
+            <PageHeaderTitle
+                headerText="Leads"
+                titleIconName="account_circle"
+            />
+        );
+
+        const filterSelections = this.getFilterSelections();
+
+        if (this.state.isLoading) {
             return (<div>Loading...</div>);
         }
 
         return (
-            <SearchableListPage
-                elementButtonsRight={headerButtons}
-                filterSelections={this.getFilterSelections()}
-                handleCellClick={this.handleCellClick}
-                headerText="Leads"
-                titleIconName="account_circle"
-                tableColumns={tableColumns}
-                tableData={leadsArray}
-            />
+            <div>
+                <PageHeader
+                    elementButtonsRight={headerButtons}
+                    elementTitleLeft={headerTitle}
+                />
+                <Table
+                    columns={tableColumns}
+                    data={this.state.leadsArray}
+                    filterSelections={filterSelections}
+                    handleCellClick={this.handleCellClick}
+                />
+            </div>
         );
     }
 }

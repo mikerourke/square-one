@@ -10,16 +10,35 @@ import IconButton from 'material-ui/IconButton';
  * Internal dependencies
  */
 import { palette } from 'style/mui';
-import HeaderRow from './header-row';
 
 const Container = styled.div`
     display: flex;
 `;
 
-const HeaderWrapper = styled.div`
+/**
+ * Styled row for the page header text element.
+ * @type {StyledComponent}
+ */
+const TextRow = styled.div`
+    clear: both;
+    display: inline-block;
+    float: left;
+    font-weight: 300;
+    padding: 4px 0;
+`;
+
+/**
+ * Styled container for the page header text elements.
+ * @type {StyledComponent}
+ */
+const TextRowContainer = styled.div`
     columns: auto 1;
 `;
 
+/**
+ * Container for the TextRow elements.
+ * @type {StyledComponent}
+ */
 class PageHeaderTitle extends Component {
     static propTypes = {
         backArrowTooltip: PropTypes.string,
@@ -58,6 +77,18 @@ class PageHeaderTitle extends Component {
                 arrow_back
             </IconButton>
         );
+
+        const subheaderTextRow = (
+            <TextRow
+                style={{
+                    color: iconColor,
+                    fontSize: 14,
+                }}
+            >
+                {subheaderText}
+            </TextRow>
+        );
+
         return (
             <Container>
                 {backArrowTooltip && backArrowElement}
@@ -71,16 +102,19 @@ class PageHeaderTitle extends Component {
                 >
                     {titleIconName}
                 </FontIcon>
-                <HeaderWrapper>
-                    <HeaderRow style={{ fontSize: 18 }}>
+                <TextRowContainer>
+                    <TextRow
+                        style={{
+                            color: iconColor,
+                            fontSize: 18,
+                        }}
+                    >
                         {headerText}
-                    </HeaderRow>
-                    <HeaderRow style={{ fontSize: 14 }}>
-                        {subheaderText}
-                    </HeaderRow>
-                </HeaderWrapper>
+                    </TextRow>
+                    {subheaderText && subheaderTextRow}
+                </TextRowContainer>
             </Container>
-        )
+        );
     }
 }
 

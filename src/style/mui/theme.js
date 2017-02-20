@@ -16,4 +16,7 @@ export default getMuiTheme({
         textColor: palette.primary1Color,
         selectedTextColor: palette.primary1Color,
     },
+    toolbar: {
+        backgroundColor: palette.primary1Color,
+    },
 });

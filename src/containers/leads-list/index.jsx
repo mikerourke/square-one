@@ -3,7 +3,6 @@
  */
 import React, { Component, PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -19,8 +18,8 @@ import Table from 'components/table';
 
 class LeadsList extends Component {
     static propTypes = {
-        actions: PropTypes.object.isRequired,
         leads: ImmutablePropTypes.orderedMap.isRequired,
+        populateLeads: PropTypes.func.isRequired,
     };
 
     static contextTypes = {
@@ -30,7 +29,6 @@ class LeadsList extends Component {
     constructor(props, context) {
         super(props, context);
         this.handleCellClick = this.handleCellClick.bind(this);
-        this.getTableData();
     }
 
     state = {
@@ -38,18 +36,9 @@ class LeadsList extends Component {
         leadsArray: [],
     };
 
-    getFilterSelections() {
-        return [
-            { id: 1, value: 'Test1' },
-            { id: 2, value: 'Test2' },
-        ];
-    }
-
-    getTableData() {
-        this.props.actions.getAllLeads().then(() => {
-            const { leads } = this.props;
-            console.log(leads);
-            const startingData = Object.values(leads.toJS());
+    componentDidMount() {
+        this.props.populateLeads().then(() => {
+            const startingData = Object.values(this.props.leads.toJS());
             const result = startingData.map(item => ({
                 id: item.id,
                 leadName: item.leadName,
@@ -63,6 +52,13 @@ class LeadsList extends Component {
         });
     }
 
+    getFilterSelections() {
+        return [
+            { id: 1, value: 'Test1' },
+            { id: 2, value: 'Test2' },
+        ];
+    }
+
     handleCellClick(rowIndex, columnIndex, row, column) {
         const { push } = this.context.router;
         push(`leads/${row.id}`);
@@ -70,6 +66,7 @@ class LeadsList extends Component {
 
     render() {
         const { isLoading, leadsArray } = this.state;
+
         const headerButtons = (
             <Link to="/leads/new">
                 <RaisedButton label="Add New Lead" />
@@ -85,7 +82,7 @@ class LeadsList extends Component {
 
         const filterSelections = this.getFilterSelections();
 
-        if (this.state.isLoading) {
+        if (isLoading) {
             return (<div>Loading...</div>);
         }
 
@@ -97,7 +94,7 @@ class LeadsList extends Component {
                 />
                 <Table
                     columns={tableColumns}
-                    data={this.state.leadsArray}
+                    data={leadsArray}
                     filterSelections={filterSelections}
                     handleCellClick={this.handleCellClick}
                 />
@@ -111,7 +108,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators({ getAllLeads }, dispatch),
+    dispatch,
+    populateLeads: () => dispatch(getAllLeads()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeadsList);

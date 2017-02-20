@@ -2,6 +2,7 @@
  * External dependencies
  */
 import React, { Component, PropTypes } from 'react';
+import styled from 'styled-components';
 import DataTables from 'material-ui-datatables';
 import Paper from 'material-ui/Paper';
 
@@ -11,25 +12,35 @@ import Paper from 'material-ui/Paper';
 import { inline } from 'style/mui';
 import TableToolbar from './toolbar';
 
+const Container = styled.div`
+    display: block;
+    max-width: 1200px;
+    margin: 0 auto 24px auto;
+    position: relative;
+    top: -56px;
+    width: 95%;
+    z-index: 1200;
+`;
+
 /**
  * Table with pagination, sorting, and filtering capabilities.
  */
 class Table extends Component {
     static propTypes = {
         columns: PropTypes.array.isRequired,
+        data: PropTypes.array,
         filterSelections: PropTypes.array,
         handleCellClick: PropTypes.func.isRequired,
-        tableData: PropTypes.array,
     };
 
     static defaultProps = {
+        data: [],
         filterSelections: [],
-        tableData: [],
     };
 
     constructor(props, context) {
         super(props, context);
-        this.startingData = props.tableData;
+        this.startingData = props.data;
 
         this.handleFilterMenuChange = this.handleFilterMenuChange.bind(this);
         this.handleNextPageClick = this.handleNextPageClick.bind(this);
@@ -40,7 +51,7 @@ class Table extends Component {
     }
 
     state = {
-        data: this.props.tableData,
+        data: this.props.data,
         page: 1,
         rowSize: 10,
     };
@@ -117,7 +128,7 @@ class Table extends Component {
 
         const { ...state } = this.state;
         return (
-            <div>
+            <Container>
                 <TableToolbar
                     handleFilterMenuChange={this.handleFilterMenuChange}
                     handleSearchBoxChange={this.handleSearchBoxChange}
@@ -125,7 +136,6 @@ class Table extends Component {
                 />
                 <Paper
                     style={{
-                        ...inline.paper,
                         top: 0,
                         padding: 0,
                     }}
@@ -145,8 +155,8 @@ class Table extends Component {
                         showRowHover={true}
                         {...state}
                     />
-            </Paper>
-            </div>
+                </Paper>
+            </Container>
         );
     }
 }

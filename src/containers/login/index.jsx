@@ -14,10 +14,10 @@ import TextField from 'material-ui/TextField';
  * Internal dependencies
  */
 import { actions as userActions } from 'state/user';
-import Logo from 'components/logo';
 import { inline } from 'style/mui';
+import Logo from 'components/logo';
 
-const Container = styled.div`
+const PageContainer = styled.div`
     display: flex;
     flex-flow: none;
     justify-content: center;
@@ -43,16 +43,16 @@ export class LoginPage extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { push } = this.context.router;
-        push('/leads');
+        this.context.router.push('/leads');
     }
 
     render() {
         return (
-            <Container>
+            <PageContainer>
                 <Paper
                     style={{
-                        ...inline.paper,
+                        display: 'block',
+                        maxWidth: 1200,
                         marginTop: 56,
                         padding: 32,
                         width: 350,
@@ -78,15 +78,19 @@ export class LoginPage extends Component {
                             fullWidth={true}
                             label="Login"
                             primary={true}
+                            style={{ marginTop: 24 }}
                             type="submit"
                         />
                         <FlatButton
-                            fullWidth={true}
                             label="Forgot Password?"
+                            style={{
+                                marginTop: 24,
+                                width: '100%',
+                            }}
                         />
                     </form>
                 </Paper>
-            </Container>
+            </PageContainer>
         );
     }
 }

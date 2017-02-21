@@ -23,7 +23,7 @@ import { getAllSettings } from 'state/settings/actions';
 
 // Import web assets.
 /* eslint-disable */
-import './www/styles.css';
+import './style/global.css';
 import '!file-loader?name=[name].[ext]!./www/favicon.ico';
 /* eslint-enable */
 

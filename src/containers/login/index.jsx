@@ -14,7 +14,6 @@ import TextField from 'material-ui/TextField';
  * Internal dependencies
  */
 import { actions as userActions } from 'state/user';
-import { inline } from 'style/mui';
 import Logo from 'components/logo';
 
 const PageContainer = styled.div`

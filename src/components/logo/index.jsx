@@ -1,20 +1,22 @@
+// @flow
 /*
  * External dependencies
  */
-import React, { PropTypes } from 'react';
+import React from 'react';
 
 /* eslint-disable max-len */
 
 /**
  * Scalable graphic for official logo.
- * @param {number} height Height of the logo in pixels.
- * @param {number} width Width of the logo in pixels.
  * @constructor
  */
 const Logo = ({
     height,
     width,
-}) => (
+}: {
+    height?: number,
+    width?: number,
+}): React.Element<*> => (
     <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
@@ -44,11 +46,6 @@ const Logo = ({
         />
     </svg>
 );
-
-Logo.propTypes = {
-    height: PropTypes.number,
-    width: PropTypes.number,
-};
 
 Logo.defaultProps = {
     height: 100,

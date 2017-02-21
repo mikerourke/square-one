@@ -9,18 +9,7 @@ import Paper from 'material-ui/Paper';
 /*
  * Internal dependencies
  */
-import { inline } from 'style/mui';
 import TableToolbar from './toolbar';
-
-const Container = styled.div`
-    display: block;
-    max-width: 1200px;
-    margin: 0 auto 24px auto;
-    position: relative;
-    top: -56px;
-    width: 95%;
-    z-index: 1200;
-`;
 
 /**
  * Table with pagination, sorting, and filtering capabilities.
@@ -128,7 +117,7 @@ class Table extends Component {
 
         const { ...state } = this.state;
         return (
-            <Container>
+            <div>
                 <TableToolbar
                     handleFilterMenuChange={this.handleFilterMenuChange}
                     handleSearchBoxChange={this.handleSearchBoxChange}
@@ -136,8 +125,11 @@ class Table extends Component {
                 />
                 <Paper
                     style={{
-                        top: 0,
+                        maxWidth: 1200,
+                        margin: '24px auto',
                         padding: 0,
+                        top: 0,
+                        width: '95%',
                     }}
                 >
                     <DataTables
@@ -156,7 +148,7 @@ class Table extends Component {
                         {...state}
                     />
                 </Paper>
-            </Container>
+            </div>
         );
     }
 }

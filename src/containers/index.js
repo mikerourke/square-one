@@ -5,5 +5,5 @@ import ManageLeadPage from './manage-lead';
 export {
     LeadsListPage,
     LoginPage,
-    ManageLeadPage
+    ManageLeadPage,
 };

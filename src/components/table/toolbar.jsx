@@ -23,7 +23,7 @@ import getRgbFromHex from 'lib/rgb-to-hex';
  * @returns {Object} Inline style for the column.
  */
 const getInlineStyle = (transparency = 1) => {
-    const { r, g, b } = getRgbFromHex(palette.alternateTextColor);
+    const { r, g, b } = getRgbFromHex(palette.primary1Color);
     return {
         color: `rgba(${r},${g},${b},${transparency})`,
     };
@@ -44,7 +44,10 @@ const TableToolbar = ({
     handleSearchBoxChange,
     filterSelections,
 }) => (
-    <Toolbar style={{ display: 'block' }}>
+    <Toolbar
+        className="square1-toolbar"
+        style={{ display: 'block' }}
+    >
         <ToolbarGroup
             id="search-box"
         >
@@ -65,7 +68,7 @@ const TableToolbar = ({
                 iconButtonElement={
                     <IconButton
                         iconClassName="material-icons"
-                        iconStyle={{ color: palette.alternateTextColor }}
+                        iconStyle={{ color: palette.primary1Color }}
                     >
                         filter_list
                     </IconButton>

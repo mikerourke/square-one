@@ -26,5 +26,10 @@ body {
     content: none !important;
     display: none !important;
     font-size: 10px;
-    height: 0px;
+    height: 0;
+}
+
+.square1-toolbar {
+    box-shadow: rgba(0, 0, 0, 0.117647) 0 1px 6px,
+                rgba(0, 0, 0, 0.117647) 0 1px 4px;
 }

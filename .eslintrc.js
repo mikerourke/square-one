@@ -76,6 +76,8 @@ module.exports = {
             4
         ],
         'react/jsx-indent-props': 0,
+        // This is handled by Flow with default values:
+        'react/require-default-props': 0,
         'react/self-closing-comp': 1,
         'import/no-webpack-loader-syntax': 0
     },

@@ -5,6 +5,7 @@ import React, { Component, PropTypes } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 
 /*
@@ -67,9 +68,16 @@ class LeadsList extends Component {
     render() {
         const { isLoading, leadsArray } = this.state;
 
-        const headerButtons = (
+        const headerButton = (
             <Link to="/leads/new">
-                <RaisedButton label="Add New Lead" />
+                <RaisedButton
+                    icon={
+                        <FontIcon className="material-icons">
+                            add_circle_outline
+                        </FontIcon>
+                    }
+                    label="Add"
+                />
             </Link>
         );
 
@@ -89,8 +97,8 @@ class LeadsList extends Component {
         return (
             <div>
                 <PageHeader
-                    elementButtonsRight={headerButtons}
-                    elementTitleLeft={headerTitle}
+                    actionButtonRight={headerButton}
+                    titleLeft={headerTitle}
                 />
                 <Table
                     columns={tableColumns}

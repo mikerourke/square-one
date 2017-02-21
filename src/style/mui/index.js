@@ -1,9 +1,16 @@
+/*
+ * External dependencies
+ */
+import * as muiColors from 'material-ui/styles/colors';
+
+/*
+ * Internal dependencies
+ */
 import getMuiTheme from './theme';
-import inline from './inline';
 import palette from './palette';
 
 export {
+    muiColors,
     getMuiTheme,
-    inline,
     palette,
 };

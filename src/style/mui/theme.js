@@ -11,12 +11,16 @@ export default getMuiTheme({
     inkBar: {
         backgroundColor: palette.primary1Color,
     },
+    raisedButton: {
+        textColor: palette.primary1Color,
+    },
     tabs: {
         backgroundColor: palette.canvasColor,
         textColor: palette.primary1Color,
         selectedTextColor: palette.primary1Color,
     },
     toolbar: {
-        backgroundColor: palette.primary1Color,
+        backgroundColor: palette.alternateTextColor,
+        height: 48,
     },
 });

@@ -1,8 +1,9 @@
+// @flow
 /*
  * External dependencies
  */
 import React, { PropTypes } from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import { Record } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 
 /*
@@ -15,17 +16,19 @@ const PageHeaderToolbar = ({
     lead,
     handleBackTouchTap,
     handleSaveTouchTap,
-}) => (
+}: {
+    lead: Record<*>,
+    handleBackTouchTap: () => void,
+    handleSaveTouchTap: () => void,
+}): React.Element<*> => (
     <PageHeader
-        elementButtonsRight={
+        actionButtonRight={
             (<RaisedButton
-                name="save-button"
                 label="Save"
                 onTouchTap={handleSaveTouchTap}
-                style={{ margin: 0 }}
             />)
         }
-        elementTitleLeft={
+        titleLeft={
             (<PageHeaderTitle
                 backArrowTooltip="Return to Leads"
                 handleBackArrowTouchTap={handleBackTouchTap}
@@ -34,14 +37,7 @@ const PageHeaderToolbar = ({
                 titleIconName="account_circle"
             />)
         }
-        height={96}
     />
 );
-
-PageHeaderToolbar.propTypes = {
-    lead: ImmutablePropTypes.record.isRequired,
-    handleBackTouchTap: PropTypes.func.isRequired,
-    handleSaveTouchTap: PropTypes.func.isRequired,
-};
 
 export default PageHeaderToolbar;

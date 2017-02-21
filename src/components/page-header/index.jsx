@@ -1,7 +1,8 @@
+// @flow
 /*
  * External dependencies
  */
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {
     Toolbar,
@@ -13,67 +14,52 @@ import {
  */
 import { palette } from 'style/mui';
 
-const GroupContainer = styled.div`
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-top: 24px;
-    width: 100%;
+/**
+ * Styled wrapper for the action button on the right side of the toolbar.  This
+ *      is used to ensure the button is in the same location regardless of
+ *      whether or not it is wrapped in "Link" element.
+ */
+const ActionButtonWrapper = styled.div`
+    margin: 6px 24px;
 `;
 
 /**
  * Toolbar on the page header.
  */
-class PageHeader extends Component {
-    /**
-     * @type {Object}
-     * @property {Node} [elementButtonsRight=''] Button elements on the right
-     *      side of the toolbar.
-     * @property {Node} elementTitleLeft Title element on the left
-     *      side of the toolbar.
-     * @property {number} [height=144] Height of the toolbar in pixels.
-     */
-    static propTypes = {
-        elementButtonsRight: PropTypes.node,
-        elementTitleLeft: PropTypes.node.isRequired,
-        height: PropTypes.number,
-    };
-
-    /**
-     * @ignore
-     */
-    static defaultProps = {
-        elementButtonsRight: '',
-        height: 144,
-    };
-
-    render() {
-        const {
-            elementButtonsRight,
-            elementTitleLeft,
+const PageHeader = ({
+    actionButtonRight,
+    titleLeft,
+    height,
+}: {
+    actionButtonRight?: Node,
+    titleLeft: Node,
+    height?: number,
+}): React.Element<*> => (
+    <Toolbar
+        className="square1-toolbar"
+        style={{
+            alignItems: 'flex-start',
+            backgroundColor: palette.primary1Color,
             height,
-        } = this.props;
+            paddingTop: 24,
+            top: 64,
+            width: '100%',
+        }}
+    >
+        <ToolbarGroup>
+            {titleLeft}
+        </ToolbarGroup>
+        <ToolbarGroup>
+            <ActionButtonWrapper>
+                {actionButtonRight}
+            </ActionButtonWrapper>
+        </ToolbarGroup>
+    </Toolbar>
+);
 
-        return (
-            <Toolbar
-                style={{
-                    alignItems: 'flex-start',
-                    backgroundColor: palette.primary1Color,
-                    boxShadow: 'rgba(0, 0, 0, 0.117647) 0px 1px 6px, ' +
-                               'rgba(0, 0, 0, 0.117647) 0px 1px 4px',
-                    height,
-                    paddingTop: 24,
-                }}
-            >
-                <ToolbarGroup>
-                    {elementTitleLeft}
-                </ToolbarGroup>
-                <ToolbarGroup>
-                    {elementButtonsRight}
-                </ToolbarGroup>
-            </Toolbar>
-        );
-    }
-}
+PageHeader.defaultProps = {
+    actionButtonRight: '',
+    height: 96,
+};
 
 export default PageHeader;

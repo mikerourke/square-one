@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import Paper from 'material-ui/Paper';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import TabsToolbar from 'components/tabs-toolbar';
 
 /*
  * Internal dependencies
@@ -18,9 +19,7 @@ import { Setting, actions as settingsActions } from 'state/settings';
 import LeadDetailsForm from './components/LeadDetailsForm';
 import MessagesModal from './components/MessagesModal';
 import PageHeaderToolbar from './components/PageHeaderToolbar';
-import TabsContainer from './components/TabsContainer';
 import HistoryTab from './components/HistoryTab';
-import { inline } from 'style/mui';
 
 // TODO: Refactor this.
 
@@ -96,6 +95,28 @@ class ManageLeadPage extends Component {
         } = this.props;
 
         const { isModalOpen, leadOnPage } = this.state;
+
+        const tabPages = [
+            {
+                label: 'Details',
+                content:
+                    (<LeadDetailsForm
+                        handleFieldChange={this.handleFieldChange}
+                        representativesList={representativesList}
+                        sourcesList={sourcesList}
+                        lead={leadOnPage}
+                    />),
+            },
+            {
+                label: 'History',
+                content: (<HistoryTab />),
+            },
+            {
+                label: 'Appointments',
+                content: 'Appointment',
+            },
+        ];
+
         return (
             <div>
                 <PageHeaderToolbar
@@ -103,70 +124,9 @@ class ManageLeadPage extends Component {
                     handleSaveTouchTap={this.handleSaveTouchTap}
                     lead={lead}
                 />
-                <TabsContainer>
-                    <Tabs
-                        style={inline.tabs}
-                        tabItemContainerStyle={{ width: 512 }}
-                    >
-                        <Tab
-                            label="Details"
-                            style={inline.tab}
-                        >
-                            <Paper
-                                style={{
-                                    margin: '24px 0',
-                                    padding: 24,
-                                }}
-                            >
-                                <LeadDetailsForm
-                                    handleFieldChange={this.handleFieldChange}
-                                    representativesList={representativesList}
-                                    sourcesList={sourcesList}
-                                    lead={leadOnPage}
-                                />
-                            </Paper>
-                        </Tab>
-                        <Tab
-                            label="History"
-                            style={inline.tab}
-                        >
-                            <Paper
-                                style={{
-                                    margin: '24px 0',
-                                    padding: 24,
-                                }}
-                            >
-                                <HistoryTab />
-                            </Paper>
-                        </Tab>
-                        <Tab
-                            label="Appointments"
-                            style={inline.tab}
-                        >
-                            <Paper
-                                style={{
-                                    margin: '24px 0',
-                                    padding: 24,
-                                }}
-                            >
-                                Appointments
-                            </Paper>
-                        </Tab>
-                        <Tab
-                            label="Messages"
-                            style={inline.tab}
-                        >
-                            <Paper
-                                style={{
-                                    margin: '24px 0',
-                                    padding: 24,
-                                }}
-                            >
-                                Messages
-                            </Paper>
-                        </Tab>
-                    </Tabs>
-                </TabsContainer>
+                <TabsToolbar
+                    tabPages={tabPages}
+                />
                 <MessagesModal
                     handleModalTouchTap={this.handleModalTouchTap}
                     isOpen={isModalOpen}

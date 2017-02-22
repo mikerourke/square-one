@@ -1,3 +1,5 @@
+// @flow
+
 /**
  * Some of this code was taken from the material-ui-geosuggest NPM package.
  *      Since the code was only 58 lines long, I copied it to avoid having
@@ -13,47 +15,40 @@ import GoogleMapsLoader from 'google-maps';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 
-/** @external {Google.Api} https://developers.google.com/apis-explorer/#p/ */
-/** @external {Google.Autocomplete} https://developers.google.com/maps/documentation/javascript/3.exp/reference#Autocomplete */
-/** @external {Google.Map} https://developers.google.com/maps/documentation/javascript/3.exp/reference#Map */
-/** @external {Google.Marker} https://developers.google.com/maps/documentation/javascript/3.exp/reference#Marker */
-
 /**
  * Wrapper for the Google Map element.
- * @type {StyledComponent}
  */
 const MapWrapper = styled.div`
     height: 352px;
 `;
 
+type Props = {
+    name: string,
+    floatingLabelText: string,
+    value?: string,
+    onChange: () => void,
+    initialCenter: LatLngLiteral,
+};
+
+type State = {
+    center: LatLngLiteral,
+    areElementsLoaded: boolean,
+}
+
+type GoogleElements = {
+    google: google,
+    autocomplete: Autocomplete,
+    initialCenter: LatLngLiteral,
+    map: GoogleMap,
+    marker: Marker,
+}
+
 /**
  * Address input and Google Map component.
  */
-class FormGeolocation extends Component {
-    /**
-     * @type {Object}
-     * @property {string} name Name of the text field input.
-     * @property {string} floatingLabelText Label to show about the text field
-     *      input.
-     * @property {string} [value=''] Value of the input (if existing).
-     * @property {Function} onChange Event to fire when the contents of the
-     *      input are changed.
-     * @property {number} [initialCenter.lat=0] Initial latitude for the Google
-     *      Map element.
-     * @property {number} [initialCenter.lng=0] Initial longitude for the Google
-     *      Map element.
-     */
-    static propTypes = {
-        name: PropTypes.string.isRequired,
-        floatingLabelText: PropTypes.string.isRequired,
-        value: PropTypes.string,
-        onChange: PropTypes.func.isRequired,
-        initialCenter: PropTypes.objectOf(PropTypes.number),
-    };
+class FormGeolocation extends React.Component {
+    props: Props;
 
-    /**
-     * @ignore
-     */
     static defaultProps = {
         value: '',
         initialCenter: {
@@ -62,24 +57,12 @@ class FormGeolocation extends Component {
         },
     };
 
-    /**
-     * @param {Object} props Props passed from parent component.
-     * @param {Object} context Context for the component.
-     */
-    constructor(props, context) {
+    constructor(props: Props, context: any) {
         super(props, context);
-        this.initializeComponents = this.initializeComponents.bind(this);
         this.onPlaceChanged = this.onPlaceChanged.bind(this);
     }
 
-    /**
-     * @type {Object}
-     * @property {number} center.lat Latitude for the Google Map element.
-     * @property {number} center.lng Longitude for the Google Map element.
-     * @property {boolean} areElementsLoaded Indicates if the Google Map
-     *      elements are loaded.
-     */
-    state = {
+    state: State = {
         center: {
             lat: this.props.initialCenter.lat,
             lng: this.props.initialCenter.lng,
@@ -91,18 +74,33 @@ class FormGeolocation extends Component {
      * Initializes the Google Map components after mounting.
      */
     componentDidMount() {
-        this.initializeComponents();
+        const { initialCenter } = this.props;
+        this.loadGoogleMaps(initialCenter)
+            .then(this.createMap)
+            .then(this.createMarker)
+            .then(this.createAutocomplete)
+            .then((googleElements) => {
+                const { google, autocomplete, map, marker } = googleElements;
+                this.removeTabIndexesFromMap(google, map);
+                autocomplete.bindTo('bounds', map);
+                autocomplete.addListener('place_changed', () => {
+                    this.onPlaceChanged(autocomplete, map, marker);
+                });
+                this.setState({
+                    areElementsLoaded: true,
+                });
+            });
     }
 
     /**
      * When the address is changed in the Autocomplete field, the map is
      *      updated and a marker is set to the new address.
-     * @param {Google.Autocomplete} autocomplete Google Places Autocomplete
-     *      field which contains the address.
-     * @param {Google.Map} map Google Map element on the page.
-     * @param {Google.Marker} marker Google Marker element on the page.
      */
-    onPlaceChanged(autocomplete, map, marker) {
+    onPlaceChanged(
+        autocomplete: Autocomplete,
+        map: GoogleMap,
+        marker: Marker,
+    ) {
         // Hide the marker prior to zooming on a different location.
         marker.setVisible(false);
 
@@ -145,35 +143,10 @@ class FormGeolocation extends Component {
     }
 
     /**
-     * Load the Google Maps API object and create the Geolocation components
-     *      on the form.
-     */
-    initializeComponents() {
-        const { initialCenter } = this.props;
-        this.loadGoogleMaps(initialCenter)
-            .then(this.createMap)
-            .then(this.createMarker)
-            .then(this.createAutocomplete)
-            .then((googleElements) => {
-                const { google, autocomplete, map, marker } = googleElements;
-                this.removeTabIndexesFromMap(google, map);
-                autocomplete.bindTo('bounds', map);
-                autocomplete.addListener('place_changed', () => {
-                    this.onPlaceChanged(autocomplete, map, marker);
-                });
-                this.setState({
-                    areElementsLoaded: true,
-                });
-            });
-    }
-
-    /**
      * Async get the Google Maps API object with the corresponding libraries
      *      and API key.
-     * @param {Object} initialCenter Initial center for the Google Map element.
-     * @returns {Promise}
      */
-    loadGoogleMaps(initialCenter) {
+    loadGoogleMaps(initialCenter: LatLngLiteral) {
         return new Promise((resolve) => {
             GoogleMapsLoader.release();
             GoogleMapsLoader.KEY = 'AIzaSyAkiq1bkZask4elXgU_BnM7d6xzjGMXw0A';
@@ -187,10 +160,8 @@ class FormGeolocation extends Component {
 
     /**
      * Creates the Map element and attaches it to the rendered div.
-     * @param {Object} googleElements Google Map elements on the form.
-     * @returns {Promise}
      */
-    createMap(googleElements) {
+    createMap(googleElements: GoogleElements) {
         const { google, initialCenter } = googleElements;
         return new Promise((resolve) => {
             const element = document.getElementById('geo-map');
@@ -205,10 +176,11 @@ class FormGeolocation extends Component {
     /**
      * Prevents the focus from going to any of the links on the Map element
      *      when the user presses the tab key.
-     * @param {Google.Api} google Google API used to access the map classes.
-     * @param {Google.Map} map Google Map element on the form.
      */
-    removeTabIndexesFromMap(google, map) {
+    removeTabIndexesFromMap(
+        google: google,
+        map: GoogleMap,
+    ) {
         google.maps.event.addListener(map, 'tilesloaded', () => {
             const selector = `#${'geo-map'} a`;
             document.querySelectorAll(selector).forEach(element =>
@@ -220,10 +192,8 @@ class FormGeolocation extends Component {
     /**
      * Creates a new Marker element to represent the coordinates associated
      *      with an address.
-     * @param {Object} googleElements Google Map elements on the form.
-     * @returns {Promise}
      */
-    createMarker(googleElements) {
+    createMarker(googleElements: GoogleElements) {
         const { google, map } = googleElements;
         return new Promise((resolve) => {
             const { Marker, Point } = google.maps;
@@ -238,10 +208,8 @@ class FormGeolocation extends Component {
     /**
      * Creates an Autocomplete field for addresses and attaches it to the
      *      rendered div.
-     * @param {Object} googleElements Google Map elements on the form.
-     * @returns {Promise}
      */
-    createAutocomplete(googleElements) {
+    createAutocomplete(googleElements: GoogleElements) {
         const { google } = googleElements;
         return new Promise((resolve) => {
             const element = document.getElementById('geo-address');
@@ -250,9 +218,6 @@ class FormGeolocation extends Component {
         });
     }
 
-    /**
-     * @returns {ReactElement} JSX for the component.
-     */
     render() {
         const {
             initialCenter,

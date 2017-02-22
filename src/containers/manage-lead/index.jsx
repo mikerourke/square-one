@@ -7,8 +7,9 @@ import { browserHistory } from 'react-router';
 import TabsToolbar from 'components/tabs-toolbar';
 
 /* Internal dependencies */
-import { Lead, actions as leadActions } from 'state/leads';
-import { Setting, actions as settingsActions } from 'state/settings';
+import Lead from 'state/leads/model';
+import leadActions from 'state/leads/actions';
+import settingsActions from 'state/settings/actions';
 import LeadDetailsForm from './components/details-form';
 import MessagesModal from './components/messages-modal';
 import PageHeaderToolbar from './components/page-header-toolbar';

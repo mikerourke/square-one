@@ -1,4 +1,5 @@
 // @flow
+
 /* External dependencies */
 import React from 'react';
 import Divider from 'material-ui/Divider';

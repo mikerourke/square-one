@@ -1,4 +1,5 @@
 // @flow
+
 /* External dependencies */
 import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
@@ -6,8 +7,8 @@ import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
-import { Lead } from 'state/leads';
-import { Setting } from 'state/settings';
+import { preventSubmissionOnEnter } from 'lib/form-events';
+import Lead from 'state/leads/model';
 import FormColumn from 'components/forms/form-column';
 import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';
@@ -15,8 +16,8 @@ import FormGeolocation from 'components/forms/form-geolocation';
 type Props = {
     handleFieldChange: () => void,
     lead: Object,
-    representativesList: Array<Selection>,
-    sourcesList: Array<Selection>,
+    representativesList: Array<FilterSelection>,
+    sourcesList: Array<FilterSelection>,
 };
 
 class LeadDetailsForm extends React.Component<*, Props, *> {
@@ -29,13 +30,7 @@ class LeadDetailsForm extends React.Component<*, Props, *> {
     };
 
     componentDidMount() {
-        const addressInput = document.getElementById('geo-address');
-        const addEvent = addressInput.addEventListener;
-        addEvent('keypress', (event: KeyboardEvent) => {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-            }
-        });
+        preventSubmissionOnEnter('geo-address');
     }
 
     render() {

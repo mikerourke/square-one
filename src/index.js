@@ -1,3 +1,5 @@
+// @flow
+
 /**
  * Entry point for the application.  The assets associated with the client
  *      bundle are located in the "www" folder.
@@ -9,7 +11,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 /* Internal dependencies */
@@ -20,14 +22,14 @@ import { getAllSettings } from 'state/settings/actions';
 // Import web assets.
 /* eslint-disable */
 import './style/global.css';
-import '!file-loader?name=[name].[ext]!./www/favicon.ico';
+import './www/favicon.ico';
 /* eslint-enable */
 
 // Configure the Axios client for API access.
-const apiHost = process.env.IP || 'localhost';
-const apiPort = process.env.API_PORT || 8082;
+const apiHost: Host = process.env.IP || 'localhost';
+const apiPort: Port = process.env.API_PORT || 8082;
 
-const client = axios.create({
+const client: AxiosRequestConfig = axios.create({
     baseURL: `http://${apiHost}:${apiPort}/api`,
     responseType: 'json',
 });

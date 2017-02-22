@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
-import { actions as userActions } from 'state/user';
+import userActions from 'state/user/actions';
 import Logo from 'components/logo';
 
 const PageContainer = styled.div`

@@ -1,7 +1,9 @@
 // @flow
+
 /* External dependencies */
 import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
+import type { Store } from 'redux';
 
 /* Internal dependencies */
 import Layout from '../../layout';
@@ -11,7 +13,7 @@ import { toggleAppSidebar } from 'state/gui/actions';
 /**
  * Configures the routes for the application.
  */
-const configureRoutes = (history: Object, store: Object) => {
+const configureRoutes = (history: Object, store: Store<*>) => {
     /**
      * If the route changes, hide the Sidebar element in the layout (if
      *      visible).

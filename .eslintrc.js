@@ -1,21 +1,25 @@
 module.exports = {
     root: true,
-    extends: 'eslint-config-airbnb',
+    extends: [
+        'eslint-config-airbnb',
+        'plugin:flowtype/recommended',
+    ],
     env: {
         browser: true,
         node: true,
         jest: true,
-        es6: true
+        es6: true,
     },
     parser: 'babel-eslint',
     parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
         ecmaFeatures: {
-            jsx: true
-        }
+            jsx: true,
+        },
     },
     plugins: [
+        'flowtype',
         'react',
     ],
     rules: {
@@ -34,8 +38,8 @@ module.exports = {
             80,
             4,
             {
-                'ignoreUrls': true
-            }
+                'ignoreUrls': true,
+            },
         ],
         'newline-per-chained-call': 0,
         'no-alert': 0,
@@ -49,7 +53,7 @@ module.exports = {
         'no-unused-vars': 0,
         'semi': [
             1,
-            'always'
+            'always',
         ],
         'import/default': 0,
         'import/extensions': 0,
@@ -60,8 +64,8 @@ module.exports = {
         'import/namespace': [
             0,
             {
-                'allowComputed': true
-            }
+                'allowComputed': true,
+            },
         ],
         'import/no-named-as-default': 0,
         'import/no-named-as-default-member': 0,
@@ -73,7 +77,7 @@ module.exports = {
         'react/jsx-filename-extension': 0,
         'react/jsx-indent': [
             1,
-            4
+            4,
         ],
         'react/jsx-indent-props': 0,
         // This is handled by Flow with default values:
@@ -87,15 +91,15 @@ module.exports = {
                 'lifecycle',
                 'everything-else',
                 'render',
-            ]
+            ],
         }],
-        'import/no-webpack-loader-syntax': 0
+        'import/no-webpack-loader-syntax': 0,
     },
     settings: {
         'import/resolver': {
             webpack: {
-                config: './internals/webpack/webpack.prod.babel.js'
-            }
-        }
-    }
+                config: './internals/webpack/webpack.prod.babel.js',
+            },
+        },
+    },
 };

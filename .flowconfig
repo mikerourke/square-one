@@ -5,11 +5,19 @@
   .*/styled-components/dangerfile.js
 
 [libs]
-  internals/declarations
+  # These are custom global declarations:
+  internals/flow
+
+  # Required to fix issue with "react-native" error when type checking:
+  node_modules/styled-components/flow-typed/react-native.js
 
 [options]
+  suppress_comment=.*\\$FlowFixMe
+  suppress_comment=.*\\$FlowInvalidInputTest
+
   unsafe.enable_getters_and_setters=true
 
+  module.system=node
   module.name_mapper='^components\/\(.*\)$' -> '<PROJECT_ROOT>/src/components/\1'
   module.name_mapper='^lib\/\(.*\)$' -> '<PROJECT_ROOT>/src/lib/\1'
   module.name_mapper='^state\/\(.*\)$' -> '<PROJECT_ROOT>/src/state/\1'

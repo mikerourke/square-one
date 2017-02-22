@@ -1,7 +1,7 @@
 // @flow
+
 /* External dependencies */
 import React, { Component, PropTypes } from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import FontIcon from 'material-ui/FontIcon';
@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
 import { getAllLeads } from 'state/leads/actions';
-import { Lead } from 'state/leads';
+import Lead from 'state/leads/model';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';

@@ -1,4 +1,5 @@
 // @flow
+
 /* External dependencies */
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
@@ -35,7 +36,7 @@ const TableToolbar = ({
 }: {
     handleFilterMenuChange: () => void,
     handleSearchBoxChange: () => void,
-    filterSelections: Array<Selection>,
+    filterSelections: Array<FilterSelection>,
 }): React.Element<*> => (
     <Toolbar
         className="square1-toolbar"

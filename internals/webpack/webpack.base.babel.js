@@ -30,7 +30,7 @@ module.exports = {
             test: /\.html$/,
             use: 'html-loader',
         }, {
-            test: /\.(eot|svg|ttf|woff|woff2|jpg|png|gif)$/,
+            test: /\.(eot|svg|ttf|woff|woff2|jpg|png|gif|ico)$/,
             use: 'file-loader',
         }],
     },

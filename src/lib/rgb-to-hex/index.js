@@ -1,7 +1,4 @@
 // @flow
-/**
- * Converts RGB value to the hexidecimal equivalent.
- */
 
 /* eslint-disable no-bitwise */
 

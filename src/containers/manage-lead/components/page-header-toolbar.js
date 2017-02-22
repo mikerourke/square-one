@@ -1,10 +1,11 @@
 // @flow
+
 /* External dependencies */
 import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
-import { Lead } from 'state/leads';
+import Lead from 'state/leads/model';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
 

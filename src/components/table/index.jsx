@@ -1,4 +1,5 @@
 // @flow
+
 /* External dependencies */
 import React from 'react';
 import DataTables from 'material-ui-datatables';

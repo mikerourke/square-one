@@ -1,4 +1,5 @@
 // @flow
+
 /* External dependencies */
 import React from 'react';
 import styled from 'styled-components';
@@ -17,7 +18,7 @@ const Container = styled.div`
  *      index of 0) has right padding.  A right column (with index of 1) has
  *      left padding.
  */
-const getInlineStyle = (columnIndex: number) => {
+const getInlineStyle = (columnIndex: number): Object => {
     if (columnIndex === 0) {
         return { paddingRight: 8 };
     }

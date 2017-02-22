@@ -1,6 +1,4 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,9 +8,7 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { actions as userActions } from 'state/user';
 import Logo from 'components/logo';
 

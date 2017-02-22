@@ -1,12 +1,8 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import axios from 'axios';
 import { normalize } from 'normalizr';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import {
     SETTING_GET_SINGLE,
     SETTING_GET_ALL,

@@ -1,7 +1,5 @@
 // @flow
-/*
- * External dependencies
- */
+/* External dependencies */
 import React from 'react';
 import { Link } from 'react-router';
 import FontIcon from 'material-ui/FontIcon';
@@ -9,7 +7,6 @@ import { MenuItem } from 'material-ui/Menu';
 
 /**
  * Menu item in the sidebar linked to a route.
- * @constructor
  */
 const LinkedMenuItem = ({
     linkTo,

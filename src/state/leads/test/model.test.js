@@ -1,12 +1,8 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import { normalize } from 'normalizr';
 import { fromJS } from 'immutable';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import Lead, { leadSchema } from '../model';
 import { mockDb } from '../../data.mock';
 

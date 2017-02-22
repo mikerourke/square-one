@@ -3,9 +3,7 @@
  *      production configurations.
  */
 
-/*
- * External dependencies
- */
+/* External dependencies */
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -21,14 +19,6 @@ module.exports = {
             test: /\.js$|.jsx$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
-            query: {
-                presets: [
-                    ['es2015', {modules: false}],
-                    'latest',
-                    'react',
-                    'stage-0',
-                ],
-            }
         }, {
             test: /(\.css)$/,
             use: ExtractTextPlugin.extract({

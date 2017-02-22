@@ -1,23 +1,20 @@
-/*
- * External dependencies
- */
-import React, { PropTypes } from 'react';
+// @flow
+/* External dependencies */
+import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { palette } from 'style/mui';
 
 /**
  * Header AppBar element for the application layout.
- * @param {Function} handleToggle Handles the hamburger menu icon press.
- * @constructor
  */
 const Header = ({
     handleToggle,
-}) => (
+}: {
+    handleToggle: () => void,
+}): React.Element<*> => (
     <AppBar
         iconElementRight={
             <IconButton
@@ -34,9 +31,5 @@ const Header = ({
         }}
     />
 );
-
-Header.propTypes = {
-    handleToggle: PropTypes.func.isRequired,
-};
 
 export default Header;

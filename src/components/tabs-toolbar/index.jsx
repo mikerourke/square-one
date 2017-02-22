@@ -1,7 +1,5 @@
 // @flow
-/*
- * External dependencies
- */
+/* External dependencies */
 import React from 'react';
 import styled from 'styled-components';
 import Paper from 'material-ui/Paper';
@@ -19,23 +17,14 @@ const Container = styled.div`
     width: 100%;
 `;
 
-/**
- * Returns a number that represents the total width of the Tab item container
- *      based on the quantity of pages passed to the component.
- */
-const getTabItemContainerStyle: Function = (tabCount: number) => ({
-    width: tabCount * 128,
-});
-
 type TabPage = {
     content: Node,
     label: string,
-    map: () => {},
-}
+    map: () => void,
+};
 
 /**
  * Toolbar containing tabs for navigating a detail form.
- * @constructor
  */
 const TabsToolbar = ({
     tabPages,
@@ -48,7 +37,7 @@ const TabsToolbar = ({
                 margin: '0 auto',
                 maxWidth: 1200,
             }}
-            tabItemContainerStyle={getTabItemContainerStyle(tabPages.length)}
+            tabItemContainerStyle={{ width: tabPages.length * 128 }}
         >
             {tabPages.map(tabPage => (
                 <Tab

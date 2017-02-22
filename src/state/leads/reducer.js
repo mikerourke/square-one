@@ -1,11 +1,7 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import { OrderedMap, fromJS } from 'immutable';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import {
     LEAD_CREATE, LEAD_CREATE_SUCCESS, LEAD_CREATE_FAIL,
     LEAD_DELETE, LEAD_DELETE_SUCCESS, LEAD_DELETE_FAIL,

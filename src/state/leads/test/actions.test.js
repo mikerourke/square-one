@@ -1,6 +1,4 @@
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { actions as leadActions } from '../index';
 import * as types from '../../action-types';
 import {

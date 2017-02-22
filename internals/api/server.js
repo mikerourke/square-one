@@ -4,16 +4,12 @@
  * @link https://github.com/typicode/json-server
  */
 
-/*
- * External dependencies
- */
+/* External dependencies */
 const { blue } = require('chalk');
 const path = require('path');
 const jsonServer = require('json-server');
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 const routes = require('./routes.json');
 
 const port = process.env.API_PORT || 8082;

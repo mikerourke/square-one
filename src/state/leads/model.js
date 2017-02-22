@@ -1,36 +1,23 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import { schema } from 'normalizr';
-import { Record, List, Map } from 'immutable';
+import { Record, Map } from 'typed-immutable';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 const leadEntity = new schema.Entity('leads');
 export const leadSchema = [leadEntity];
 
-export default class Lead extends Record({
-    id: 0,
-    leadName: '',
-    source: '',
-    leadFee: 0,
-    phone: '',
-    email: '',
-    address: '',
-    location: new Map(),
-    description: '',
-    comments: '',
-    status: '',
-    assignTo: '',
-    appointments: new List(),
-}) {
-    getAppointments() {
-        const appointmentItems = this.appointments;
-        if (List.isList(appointmentItems)) {
-            return appointmentItems.toArray().map(appointment =>
-                appointment.toJS());
-        }
-        return [];
-    }
-}
+export default Record({
+    id: Number(0),
+    leadName: String(''),
+    source: String(''),
+    leadFee: Number(0),
+    phone: String(''),
+    email: String(''),
+    address: String(''),
+    lat: Number(0),
+    lng: Number(0),
+    description: String(''),
+    comments: String(''),
+    status: String(''),
+    assignTo: String(''),
+});

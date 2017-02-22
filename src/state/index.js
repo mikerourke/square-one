@@ -1,6 +1,4 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import {
     applyMiddleware,
     combineReducers,
@@ -10,9 +8,7 @@ import {
 import axiosMiddleware from 'redux-axios-middleware';
 import thunk from 'redux-thunk';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { reducer as guiReducer } from './gui';
 import { reducer as leadsReducer } from './leads';
 import { reducer as settingsReducer } from './settings';

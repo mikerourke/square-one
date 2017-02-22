@@ -1,7 +1,6 @@
-/*
- * External dependencies
- */
-import React, { PropTypes } from 'react';
+// @flow
+/* External dependencies */
+import React from 'react';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -11,18 +10,14 @@ import {
     ToolbarGroup,
 } from 'material-ui/Toolbar';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { palette } from 'style/mui';
 import getRgbFromHex from 'lib/rgb-to-hex';
 
 /**
  * Sets the color and transparency of the IconButton inline.
- * @param {number} [transparency=1] Transparency value of the icon.
- * @returns {Object} Inline style for the column.
  */
-const getInlineStyle = (transparency = 1) => {
+const getInlineStyle = (transparency?: number = 1) => {
     const { r, g, b } = getRgbFromHex(palette.primary1Color);
     return {
         color: `rgba(${r},${g},${b},${transparency})`,
@@ -32,18 +27,16 @@ const getInlineStyle = (transparency = 1) => {
 /**
  * Toolbar in the table header for performing searching and filtering
  *      functions.
- * @param {Function} handleFilterMenuChange Action to perform when option is
- *      selected.
- * @param {Function} handleSearchBoxChange Action to perform when the value of
- *      the Search Box is changed.
- * @param {Object[]} filterSelections Filter options that populate the dropdown.
- * @constructor
  */
 const TableToolbar = ({
     handleFilterMenuChange,
     handleSearchBoxChange,
     filterSelections,
-}) => (
+}: {
+    handleFilterMenuChange: () => void,
+    handleSearchBoxChange: () => void,
+    filterSelections: Array<Selection>,
+}): React.Element<*> => (
     <Toolbar
         className="square1-toolbar"
         style={{ display: 'block' }}
@@ -86,11 +79,5 @@ const TableToolbar = ({
         </ToolbarGroup>
     </Toolbar>
 );
-
-TableToolbar.propTypes = {
-    handleFilterMenuChange: PropTypes.func.isRequired,
-    handleSearchBoxChange: PropTypes.func.isRequired,
-    filterSelections: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
 
 export default TableToolbar;

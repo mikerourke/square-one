@@ -1,11 +1,7 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import { OrderedMap, fromJS } from 'immutable';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { Lead, reducer, actions } from '../index';
 
 describe('Lead Reducer', () => {

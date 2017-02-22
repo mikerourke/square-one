@@ -7,25 +7,12 @@
       "leadFee": 25,
       "phone": "(630) 123-4567",
       "email": "steve@leads.com",
-      "address": "123 U.S. 1, Salisbury, MA, United States",
-      "location": {
-        "lat": 0,
-        "lng": 0
-      },
+      "address": "",
+      "lat": 0,
+      "lng": 0,
       "description": "This is a lead",
       "status": "New",
       "assignTo": "Chuckles",
-      "appointments": [
-        {
-          "id": 1,
-          "subject": "Appointment Test 1",
-          "startAt": "2013-10-21T13:00:00.419Z",
-          "endAt": "2013-10-21T15:00:00.419Z",
-          "appointmentFor": "Who knows?",
-          "emailAlert": "Alert, yo!",
-          "isAllDay": false
-        }
-      ],
       "comments": ""
     },
     {
@@ -36,10 +23,8 @@
       "phone": "(630) 123-4567",
       "email": "nancy@leads.com",
       "address": "",
-      "location": {
-        "lat": 0,
-        "lng": 0
-      },
+      "lat": 0,
+      "lng": 0,
       "description": "This is another lead",
       "status": "Existing",
       "assignTo": ""
@@ -52,28 +37,11 @@
       "phone": "(630) 123-4567",
       "email": "paco@leads.com",
       "address": "",
-      "location": {
-        "lat": 0,
-        "lng": 0
-      },
+      "lat": 0,
+      "lng": 0,
       "description": "This is a third lead",
       "status": "New",
       "assignTo": ""
-    },
-    {
-      "id": 48749,
-      "leadName": "",
-      "source": "",
-      "leadFee": 0,
-      "phone": "",
-      "email": "",
-      "address": "",
-      "location": {},
-      "description": "",
-      "comments": "",
-      "status": "",
-      "assignTo": "",
-      "appointments": []
     }
   ],
   "users": [

@@ -2,16 +2,12 @@
  * Production webpack configuration called from the package.json file.
  */
 
-/*
- * External dependencies
- */
+/* External dependencies */
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 const baseConfig = require('./webpack.base.babel');
 const packageFile = require('../../package.json');
 

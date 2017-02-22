@@ -1,12 +1,8 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import { normalize } from 'normalizr';
 import axios from 'axios';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import {
     LEAD_CREATE,
     LEAD_DELETE,

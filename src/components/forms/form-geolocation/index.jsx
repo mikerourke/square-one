@@ -7,9 +7,7 @@
  * @see https://github.com/Cemgoktugsorgun/material-ui-geosuggest/blob/master/src/index.js
  */
 
-/*
- * External dependencies
- */
+/* External dependencies */
 import React, { Component, PropTypes } from 'react';
 import GoogleMapsLoader from 'google-maps';
 import styled from 'styled-components';

@@ -1,18 +1,15 @@
 // @flow
-/*
- * External dependencies
- */
+/* External dependencies */
 import React from 'react';
 
 /* eslint-disable max-len */
 
 /**
  * Scalable graphic for official logo.
- * @constructor
  */
 const Logo = ({
-    height,
-    width,
+    height = 100,
+    width = 100,
 }: {
     height?: number,
     width?: number,
@@ -20,8 +17,8 @@ const Logo = ({
     <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        height={`${height}px`}
-        width={`${width}px`}
+        height={`${height.toString()}px`}
+        width={`${width.toString()}px`}
         viewBox="0 0 100 100"
     >
         <path

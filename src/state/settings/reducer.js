@@ -1,11 +1,7 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import { OrderedMap, fromJS } from 'immutable';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import {
     SETTING_GET_SINGLE, SETTING_GET_SINGLE_SUCCESS, SETTING_GET_SINGLE_FAIL,
     SETTING_GET_ALL, SETTING_GET_ALL_SUCCESS, SETTING_GET_ALL_FAIL,

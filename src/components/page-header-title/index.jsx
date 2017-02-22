@@ -1,23 +1,22 @@
-/*
- * External dependencies
- */
-import React, { Component, PropTypes } from 'react';
+// @flow
+/* External dependencies */
+import React from 'react';
 import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { palette } from 'style/mui';
 
+/**
+ * Styled container for all child elements.
+ */
 const Container = styled.div`
     display: flex;
 `;
 
 /**
  * Styled row for the page header text element.
- * @type {StyledComponent}
  */
 const TextRow = styled.div`
     clear: both;
@@ -29,30 +28,30 @@ const TextRow = styled.div`
 
 /**
  * Styled container for the page header text elements.
- * @type {StyledComponent}
  */
 const TextRowContainer = styled.div`
     columns: auto 1;
 `;
 
-/**
- * Container for the TextRow elements.
- * @type {StyledComponent}
- */
-class PageHeaderTitle extends Component {
-    static propTypes = {
-        backArrowTooltip: PropTypes.string,
-        handleBackArrowTouchTap: PropTypes.func,
-        headerText: PropTypes.string.isRequired,
-        subheaderText: PropTypes.string,
-        titleIconName: PropTypes.string.isRequired,
-    };
+type Props = {
+    backArrowTooltip?: string,
+    handleBackArrowTouchTap?: () => void,
+    headerText: string,
+    subheaderText?: string,
+    titleIconName: string,
+}
 
+/**
+ * Title component in the page header.
+ */
+class PageHeaderTitle extends React.Component<*, Props, *> {
     static defaultProps = {
         backArrowTooltip: '',
         handleBackArrowTouchTap: () => {},
         subheaderText: '',
     };
+
+    props: Props;
 
     render() {
         const {
@@ -63,9 +62,9 @@ class PageHeaderTitle extends Component {
             titleIconName,
         } = this.props;
 
-        const iconColor = palette.alternateTextColor;
+        const iconColor: string = palette.alternateTextColor;
 
-        const backArrowElement = (
+        const backArrowElement: React.Element<*> = (
             <IconButton
                 tooltip={backArrowTooltip}
                 tooltipPosition="top-right"
@@ -78,7 +77,7 @@ class PageHeaderTitle extends Component {
             </IconButton>
         );
 
-        const subheaderTextRow = (
+        const subheaderTextRow: React.Element<*> = (
             <TextRow
                 style={{
                     color: iconColor,

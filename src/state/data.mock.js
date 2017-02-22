@@ -1,6 +1,4 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import configureStore from 'redux-mock-store';
 import axios from 'axios';
 import axiosMiddleware from 'redux-axios-middleware';

@@ -1,23 +1,17 @@
-/*
- * External dependencies
- */
+// @flow
+/* External dependencies */
 import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import Layout from '../../layout';
 import { LoginPage, LeadsListPage, ManageLeadPage } from '../../containers';
 import { toggleAppSidebar } from 'state/gui/actions';
 
 /**
  * Configures the routes for the application.
- * @param {Object} history Browser history from React Router.
- * @param {Object} store Redux store.
- * @returns {Router} Router specification for the application.
  */
-const configureRoutes = (history, store) => {
+const configureRoutes = (history: Object, store: Object) => {
     /**
      * If the route changes, hide the Sidebar element in the layout (if
      *      visible).

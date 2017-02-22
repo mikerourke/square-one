@@ -4,9 +4,7 @@
  */
 import 'babel-polyfill';
 
-/*
- * External dependencies
- */
+/* External dependencies */
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -14,9 +12,7 @@ import { browserHistory } from 'react-router';
 import axios from 'axios';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import configureStore from './state';
 import renderRoutes from './lib/routes';
 import { getAllSettings } from 'state/settings/actions';

@@ -79,6 +79,16 @@ module.exports = {
         // This is handled by Flow with default values:
         'react/require-default-props': 0,
         'react/self-closing-comp': 1,
+        'react/sort-comp': [1, {
+            order: [
+                'type-annotations',
+                'static-methods',
+                'constructor',
+                'lifecycle',
+                'everything-else',
+                'render',
+            ]
+        }],
         'import/no-webpack-loader-syntax': 0
     },
     settings: {

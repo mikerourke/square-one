@@ -1,28 +1,26 @@
-/*
- * External dependencies
- */
-import React, { Component, PropTypes } from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+// @flow
+/* External dependencies */
+import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { Lead } from 'state/leads';
 import { Setting } from 'state/settings';
 import FormColumn from 'components/forms/form-column';
 import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';
 
-class LeadDetailsForm extends Component {
-    static propTypes = {
-        handleFieldChange: PropTypes.func.isRequired,
-        lead: ImmutablePropTypes.record,
-        representativesList: PropTypes.array.isRequired,
-        sourcesList: PropTypes.array.isRequired,
-    };
+type Props = {
+    handleFieldChange: () => void,
+    lead: Object,
+    representativesList: Array<Selection>,
+    sourcesList: Array<Selection>,
+};
+
+class LeadDetailsForm extends React.Component<*, Props, *> {
+    props: Props;
 
     static defaultProps = {
         lead: new Lead(),
@@ -31,9 +29,9 @@ class LeadDetailsForm extends Component {
     };
 
     componentDidMount() {
-        const node = document.getElementById('geo-address');
-        const addEvent = node.addEventListener || node.attachEvent;
-        addEvent('keypress', (event) => {
+        const addressInput = document.getElementById('geo-address');
+        const addEvent = addressInput.addEventListener;
+        addEvent('keypress', (event: KeyboardEvent) => {
             if (event.keyCode === 13) {
                 event.preventDefault();
             }
@@ -43,9 +41,9 @@ class LeadDetailsForm extends Component {
     render() {
         const {
             handleFieldChange,
+            lead,
             representativesList,
             sourcesList,
-            lead,
         } = this.props;
 
         return (
@@ -62,9 +60,10 @@ class LeadDetailsForm extends Component {
                         <SelectField
                             floatingLabelText="Source"
                             fullWidth={true}
-                            onChange={(event, key, payload) => {
-                                handleFieldChange(event, payload, 'source');
-                            }}
+                            onChange={
+                                (event: Event, key: string, value: string) => {
+                                    handleFieldChange(event, value, 'source');
+                                }}
                             value={lead.source}
                         >
                             {sourcesList.map(selection => (
@@ -106,9 +105,10 @@ class LeadDetailsForm extends Component {
                         <SelectField
                             floatingLabelText="Assign To"
                             fullWidth={true}
-                            onChange={(event, key, payload) => {
-                                handleFieldChange(event, payload, 'assignTo');
-                            }}
+                            onChange={
+                                (event: Event, key: string, value: string) => {
+                                    handleFieldChange(event, value, 'assignTo');
+                                }}
                             value={lead.assignTo}
                         >
                             {representativesList.map(selection => (

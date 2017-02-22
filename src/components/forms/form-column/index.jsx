@@ -1,7 +1,5 @@
 // @flow
-/*
- * External dependencies
- */
+/* External dependencies */
 import React from 'react';
 import styled from 'styled-components';
 
@@ -19,7 +17,7 @@ const Container = styled.div`
  *      index of 0) has right padding.  A right column (with index of 1) has
  *      left padding.
  */
-const getInlineStyle: Function = (columnIndex: number) => {
+const getInlineStyle = (columnIndex: number) => {
     if (columnIndex === 0) {
         return { paddingRight: 8 };
     }
@@ -28,14 +26,13 @@ const getInlineStyle: Function = (columnIndex: number) => {
 
 /**
  * Column on a two-column form.
- * @constructor
  */
 const FormColumn = ({
     columnIndex,
     children,
 }: {
     columnIndex: number,
-    children: Node
+    children?: React.Element<*>
 }): React.Element<*> => (
     <Container
         style={getInlineStyle(columnIndex)}

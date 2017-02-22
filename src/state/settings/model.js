@@ -1,6 +1,4 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import { schema } from 'normalizr';
 import { Record, List } from 'immutable';
 

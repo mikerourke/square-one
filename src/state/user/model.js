@@ -1,6 +1,4 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import { Record } from 'immutable';
 
 export default class User extends Record({

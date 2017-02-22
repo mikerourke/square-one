@@ -1,15 +1,15 @@
-/*
- * External dependencies
- */
-import React, { PropTypes } from 'react';
+// @flow
+/* External dependencies */
+import React from 'react';
 import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { palette } from 'style/mui';
 
+/**
+ * Styled container for the header contents.
+ */
 const Container = styled.div`
     background-color: ${palette.primary1Color};
     color: ${palette.alternateTextColor};
@@ -17,6 +17,9 @@ const Container = styled.div`
     padding-left: 24px;
 `;
 
+/**
+ * Styled wrapper for the Email header.
+ */
 const EmailWrapper = styled.div`
     font-size: 14px;
     margin-top: 12px;
@@ -24,12 +27,12 @@ const EmailWrapper = styled.div`
 
 /**
  * Header used by the Sidebar in the application layout.
- * @param {string} userEmail Email address of the logged in user.
- * @constructor
  */
 const SidebarHeader = ({
     userEmail,
-}) => (
+}: {
+    userEmail: string,
+}): React.Element<*> => (
     <Container>
         <FontIcon
             className="material-icons"
@@ -46,9 +49,5 @@ const SidebarHeader = ({
         </EmailWrapper>
     </Container>
 );
-
-SidebarHeader.propTypes = {
-    userEmail: PropTypes.string.isRequired,
-};
 
 export default SidebarHeader;

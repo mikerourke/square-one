@@ -1,14 +1,10 @@
 // @flow
-/*
- * External dependencies
- */
+/* External dependencies */
 import React, { PropTypes } from 'react';
-import { Record } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
+import { Lead } from 'state/leads';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
 
@@ -17,7 +13,7 @@ const PageHeaderToolbar = ({
     handleBackTouchTap,
     handleSaveTouchTap,
 }: {
-    lead: Record<*>,
+    lead: Lead,
     handleBackTouchTap: () => void,
     handleSaveTouchTap: () => void,
 }): React.Element<*> => (

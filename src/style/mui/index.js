@@ -1,11 +1,7 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import * as muiColors from 'material-ui/styles/colors';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import getMuiTheme from './theme';
 import palette from './palette';
 

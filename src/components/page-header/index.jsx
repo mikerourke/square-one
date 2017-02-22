@@ -1,7 +1,5 @@
 // @flow
-/*
- * External dependencies
- */
+/* External dependencies */
 import React from 'react';
 import styled from 'styled-components';
 import {
@@ -9,9 +7,7 @@ import {
     ToolbarGroup,
 } from 'material-ui/Toolbar';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { palette } from 'style/mui';
 
 /**
@@ -31,8 +27,8 @@ const PageHeader = ({
     titleLeft,
     height,
 }: {
-    actionButtonRight?: Node,
-    titleLeft: Node,
+    actionButtonRight?: React.Element<*>,
+    titleLeft: React.Element<*>,
     height?: number,
 }): React.Element<*> => (
     <Toolbar

@@ -1,6 +1,4 @@
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import {
     USER_GET, USER_GET_INFO, USER_GET_INFO_SUCCESS, USER_GET_INFO_FAIL,
     USER_LOGIN, USER_LOGIN_SUCCESS, USER_LOGIN_FAIL,

@@ -1,45 +1,43 @@
-/*
- * External dependencies
- */
+/* External dependencies */
 import React, { Component, PropTypes } from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { toJS } from 'immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import Paper from 'material-ui/Paper';
-import { Tabs, Tab } from 'material-ui/Tabs';
 import TabsToolbar from 'components/tabs-toolbar';
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 import { Lead, actions as leadActions } from 'state/leads';
 import { Setting, actions as settingsActions } from 'state/settings';
-import LeadDetailsForm from './components/LeadDetailsForm';
-import MessagesModal from './components/MessagesModal';
-import PageHeaderToolbar from './components/PageHeaderToolbar';
-import HistoryTab from './components/HistoryTab';
+import LeadDetailsForm from './components/details-form';
+import MessagesModal from './components/messages-modal';
+import PageHeaderToolbar from './components/page-header-toolbar';
+import HistoryTab from './components/history-tab';
 
-// TODO: Refactor this.
+type ListItem = {
+    id: string,
+    value: string,
+};
+
+type Props = {
+    actions: Object,
+    lead: Lead,
+    representativesList: Array<ListItem>,
+    sourcesList: Array<ListItem>,
+};
 
 class ManageLeadPage extends Component {
+    props: Props;
+
     static contextTypes = {
         router: PropTypes.object,
-    };
-
-    static propTypes = {
-        actions: PropTypes.object.isRequired,
-        lead: ImmutablePropTypes.record,
-        representativesList: PropTypes.array.isRequired,
-        sourcesList: PropTypes.array.isRequired,
     };
 
     static defaultProps = {
         lead: new Lead(),
     };
 
-    constructor(props, context) {
+    constructor(props: Props, context: any) {
         super(props, context);
 
         this.handleFieldChange = this.handleFieldChange.bind(this);

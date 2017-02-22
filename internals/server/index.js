@@ -3,17 +3,13 @@
  *      will be communicating with a separate API.
  */
 
-/*
- * External dependencies
- */
+/* External dependencies */
 const { green, red } = require('chalk');
 const path = require('path');
 const WebpackDevServer = require('webpack-dev-server');
 const webpack = require('webpack');
 
-/*
- * Internal dependencies
- */
+/* Internal dependencies */
 const webpackConfig = require('../webpack/webpack.dev.babel');
 
 const port = process.env.PORT || 8081;

@@ -9,20 +9,20 @@ import axiosMiddleware from 'redux-axios-middleware';
 import thunk from 'redux-thunk';
 
 /* Internal dependencies */
-import { reducer as guiReducer } from './gui';
-import { reducer as leadsReducer } from './leads';
-import { reducer as settingsReducer } from './settings';
-import { reducer as userReducer } from './user';
+import gui from './gui/reducer';
+import leads from './leads/reducer';
+import settings from './settings/reducer';
+import user from './user/reducer';
 
 /**
  * Combined Redux reducers for the application.
  * @type {Reducer<S>}
  */
 const rootReducer = combineReducers({
-    gui: guiReducer,
-    leads: leadsReducer,
-    settings: settingsReducer,
-    user: userReducer,
+    gui,
+    leads,
+    settings,
+    user,
 });
 
 /**

@@ -2,7 +2,6 @@ module.exports = {
     root: true,
     extends: [
         'eslint-config-airbnb',
-        'plugin:flowtype/recommended',
     ],
     env: {
         browser: true,

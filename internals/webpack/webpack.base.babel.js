@@ -53,6 +53,7 @@ module.exports = {
         extensions: ['.js', '.jsx'],
         alias: {
             containers: path.resolve(process.cwd(), 'src/containers'),
+            types: path.resolve(process.cwd(), 'internals/flow'),
         },
     },
     target: 'web',

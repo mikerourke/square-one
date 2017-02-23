@@ -3,6 +3,8 @@
   .*/test/.*
   .*/styled-components/src/.*
   .*/styled-components/dangerfile.js
+  .*/styled-components/lib/models/StyledNativeComponent.js.flow
+  .*/styled-components/lib/utils/flatten.js.flow
 
 [libs]
   # These are custom global declarations:

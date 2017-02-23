@@ -1,81 +1,81 @@
 // @flow
 
 /* External dependencies */
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
 import { getAllLeads } from 'state/leads/actions';
-import Lead from 'state/leads/model';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
 import Table from 'components/table';
 
-type Props = {
-    leads: Object,
-    populateLeads: () => void,
+type LeadItem = {
+    id: number,
+    leadName: string,
+    description: string,
+    status: string,
 };
 
-type State = {
-    isLoading: boolean,
-    leadsArray: Array<Object>,
-}
-
-class LeadsList extends Component {
-    handleCellClick: () => void;
-
-    static contextTypes = {
-        router: PropTypes.object,
+class LeadsList extends React.Component {
+    props: {
+        leads: Object,
+        populateLeads: () => void,
     };
 
-    constructor(props: Props, context: any) {
-        super(props, context);
-        this.handleCellClick = this.handleCellClick.bind(this);
+    state: {
+        isLoading: boolean,
+        leadsArray: Array<Object>,
+    };
+
+    static defaultProps = {
+        populateLeads: () => {},
+    };
+
+    constructor() {
+        super();
+
+        this.state = {
+            isLoading: true,
+            leadsArray: [],
+        };
+
+        (this: any).handleCellClick = this.handleCellClick.bind(this);
     }
-
-    state: State = {
-        isLoading: true,
-        leadsArray: [],
-    };
 
     componentDidMount() {
-        this.props.populateLeads().then(() => {
-            const startingData = Object.values(this.props.leads.toJS());
-            const result = startingData.map((item: Lead) => {
-                const leadItem: {
-                    id: number,
-                    leadName: string,
-                    description: string,
-                    status: string
-                } = {
-                    id: item.id,
-                    leadName: item.leadName,
-                    description: item.description,
-                    status: item.status,
-                };
-                return leadItem;
+        const populateLeadsFn: Function = this.props.populateLeads;
+        if (populateLeadsFn) {
+            populateLeadsFn().then(() => {
+                const leads = this.props.leads;
+                const startingData: Array<any> = Object.values(leads.toJS());
+                const result = startingData.map((item: any) => {
+                    const leadItem: LeadItem = {
+                        id: item.id,
+                        leadName: item.leadName,
+                        description: item.description,
+                        status: item.status,
+                    };
+                    return leadItem;
+                });
+                this.setState({
+                    isLoading: false,
+                    leadsArray: result,
+                });
             });
-            this.setState({
-                isLoading: false,
-                leadsArray: result,
-            });
-        });
+        }
     }
 
-    handleCellClick(
-        rowIndex: number,
-        columnIndex: number,
-        row: Object,
-        column: Object,
-    ) {
-        this.context.router.push(`leads/${row.id}`);
+    handleCellClick(rowIndex: number, columnIndex: number,
+                    row: Object, column: Object) {
+        browserHistory.push(`leads/${row.id}`);
     }
 
-    getFilterSelections() {
+    getSelections() {
         return [
             { id: 1, value: 'Test1' },
             { id: 2, value: 'Test2' },
@@ -105,7 +105,7 @@ class LeadsList extends Component {
             />
         );
 
-        const filterSelections = this.getFilterSelections();
+        const filterSelections = this.getSelections();
 
         if (isLoading) {
             return (<div>Loading...</div>);

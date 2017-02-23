@@ -17,6 +17,7 @@
   suppress_comment=.*\\$FlowFixMe
   suppress_comment=.*\\$FlowInvalidInputTest
 
+  esproposal.class_static_fields=enable
   unsafe.enable_getters_and_setters=true
 
   module.system=node

@@ -15,10 +15,13 @@ import {
 import { palette } from 'style/mui';
 import getRgbFromHex from 'lib/rgb-to-hex';
 
+/* Types */
+import type { Selection } from '../../types';
+
 /**
  * Sets the color and transparency of the IconButton inline.
  */
-const getInlineStyle = (transparency?: number = 1) => {
+const getInlineStyle = (transparency?: number = 1): Object => {
     const { r, g, b } = getRgbFromHex(palette.primary1Color);
     return {
         color: `rgba(${r},${g},${b},${transparency})`,
@@ -34,17 +37,15 @@ const TableToolbar = ({
     handleSearchBoxChange,
     filterSelections,
 }: {
-    handleFilterMenuChange: () => void,
-    handleSearchBoxChange: () => void,
-    filterSelections: Array<FilterSelection>,
+    handleFilterMenuChange: (event: Event, key: string, value: string) => void,
+    handleSearchBoxChange: (event: Event, newValue: string) => void,
+    filterSelections: Array<Selection>,
 }): React.Element<*> => (
     <Toolbar
         className="square1-toolbar"
         style={{ display: 'block' }}
     >
-        <ToolbarGroup
-            id="search-box"
-        >
+        <ToolbarGroup id="search-box">
             <IconButton
                 iconClassName="material-icons"
                 iconStyle={getInlineStyle()}

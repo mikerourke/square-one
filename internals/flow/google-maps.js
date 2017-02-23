@@ -20,7 +20,8 @@ declare class google$Map extends google$MVCObject {
     getZoom(): number,
     panBy(x: number, y: number): void,
     panTo(latLng: google$LatLng | google$LatLngLiteral): void,
-    panToBounds(latLngBounds: google$LatLngBounds | google$LatLngBoundsLiteral): void,
+    panToBounds(latLngBounds: google$LatLngBounds |
+                google$LatLngBoundsLiteral): void,
     setCenter(latlng: google$LatLng | google$LatLngLiteral): void,
     setClickableIcons(value: boolean): void,
     setHeading(heading: number): void,
@@ -61,7 +62,7 @@ declare class google$Map extends google$MVCObject {
  */
 declare type google$MapOptions = {
     backgroundColor?: string,
-    center?: google$LatLng | google$LatLngLiteral,
+    center?: google$LatLng,
     clickableIcons?: boolean,
     disableDefaultUI?: boolean,
     disableDoubleClickZoom?: boolean,
@@ -290,7 +291,8 @@ declare type google$LatLngLiteral = {
  * @see #LatLngBounds
  */
 declare class google$LatLngBounds {
-    constructor(sw?: google$LatLng | google$LatLngLiteral, ne?: google$LatLng | google$LatLngLiteral): void,
+    constructor(sw?: google$LatLng | google$LatLngLiteral,
+                ne?: google$LatLng | google$LatLngLiteral): void,
     contains(latLng: google$LatLng | google$LatLngLiteral): boolean,
     equals(other: google$LatLngBounds | google$LatLngBoundsLiteral): boolean,
     extend(point: google$LatLng | google$LatLngLiteral): google$LatLngBounds,
@@ -303,7 +305,8 @@ declare class google$LatLngBounds {
     toSpan(): google$LatLng,
     toString(): string,
     toUrlValue(precision?: number): string,
-    union(other: google$LatLngBounds | google$LatLngBoundsLiteral): google$LatLngBounds
+    union(other: google$LatLngBounds |
+        google$LatLngBoundsLiteral): google$LatLngBounds
 }
 
 /**
@@ -419,6 +422,7 @@ declare type google$PlaceResult = {
  */
 declare class google$Maps {
     event: google$event,
+    LatLng: Class<google$LatLng>,
     Map: Class<google$Map>,
     Marker: Class<google$Marker>,
     Point: Class<google$Point>,
@@ -429,15 +433,16 @@ declare class google$Maps {
 
 declare module 'google-maps' {
     declare export type Autocomplete = google$Autocomplete;
-    declare export type LatLng = google$LatLng;
-    declare export type LatLngLiteral = google$LatLngLiteral;
-    declare export type Map = google$Map;
-    declare export type Marker = google$Marker;
     declare export type Google = {
         maps: google$Maps
     };
+    declare export type LatLng = google$LatLng;
+    declare export type LatLngLiteral = google$LatLngLiteral;
+    declare export type Map = google$Map;
+    declare export type MapOptions = google$MapOptions;
+    declare export type Marker = google$Marker;
 
-    declare module.exports: {
+    declare var exports: {
         load: (google: Object) => any,
         release: () => void;
         KEY: string,

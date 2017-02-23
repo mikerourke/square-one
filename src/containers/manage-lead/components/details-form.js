@@ -13,20 +13,22 @@ import FormColumn from 'components/forms/form-column';
 import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';
 
-type Props = {
-    handleFieldChange: () => void,
-    lead: Object,
-    representativesList: Array<FilterSelection>,
-    sourcesList: Array<FilterSelection>,
-};
+/* Types */
+import type { Selection } from '../../../types';
 
-class LeadDetailsForm extends React.Component<*, Props, *> {
-    props: Props;
+class LeadDetailsForm extends React.Component {
+    props: {
+        handleFieldChange: (event: Event, newValue: string,
+                            fieldName?: string) => void,
+        lead: Object,
+        representativesList: Array<Selection>,
+        sourcesList: Array<Selection>,
+    };
 
     static defaultProps = {
         lead: new Lead(),
-        sourcesList: [],
         representativesList: [],
+        sourcesList: [],
     };
 
     componentDidMount() {

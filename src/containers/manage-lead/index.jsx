@@ -1,87 +1,92 @@
+// @flow
+
 /* External dependencies */
 import React, { Component, PropTypes } from 'react';
-import { toJS } from 'immutable';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import TabsToolbar from 'components/tabs-toolbar';
 
 /* Internal dependencies */
 import Lead from 'state/leads/model';
-import leadActions from 'state/leads/actions';
-import settingsActions from 'state/settings/actions';
+import { createLead, updateLead } from 'state/leads/actions';
+import HistoryTab from './components/history-tab';
 import LeadDetailsForm from './components/details-form';
 import MessagesModal from './components/messages-modal';
 import PageHeaderToolbar from './components/page-header-toolbar';
-import HistoryTab from './components/history-tab';
+import TabsToolbar from 'components/tabs-toolbar';
 
-type ListItem = {
-    id: string,
-    value: string,
-};
+/* Types */
+import type { Selection } from '../../types';
 
-type Props = {
-    actions: Object,
-    lead: Lead,
-    representativesList: Array<ListItem>,
-    sourcesList: Array<ListItem>,
-};
+class ManageLeadPage extends React.Component {
+    props: {
+        createLead: () => void,
+        lead: Lead,
+        updateLead: () => void,
+        representativesList: Array<Selection>,
+        sourcesList: Array<Selection>,
+    };
 
-class ManageLeadPage extends Component {
-    props: Props;
-
-    static contextTypes = {
-        router: PropTypes.object,
+    state: {
+        isModalOpen: boolean,
+        leadOnPage: Object,
     };
 
     static defaultProps = {
+        createLead: () => {},
         lead: new Lead(),
+        updateLead: () => {},
     };
 
-    constructor(props: Props, context: any) {
-        super(props, context);
+    constructor(props: any) {
+        super(props);
 
-        this.handleFieldChange = this.handleFieldChange.bind(this);
-        this.handleModalTouchTap = this.handleModalTouchTap.bind(this);
-        this.handleSaveTouchTap = this.handleSaveTouchTap.bind(this);
-        this.handleBackTouchTap = this.handleBackTouchTap.bind(this);
+        this.state = {
+            isModalOpen: false,
+            leadOnPage: this.props.lead,
+        };
+
+        (this: any).handleFieldChange = this.handleFieldChange.bind(this);
+        (this: any).handleModalTouchTap = this.handleModalTouchTap.bind(this);
+        (this: any).handleSaveTouchTap = this.handleSaveTouchTap.bind(this);
+        (this: any).handleBackTouchTap = this.handleBackTouchTap.bind(this);
     }
 
-    state = {
-        isModalOpen: false,
-        leadOnPage: this.props.lead,
-    };
-
-    handleFieldChange(event, newValue, fieldName = '') {
+    handleFieldChange(event: Event, newValue: string, fieldName: string = '') {
+        let nameOfField = fieldName;
+        const target = event.target;
+        if (target instanceof HTMLInputElement) {
+            nameOfField = target.name;
+        }
         const { leadOnPage } = this.state;
-        const nameOfField = (fieldName === '') ? event.target.name : fieldName;
         const updatedLead = leadOnPage.set(nameOfField, newValue);
-        return this.setState({
+        this.setState({
             leadOnPage: updatedLead,
         });
     }
 
-    handleModalTouchTap(event) {
+    handleModalTouchTap(event: Event) {
         event.preventDefault();
         this.setState({ isModalOpen: false });
-        const { createLead, updateLead } = this.props.actions;
-        const { push } = this.context.router;
-        const { leadOnPage } = this.state;
-        const leadEntity = leadOnPage.toJS();
-        const performAction = leadEntity.id === 0 ?
-                              createLead :
-                              updateLead;
-        performAction(leadEntity).then(() => {
-            push('/leads');
-        });
+        const leadEntity = this.state.leadOnPage.toJS();
+        if (leadEntity.id === 0) {
+            const createLeadFn: Function = this.props.createLead;
+            if (createLeadFn) {
+                createLeadFn().then(() => browserHistory.push('/leads'));
+            }
+        } else {
+            const updateLeadFn: Function = this.props.updateLead;
+            if (updateLeadFn) {
+                updateLeadFn().then(() => browserHistory.push('/leads'));
+            }
+        }
     }
 
-    handleBackTouchTap(event) {
+    handleBackTouchTap(event: Event) {
         event.preventDefault();
         browserHistory.push('/leads');
     }
 
-    handleSaveTouchTap(event) {
+    handleSaveTouchTap(event: Event) {
         event.preventDefault();
         this.setState({ isModalOpen: true });
     }
@@ -148,11 +153,10 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    const combinedActions = Object.assign({}, leadActions, settingsActions);
-    return {
-        actions: bindActionCreators(combinedActions, dispatch),
-    };
-};
+const mapDispatchToProps = dispatch => ({
+    dispatch,
+    createLead: () => dispatch(createLead()),
+    updateLead: () => dispatch(updateLead()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageLeadPage);

@@ -19,9 +19,9 @@ const Container = styled.div`
 `;
 
 type TabPage = {
-    content: Node,
+    content: React.Element<*> | string,
     label: string,
-    map: () => void,
+    map?: () => void,
 };
 
 /**
@@ -31,7 +31,7 @@ const TabsToolbar = ({
     tabPages,
 }: {
     tabPages: Array<TabPage>,
-}) => (
+}): React.Element<*> => (
     <Container className="square1-toolbar">
         <Tabs
             style={{

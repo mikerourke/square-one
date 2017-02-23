@@ -15,8 +15,8 @@ const PageHeaderToolbar = ({
     handleSaveTouchTap,
 }: {
     lead: Lead,
-    handleBackTouchTap: () => void,
-    handleSaveTouchTap: () => void,
+    handleBackTouchTap: (event: Event) => void,
+    handleSaveTouchTap: (event: Event) => void,
 }): React.Element<*> => (
     <PageHeader
         actionButtonRight={

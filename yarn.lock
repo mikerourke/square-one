@@ -3229,7 +3229,7 @@ ignore@^3.2.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.2.4.tgz#4055e03596729a8fabe45a43c100ad5ed815c4e8"
 
-immutable@>=3.7.6, immutable@^3.8.1:
+immutable@^3.8.1:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
 
@@ -6404,12 +6404,6 @@ type-is@~1.6.14:
   dependencies:
     media-typer "0.3.0"
     mime-types "~2.1.13"
-
-typed-immutable@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/typed-immutable/-/typed-immutable-0.1.0.tgz#dc624971670c56957f5be26017e0da0142c6895b"
-  dependencies:
-    immutable ">=3.7.6"
 
 typedarray@^0.0.6:
   version "0.0.6"

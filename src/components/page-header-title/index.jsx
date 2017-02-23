@@ -34,25 +34,23 @@ const TextRowContainer = styled.div`
     columns: auto 1;
 `;
 
-type Props = {
-    backArrowTooltip?: string,
-    handleBackArrowTouchTap?: () => void,
-    headerText: string,
-    subheaderText?: string,
-    titleIconName: string,
-}
-
 /**
  * Title component in the page header.
  */
-class PageHeaderTitle extends React.Component<*, Props, *> {
-    static defaultProps = {
-        backArrowTooltip: '',
-        handleBackArrowTouchTap: () => {},
-        subheaderText: '',
+class PageHeaderTitle extends React.Component {
+    props: {
+        backArrowTooltip?: string,
+        handleBackArrowTouchTap?: (event: Event) => void,
+        headerText: string,
+        subheaderText?: string,
+        titleIconName: string,
     };
 
-    props: Props;
+    static defaultProps = {
+        backArrowTooltip: '',
+        handleBackArrowTouchTap: (event: Event) => {},
+        subheaderText: '',
+    };
 
     render() {
         const {

@@ -4,11 +4,6 @@ declare module './www/favicon.ico' {
     declare var exports: any;
 }
 
-declare type FilterSelection = {
-    id: string,
-    value: string,
-};
-
 declare type Host = string;
 declare type Port = string | number;
 

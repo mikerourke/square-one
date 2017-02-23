@@ -37,9 +37,9 @@ class MessagesModal extends Component {
         });
     }
 
-    handleSelectionChange(event, key, payload) {
+    handleSelectionChange(event, key, value) {
         this.setState({
-            leadMessage: payload,
+            leadMessage: value,
         });
     }
 

@@ -9,7 +9,7 @@ import Paper from 'material-ui/Paper';
 import TableToolbar from './toolbar';
 
 /* Types */
-import type { Selection } from '../../types';
+import type { Selection } from 'lib/types';
 
 type Column = {
     key: string,

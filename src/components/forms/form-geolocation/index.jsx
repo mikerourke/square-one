@@ -10,12 +10,13 @@
  */
 
 /* External dependencies */
-import React, { PropTypes } from 'react';
+import React from 'react';
 import GoogleMapsLoader from 'google-maps';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 
 /* Types */
+import type { MapLocation } from 'lib/types';
 import type {
     Autocomplete,
     Google,
@@ -39,20 +40,25 @@ const MapWrapper = styled.div`
 class FormGeolocation extends React.Component {
     props: {
         floatingLabelText: string,
-        initialCenter: LatLngLiteral,
+        handleLocationChange: (newLocation: MapLocation) => void,
         name: string,
-        onChange: (event: Event, newValue: string) => void,
-        value?: string,
+        startingLocation?: MapLocation,
     };
 
     state: {
-        areElementsLoaded: boolean,
-        center: LatLng | LatLngLiteral,
+        address: string,
+        lat: number,
+        lng: number,
     };
 
+    autocomplete: Autocomplete;
+    google: Google;
+    map: Map;
+    marker: Marker;
+
     static defaultProps = {
-        value: '',
-        initialCenter: {
+        startingLocation: {
+            address: '',
             lat: 0,
             lng: 0,
         },
@@ -60,30 +66,29 @@ class FormGeolocation extends React.Component {
 
     constructor(props: any) {
         super(props);
-
         this.state = {
-            areElementsLoaded: false,
-            center: this.props.initialCenter,
+            address: '',
+            lat: 0,
+            lng: 0,
         };
+        (this: any).handleChange = this.handleChange.bind(this);
     }
 
     /**
      * Initializes the Google Map components after mounting.
      */
     componentDidMount() {
-        const { initialCenter } = this.props;
         this.loadGoogleMaps().then((google) => {
-            this.createMap(google, initialCenter).then((map) => {
-                this.removeTabIndexesFromMap(google, map);
-                this.createMarker(google, map).then((marker) => {
-                    this.createAutocomplete(google).then((autocomplete) => {
-                        autocomplete.bindTo('bounds', map);
-                        autocomplete.addListener('place_changed', () => {
-                            this.onPlaceChanged(autocomplete, map, marker);
-                        });
-                    });
-                });
+            this.google = google;
+            const { lat, lng } = this.props.startingLocation;
+            const center = new this.google.maps.LatLng(lat, lng);
+            this.createMap(center);
+            this.createMarker(center);
+            this.createAutocomplete();
+            this.autocomplete.addListener('place_changed', () => {
+                this.onPlaceChanged();
             });
+            this.removeTabIndexesFromMap();
         });
     }
 
@@ -91,14 +96,14 @@ class FormGeolocation extends React.Component {
      * When the address is changed in the Autocomplete field, the map is
      *      updated and a marker is set to the new address.
      */
-    onPlaceChanged(autocomplete: Autocomplete, map: Map, marker: Marker) {
+    onPlaceChanged() {
         // Hide the marker prior to zooming on a different location.
-        marker.setVisible(false);
+        this.marker.setVisible(false);
 
         // Get the Place ID that corresponds with the address entered in the
         // Autocomplete field.
-        const place = autocomplete.getPlace();
-        console.log(place);
+        const place = this.autocomplete.getPlace();
+
         // If the place doesn't have a corresponding latitude and longitude,
         // exit the function.
         if (!place.geometry) {
@@ -107,29 +112,27 @@ class FormGeolocation extends React.Component {
 
         // If the place does have valid lat/lng, get the location details and
         // update the state.
-        const { viewport, location } = place.geometry;
-        this.setState({
-            center: location,
-        });
+        const { location } = place.geometry;
 
-        const addressInput = document.getElementById('geo-address');
-        if (addressInput instanceof HTMLInputElement) {
-            addressInput.value = place.formatted_address;
-        }
-
-        // If the place had a valid viewport, update the Map element to fit
-        // the bounds.  If not, center the Map to the location coordinates
-        // and update the zoom.
-        if (viewport) {
-            map.fitBounds(viewport);
-        } else {
-            map.setCenter(location);
-            map.setZoom(5);
-        }
+        // Focus on the specified location.
+        this.map.setCenter(location);
+        this.map.setZoom(16);
 
         // Set the Marker on the address location and show.
-        marker.setPosition(location);
-        marker.setVisible(true);
+        this.marker.setPosition(location);
+        this.marker.setVisible(true);
+
+        // Update the parent Lead entity.
+        const address = place.formatted_address;
+        this.props.handleLocationChange({
+            address,
+            lat: location.lat(),
+            lng: location.lng(),
+        });
+
+        // Ensure the Location input is updated and the location is shown
+        // on the map.
+        this.setState({ address });
     }
 
     /**
@@ -150,25 +153,21 @@ class FormGeolocation extends React.Component {
     /**
      * Creates the Map element and attaches it to the rendered div.
      */
-    createMap(google: Google, initialCenter: LatLngLiteral): Promise<*> {
-        return new Promise((resolve) => {
-            const { lat, lng } = initialCenter;
-            const center = new google.maps.LatLng(lat, lng);
-            const element = document.getElementById('geo-map');
-            const options: MapOptions = {
-                center,
-                zoom: 4,
-            };
-            resolve(new google.maps.Map(element, options));
-        });
+    createMap(center: LatLng): void {
+        const element = document.getElementById('geo-map');
+        const options: MapOptions = {
+            center,
+            zoom: 16,
+        };
+        this.map = new this.google.maps.Map(element, options);
     }
 
     /**
      * Prevents the focus from going to any of the links on the Map element
      *      when the user presses the tab key.
      */
-    removeTabIndexesFromMap(google: Google, map: Map) {
-        google.maps.event.addListener(map, 'tilesloaded', () => {
+    removeTabIndexesFromMap(): void {
+        this.google.maps.event.addListener(this.map, 'tilesloaded', () => {
             const selector = `#${'geo-map'} a`;
             document.querySelectorAll(selector).forEach(element =>
                 element.setAttribute('tabIndex', '999'),
@@ -177,42 +176,48 @@ class FormGeolocation extends React.Component {
     }
 
     /**
-     * Creates a new Marker element to represent the coordinates associated
-     *      with an address.
-     */
-    createMarker(google: Google, map: Map): Promise<*> {
-        return new Promise((resolve) => {
-            resolve(new google.maps.Marker({
-                map,
-                anchorPoint: new google.maps.Point(0, 0),
-            }));
-        });
-    }
-
-    /**
      * Creates an Autocomplete field for addresses and attaches it to the
      *      rendered div.
      */
-    createAutocomplete(google: Google): Promise<*> {
-        return new Promise((resolve) => {
-            const element = document.getElementById('geo-address');
-            resolve(new google.maps.places.Autocomplete(element));
+    createAutocomplete(): void {
+        const element = document.getElementById('geo-address');
+        this.autocomplete = new this.google.maps.places.Autocomplete(element);
+    }
+
+    /**
+     * Creates a new Marker element to represent the coordinates associated
+     *      with an address.
+     */
+    createMarker(center: LatLng): void {
+        this.marker = new this.google.maps.Marker({
+            anchorPoint: new this.google.maps.Point(0, 0),
+            position: center,
+            map: this.map,
         });
+    }
+
+    handleChange(event: Event, newValue: string = '') {
+        this.setState({ address: newValue });
     }
 
     render() {
         const {
-            initialCenter,
+            handleLocationChange,
+            startingLocation,
             ...props
         } = this.props;
+
+        const { address } = this.state;
 
         return (
             <div>
                 <TextField
+                    {...props}
                     fullWidth={true}
                     id="geo-address"
+                    onChange={this.handleChange}
                     placeholder=""
-                    {...props}
+                    value={address}
                 />
                 <MapWrapper
                     id="geo-map"

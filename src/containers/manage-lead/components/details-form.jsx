@@ -14,21 +14,16 @@ import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';
 
 /* Types */
-import type { Selection } from '../../../types';
+import type { MapLocation, Selection } from 'lib/types';
 
 class LeadDetailsForm extends React.Component {
     props: {
         handleFieldChange: (event: Event, newValue: string,
                             fieldName?: string) => void,
-        lead: Object,
+        handleLocationChange: (newLocation: MapLocation) => void,
+        lead: Lead,
         representativesList: Array<Selection>,
         sourcesList: Array<Selection>,
-    };
-
-    static defaultProps = {
-        lead: new Lead(),
-        representativesList: [],
-        sourcesList: [],
     };
 
     componentDidMount() {
@@ -38,6 +33,7 @@ class LeadDetailsForm extends React.Component {
     render() {
         const {
             handleFieldChange,
+            handleLocationChange,
             lead,
             representativesList,
             sourcesList,
@@ -120,9 +116,13 @@ class LeadDetailsForm extends React.Component {
                     <FormColumn columnIndex={1}>
                         <FormGeolocation
                             floatingLabelText="Address"
+                            handleLocationChange={handleLocationChange}
                             name="address"
-                            onChange={handleFieldChange}
-                            value={lead.address}
+                            startingLocation={{
+                                address: lead.address,
+                                lat: lead.lat,
+                                lng: lead.lng,
+                            }}
                         />
                     </FormColumn>
                 </FormColumnsContainer>

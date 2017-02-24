@@ -1,3 +1,6 @@
+// @flow
+
+/* External dependencies */
 import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import Dialog from 'material-ui/Dialog';
@@ -11,33 +14,45 @@ const MessageBlock = styled.div`
     margin: 24px 0;
 `;
 
-class MessagesModal extends Component {
-    static propTypes = {
-        handleModalTouchTap: PropTypes.func.isRequired,
-        isOpen: PropTypes.bool.isRequired,
-    };
-
-    constructor(props, context) {
-        super(props, context);
-
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSelectionChange = this.handleSelectionChange.bind(this);
+class MessagesModal extends React.Component {
+    props: {
+        handleModalTouchTap: (event: Event) => void,
+        isOpen: boolean,
     }
 
-    state = {
-        leadMessage: '',
-        representativeMessage: '',
-        sendLeadMessage: false,
-        sendRepresentativeMessage: false,
-    };
-
-    handleInputChange(event, newValue) {
-        this.setState({
-            [event.target.name]: newValue,
-        });
+    state: {
+        leadMessage: string,
+        representativeMessage: string,
+        sendLeadMessage: boolean,
+        sendRepresentativeMessage: boolean,
     }
 
-    handleSelectionChange(event, key, value) {
+    constructor() {
+        super();
+
+        this.state = {
+            leadMessage: '',
+            representativeMessage: '',
+            sendLeadMessage: false,
+            sendRepresentativeMessage: false,
+        };
+
+        (this: any).handleInputChange =
+            this.handleInputChange.bind(this);
+        (this: any).handleSelectionChange =
+            this.handleSelectionChange.bind(this);
+    }
+
+    handleInputChange(event: Event, newValue: string = '') {
+        const target = event.target;
+        if (target instanceof HTMLInputElement) {
+            this.setState({
+                [target.name]: newValue,
+            });
+        }
+    }
+
+    handleSelectionChange(event: Event, key: string, value: string = '') {
         this.setState({
             leadMessage: value,
         });

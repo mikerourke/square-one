@@ -16,7 +16,7 @@ import { palette } from 'style/mui';
 import getRgbFromHex from 'lib/rgb-to-hex';
 
 /* Types */
-import type { Selection } from '../../types';
+import type { Selection } from 'lib/types';
 
 /**
  * Sets the color and transparency of the IconButton inline.

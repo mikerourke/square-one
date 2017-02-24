@@ -15,7 +15,7 @@ import PageHeaderToolbar from './components/page-header-toolbar';
 import TabsToolbar from 'components/tabs-toolbar';
 
 /* Types */
-import type { Selection } from '../../types';
+import type { MapLocation, Selection } from 'lib/types';
 
 class ManageLeadPage extends React.Component {
     props: {
@@ -46,6 +46,7 @@ class ManageLeadPage extends React.Component {
         };
 
         (this: any).handleFieldChange = this.handleFieldChange.bind(this);
+        (this: any).handleLocationChange = this.handleLocationChange.bind(this);
         (this: any).handleModalTouchTap = this.handleModalTouchTap.bind(this);
         (this: any).handleSaveTouchTap = this.handleSaveTouchTap.bind(this);
         (this: any).handleBackTouchTap = this.handleBackTouchTap.bind(this);
@@ -59,9 +60,15 @@ class ManageLeadPage extends React.Component {
         }
         const { leadOnPage } = this.state;
         const updatedLead = leadOnPage.set(nameOfField, newValue);
-        this.setState({
-            leadOnPage: updatedLead,
-        });
+        this.setState({ leadOnPage: updatedLead });
+    }
+
+    handleLocationChange(newLocation: MapLocation) {
+        const { leadOnPage } = this.state;
+        const { address, lat, lng } = newLocation;
+        console.log(newLocation);
+        const updatedLead = leadOnPage.merge({ address, lat, lng });
+        this.setState({ leadOnPage: updatedLead });
     }
 
     handleModalTouchTap(event: Event) {
@@ -106,9 +113,10 @@ class ManageLeadPage extends React.Component {
                 content:
                     (<LeadDetailsForm
                         handleFieldChange={this.handleFieldChange}
+                        handleLocationChange={this.handleLocationChange}
+                        lead={leadOnPage}
                         representativesList={representativesList}
                         sourcesList={sourcesList}
-                        lead={leadOnPage}
                     />),
             },
             {

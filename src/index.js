@@ -22,7 +22,7 @@ import { getAllSettings } from 'state/settings/actions';
 // Import web assets.
 /* eslint-disable */
 import './style/global.css';
-import './www/favicon.ico';
+//import './www/favicon.ico';
 /* eslint-enable */
 
 // Configure the Axios client for API access.

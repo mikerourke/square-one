@@ -42,7 +42,7 @@ class FormGeolocation extends React.Component {
         floatingLabelText: string,
         handleLocationChange: (newLocation: MapLocation) => void,
         name: string,
-        startingLocation?: MapLocation,
+        startingLocation: MapLocation,
     };
 
     state: {
@@ -66,10 +66,11 @@ class FormGeolocation extends React.Component {
 
     constructor(props: any) {
         super(props);
+        const { address, lat, lng } = this.props.startingLocation;
         this.state = {
-            address: '',
-            lat: 0,
-            lng: 0,
+            address,
+            lat,
+            lng,
         };
         (this: any).handleChange = this.handleChange.bind(this);
     }

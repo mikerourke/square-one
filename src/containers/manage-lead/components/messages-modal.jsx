@@ -5,8 +5,6 @@ import React, { Component, PropTypes } from 'react';
 import styled from 'styled-components';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 
@@ -18,17 +16,17 @@ class MessagesModal extends React.Component {
     props: {
         handleModalTouchTap: (event: Event) => void,
         isOpen: boolean,
-    }
+    };
 
     state: {
         leadMessage: string,
         representativeMessage: string,
         sendLeadMessage: boolean,
         sendRepresentativeMessage: boolean,
-    }
+    };
 
-    constructor() {
-        super();
+    constructor(props: any) {
+        super(props);
 
         this.state = {
             leadMessage: '',
@@ -45,7 +43,8 @@ class MessagesModal extends React.Component {
 
     handleInputChange(event: Event, newValue: string = '') {
         const target = event.target;
-        if (target instanceof HTMLInputElement) {
+        if (target instanceof HTMLInputElement ||
+            target instanceof HTMLTextAreaElement) {
             this.setState({
                 [target.name]: newValue,
             });
@@ -82,18 +81,17 @@ class MessagesModal extends React.Component {
             />,
         ];
 
-        const messages = [
-            { id: 1, value: 'This is the first message.' },
-            { id: 2, value: 'This is the second message.' },
-            { id: 3, value: 'This is the third message.' },
-        ];
-
         return (
             <Dialog
                 actions={actions}
+                autoScrollBodyContent={true}
+                bodyStyle={{
+                    minHeight: 300,
+                    padding: '0 24px',
+                }}
                 contentStyle={{
-                    width: '75%',
                     minWidth: 300,
+                    width: '75%',
                 }}
                 modal={true}
                 open={isOpen}
@@ -106,20 +104,6 @@ class MessagesModal extends React.Component {
                         onToggle={this.handleInputChange}
                         style={{ width: 300 }}
                     />
-                    <SelectField
-                        disabled={!sendLeadMessage}
-                        floatingLabelText="Message"
-                        fullWidth={true}
-                        onChange={this.handleSelectionChange}
-                    >
-                        {messages.map(message => (
-                            <MenuItem
-                                key={message.id}
-                                primaryText={message.value}
-                                value={message.value}
-                            />
-                        ))}
-                    </SelectField>
                     <TextField
                         disabled={!sendLeadMessage}
                         floatingLabelText="Message to Lead"

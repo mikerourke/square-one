@@ -3,6 +3,9 @@
 /* External dependencies */
 import React from 'react';
 import DataTables from 'material-ui-datatables';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Paper from 'material-ui/Paper';
 
 /* Internal dependencies */
@@ -126,6 +129,13 @@ class Table extends React.Component {
         this.setState({ data: sortedList });
     }
 
+    getColumnsWithEditIcon() {
+        return this.props.columns.map((column) => {
+            console.log(column);
+            return column;
+        });
+    }
+
     render() {
         const {
             handleCellClick,
@@ -133,7 +143,28 @@ class Table extends React.Component {
             filterSelections,
         } = this.props;
 
-        const { ...state } = this.state;
+        const {
+            data,
+            ...state
+        } = this.state;
+
+        const columnsWithIcons = [{
+            key: 'icons',
+            style: {
+                paddingLeft: 8,
+                width: 24,
+            },
+        }].concat(columns);
+
+        const dataWithIcons = data.map((item) => {
+            const editIcon = (
+                <IconButton>
+                    <EditorModeEdit />
+                </IconButton>
+            );
+            return Object.assign({}, item, { icons: editIcon });
+        });
+
         return (
             <div>
                 <TableToolbar
@@ -151,10 +182,10 @@ class Table extends React.Component {
                     }}
                 >
                     <DataTables
-                        columns={columns}
+                        columns={columnsWithIcons}
                         count={20}
+                        data={dataWithIcons}
                         height={'auto'}
-                        onCellClick={handleCellClick}
                         onNextPageClick={this.handleNextPageClick}
                         onPreviousPageClick={this.handlePreviousPageClick}
                         onRowSizeChange={this.handleRowSizeChange}

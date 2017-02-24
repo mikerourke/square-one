@@ -6,7 +6,7 @@ export type Selection = {
 };
 
 export type MapLocation = {
-    address?: string,
+    address: string,
     lat: number,
     lng: number,
 };

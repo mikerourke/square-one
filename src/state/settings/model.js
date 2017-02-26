@@ -1,3 +1,5 @@
+/* @flow */
+
 /* External dependencies */
 import { schema } from 'normalizr';
 import { Record, List } from 'immutable';
@@ -8,10 +10,10 @@ const setting = new schema.Entity('settings', {}, {
 export const settingSchema = [setting];
 
 export default class Setting extends Record({
-    id: null,
-    category: '',
-    settingName: '',
-    data: undefined,
+    id: (null: ?number),
+    category: ('': string),
+    settingName: ('': string),
+    data: (null: ?string | ?Array<any>),
 }) {
     getData() {
         const settingData = this.data;

@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 /* eslint-disable max-len */
 export const GUI_TOGGLE_APP_SIDEBAR: string = 'gui/GUI_TOGGLE_APP_SIDEBAR';

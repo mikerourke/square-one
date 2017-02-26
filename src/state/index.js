@@ -1,3 +1,5 @@
+/* @flow */
+
 /* External dependencies */
 import {
     applyMiddleware,
@@ -14,9 +16,11 @@ import leads from './leads/reducer';
 import settings from './settings/reducer';
 import user from './user/reducer';
 
+/* Types */
+import type { AxiosRequestConfig } from 'axios';
+
 /**
  * Combined Redux reducers for the application.
- * @type {Reducer<S>}
  */
 const rootReducer = combineReducers({
     gui,
@@ -27,11 +31,8 @@ const rootReducer = combineReducers({
 
 /**
  * Creates the global Redux store.
- * @param {Object} client Axios client for utilizing the API.
- * @param {Object} [initialState={}] Initial state of the Redux store.
- * @returns {Store<S>} Global Redux store.
  */
-export default function configureStore(client, initialState) {
+export default (client: AxiosRequestConfig, initialState?: Object) => {
     // Setup the Redux Dev Tools in Chrome:
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
                              compose;

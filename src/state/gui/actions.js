@@ -1,13 +1,11 @@
-// @flow
+/* @flow */
 
-import {
-    GUI_TOGGLE_APP_SIDEBAR,
-} from '../action-types';
+/* Internal dependencies */
+import { GUI_TOGGLE_APP_SIDEBAR } from '../action-types';
 
-type ToggleAppSidebarAction = {
-    type: string,
-}
+/* Types */
+import type { Action } from 'lib/types';
 
-export const toggleAppSidebar = (): ToggleAppSidebarAction => ({
+export const toggleAppSidebar = (): Action => ({
     type: GUI_TOGGLE_APP_SIDEBAR,
 });

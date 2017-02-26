@@ -7,7 +7,6 @@ import thunk from 'redux-thunk';
 
 /**
  * Object used for performing testing that mirrors the database.
- * @type {Object}
  */
 const mockDb = {
     leads: [{
@@ -17,16 +16,11 @@ const mockDb = {
         leadFee: 25,
         phone: '(630) 123-4567',
         email: 'steve@leads.com',
-        address: '123 U.S. 1, Salisbury, MA, United States',
+        address: "123 Yorktown Shopping Center, Lombard, IL 60148, USA",
+        lat: 41.83931079999999,
+        lng: -88.00729280000002,
         description: 'This is a lead',
         status: 'New',
-        appointments: [{ id: 1,
-            subject: 'Appointment Test 1',
-            startAt: '2013-10-21T13:00:00.419Z',
-            endAt: '2013-10-21T15:00:00.419Z',
-            appointmentFor: 'Who knows?',
-            emailAlert: 'Alert, yo!',
-            isAllDay: false }],
     }, {
         id: 2,
         leadName: 'Nancy Leadelstein',
@@ -34,7 +28,9 @@ const mockDb = {
         leadFee: 25,
         phone: '(630) 123-4567',
         email: 'nancy@leads.com',
-        address: '',
+        address: "",
+        lat: 0,
+        lng: 0,
         description: 'This is another lead',
         status: 'Existing',
     },
@@ -46,6 +42,8 @@ const mockDb = {
         phone: '(630) 123-4567',
         email: 'paco@leads.com',
         address: '',
+        lat: 0,
+        lng: 0,
         description: 'This is a third lead',
         status: 'New',
     }],
@@ -94,18 +92,14 @@ const mockDb = {
     }],
 };
 
-/**
- * Mock Axios client object for testing.
- * @type {AxiosInstance}
- */
 const client = axios.create({
     responseType: 'json',
 });
+
 const mockClient = new MockAdapter(client);
 
 /**
  * Mock Redux store with middleware.
- * @type {[*]}
  */
 const middleware = [
     axiosMiddleware(client),

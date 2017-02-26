@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 /**
  * Entry point for the application.  The assets associated with the client

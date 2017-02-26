@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 /**
  * Class representing a Google Map element.

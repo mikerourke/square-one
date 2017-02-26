@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 /**
  * Some of this code was taken from the material-ui-geosuggest NPM package.

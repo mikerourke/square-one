@@ -1,14 +1,18 @@
 /* Internal dependencies */
-import { actions as leadActions } from '../index';
+import * as leadActions from '../actions';
 import * as types from '../../action-types';
 import {
     mockClient,
     mockDb,
     mockStore,
-} from '../../data.mock';
+} from '../../../../internals/testing/mock/for-state';
 
 describe('Lead Actions', () => {
-    it('creates LEAD_GET and LEAD_GET_SINGLE_SUCCESS for a valid Lead', (done) => {
+    beforeAll(() => {
+        mockClient.reset();
+    });
+
+    it('creates LEAD_GET_SINGLE and LEAD_GET_SINGLE_SUCCESS for a valid Lead', (done) => {
         const initialState = {};
         const store = mockStore(initialState);
 
@@ -22,7 +26,7 @@ describe('Lead Actions', () => {
         });
     });
 
-    it('creates LEAD_GET and LEAD_GET_SINGLE_FAIL for an invalid Lead', (done) => {
+    it('creates LEAD_GET_SINGLE and LEAD_GET_SINGLE_FAIL for an invalid Lead', (done) => {
         const initialState = {};
         const store = mockStore(initialState);
 
@@ -30,7 +34,7 @@ describe('Lead Actions', () => {
 
         store.dispatch(leadActions.getLead(2)).then(() => {
             const actions = store.getActions();
-            expect(actions[0].type).toEqual(types.LEAD_GET);
+            expect(actions[0].type).toEqual(types.LEAD_GET_SINGLE);
             expect(actions[1].type).toEqual(types.LEAD_GET_SINGLE_FAIL);
             done();
         });

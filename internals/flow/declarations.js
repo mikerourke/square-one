@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 declare module './www/favicon.ico' {
     declare var exports: any;

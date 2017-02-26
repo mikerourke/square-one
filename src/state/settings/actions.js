@@ -1,3 +1,5 @@
+/* @flow */
+
 /* External dependencies */
 import axios from 'axios';
 import { normalize } from 'normalizr';
@@ -10,11 +12,13 @@ import {
 } from '../action-types';
 import { settingSchema } from './model';
 
+import type { Action } from 'lib/types';
+
 const defaultTransform = axios.defaults.transformResponse;
 
 const BASE_URL = '/settings';
 
-export const getSetting = settingName => ({
+export const getSetting = (settingName: string): Action => ({
     type: SETTING_GET_SINGLE,
     payload: {
         request: {
@@ -24,7 +28,7 @@ export const getSetting = settingName => ({
     },
 });
 
-export const getAllSettings = () => ({
+export const getAllSettings = (): Action => ({
     type: SETTING_GET_ALL,
     payload: {
         request: {

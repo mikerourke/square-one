@@ -1,6 +1,12 @@
+/* External dependencies */
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+/* Internal dependencies */
 import palette from './palette';
 
+/**
+ * Custom options for the Material UI theme (colors and component options).
+ */
 export default getMuiTheme({
     palette,
     fontFamily: 'Roboto',

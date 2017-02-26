@@ -101,7 +101,7 @@
       "src"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/internals/testing/setup.js",
-    "testPathDirs": [
+    "roots": [
       "<rootDir>/src"
     ],
     "testRegex": "test/.*\\.test\\.js$"

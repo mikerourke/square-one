@@ -1,3 +1,5 @@
+/* @flow */
+
 /* External dependencies */
 import { OrderedMap, fromJS } from 'immutable';
 
@@ -9,20 +11,24 @@ import {
 } from '../action-types';
 import Setting from './model';
 
+/* Types */
+import type { Action } from 'lib/types';
+
+type State = OrderedMap<string, Setting>;
+
 const initialState = OrderedMap();
 
-const mergeEntities = (state, newSettings) =>
+const mergeEntities = (state: State, newSettings: Array<Setting>) =>
     state.merge(newSettings.map(setting => new Setting(setting)));
 
-export default (state = initialState, action) => {
-    const { type, payload } = action;
-    switch (type) {
+export default (state: State = initialState, action: Action) => {
+    const { payload: { data: payloadData } } = action;
+    switch (action.type) {
         case SETTING_GET_SINGLE_SUCCESS:
-            const { data } = payload;
-            return state.set(data.id, new Setting(data));
+            return state.set(payloadData.id, new Setting(payloadData));
 
         case SETTING_GET_ALL_SUCCESS:
-            const { settings } = payload.data.entities;
+            const { entities: { settings } } = payloadData;
             return mergeEntities(state, fromJS(settings));
 
         default:

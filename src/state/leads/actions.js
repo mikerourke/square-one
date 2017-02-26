@@ -1,3 +1,5 @@
+/* @flow */
+
 /* External dependencies */
 import { normalize } from 'normalizr';
 import axios from 'axios';
@@ -10,13 +12,16 @@ import {
     LEAD_GET_ALL,
     LEAD_GET_SINGLE,
 } from '../action-types';
-import { leadSchema } from './model';
+import Lead, { leadSchema } from './model';
+
+/* Types */
+import type { Action } from 'lib/types';
 
 const defaultTransform = axios.defaults.transformResponse;
 
 const BASE_URL = '/leads';
 
-export const createLead = lead => ({
+export const createLead = (lead: Lead): Action => ({
     type: LEAD_CREATE,
     payload: {
         request: {
@@ -27,7 +32,7 @@ export const createLead = lead => ({
     },
 });
 
-export const deleteLead = id => ({
+export const deleteLead = (id: number): Action => ({
     type: LEAD_DELETE,
     payload: {
         request: {
@@ -37,7 +42,7 @@ export const deleteLead = id => ({
     },
 });
 
-export const updateLead = lead => ({
+export const updateLead = (lead: Lead): Action => ({
     type: LEAD_UPDATE,
     payload: {
         request: {
@@ -48,7 +53,7 @@ export const updateLead = lead => ({
     },
 });
 
-export const getLead = id => ({
+export const getLead = (id: number): Action => ({
     type: LEAD_GET_SINGLE,
     payload: {
         request: {
@@ -58,7 +63,7 @@ export const getLead = id => ({
     },
 });
 
-export const getAllLeads = () => ({
+export const getAllLeads = (): Action => ({
     type: LEAD_GET_ALL,
     payload: {
         request: {

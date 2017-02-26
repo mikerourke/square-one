@@ -1,3 +1,5 @@
+/* @flow */
+
 /* Internal dependencies */
 import {
     USER_GET, USER_GET_INFO, USER_GET_INFO_SUCCESS, USER_GET_INFO_FAIL,

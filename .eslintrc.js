@@ -51,6 +51,7 @@ module.exports = {
         'no-trailing-spaces': 0,
         'no-underscore-dangle': 0,
         'no-unused-vars': 0,
+        'no-use-before-define': 0, // This causes issues with type declarations.
         'semi': [
             1,
             'always',

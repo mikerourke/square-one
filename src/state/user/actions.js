@@ -1,3 +1,5 @@
+/* @flow */
+
 /* Internal dependencies */
 import {
     USER_GET,
@@ -5,15 +7,20 @@ import {
     USER_LOGIN,
     USER_LOGOUT,
 } from '../action-types';
+import User from './model';
+
+/* Types */
+import type { Action } from 'lib/types';
 
 const BASE_URL = '/users';
 
-export const getUser = value => ({
+// TODO: Fix this action.
+export const getUser = (value: string) => ({
     type: USER_GET,
     payload: value,
 });
 
-export const getUserInfo = user => ({
+export const getUserInfo = (user: User): Action => ({
     type: USER_GET_INFO,
     payload: {
         request: {
@@ -23,7 +30,7 @@ export const getUserInfo = user => ({
     },
 });
 
-export const auth = (username, password) => ({
+export const auth = (username: string, password: string): Action => ({
     type: USER_LOGIN,
     payload: {
         request: {
@@ -33,7 +40,7 @@ export const auth = (username, password) => ({
     },
 });
 
-export const logout = user => ({
+export const logout = (user: User): Action => ({
     type: USER_LOGOUT,
     payload: {
         request: {

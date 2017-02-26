@@ -1,5 +1,9 @@
+/* External dependencies */
 import * as muiColors from 'material-ui/styles/colors';
 
+/**
+ * Custom palette colors for the Material UI theme.
+ */
 export default {
     primary1Color: muiColors.grey700,
     primary2Color: muiColors.grey500,

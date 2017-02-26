@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 /**
  * Prevents the Enter key from submitting a form if the element with the

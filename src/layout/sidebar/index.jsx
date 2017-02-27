@@ -63,7 +63,7 @@ const Sidebar = ({
 
 Sidebar.defaultProps = {
     open: false,
-    userEmail: 'Test',
+    userEmail: '',
 };
 
 export default Sidebar;

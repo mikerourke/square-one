@@ -4,10 +4,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Paper from 'material-ui/Paper';
-import {
-    Tabs,
-    Tab,
-} from 'material-ui/Tabs';
+import { Tab, Tabs } from 'material-ui/Tabs';
 
 /**
  * Styled container for the Tabs elements.
@@ -18,6 +15,10 @@ const Container = styled.div`
     width: 100%;
 `;
 
+/**
+ * Page in the Tabs toolbar.
+ * @typedef TabPage
+ */
 type TabPage = {
     content: React.Element<*> | string,
     label: string,
@@ -26,6 +27,7 @@ type TabPage = {
 
 /**
  * Toolbar containing tabs for navigating a detail form.
+ * @param {Array} tabPages Array of TabPage components.
  */
 const TabsToolbar = ({
     tabPages,
@@ -45,7 +47,6 @@ const TabsToolbar = ({
                 <Tab
                     key={tabPage.label}
                     label={tabPage.label}
-                    style={{ textTransform: 'none' }}
                 >
                     <Paper
                         style={{

@@ -3,13 +3,10 @@
 /* External dependencies */
 import React from 'react';
 import styled from 'styled-components';
-import {
-    Toolbar,
-    ToolbarGroup,
-} from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
 /* Internal dependencies */
-import { palette } from 'style/mui';
+import { primary1Color } from 'style/mui/palette';
 
 /**
  * Styled wrapper for the action button on the right side of the toolbar.  This
@@ -25,18 +22,18 @@ const ActionButtonWrapper = styled.div`
  */
 const PageHeader = ({
     actionButtonRight,
-    titleLeft,
     height,
+    titleLeft,
 }: {
     actionButtonRight?: React.Element<*>,
-    titleLeft: React.Element<*>,
     height?: number,
+    titleLeft: React.Element<*>,
 }): React.Element<*> => (
     <Toolbar
         className="square1-toolbar"
         style={{
             alignItems: 'flex-start',
-            backgroundColor: palette.primary1Color,
+            backgroundColor: primary1Color,
             height,
             paddingTop: 24,
             top: 64,

@@ -1,13 +1,18 @@
 /* @flow */
 
 /**
- * Types associated with Component and Container elements.
+ * Item in a dropdown menu/field.
+ * @typedef Selection
  */
 export type Selection = {
     id: string,
     value: string,
 };
 
+/**
+ * Geographical location on a map.
+ * @typedef MapLocation
+ */
 export type MapLocation = {
     address: string,
     lat: number,
@@ -15,7 +20,7 @@ export type MapLocation = {
 };
 
 /**
- * Types associated with Redux elements.
+ * Types associated with Redux.
  */
 export type Action =
     { type: string, payload: { data: any } | Promise<any> }

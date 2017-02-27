@@ -10,16 +10,16 @@ import { MenuItem } from 'material-ui/Menu';
  * Menu item in the sidebar linked to a route.
  */
 const LinkedMenuItem = ({
-    linkTo,
     iconName,
+    linkTo,
     ...props
 }: {
-    linkTo: string,
     iconName: string,
+    linkTo: string,
 }): React.Element<*> => (
     <Link
-        to={linkTo}
         style={{ textDecoration: 'none' }}
+        to={linkTo}
     >
         <MenuItem
             leftIcon={

@@ -3,7 +3,7 @@
 /* External dependencies */
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -21,7 +21,7 @@ type LeadItem = {
     status: string,
 };
 
-class LeadsList extends React.Component {
+export class LeadsList extends React.Component {
     props: {
         leads: Object,
         populateLeads: () => void,
@@ -36,32 +36,27 @@ class LeadsList extends React.Component {
         populateLeads: () => {},
     };
 
-    constructor() {
+    constructor(): void {
         super();
 
         this.state = {
             isLoading: true,
             leadsArray: [],
         };
-
-        (this: any).handleEditTouchTap = this.handleEditTouchTap.bind(this);
     }
 
-    componentDidMount() {
-        const populateLeadsFn: Function = this.props.populateLeads;
-        if (populateLeadsFn) {
-            populateLeadsFn().then(() => {
+    componentDidMount(): void {
+        const { populateLeads }: { populateLeads: Function} = this.props;
+        if (populateLeads) {
+            populateLeads().then(() => {
                 const leads = this.props.leads;
                 const startingData: Array<any> = Object.values(leads.toJS());
-                const result = startingData.map((item: any) => {
-                    const leadItem: LeadItem = {
-                        id: item.id,
-                        leadName: item.leadName,
-                        description: item.description,
-                        status: item.status,
-                    };
-                    return leadItem;
-                });
+                const result = startingData.map((item: any) => ({
+                    id: item.id,
+                    leadName: item.leadName,
+                    description: item.description,
+                    status: item.status,
+                }: LeadItem));
                 this.setState({
                     isLoading: false,
                     leadsArray: result,
@@ -70,9 +65,10 @@ class LeadsList extends React.Component {
         }
     }
 
-    handleEditTouchTap(event: Event, row: Object) {
+    handleEditTouchTap = (event: Event, row: Object): void => {
+        event.preventDefault();
         browserHistory.push(`leads/${row.id}`);
-    }
+    };
 
     getSelections() {
         return [
@@ -81,7 +77,7 @@ class LeadsList extends React.Component {
         ];
     }
 
-    render() {
+    render(): React.Element<*> {
         const { isLoading, leadsArray } = this.state;
 
         const headerButton: React.Element<*> = (
@@ -104,6 +100,7 @@ class LeadsList extends React.Component {
             />
         );
 
+        // TODO: Add filter selection handling and saving.
         const filterSelections = this.getSelections();
 
         if (isLoading) {

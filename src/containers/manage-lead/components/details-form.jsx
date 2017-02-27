@@ -117,7 +117,6 @@ class LeadDetailsForm extends React.Component {
                         <FormGeolocation
                             floatingLabelText="Address"
                             handleLocationChange={handleLocationChange}
-                            name="address"
                             startingLocation={{
                                 address: lead.address,
                                 lat: lead.lat,

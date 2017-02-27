@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 
 /* Internal dependencies */
-import { palette } from 'style/mui';
+import { alternateTextColor } from 'style/mui/palette';
 
 /**
  * Styled container for all child elements.
@@ -37,7 +37,7 @@ const TextRowContainer = styled.div`
 /**
  * Title component in the page header.
  */
-class PageHeaderTitle extends React.Component {
+export default class PageHeaderTitle extends React.Component {
     props: {
         backArrowTooltip?: string,
         handleBackArrowTouchTap?: (event: Event) => void,
@@ -52,7 +52,7 @@ class PageHeaderTitle extends React.Component {
         subheaderText: '',
     };
 
-    render() {
+    render(): React.Element<*> {
         const {
             backArrowTooltip,
             handleBackArrowTouchTap,
@@ -61,16 +61,15 @@ class PageHeaderTitle extends React.Component {
             titleIconName,
         } = this.props;
 
-        const iconColor: string = palette.alternateTextColor;
+        const iconColor: string = alternateTextColor;
 
         const backArrowElement: React.Element<*> = (
             <IconButton
-                tooltip={backArrowTooltip}
-                tooltipPosition="top-right"
-                touch={true}
                 iconClassName="material-icons"
                 iconStyle={{ color: iconColor }}
                 onTouchTap={handleBackArrowTouchTap}
+                tooltip={backArrowTooltip}
+                touch={true}
             >
                 arrow_back
             </IconButton>
@@ -115,5 +114,3 @@ class PageHeaderTitle extends React.Component {
         );
     }
 }
-
-export default PageHeaderTitle;

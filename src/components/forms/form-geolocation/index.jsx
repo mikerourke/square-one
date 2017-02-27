@@ -36,12 +36,15 @@ const MapWrapper = styled.div`
 
 /**
  * Address input and Google Map component.
+ * @param {string} floatingLabelText Text to display on the input.
+ * @param {Function} handleLocationChange Action to perform when the location
+ *      is changed.
+ * @param {MapLocation} startingLocation Initial location to show.
  */
-class FormGeolocation extends React.Component {
+export default class FormGeolocation extends React.Component {
     props: {
         floatingLabelText: string,
         handleLocationChange: (newLocation: MapLocation) => void,
-        name: string,
         startingLocation: MapLocation,
     };
 
@@ -64,7 +67,7 @@ class FormGeolocation extends React.Component {
         },
     };
 
-    constructor(props: any) {
+    constructor(props: any): void {
         super(props);
         const { address, lat, lng } = this.props.startingLocation;
         this.state = {
@@ -72,17 +75,19 @@ class FormGeolocation extends React.Component {
             lat,
             lng,
         };
-        (this: any).handleChange = this.handleChange.bind(this);
     }
 
     /**
      * Initializes the Google Map components after mounting.
      */
-    componentDidMount() {
+    componentDidMount(): void {
         this.loadGoogleMaps().then((google) => {
             this.google = google;
+
+            // Create a LatLng class instance for Flow type checking.
             const { lat, lng } = this.props.startingLocation;
             const center = new this.google.maps.LatLng(lat, lng);
+
             this.createMap(center);
             this.createMarker(center);
             this.createAutocomplete();
@@ -97,7 +102,7 @@ class FormGeolocation extends React.Component {
      * When the address is changed in the Autocomplete field, the map is
      *      updated and a marker is set to the new address.
      */
-    onPlaceChanged() {
+    onPlaceChanged(): void {
         // Hide the marker prior to zooming on a different location.
         this.marker.setVisible(false);
 
@@ -192,16 +197,16 @@ class FormGeolocation extends React.Component {
     createMarker(center: LatLng): void {
         this.marker = new this.google.maps.Marker({
             anchorPoint: new this.google.maps.Point(0, 0),
-            position: center,
             map: this.map,
+            position: center,
         });
     }
 
-    handleChange(event: Event, newValue: string = '') {
+    handleChange = (event: Event, newValue: string = ''): void => {
         this.setState({ address: newValue });
-    }
+    };
 
-    render() {
+    render(): React.Element<*> {
         const {
             handleLocationChange,
             startingLocation,
@@ -220,12 +225,8 @@ class FormGeolocation extends React.Component {
                     placeholder=""
                     value={address}
                 />
-                <MapWrapper
-                    id="geo-map"
-                />
+                <MapWrapper id="geo-map" />
             </div>
         );
     }
 }
-
-export default FormGeolocation;

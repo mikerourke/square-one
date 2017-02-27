@@ -6,7 +6,7 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 
 /* Internal dependencies */
-import { palette } from 'style/mui';
+import { primary1Color } from 'style/mui/palette';
 
 /**
  * Header AppBar element for the application layout.
@@ -20,7 +20,7 @@ const Header = ({
         iconElementRight={
             <IconButton
                 iconClassName="material-icons"
-                iconStyle={{ color: palette.primary1Color }}
+                iconStyle={{ color: primary1Color }}
             >
                 account_circle
             </IconButton>

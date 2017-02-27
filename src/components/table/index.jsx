@@ -5,14 +5,21 @@ import React from 'react';
 import DataTables from 'material-ui-datatables';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
+import SvgEdit from 'material-ui/svg-icons/editor/mode-edit';
 
 /* Internal dependencies */
-import { palette } from 'style/mui';
-import TableToolbar from './toolbar';
+import { primary1Color } from 'style/mui/palette';
+import { getSearchResults, getSortedData } from 'lib/query-actions';
+import FilterMenu from 'components/filter-menu';
+import SearchToolbar from 'components/search-toolbar';
 
 /* Types */
 import type { Selection } from 'lib/types';
 
+/**
+ * Column in the data table.
+ * @typedef Column
+ */
 type Column = {
     key: string,
     label: string,
@@ -22,8 +29,14 @@ type Column = {
 
 /**
  * Table with pagination, sorting, and filtering capabilities.
+ * @param {Array} columns Columns to display in the table.
+ * @param {Array} data Data objects to display in the table.
+ * @param {Array} filterSelections Array of items to display in the Filter
+ *      menu dropdown.
+ * @param {Function} handleEditTouchTap Action to perform when the user presses
+ *      the Edit button.
  */
-class Table extends React.Component {
+export default class Table extends React.Component {
     props: {
         columns: Array<Column>,
         data: Array<Object>,
@@ -50,35 +63,22 @@ class Table extends React.Component {
             page: 1,
             rowSize: 10,
         };
-
-        (this: any).handleFilterMenuChange =
-            this.handleFilterMenuChange.bind(this);
-        (this: any).handleNextPageClick =
-            this.handleNextPageClick.bind(this);
-        (this: any).handlePreviousPageClick =
-            this.handlePreviousPageClick.bind(this);
-        (this: any).handleRowSizeChange =
-            this.handleRowSizeChange.bind(this);
-        (this: any).handleSearchBoxChange =
-            this.handleSearchBoxChange.bind(this);
-        (this: any).handleSortOrderChange =
-            this.handleSortOrderChange.bind(this);
     }
 
-    handleFilterMenuChange(event: Event, key: string, value: string) {
+    handleFilterMenuChange = (event: Event, key: string, value: string) => {
         // TODO: Write code to handle filter menu.
-    }
+    };
 
-    handleNextPageClick() {
+    handleNextPageClick = (): void => {
         // TODO: Add functionality to handle going to the next page.
         // Note: This will need to accommodate for the row count displayed.
         const nextPage = this.state.page + 1;
         this.setState({
             page: nextPage,
         });
-    }
+    };
 
-    handlePreviousPageClick() {
+    handlePreviousPageClick = (): void => {
         // TODO: Add function to handle going to the previous page.
         // Note: This will need to accommodate for the row count displayed.
         const currentPage = this.state.page;
@@ -86,55 +86,28 @@ class Table extends React.Component {
         this.setState({
             page: previousPage,
         });
-    }
+    };
 
-    handleRowSizeChange(index?: number, value: number) {
+    handleRowSizeChange = (index?: number, value: number): void => {
         // TODO: Ensure this doesn't cause issues with page count.
         this.setState({
             rowSize: value,
         });
-    }
+    };
 
-    handleSearchBoxChange(event: Event, newValue: string) {
-        const initialData = this.props.data;
-        const rows = initialData;
-        let filteredList = [];
-        if (!newValue || newValue === '') {
-            filteredList = initialData;
-        } else {
-            filteredList = rows.filter((rowItem) => {
-                let countFound = 0;
-                Object.keys(rowItem).forEach((key) => {
-                    const rowValue = rowItem[key].toString().toLowerCase();
-                    if (rowValue.includes(newValue.toLowerCase())) {
-                        countFound += 1;
-                    }
-                });
-                return (countFound > 0);
-            });
-        }
-        this.setState({ data: filteredList });
-    }
+    handleSearchBoxChange = (event: Event, newValue: string): void => {
+        const { data } = this.props;
+        const results = getSearchResults(data, newValue);
+        this.setState({ data: results });
+    };
 
-    handleSortOrderChange(key: string, order: string) {
-        const sortedList = this.state.data.slice().sort((a, b) => {
-            let sortValue = (a[key] > b[key]) ? 1 : -1;
-            if (order === 'desc') {
-                sortValue *= -1;
-            }
-            return sortValue;
-        });
-        this.setState({ data: sortedList });
-    }
+    handleSortOrderChange = (key: string, order: string): void => {
+        const { data } = this.props;
+        const results = getSortedData(data, key, order);
+        this.setState({ data: results });
+    };
 
-    getColumnsWithEditIcon() {
-        return this.props.columns.map((column) => {
-            console.log(column);
-            return column;
-        });
-    }
-
-    render() {
+    render(): React.Element<*> {
         const {
             columns,
             filterSelections,
@@ -155,26 +128,29 @@ class Table extends React.Component {
         }].concat(columns);
 
         const dataWithIcons = data.map((item) => {
-            const editIcon = (
+            const icons = (
                 <IconButton
-                    iconClassName="material-icons"
-                    iconStyle={{ color: palette.primary1Color }}
+                    iconStyle={{ color: primary1Color }}
                     onTouchTap={event => handleEditTouchTap(event, item)}
                     tooltip="Edit this lead"
                 >
-                    mode_edit
+                    <SvgEdit />
                 </IconButton>
             );
-            return Object.assign({}, item, { icons: editIcon });
+            return { ...item, icons };
         });
 
         return (
             <div>
-                <TableToolbar
-                    handleFilterMenuChange={this.handleFilterMenuChange}
+                <SearchToolbar
                     handleSearchBoxChange={this.handleSearchBoxChange}
-                    filterSelections={filterSelections}
-                />
+                    isStandalone={true}
+                >
+                    <FilterMenu
+                        handleFilterMenuChange={this.handleFilterMenuChange}
+                        filterSelections={filterSelections}
+                    />
+                </SearchToolbar>
                 <Paper
                     style={{
                         maxWidth: 1200,
@@ -204,5 +180,3 @@ class Table extends React.Component {
         );
     }
 }
-
-export default Table;

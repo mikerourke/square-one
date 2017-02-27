@@ -6,14 +6,17 @@ import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
 
 /* Internal dependencies */
-import { palette } from 'style/mui';
+import {
+    alternateTextColor,
+    primary1Color
+} from 'style/mui/palette';
 
 /**
  * Styled container for the header contents.
  */
 const Container = styled.div`
-    background-color: ${palette.primary1Color};
-    color: ${palette.alternateTextColor};
+    background-color: ${primary1Color};
+    color: ${alternateTextColor};
     height: 144px;
     padding-left: 24px;
 `;
@@ -38,7 +41,7 @@ const SidebarHeader = ({
         <FontIcon
             className="material-icons"
             style={{
-                color: palette.alternateTextColor,
+                color: alternateTextColor,
                 fontSize: 56,
                 marginTop: 24,
             }}

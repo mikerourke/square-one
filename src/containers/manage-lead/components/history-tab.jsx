@@ -6,7 +6,7 @@ import {
     StepButton,
     StepContent,
 } from 'material-ui/Stepper';
-import { palette } from 'style/mui';
+import { accent1Color } from 'style/mui/palette';
 
 class HistoryTab extends Component {
     state = {
@@ -32,7 +32,7 @@ class HistoryTab extends Component {
                         <StepButton
                             icon={
                                 <FontIcon
-                                    color={palette.accent1Color}
+                                    color={accent1Color}
                                     className="material-icons"
                                 >
                                     add_circle

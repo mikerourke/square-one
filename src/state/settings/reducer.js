@@ -13,22 +13,27 @@ import Setting from './model';
 
 /* Types */
 import type { Action } from 'lib/types';
+import type { Map } from 'immutable';
 
-type State = OrderedMap<string, Setting>;
+type State = Map<number, Setting>;
 
 const initialState = OrderedMap();
 
-const mergeEntities = (state: State, newSettings: Array<Setting>) =>
+const mergeEntities = (state: State, newSettings: Array<Setting>): State =>
     state.merge(newSettings.map(setting => new Setting(setting)));
 
 export default (state: State = initialState, action: Action) => {
-    const { payload: { data: payloadData } } = action;
+    const { payload } = (action: Object);
     switch (action.type) {
         case SETTING_GET_SINGLE_SUCCESS:
-            return state.set(payloadData.id, new Setting(payloadData));
+            const { data: setting } = (payload: Object);
+            return state.set(setting.id, new Setting(setting));
+
+        case SETTING_GET_ALL_FAIL:
+            return console.log('Error!');
 
         case SETTING_GET_ALL_SUCCESS:
-            const { entities: { settings } } = payloadData;
+            const { data: { entities: { settings } } } = (payload: Object);
             return mergeEntities(state, fromJS(settings));
 
         default:

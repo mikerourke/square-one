@@ -10,7 +10,7 @@ const setting = new schema.Entity('settings', {}, {
 export const settingSchema = [setting];
 
 export default class Setting extends Record({
-    id: (null: ?number),
+    id: (0: number),
     category: ('': string),
     settingName: ('': string),
     data: (null: ?string | ?Array<any>),

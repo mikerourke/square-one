@@ -4,14 +4,16 @@
 import { Record } from 'immutable';
 
 export default class User extends Record({
-    id: null,
-    username: '',
-    firstName: '',
-    lastName: '',
-    title: '',
-    isLoggedIn: false,
-    error: null,
-    token: null,
+    id: (0: number),
+    username: ('': string),
+    firstName: ('': string),
+    lastName: ('': string),
+    title: ('': string),
+    isLoggedIn: (false: boolean),
+    password: ('': string),
+    accessLevel: ('': string),
+    error: (null: ?any),
+    token: (null: ?any),
 }) {
     authenticate() {
         // TODO: Write authentication procedure.

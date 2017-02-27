@@ -6,34 +6,34 @@ import axios from 'axios';
 
 /* Internal dependencies */
 import {
-    LEAD_CREATE,
-    LEAD_DELETE,
-    LEAD_GET_ALL,
-    LEAD_GET_SINGLE,
-    LEAD_UPDATE,
+    CHANGE_CREATE,
+    CHANGE_DELETE,
+    CHANGE_GET_ALL,
+    CHANGE_GET_SINGLE,
+    CHANGE_UPDATE,
 } from '../action-types';
-import Lead, { leadSchema } from './model';
+import Change, { changeSchema } from './model';
 
 /* Types */
 import type { Action } from 'lib/types';
 
 const defaultTransform = axios.defaults.transformResponse;
 
-const BASE_URL = '/leads';
+const BASE_URL = '/changes';
 
-export const createLead = (lead: Lead): Action => ({
-    type: LEAD_CREATE,
+export const createChange = (change: Change): Action => ({
+    type: CHANGE_CREATE,
     payload: {
         request: {
             method: 'post',
             url: BASE_URL,
-            data: lead,
+            data: change,
         },
     },
 });
 
-export const deleteLead = (id: number): Action => ({
-    type: LEAD_DELETE,
+export const deleteChange = (id: number): Action => ({
+    type: CHANGE_DELETE,
     payload: {
         request: {
             method: 'delete',
@@ -42,19 +42,19 @@ export const deleteLead = (id: number): Action => ({
     },
 });
 
-export const updateLead = (lead: Lead): Action => ({
-    type: LEAD_UPDATE,
+export const updateChange = (change: Change): Action => ({
+    type: CHANGE_UPDATE,
     payload: {
         request: {
             method: 'patch',
-            url: `${BASE_URL}/${lead.id}`,
-            data: lead,
+            url: `${BASE_URL}/${change.id}`,
+            data: change,
         },
     },
 });
 
-export const getLead = (id: number): Action => ({
-    type: LEAD_GET_SINGLE,
+export const getChange = (id: number): Action => ({
+    type: CHANGE_GET_SINGLE,
     payload: {
         request: {
             method: 'get',
@@ -63,14 +63,14 @@ export const getLead = (id: number): Action => ({
     },
 });
 
-export const getAllLeads = (): Action => ({
-    type: LEAD_GET_ALL,
+export const getAllChanges = (): Action => ({
+    type: CHANGE_GET_ALL,
     payload: {
         request: {
             method: 'get',
             url: BASE_URL,
             transformResponse: defaultTransform.concat(data =>
-                normalize(data, leadSchema)),
+                normalize(data, changeSchema)),
         },
     },
 });

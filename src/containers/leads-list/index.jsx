@@ -44,7 +44,7 @@ class LeadsList extends React.Component {
             leadsArray: [],
         };
 
-        (this: any).handleCellClick = this.handleCellClick.bind(this);
+        (this: any).handleEditTouchTap = this.handleEditTouchTap.bind(this);
     }
 
     componentDidMount() {
@@ -70,8 +70,7 @@ class LeadsList extends React.Component {
         }
     }
 
-    handleCellClick(rowIndex: number, columnIndex: number,
-                    row: Object, column: Object) {
+    handleEditTouchTap(event: Event, row: Object) {
         browserHistory.push(`leads/${row.id}`);
     }
 
@@ -121,7 +120,7 @@ class LeadsList extends React.Component {
                     columns={tableColumns}
                     data={leadsArray}
                     filterSelections={filterSelections}
-                    handleCellClick={this.handleCellClick}
+                    handleEditTouchTap={this.handleEditTouchTap}
                 />
             </div>
         );

@@ -1,14 +1,12 @@
-/* External dependencies */
-import { OrderedMap, fromJS } from 'immutable';
-
 /* Internal dependencies */
 import reducer from '../reducer';
-import * as types from '../../action-types';
 
-describe('Lead Reducer', () => {
+describe('GUI Reducer', () => {
     it('should return the initial state', () => {
         const reducerValue = reducer(undefined, {});
-        const expectedValue = OrderedMap();
+        const expectedValue = {
+            appSidebarOpen: false,
+        }
         expect(reducerValue).toEqual(expectedValue);
     });
 });

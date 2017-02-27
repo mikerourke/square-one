@@ -3,12 +3,11 @@
 /* External dependencies */
 import React from 'react';
 import DataTables from 'material-ui-datatables';
-import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Paper from 'material-ui/Paper';
 
 /* Internal dependencies */
+import { palette } from 'style/mui';
 import TableToolbar from './toolbar';
 
 /* Types */
@@ -29,8 +28,7 @@ class Table extends React.Component {
         columns: Array<Column>,
         data: Array<Object>,
         filterSelections: Array<Selection>,
-        handleCellClick: (rowIndex: number, columnIndex: number,
-                          row: Object, column: Object) => void,
+        handleEditTouchTap: (event: Event, row: Object) => void,
     };
 
     state: {
@@ -138,9 +136,9 @@ class Table extends React.Component {
 
     render() {
         const {
-            handleCellClick,
             columns,
             filterSelections,
+            handleEditTouchTap,
         } = this.props;
 
         const {
@@ -158,8 +156,13 @@ class Table extends React.Component {
 
         const dataWithIcons = data.map((item) => {
             const editIcon = (
-                <IconButton>
-                    <EditorModeEdit />
+                <IconButton
+                    iconClassName="material-icons"
+                    iconStyle={{ color: palette.primary1Color }}
+                    onTouchTap={event => handleEditTouchTap(event, item)}
+                    tooltip="Edit this lead"
+                >
+                    mode_edit
                 </IconButton>
             );
             return Object.assign({}, item, { icons: editIcon });

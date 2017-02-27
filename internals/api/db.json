@@ -3,6 +3,7 @@
     {
       "id": 1,
       "leadName": "Steve Leadsman",
+      "contactName": "",
       "source": "Facebook",
       "leadFee": 25,
       "phone": "(630) 123-4567",
@@ -13,11 +14,13 @@
       "description": "This is a lead",
       "status": "New",
       "assignTo": "Chuckles",
-      "comments": ""
+      "createdAt": "2017-02-02 14:53:35.764000",
+      "updatedAt": "2017-02-02 14:53:35.764000"
     },
     {
       "id": 2,
       "leadName": "Nancy Leadelstein",
+      "contactName": "",
       "source": "Saw Sign",
       "leadFee": 25,
       "phone": "(630) 123-4567",
@@ -27,11 +30,14 @@
       "lng": 0,
       "description": "This is another lead",
       "status": "Existing",
-      "assignTo": ""
+      "assignTo": "",
+      "createdAt": "2017-02-02 14:53:35.764000",
+      "updatedAt": "2017-02-02 14:53:35.764000"
     },
     {
       "id": 3,
       "leadName": "Paco Leadrojo",
+      "contactName": "",
       "source": "Saw Sign",
       "leadFee": 25,
       "phone": "(630) 123-4567",
@@ -41,7 +47,57 @@
       "lng": 0,
       "description": "This is a third lead",
       "status": "New",
-      "assignTo": ""
+      "assignTo": "",
+      "createdAt": "2017-02-02 14:53:35.764000",
+      "updatedAt": "2017-02-02 14:53:35.764000"
+    }
+  ],
+  "notes": [
+    {
+      "id": 1,
+      "entityType": "lead",
+      "entityId": 1,
+      "title": "Example Note",
+      "details": "Note details",
+      "isPrivate": false,
+      "createdBy": "mike",
+      "createdAt": "2017-02-02 14:53:35.764000",
+      "updatedAt": "2017-02-02 14:53:35.764000"
+    },
+    {
+      "id": 2,
+      "entityType": "lead",
+      "entityId": 1,
+      "title": "Example Note 2",
+      "details": "Note details 2",
+      "isPrivate": true,
+      "createdBy": "mike",
+      "createdAt": "2017-02-02 14:53:35.764000",
+      "updatedAt": "2017-02-02 14:53:35.764000"
+    }
+  ],
+  "changes": [
+    {
+      "id": 1,
+      "entityType": "lead",
+      "entityId": 1,
+      "changeType": "Create",
+      "title": "Example Change",
+      "details": "Change details",
+      "createdBy": "mike",
+      "createdAt": "2017-02-02 14:53:35.764000",
+      "updatedAt": "2017-02-02 14:53:35.764000"
+    },
+    {
+      "id": 2,
+      "entityType": "lead",
+      "entityId": 1,
+      "changeType": "Contact",
+      "title": "Example Change 2",
+      "details": "Change details 2",
+      "createdBy": "mike",
+      "createdAt": "2017-02-02 14:53:35.764000",
+      "updatedAt": "2017-02-02 14:53:35.764000"
     }
   ],
   "users": [
@@ -52,7 +108,8 @@
       "lastName": "Rourke",
       "title": "Warlock",
       "isLoggedIn": "false",
-      "password": "mike"
+      "password": "mike",
+      "accessLevel": "admin"
     }
   ],
   "settings": [

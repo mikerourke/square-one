@@ -11,6 +11,7 @@ import { createLead, updateLead } from 'state/leads/actions';
 import HistoryTab from './components/history-tab';
 import LeadDetailsForm from './components/details-form';
 import MessagesModal from './components/messages-modal';
+import NotesList from './components/notes-list';
 import PageHeaderToolbar from './components/page-header-toolbar';
 import TabsToolbar from 'components/tabs-toolbar';
 
@@ -19,11 +20,11 @@ import type { MapLocation, Selection } from 'lib/types';
 
 class ManageLeadPage extends React.Component {
     props: {
-        createLead: () => void,
+        createLead: (lead: Lead) => void,
         lead: Lead,
-        updateLead: () => void,
         representativesList: Array<Selection>,
         sourcesList: Array<Selection>,
+        updateLead: (lead: Lead) => void,
     };
 
     state: {
@@ -32,9 +33,7 @@ class ManageLeadPage extends React.Component {
     };
 
     static defaultProps = {
-        createLead: () => {},
         lead: new Lead(),
-        updateLead: () => {},
     };
 
     constructor(props: any) {
@@ -75,17 +74,11 @@ class ManageLeadPage extends React.Component {
         event.preventDefault();
         this.setState({ isModalOpen: false });
         const leadEntity = this.state.leadOnPage.toJS();
-        if (leadEntity.id === 0) {
-            const createLeadFn: Function = this.props.createLead;
-            if (createLeadFn) {
-                createLeadFn().then(() => browserHistory.push('/leads'));
-            }
-        } else {
-            const updateLeadFn: Function = this.props.updateLead;
-            if (updateLeadFn) {
-                updateLeadFn().then(() => browserHistory.push('/leads'));
-            }
+        let performAction: Function = this.props.createLead;
+        if (leadEntity.id !== 0) {
+            performAction = this.props.updateLead;
         }
+        performAction(leadEntity).then(() => browserHistory.push('/leads'));
     }
 
     handleBackTouchTap(event: Event) {
@@ -124,8 +117,8 @@ class ManageLeadPage extends React.Component {
                 content: (<HistoryTab />),
             },
             {
-                label: 'Appointments',
-                content: 'Appointment',
+                label: 'Notes',
+                content: (<NotesList />),
             },
         ];
 
@@ -163,8 +156,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
-    createLead: () => dispatch(createLead()),
-    updateLead: () => dispatch(updateLead()),
+    createLead: lead => dispatch(createLead(lead)),
+    updateLead: lead => dispatch(updateLead(lead)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageLeadPage);

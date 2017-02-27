@@ -20,10 +20,7 @@ import renderRoutes from './lib/routes';
 import { getAllSettings } from 'state/settings/actions';
 
 // Import web assets.
-/* eslint-disable */
-import './style/global.css';
-//import './www/favicon.ico';
-/* eslint-enable */
+import './style/global.css'; // eslint-disable-line
 
 // Configure the Axios client for API access.
 const apiHost: Host = process.env.IP || 'localhost';

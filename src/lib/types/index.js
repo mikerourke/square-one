@@ -15,19 +15,10 @@ export type MapLocation = {
 };
 
 /**
- * Types associated with Redux.
+ * Types associated with Redux elements.
  */
 export type Action =
-    {
-        type: string,
-        payload: Promise<any>
-    } |
-    {
-        type: string,
-        payload: {
-            data: any,
-        }
-    }
+    { type: string, payload: { data: any } | Promise<any> }
   | { type: string }
 
 export type GetState = () => Object;

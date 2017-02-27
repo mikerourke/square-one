@@ -8,11 +8,16 @@ import {
 } from '../action-types';
 import User from './model';
 
+/* Types */
+import type { Action } from 'lib/types';
+
+type State = User;
+
 const initialState = new User();
 
-export default (state = initialState, action) => {
-    const { type, payload } = action;
-    switch (type) {
+export default (state: State = initialState, action: Action) => {
+    const { payload } = (action: Object);
+    switch (action.type) {
         case USER_GET:
             return state;
 
@@ -21,14 +26,14 @@ export default (state = initialState, action) => {
             return state;
 
         case USER_LOGIN_SUCCESS:
-            const { data } = payload;
+            const { data: user } = (payload: Object);
             return state.merge({
-                id: data.id,
-                username: data.username,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                title: data.title,
-                isLoggedIn: data.isLoggedIn,
+                id: user.id,
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                title: user.title,
+                isLoggedIn: user.isLoggedIn,
                 error: null,
                 token: null,
             });

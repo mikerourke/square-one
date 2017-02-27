@@ -1,5 +1,5 @@
 /* Internal dependencies */
-import * as leadActions from '../actions';
+import * as actions from '../actions';
 import * as types from '../../action-types';
 import {
     mockClient,
@@ -18,7 +18,7 @@ describe('Lead Actions', () => {
 
         mockClient.onGet('/leads/1').reply(200);
 
-        store.dispatch(leadActions.getLead(1)).then(() => {
+        store.dispatch(actions.getLead(1)).then(() => {
             const actions = store.getActions();
             expect(actions[0].type).toEqual(types.LEAD_GET_SINGLE);
             expect(actions[1].type).toEqual(types.LEAD_GET_SINGLE_SUCCESS);
@@ -32,7 +32,7 @@ describe('Lead Actions', () => {
 
         mockClient.onGet('/leads/2').reply(404);
 
-        store.dispatch(leadActions.getLead(2)).then(() => {
+        store.dispatch(actions.getLead(2)).then(() => {
             const actions = store.getActions();
             expect(actions[0].type).toEqual(types.LEAD_GET_SINGLE);
             expect(actions[1].type).toEqual(types.LEAD_GET_SINGLE_FAIL);
@@ -54,7 +54,7 @@ describe('Lead Actions', () => {
                 leads: mockDb.leads,
             });
 
-            store.dispatch(leadActions.getAllLeads()).then(() => {
+            store.dispatch(actions.getAllLeads()).then(() => {
                 const actions = store.getActions();
                 expect(actions[0].type).toEqual(types.LEAD_GET_ALL);
                 expect(actions[1].type).toEqual(types.LEAD_GET_ALL_SUCCESS);

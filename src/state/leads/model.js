@@ -11,6 +11,7 @@ export const leadSchema = [leadEntity];
 export default class Lead extends Record({
     id: (0: number),
     leadName: ('': string),
+    contactName: ('': string),
     source: ('': string),
     leadFee: (0: number),
     phone: ('': string),
@@ -19,9 +20,10 @@ export default class Lead extends Record({
     lat: (0: number),
     lng: (0: number),
     description: ('': string),
-    comments: ('': string),
     status: ('': string),
     assignTo: ('': string),
+    createdAt: (null: ?Date),
+    updatedAt: (null: ?Date),
 }) {
     // Placeholder for extension methods.
 }

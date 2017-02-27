@@ -32,7 +32,7 @@ const rootReducer = combineReducers({
 /**
  * Creates the global Redux store.
  */
-export default (client: AxiosRequestConfig, initialState?: Object) => {
+export default (client: AxiosRequestConfig, initialState?: any) => {
     // Setup the Redux Dev Tools in Chrome:
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
                              compose;

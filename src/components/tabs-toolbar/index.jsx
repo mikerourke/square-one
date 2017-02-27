@@ -37,8 +37,9 @@ const TabsToolbar = ({
             style={{
                 margin: '0 auto',
                 maxWidth: 1200,
+                padding: '0 16px',
             }}
-            tabItemContainerStyle={{ width: tabPages.length * 128 }}
+            tabItemContainerStyle={{ width: tabPages.length * 112 }}
         >
             {tabPages.map(tabPage => (
                 <Tab

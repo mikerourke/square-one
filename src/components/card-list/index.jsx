@@ -15,6 +15,7 @@ import SearchToolbar from 'components/search-toolbar';
 
 /* Types */
 import type { Selection } from 'lib/types';
+import type { List as ImmutableList } from 'immutable';
 
 /**
  * List of card components.
@@ -24,12 +25,12 @@ import type { Selection } from 'lib/types';
  */
 export default class CardList extends React.Component {
     props: {
-        cardContents: Array<any>,
+        cardContents: Array<any> | ImmutableList<any>,
         searchFieldExclusions?: Array<string>,
     };
 
     state: {
-        cardContents: Array<any>,
+        cardContents: Array<any> | ImmutableList<any>,
     };
 
     static defaultProps = {

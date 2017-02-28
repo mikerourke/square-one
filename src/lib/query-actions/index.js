@@ -1,5 +1,8 @@
 /* @flow */
 
+/* Types */
+import type { List } from 'immutable';
+
 /**
  * Filters data by a specified value and returns the applicable items.
  * @param {Array} data Data to apply the filter to.
@@ -8,21 +11,22 @@
  * @returns {Array} Items from data that meet conditions.
  */
 export const getSearchResults = (
-    data: Array<any>,
+    data: Array<any> | List<any>,
     searchFor?: string = '',
     fieldsToExclude?: Array<string> = [],
-): Array<any> => {
+): Array<any> | List<any> => {
+    const items = data;
     // Return the original dataset if the field is search for value is falsy.
     if (!searchFor || searchFor === '') {
         return data;
     }
 
-    return data.filter((item) => {
+    return items.filter((item) => {
         let countFound = 0;
         Object.keys(item).forEach((key) => {
             // If any fields were specified in the "fieldsToExclude" array,
             // don't include these in the results.
-            if (fieldsToExclude.indexOf(key) === 0) {
+            if (!fieldsToExclude.includes(key)) {
                 // To ensure a valid match is made, convert all values to
                 // lowercase.
                 const itemValue = item[key].toString().toLowerCase();
@@ -43,15 +47,16 @@ export const getSearchResults = (
  * @returns {Array} Sorted items from data.
  */
 export const getSortedData = (
-    data: Array<any>,
+    data: Array<any> | List<any>,
     key: string,
     order?: string = 'asc',
-): Array<any> => data.slice().sort((leftHandItem, rightHandItem) => {
-    const sortValue = (leftHandItem[key] > rightHandItem[key]) ? 1 : -1;
+): Array<any> | List<any> =>
+    data.slice().sort((leftHandItem, rightHandItem) => {
+        const sortValue = (leftHandItem[key] > rightHandItem[key]) ? 1 : -1;
 
-    // Multiplying the value by -1 ensures the array is sorted descending.
-    if (order === 'desc') {
-        return (sortValue * -1);
-    }
-    return sortValue;
-});
+        // Multiplying the value by -1 ensures the array is sorted descending.
+        if (order === 'desc') {
+            return (sortValue * -1);
+        }
+        return sortValue;
+    });

@@ -5,7 +5,6 @@ import React from 'react';
 import DataTables from 'material-ui-datatables';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
-import SvgEdit from 'material-ui/svg-icons/editor/mode-edit';
 
 /* Internal dependencies */
 import { primary1Color } from 'style/mui/palette';
@@ -15,6 +14,7 @@ import SearchToolbar from 'components/search-toolbar';
 
 /* Types */
 import type { Selection } from 'lib/types';
+import type { List } from 'immutable';
 
 /**
  * Column in the data table.
@@ -39,13 +39,13 @@ type Column = {
 export default class Table extends React.Component {
     props: {
         columns: Array<Column>,
-        data: Array<Object>,
+        data: Array<Object> | List<any>,
         filterSelections: Array<Selection>,
         handleEditTouchTap: (event: Event, row: Object) => void,
     };
 
     state: {
-        data: Array<Object>,
+        data: Array<Object> | List<any>,
         page: number,
         rowSize: number,
     };
@@ -130,11 +130,12 @@ export default class Table extends React.Component {
         const dataWithIcons = data.map((item) => {
             const icons = (
                 <IconButton
+                    iconClassName="material-icons"
                     iconStyle={{ color: primary1Color }}
                     onTouchTap={event => handleEditTouchTap(event, item)}
                     tooltip="Edit this lead"
                 >
-                    <SvgEdit />
+                    mode_edit
                 </IconButton>
             );
             return { ...item, icons };

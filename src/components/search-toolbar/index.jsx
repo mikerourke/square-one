@@ -3,7 +3,6 @@
 /* External dependencies */
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
-import SvgSearch from 'material-ui/svg-icons/action/search';
 import TextField from 'material-ui/TextField';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
@@ -74,11 +73,17 @@ export default class SearchToolbar extends React.Component {
                     padding: this.getPaddingForToolbar(),
                 }}
             >
-                <ToolbarGroup>
+                <ToolbarGroup
+                    style={{
+                        margin: 'auto',
+                        maxWidth: 1200,
+                    }}
+                >
                     <IconButton
+                        iconClassName="material-icons"
                         iconStyle={getInlineStyle()}
                     >
-                        <SvgSearch />
+                        search
                     </IconButton>
                     <TextField
                         fullWidth={true}

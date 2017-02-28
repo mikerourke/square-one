@@ -64,7 +64,7 @@ const generateBundles = () => {
 
             console.log(blue('Writing stats to file.'));
             const statsPath = path.join(process.cwd(), 'stats.json');
-            fs.writeFile(statsPath, jsonStats, (error) => {
+            fs.writeFile(statsPath, JSON.stringify(jsonStats), (error) => {
                 if (error) {
                     console.log(red(error));
                 }

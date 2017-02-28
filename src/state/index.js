@@ -11,8 +11,10 @@ import axiosMiddleware from 'redux-axios-middleware';
 import thunk from 'redux-thunk';
 
 /* Internal dependencies */
+import changes from './changes/reducer';
 import gui from './gui/reducer';
 import leads from './leads/reducer';
+import notes from './notes/reducer';
 import settings from './settings/reducer';
 import user from './user/reducer';
 
@@ -23,8 +25,10 @@ import type { AxiosRequestConfig } from 'axios';
  * Combined Redux reducers for the application.
  */
 const rootReducer = combineReducers({
+    changes,
     gui,
     leads,
+    notes,
     settings,
     user,
 });

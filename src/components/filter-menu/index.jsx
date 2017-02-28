@@ -2,12 +2,10 @@
 
 /* External dependencies */
 import React from 'react';
+import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
-import SvgAdd from 'material-ui/svg-icons/content/add-circle-outline';
-import SvgCheck from 'material-ui/svg-icons/toggle/check-box';
-import SvgFilterList from 'material-ui/svg-icons/content/filter-list';
 
 /* Internal dependencies */
 import { primary1Color } from 'style/mui/palette';
@@ -30,8 +28,11 @@ const FilterMenu = ({
 }): React.Element<*> => (
     <IconMenu
         iconButtonElement={
-            <IconButton iconStyle={{ color: primary1Color }}>
-                <SvgFilterList />
+            <IconButton
+                iconClassName="material-icons"
+                iconStyle={{ color: primary1Color }}
+            >
+                filter_list
             </IconButton>
         }
         onChange={handleFilterMenuChange}
@@ -40,7 +41,13 @@ const FilterMenu = ({
             <MenuItem
                 innerDivStyle={{ padding: '0 0 0 48px' }}
                 key={selection.id}
-                leftIcon={<SvgCheck />}
+                leftIcon={
+                    (<FontIcon
+                        iconClassName="material-icons"
+                    >
+                        check_box
+                    </FontIcon>)
+                }
                 primaryText={selection.value}
                 value={selection.value}
             />
@@ -48,7 +55,13 @@ const FilterMenu = ({
         <MenuItem
             innerDivStyle={{ padding: '0 0 0 48px' }}
             key={999}
-            leftIcon={<SvgAdd />}
+            leftIcon={
+                (<FontIcon
+                    iconClassName="material-icons"
+                >
+                    add_circle_outline
+                </FontIcon>)
+            }
             primaryText="Add New"
             value="Add New"
         />

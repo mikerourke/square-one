@@ -25,16 +25,18 @@ const mergeEntities = (state: State, newChanges: Array<Change>): State =>
     state.merge(newChanges.map(change => new Change(change)));
 
 export default (state: State = initialState, action: Action) => {
-    const data: Object = { payload: { action } };
+    const { payload } = (action: Object);
     switch (action.type) {
         case CHANGE_CREATE_SUCCESS:
         case CHANGE_GET_SINGLE_SUCCESS:
         case CHANGE_UPDATE_SUCCESS:
-            return state.set(data.id, new Change(fromJS(data)));
+            const { data: change } = (payload: Object);
+            return state.set(change.id, new Change(fromJS(change)));
 
 
         case CHANGE_GET_ALL_SUCCESS:
-            return mergeEntities(state, fromJS(data.entities.changes));
+            const { data: { entities: { changes } } } = (payload: Object);
+            return mergeEntities(state, fromJS(changes));
 
         default:
             return state;

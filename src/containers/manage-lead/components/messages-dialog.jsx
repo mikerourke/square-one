@@ -1,18 +1,28 @@
 /* @flow */
 
 /* External dependencies */
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 
+/**
+ * Styled container for the message block.
+ */
 const MessageBlock = styled.div`
     margin: 24px 0;
 `;
 
-class MessagesModal extends React.Component {
+/**
+ * Modal dialog for specifying messages that get sent to Leads and
+ *      Representatives.
+ * @param {Function} handleModalTouchTap Action to perform when the buttons
+ *      on the dialog are pressed.
+ * @param {boolean} isOpen Indicates if the dialog is open.
+ */
+export default class MessagesDialog extends React.Component {
     props: {
         handleModalTouchTap: (event: Event) => void,
         isOpen: boolean,
@@ -25,8 +35,8 @@ class MessagesModal extends React.Component {
         sendRepresentativeMessage: boolean,
     };
 
-    constructor(props: any) {
-        super(props);
+    constructor(): void {
+        super();
 
         this.state = {
             leadMessage: '',
@@ -34,30 +44,26 @@ class MessagesModal extends React.Component {
             sendLeadMessage: false,
             sendRepresentativeMessage: false,
         };
-
-        (this: any).handleInputChange =
-            this.handleInputChange.bind(this);
-        (this: any).handleSelectionChange =
-            this.handleSelectionChange.bind(this);
     }
 
-    handleInputChange(event: Event, newValue: string = '') {
+    /**
+     * Updates the state with the contents of the updated input.
+     * @param {Event} event Event associated with the input.
+     * @param {string} newValue New value of the input.
+     */
+    handleInputChange = (event: Event, newValue: string = ''): void => {
         const target = event.target;
+
+        // The element type is checked to conform with Flow type checking.
         if (target instanceof HTMLInputElement ||
             target instanceof HTMLTextAreaElement) {
             this.setState({
                 [target.name]: newValue,
             });
         }
-    }
+    };
 
-    handleSelectionChange(event: Event, key: string, value: string = '') {
-        this.setState({
-            leadMessage: value,
-        });
-    }
-
-    render() {
+    render(): React.Element<*> {
         const { handleModalTouchTap, isOpen } = this.props;
         const {
             leadMessage,
@@ -135,5 +141,3 @@ class MessagesModal extends React.Component {
         );
     }
 }
-
-export default MessagesModal;

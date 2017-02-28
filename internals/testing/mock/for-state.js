@@ -59,6 +59,48 @@ const mockDb = {
         createdAt: '2017-02-02 14:53:35.764000',
         updatedAt: '2017-02-02 14:53:35.764000',
     }],
+    notes: [{
+        id: 1,
+        entityType: 'lead',
+        entityId: 1,
+        title: 'Example Note',
+        details: 'Note details',
+        isPrivate: false,
+        createdBy: 'mike',
+        createdAt: '2017-02-02 14:53:35.764000',
+        updatedAt: '2017-02-02 14:53:35.764000'
+    }, {
+        id: 2,
+        entityType: 'lead',
+        entityId: 1,
+        title: 'Example Note 2',
+        details: 'Note details 2',
+        isPrivate: true,
+        createdBy: 'mike',
+        createdAt: '2017-02-02 14:53:35.764000',
+        updatedAt: '2017-02-02 14:53:35.764000'
+    }],
+    changes: [{
+        id: 1,
+        entityType: 'lead',
+        entityId: 1,
+        changeType: 'Create',
+        title: 'Example Change',
+        details: 'Change details',
+        createdBy: 'mike',
+        createdAt: '2017-02-02 14:53:35.764000',
+        updatedAt: '2017-02-02 14:53:35.764000'
+    }, {
+        id: 2,
+        entityType: 'lead',
+        entityId: 1,
+        changeType: 'Contact',
+        title: 'Example Change 2',
+        details: 'Change details 2',
+        createdBy: 'mike',
+        createdAt: '2017-02-02 14:53:35.764000',
+        updatedAt: '2017-02-02 14:53:35.764000'
+    }],
     users: [{
         id: 1,
         username: 'mike',

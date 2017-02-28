@@ -4,7 +4,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
-import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
@@ -82,21 +81,14 @@ export class LeadsList extends React.Component {
 
         const headerButton: React.Element<*> = (
             <Link to="/leads/new">
-                <RaisedButton
-                    icon={
-                        <FontIcon className="material-icons">
-                            add_circle_outline
-                        </FontIcon>
-                    }
-                    label="Add"
-                />
+                <RaisedButton label="Add" />
             </Link>
         );
 
         const headerTitle: React.Element<*> = (
             <PageHeaderTitle
                 headerText="Leads"
-                titleIconName="account_circle"
+                titleIconName="people_outline"
             />
         );
 

@@ -31,6 +31,9 @@ const HeaderContainer = styled.div`
     text-align: center;
 `;
 
+/**
+ * Login page for accessing the application.
+ */
 export class LoginPage extends React.Component {
     props: {
         actions: any,

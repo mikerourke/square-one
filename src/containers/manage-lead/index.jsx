@@ -2,50 +2,62 @@
 
 /* External dependencies */
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 /* Internal dependencies */
-import Lead from 'state/leads/model';
 import { createLead, updateLead } from 'state/leads/actions';
+import Lead from 'state/leads/model';
+import { getAllChanges } from 'state/changes/actions';
+import Change from 'state/changes/model';
+import { getAllNotes } from 'state/notes/actions';
+import Note from 'state/notes/model';
 import HistoryTab from './components/history-tab';
 import LeadDetailsForm from './components/details-form';
-import MessagesModal from './components/messages-modal';
-import NotesList from './components/notes-list';
+import MessagesModal from './components/messages-dialog';
 import CardList from 'components/card-list';
 import PageHeaderToolbar from './components/page-header-toolbar';
 import TabsToolbar from 'components/tabs-toolbar';
 
-const apiData = require('../../../internals/api/db.json');
-
 /* Types */
 import type { MapLocation, Selection } from 'lib/types';
+import type { Map } from 'immutable';
 
 class ManageLeadPage extends React.Component {
     props: {
-        createLead: (lead: Lead) => void,
+        actions: any,
+        changes: Map<number, Change>,
         lead: Lead,
+        notes: Map<number, Note>,
         representativesList: Array<Selection>,
         sourcesList: Array<Selection>,
-        updateLead: (lead: Lead) => void,
     };
 
     state: {
+        areChildEntitiesLoaded: boolean,
         isModalOpen: boolean,
         leadOnPage: Object,
-    };
-
-    static defaultProps = {
-        lead: new Lead(),
     };
 
     constructor(props: any) {
         super(props);
 
         this.state = {
+            areChildEntitiesLoaded: false,
             isModalOpen: false,
             leadOnPage: this.props.lead,
         };
+    }
+
+    componentDidMount(): void {
+        const { actions, lead } = this.props;
+        const urlPrefix = `/leads/${lead.id}`;
+        const getChanges = actions.getAllChanges(urlPrefix);
+        const getNotes = actions.getAllNotes(urlPrefix);
+        Promise.all([getChanges, getNotes]).then(() => {
+            this.setState({ areChildEntitiesLoaded: true });
+        });
     }
 
     /**
@@ -61,7 +73,7 @@ class ManageLeadPage extends React.Component {
      * Updates the Lead held in local state with the data from the field on the
      *      Details Form component.
      */
-    handleFieldChange = (event: Event, newValue: string,
+    handleInputChange = (event: Event, newValue: string,
                          fieldName?: string = '') => {
         let nameOfField = fieldName;
 
@@ -106,9 +118,9 @@ class ManageLeadPage extends React.Component {
 
         // If the ID is 0 (the default), a new Lead needs to be created,
         // otherwise update the Lead that corresponds with the ID.
-        let performAction: Function = this.props.createLead;
+        let performAction: Function = this.props.actions.createLead;
         if (leadEntity.id !== 0) {
-            performAction = this.props.updateLead;
+            performAction = this.props.actions.updateLead;
         }
         performAction(leadEntity).then(() => browserHistory.push('/leads'));
     };
@@ -124,18 +136,27 @@ class ManageLeadPage extends React.Component {
     render() {
         const {
             lead,
+            notes,
             representativesList,
             sourcesList,
         } = this.props;
 
-        const { isModalOpen, leadOnPage } = this.state;
+        const {
+            areChildEntitiesLoaded,
+            isModalOpen,
+            leadOnPage,
+        } = this.state;
+
+        if (!areChildEntitiesLoaded) {
+            return (<div>Loading...</div>);
+        }
 
         const tabPages = [
             {
                 label: 'Details',
                 content:
                     (<LeadDetailsForm
-                        handleFieldChange={this.handleFieldChange}
+                        handleInputChange={this.handleInputChange}
                         handleLocationChange={this.handleLocationChange}
                         lead={leadOnPage}
                         representativesList={representativesList}
@@ -150,7 +171,7 @@ class ManageLeadPage extends React.Component {
                 label: 'Notes',
                 content:
                     (<CardList
-                        cardContents={apiData.notes}
+                        cardContents={notes.toList()}
                     />),
             },
         ];
@@ -160,7 +181,8 @@ class ManageLeadPage extends React.Component {
                 <PageHeaderToolbar
                     handleBackTouchTap={this.handleBackTouchTap}
                     handleSaveTouchTap={this.handleSaveTouchTap}
-                    lead={lead}
+                    headerText={lead.leadName}
+                    subheaderText={lead.status}
                 />
                 <TabsToolbar
                     tabPages={tabPages}
@@ -181,16 +203,21 @@ const mapStateToProps = (state, ownProps) => {
         leadOnPage = state.leads.get(leadId);
     }
     return {
+        changes: state.changes,
         lead: leadOnPage,
+        notes: state.notes,
         representativesList: state.settings.get('representatives').getData(),
         sourcesList: state.settings.get('sources').getData(),
     };
 };
 
 const mapDispatchToProps = dispatch => ({
-    dispatch,
-    createLead: lead => dispatch(createLead(lead)),
-    updateLead: lead => dispatch(updateLead(lead)),
+    actions: bindActionCreators({
+        createLead,
+        getAllChanges,
+        getAllNotes,
+        updateLead,
+    }, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageLeadPage);

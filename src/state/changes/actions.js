@@ -63,12 +63,12 @@ export const getChange = (id: number): Action => ({
     },
 });
 
-export const getAllChanges = (): Action => ({
+export const getAllChanges = (urlPrefix?: string = ''): Action => ({
     type: CHANGE_GET_ALL,
     payload: {
         request: {
             method: 'get',
-            url: BASE_URL,
+            url: `${urlPrefix}${BASE_URL}`,
             transformResponse: defaultTransform.concat(data =>
                 normalize(data, changeSchema)),
         },

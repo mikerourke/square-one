@@ -1,20 +1,20 @@
 /* @flow */
 
 /* Types */
-import type { List } from 'immutable';
+import type { Map  } from 'immutable';
 
 /**
  * Filters data by a specified value and returns the applicable items.
- * @param {Array} data Data to apply the filter to.
+ * @param {Map} data Data to apply the filter to.
  * @param {string} [searchFor=''] Words/characters to filter by.
  * @param {Array} [fieldsToExclude=[]] Fields to exclude from search.
- * @returns {Array} Items from data that meet conditions.
+ * @returns {Map} Items from data that meet conditions.
  */
 export const getSearchResults = (
-    data: Array<any> | List<any>,
+    data: Map<number, any>,
     searchFor?: string = '',
     fieldsToExclude?: Array<string> = [],
-): Array<any> | List<any> => {
+): Map<number, any> => {
     const items = data;
     // Return the original dataset if the field is search for value is falsy.
     if (!searchFor || searchFor === '') {
@@ -36,21 +36,21 @@ export const getSearchResults = (
             }
         });
         return (countFound > 0);
-    });
+    }).toMap();
 };
 
 /**
  * Sorts an array of data by the specified key and order.
- * @param {Array} data Data to be sorted.
+ * @param {Map} data Data to be sorted.
  * @param {string} key Field to sort by.
  * @param {string} [order='asc'] Order to sort by (asc or desc).
- * @returns {Array} Sorted items from data.
+ * @returns {Map} Sorted items from data.
  */
 export const getSortedData = (
-    data: Array<any> | List<any>,
+    data: Map<number, any>,
     key: string,
     order?: string = 'asc',
-): Array<any> | List<any> =>
+): Map<number, any> =>
     data.slice().sort((leftHandItem, rightHandItem) => {
         const sortValue = (leftHandItem[key] > rightHandItem[key]) ? 1 : -1;
 
@@ -59,4 +59,4 @@ export const getSortedData = (
             return (sortValue * -1);
         }
         return sortValue;
-    });
+    }).toMap();

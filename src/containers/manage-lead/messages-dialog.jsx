@@ -18,13 +18,13 @@ const MessageBlock = styled.div`
 /**
  * Modal dialog for specifying messages that get sent to Leads and
  *      Representatives.
- * @param {Function} handleModalTouchTap Action to perform when the buttons
+ * @param {Function} handleTouchTap Action to perform when the buttons
  *      on the dialog are pressed.
  * @param {boolean} isOpen Indicates if the dialog is open.
  */
 export default class MessagesDialog extends React.Component {
     props: {
-        handleModalTouchTap: (event: Event) => void,
+        handleTouchTap: (event: Event) => void,
         isOpen: boolean,
     };
 
@@ -64,7 +64,7 @@ export default class MessagesDialog extends React.Component {
     };
 
     render(): React.Element<*> {
-        const { handleModalTouchTap, isOpen } = this.props;
+        const { handleTouchTap, isOpen } = this.props;
         const {
             leadMessage,
             representativeMessage,
@@ -77,13 +77,13 @@ export default class MessagesDialog extends React.Component {
                 label="Submit"
                 name="submit"
                 primary={true}
-                onTouchTap={handleModalTouchTap}
+                onTouchTap={handleTouchTap}
             />,
             <FlatButton
                 label="Cancel"
                 name="cancel"
                 secondary={true}
-                onTouchTap={handleModalTouchTap}
+                onTouchTap={handleTouchTap}
             />,
         ];
 

@@ -4,31 +4,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
+import { Map } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
 import { getAllLeads } from 'state/leads/actions';
+import Lead from 'state/leads/model';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
 import Table from 'components/table';
 
-type LeadItem = {
-    id: number,
-    leadName: string,
-    description: string,
-    status: string,
-};
-
 export class LeadsList extends React.Component {
     props: {
-        leads: Object,
+        leads: Map<number, Lead>,
         populateLeads: () => void,
     };
 
     state: {
         isLoading: boolean,
-        leadsArray: Array<Object>,
+        leads: Map<number, Lead>,
     };
 
     static defaultProps = {
@@ -40,7 +35,7 @@ export class LeadsList extends React.Component {
 
         this.state = {
             isLoading: true,
-            leadsArray: [],
+            leads: new Map(),
         };
     }
 
@@ -49,16 +44,9 @@ export class LeadsList extends React.Component {
         if (populateLeads) {
             populateLeads().then(() => {
                 const leads = this.props.leads;
-                const startingData: Array<any> = Object.values(leads.toJS());
-                const result = startingData.map((item: any) => ({
-                    id: item.id,
-                    leadName: item.leadName,
-                    description: item.description,
-                    status: item.status,
-                }: LeadItem));
                 this.setState({
                     isLoading: false,
-                    leadsArray: result,
+                    leads,
                 });
             });
         }
@@ -77,7 +65,7 @@ export class LeadsList extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { isLoading, leadsArray } = this.state;
+        const { isLoading, leads } = this.state;
 
         const headerButton: React.Element<*> = (
             <Link to="/leads/new">
@@ -107,7 +95,7 @@ export class LeadsList extends React.Component {
                 />
                 <Table
                     columns={tableColumns}
-                    data={leadsArray}
+                    data={leads}
                     filterSelections={filterSelections}
                     handleEditTouchTap={this.handleEditTouchTap}
                 />

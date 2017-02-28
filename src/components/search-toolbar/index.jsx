@@ -10,9 +10,6 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { primary1Color } from 'style/mui/palette';
 import getRgbFromHex from 'lib/rgb-to-hex';
 
-/* Types */
-import type { Selection } from 'lib/types';
-
 /**
  * Sets the color and transparency of the IconButton inline.
  * @param {number} transparency Transparency value for the returned color.

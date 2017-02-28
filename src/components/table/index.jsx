@@ -2,6 +2,7 @@
 
 /* External dependencies */
 import React from 'react';
+import { Map } from 'immutable';
 import DataTables from 'material-ui-datatables';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
@@ -14,7 +15,7 @@ import SearchToolbar from 'components/search-toolbar';
 
 /* Types */
 import type { Selection } from 'lib/types';
-import type { List } from 'immutable';
+import type { Record } from 'immutable';
 
 /**
  * Column in the data table.
@@ -30,7 +31,7 @@ type Column = {
 /**
  * Table with pagination, sorting, and filtering capabilities.
  * @param {Array} columns Columns to display in the table.
- * @param {Array} data Data objects to display in the table.
+ * @param {Map} data Data objects to display in the table.
  * @param {Array} filterSelections Array of items to display in the Filter
  *      menu dropdown.
  * @param {Function} handleEditTouchTap Action to perform when the user presses
@@ -39,19 +40,19 @@ type Column = {
 export default class Table extends React.Component {
     props: {
         columns: Array<Column>,
-        data: Array<Object> | List<any>,
+        data: Map<number, Record<*>>,
         filterSelections: Array<Selection>,
         handleEditTouchTap: (event: Event, row: Object) => void,
     };
 
     state: {
-        data: Array<Object> | List<any>,
+        data: Map<number, Record<*>>,
         page: number,
         rowSize: number,
     };
 
     static defaultProps = {
-        data: [],
+        data: new Map(),
         filterSelections: [],
     };
 
@@ -96,22 +97,40 @@ export default class Table extends React.Component {
     };
 
     handleSearchBoxChange = (event: Event, newValue: string): void => {
-        const { data } = this.props;
-        const results = getSearchResults(data, newValue);
+        const results = getSearchResults(this.props.data, newValue);
         this.setState({ data: results });
     };
 
     handleSortOrderChange = (key: string, order: string): void => {
-        const { data } = this.props;
-        const results = getSortedData(data, key, order);
+        const results = getSortedData(this.props.data, key, order);
         this.setState({ data: results });
+    };
+
+    getDataForTable = () => {
+        const { columns, handleEditTouchTap } = this.props;
+        return this.state.data.toArray().map((item) => {
+            const tableItem = {};
+            columns.forEach((column) => {
+                tableItem[column.key] = item.get(column.key);
+            });
+            tableItem.icons = (
+                <IconButton
+                    iconClassName="material-icons"
+                    iconStyle={{ color: primary1Color }}
+                    onTouchTap={event => handleEditTouchTap(event, item)}
+                    tooltip="Edit this lead"
+                >
+                    mode_edit
+                </IconButton>
+            );
+            return tableItem;
+        });
     };
 
     render(): React.Element<*> {
         const {
             columns,
             filterSelections,
-            handleEditTouchTap,
         } = this.props;
 
         const {
@@ -127,19 +146,7 @@ export default class Table extends React.Component {
             },
         }].concat(columns);
 
-        const dataWithIcons = data.map((item) => {
-            const icons = (
-                <IconButton
-                    iconClassName="material-icons"
-                    iconStyle={{ color: primary1Color }}
-                    onTouchTap={event => handleEditTouchTap(event, item)}
-                    tooltip="Edit this lead"
-                >
-                    mode_edit
-                </IconButton>
-            );
-            return { ...item, icons };
-        });
+        const tableData = this.getDataForTable();
 
         return (
             <div>
@@ -164,7 +171,7 @@ export default class Table extends React.Component {
                     <DataTables
                         columns={columnsWithIcons}
                         count={20}
-                        data={dataWithIcons}
+                        data={tableData}
                         height={'auto'}
                         onNextPageClick={this.handleNextPageClick}
                         onPreviousPageClick={this.handlePreviousPageClick}

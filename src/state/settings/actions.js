@@ -14,8 +14,6 @@ import { settingSchema } from './model';
 
 import type { Action } from 'lib/types';
 
-const defaultTransform = axios.defaults.transformResponse;
-
 const BASE_URL = '/settings';
 
 export const getSetting = (settingName: string): Action => ({
@@ -34,8 +32,13 @@ export const getAllSettings = (): Action => ({
         request: {
             method: 'get',
             url: BASE_URL,
-            transformResponse: defaultTransform.concat(data =>
-                normalize(data, settingSchema)),
+            transformResponse:
+                axios.defaults.transformResponse.concat((data) => {
+                    if (data) {
+                        return normalize(data, settingSchema);
+                    }
+                    return {};
+                }),
         },
     },
 });

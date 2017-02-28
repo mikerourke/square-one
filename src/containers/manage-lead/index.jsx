@@ -1,23 +1,25 @@
 /* @flow */
 
+// TODO: Split Manage Lead into multiple components, it's getting too big.
+
 /* External dependencies */
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 /* Internal dependencies */
-import { createLead, updateLead } from 'state/leads/actions';
-import Lead from 'state/leads/model';
 import { getAllChanges } from 'state/changes/actions';
-import Change from 'state/changes/model';
+import { createLead, updateLead } from 'state/leads/actions';
 import { getAllNotes } from 'state/notes/actions';
+import Change from 'state/changes/model';
+import Lead from 'state/leads/model';
 import Note from 'state/notes/model';
-import HistoryTab from './components/history-tab';
-import LeadDetailsForm from './components/details-form';
-import MessagesModal from './components/messages-dialog';
+import Timeline from 'components/timeline';
+import LeadDetailsForm from './details-form';
+import MessagesDialog from './messages-dialog';
 import CardList from 'components/card-list';
-import PageHeaderToolbar from './components/page-header-toolbar';
+import PageHeaderToolbar from './page-header-toolbar';
 import TabsToolbar from 'components/tabs-toolbar';
 
 /* Types */
@@ -36,20 +38,21 @@ class ManageLeadPage extends React.Component {
 
     state: {
         areChildEntitiesLoaded: boolean,
-        isModalOpen: boolean,
+        isMessagesDialogOpen: boolean,
         leadOnPage: Object,
     };
 
-    constructor(props: any) {
+    constructor(props: any): void {
         super(props);
 
         this.state = {
             areChildEntitiesLoaded: false,
-            isModalOpen: false,
+            isMessagesDialogOpen: false,
             leadOnPage: this.props.lead,
         };
     }
 
+    // TODO: Add comments to this method.
     componentDidMount(): void {
         const { actions, lead } = this.props;
         const urlPrefix = `/leads/${lead.id}`;
@@ -61,20 +64,31 @@ class ManageLeadPage extends React.Component {
     }
 
     /**
-     * Returns to the Leads List when the onTouchTap event is triggered for the
-     *      Back arrow button in the header.
+     * Performs an action based on the button pressed in the page header
+     *      toolbar.  If the Back button was pressed, return to the Leads List
+     *      page, otherwise open the Messages Dialog.
+     * @param {Event} event Event associated with the control.
      */
-    handleBackTouchTap = (event: Event) => {
+    handleHeaderTouchTap = (event: Event): void => {
         event.preventDefault();
-        browserHistory.push('/leads');
+        const target = event.target;
+        if (target instanceof HTMLSpanElement &&
+            target.innerHTML === 'arrow_back') {
+            browserHistory.push('/leads');
+        } else {
+            this.setState({ isMessagesDialogOpen: true });
+        }
     };
 
     /**
      * Updates the Lead held in local state with the data from the field on the
      *      Details Form component.
+     * @param {Event} event Event associated with the input.
+     * @param {string} newValue
+     * @param {string} fieldName
      */
     handleInputChange = (event: Event, newValue: string,
-                         fieldName?: string = '') => {
+                         fieldName?: string = ''): void => {
         let nameOfField = fieldName;
 
         // This is done to pass Flow type checking.
@@ -93,8 +107,9 @@ class ManageLeadPage extends React.Component {
      * Updates the address, latitude, and longitude of the Lead held in local
      *      state when the Places Autocomplete input is changed on the
      *      Details Form.
+     * @param {MapLocation} newLocation New location to apply to the Lead.
      */
-    handleLocationChange = (newLocation: MapLocation) => {
+    handleLocationChange = (newLocation: MapLocation): void => {
         const { leadOnPage } = this.state;
         const { address, lat, lng } = newLocation;
         const updatedLead = leadOnPage.merge({ address, lat, lng });
@@ -104,13 +119,14 @@ class ManageLeadPage extends React.Component {
     /**
      * Updates existing Lead or creates a new Lead based on the ID of the Lead
      *      held in local state.
+     * @param {Event} event Event associated with the button pressed.
      */
-    handleModalTouchTap = (event: Event) => {
+    handleModalTouchTap = (event: Event): void => {
         event.preventDefault();
 
         // Ensure the Messages dialog closes before the save/update action is
         // performed.
-        this.setState({ isModalOpen: false });
+        this.setState({ isMessagesDialogOpen: false });
 
         // Convert the Lead in local state from an Immutable Record to a
         // JavaScript object for the API call.
@@ -125,16 +141,9 @@ class ManageLeadPage extends React.Component {
         performAction(leadEntity).then(() => browserHistory.push('/leads'));
     };
 
-    /**
-     * Show the Messages dialog form when the Save button is pressed.
-     */
-    handleSaveTouchTap = (event: Event) => {
-        event.preventDefault();
-        this.setState({ isModalOpen: true });
-    };
-
-    render() {
+    render(): React.Element<*> {
         const {
+            changes,
             lead,
             notes,
             representativesList,
@@ -143,7 +152,7 @@ class ManageLeadPage extends React.Component {
 
         const {
             areChildEntitiesLoaded,
-            isModalOpen,
+            isMessagesDialogOpen,
             leadOnPage,
         } = this.state;
 
@@ -165,31 +174,28 @@ class ManageLeadPage extends React.Component {
             },
             {
                 label: 'History',
-                content: (<HistoryTab />),
+                content: (<Timeline changes={changes} />),
             },
             {
                 label: 'Notes',
                 content:
-                    (<CardList
-                        cardContents={notes.toList()}
-                    />),
+                    (<CardList cardContents={notes} />),
             },
         ];
 
         return (
             <div>
                 <PageHeaderToolbar
-                    handleBackTouchTap={this.handleBackTouchTap}
-                    handleSaveTouchTap={this.handleSaveTouchTap}
+                    handleTouchTap={this.handleHeaderTouchTap}
                     headerText={lead.leadName}
                     subheaderText={lead.status}
                 />
                 <TabsToolbar
                     tabPages={tabPages}
                 />
-                <MessagesModal
-                    handleModalTouchTap={this.handleModalTouchTap}
-                    isOpen={isModalOpen}
+                <MessagesDialog
+                    handleTouchTap={this.handleModalTouchTap}
+                    isOpen={isMessagesDialogOpen}
                 />
             </div>
         );

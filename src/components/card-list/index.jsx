@@ -14,8 +14,7 @@ import { getSearchResults, getSortedData } from 'lib/query-actions';
 import SearchToolbar from 'components/search-toolbar';
 
 /* Types */
-import type { Selection } from 'lib/types';
-import type { List as ImmutableList } from 'immutable';
+import type { Map } from 'immutable';
 
 /**
  * List of card components.
@@ -25,12 +24,12 @@ import type { List as ImmutableList } from 'immutable';
  */
 export default class CardList extends React.Component {
     props: {
-        cardContents: Array<any> | ImmutableList<any>,
+        cardContents: Map<number, any>,
         searchFieldExclusions?: Array<string>,
     };
 
     state: {
-        cardContents: Array<any> | ImmutableList<any>,
+        cardContents: Map<number, any>,
     };
 
     static defaultProps = {
@@ -74,7 +73,7 @@ export default class CardList extends React.Component {
                         justifyContent: 'flex-start',
                     }}
                 >
-                    {cardContents.map(cardEntity => (
+                    {cardContents.toList().map(cardEntity => (
                         <Card
                             key={cardEntity.id}
                             style={{

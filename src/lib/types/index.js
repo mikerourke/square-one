@@ -7,7 +7,7 @@
 export type Selection = {
     id: string,
     value: string,
-};
+}
 
 /**
  * Geographical location on a map.

@@ -8,14 +8,19 @@ import RaisedButton from 'material-ui/RaisedButton';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
 
+/**
+ * Header toolbar on the Manage Leads page.
+ * @param {Function} handleTouchTap Action to perform when a button on the
+ *      toolbar is pressed.
+ * @param {string} headerText Text to display in the header.
+ * @param {string} subheaderText Text to display in the subheader.
+ */
 const PageHeaderToolbar = ({
-    handleBackTouchTap,
-    handleSaveTouchTap,
+    handleTouchTap,
     headerText,
     subheaderText,
 }: {
-    handleBackTouchTap: (event: Event) => void,
-    handleSaveTouchTap: (event: Event) => void,
+    handleTouchTap: (event: Event) => void,
     headerText: string,
     subheaderText: string,
 }): React.Element<*> => (
@@ -23,13 +28,13 @@ const PageHeaderToolbar = ({
         actionButtonRight={
             (<RaisedButton
                 label="Save"
-                onTouchTap={handleSaveTouchTap}
+                onTouchTap={handleTouchTap}
             />)
         }
         titleLeft={
             (<PageHeaderTitle
                 backArrowTooltip="Return to Leads"
-                handleBackArrowTouchTap={handleBackTouchTap}
+                handleBackArrowTouchTap={handleTouchTap}
                 headerText={headerText}
                 subheaderText={subheaderText}
                 titleIconName="person_outline"

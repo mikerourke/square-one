@@ -35,7 +35,11 @@ export default (state: State = initialState, action: Action) => {
 
 
         case LEAD_GET_ALL_SUCCESS:
-            const { data: { entities: { leads } } } = (payload: Object);
+            const { data: {
+                entities: {
+                    leads = [],
+                } = {},
+            } } = (payload: Object);
             return mergeEntities(state, fromJS(leads));
 
         default:

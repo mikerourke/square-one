@@ -17,8 +17,6 @@ import Lead, { leadSchema } from './model';
 /* Types */
 import type { Action } from 'lib/types';
 
-const defaultTransform = axios.defaults.transformResponse;
-
 const BASE_URL = '/leads';
 
 export const createLead = (lead: Lead): Action => ({
@@ -69,8 +67,13 @@ export const getAllLeads = (): Action => ({
         request: {
             method: 'get',
             url: BASE_URL,
-            transformResponse: defaultTransform.concat(data =>
-                normalize(data, leadSchema)),
+            transformResponse:
+                axios.defaults.transformResponse.concat((data) => {
+                    if (data) {
+                        return normalize(data, leadSchema);
+                    }
+                    return {};
+                }),
         },
     },
 });

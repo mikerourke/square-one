@@ -17,8 +17,6 @@ import Change, { changeSchema } from './model';
 /* Types */
 import type { Action } from 'lib/types';
 
-const defaultTransform = axios.defaults.transformResponse;
-
 const BASE_URL = '/changes';
 
 export const createChange = (change: Change): Action => ({
@@ -69,8 +67,13 @@ export const getAllChanges = (urlPrefix?: string = ''): Action => ({
         request: {
             method: 'get',
             url: `${urlPrefix}${BASE_URL}`,
-            transformResponse: defaultTransform.concat(data =>
-                normalize(data, changeSchema)),
+            transformResponse:
+                axios.defaults.transformResponse.concat((data) => {
+                    if (data) {
+                        return normalize(data, changeSchema);
+                    }
+                    return {};
+                }),
         },
     },
 });

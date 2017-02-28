@@ -33,7 +33,11 @@ export default (state: State = initialState, action: Action) => {
             return console.log('Error!');
 
         case SETTING_GET_ALL_SUCCESS:
-            const { data: { entities: { settings } } } = (payload: Object);
+            const { data: {
+                entities: {
+                    settings = [],
+                } = {},
+            } } = (payload: Object);
             return mergeEntities(state, fromJS(settings));
 
         default:

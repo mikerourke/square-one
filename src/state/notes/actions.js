@@ -17,8 +17,6 @@ import Note, { noteSchema } from './model';
 /* Types */
 import type { Action } from 'lib/types';
 
-const defaultTransform = axios.defaults.transformResponse;
-
 const BASE_URL = '/notes';
 
 export const createNote = (note: Note): Action => ({
@@ -69,8 +67,13 @@ export const getAllNotes = (urlPrefix?: string = ''): Action => ({
         request: {
             method: 'get',
             url: `${urlPrefix}${BASE_URL}`,
-            transformResponse: defaultTransform.concat(data =>
-                normalize(data, noteSchema)),
+            transformResponse:
+                axios.defaults.transformResponse.concat((data) => {
+                    if (data) {
+                        return normalize(data, noteSchema);
+                    }
+                    return {};
+                }),
         },
     },
 });

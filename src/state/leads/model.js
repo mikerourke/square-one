@@ -20,7 +20,7 @@ export default class Lead extends Record({
     lat: (0: number),
     lng: (0: number),
     description: ('': string),
-    status: ('': string),
+    status: ('New': string),
     assignTo: ('': string),
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),

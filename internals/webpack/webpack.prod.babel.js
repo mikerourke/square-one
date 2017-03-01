@@ -5,11 +5,18 @@
 /* External dependencies */
 const path = require('path');
 const webpack = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /* Internal dependencies */
 const baseConfig = require('./webpack.base.babel');
 const packageFile = require('../../package.json');
+
+const extractBundles = (bundles) => ({
+    plugins: bundles.map((bundle) => (
+        new webpack.optimize.CommonsChunkPlugin(bundle)
+    )),
+});
 
 module.exports = Object.assign(baseConfig, {
     entry: [
@@ -19,7 +26,7 @@ module.exports = Object.assign(baseConfig, {
         filename: '[name].[chunkhash].js',
         chunkFilename: '[name].[chunkhash].chunk.js',
     }),
-    plugins: baseConfig.plugins.concat([
+    plugins: [
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.UglifyJsPlugin({
@@ -57,6 +64,13 @@ module.exports = Object.assign(baseConfig, {
                 useShortDoctype: true,
             },
             template: path.resolve(process.cwd(), 'src/www/index.html'),
+        }),
+        new CompressionPlugin({
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: /\.js$|\.css$|\.html$/,
+            threshold: 10240,
+            minRatio: 0.8,
         })
-    ]),
+    ].concat(baseConfig.plugins),
 });

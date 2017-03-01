@@ -41,15 +41,15 @@ module.exports = {
             },
         }),
         new webpack.NamedModulesPlugin(),
+        new ExtractTextPlugin({
+            filename: 'styles.css',
+            disable: false,
+        }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             children: true,
             minChunks: 2,
             async: true,
-        }),
-        new ExtractTextPlugin({
-            filename: 'styles.css',
-            disable: false,
         }),
     ],
     resolve: {

@@ -85,6 +85,7 @@ const deleteUnneededFiles = () => {
         const clientDir = path.join(process.cwd(), 'client');
         shell.cd(clientDir);
         shell.rm(shell.find('.').filter(file => file.match(/\.map$/)));
+        resolve();
     });
 };
 

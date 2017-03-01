@@ -1,5 +1,7 @@
 /* @flow */
 
+// TODO: Add formatting for phone number.
+
 /* External dependencies */
 import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
@@ -56,7 +58,7 @@ export default class LeadDetailsForm extends React.Component {
         return (
             <form id="lead-details-form">
                 <FormColumnsContainer>
-                    <FormColumn columnIndex={0}>
+                    <FormColumn>
                         <TextField
                             floatingLabelText="Lead Name"
                             fullWidth={true}
@@ -127,7 +129,7 @@ export default class LeadDetailsForm extends React.Component {
                             ))}
                         </SelectField>
                     </FormColumn>
-                    <FormColumn columnIndex={1}>
+                    <FormColumn>
                         <FormGeolocation
                             floatingLabelText="Address"
                             handleLocationChange={handleLocationChange}

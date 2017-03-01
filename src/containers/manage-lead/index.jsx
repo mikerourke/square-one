@@ -68,15 +68,15 @@ class ManageLeadPage extends React.Component {
      *      toolbar.  If the Back button was pressed, return to the Leads List
      *      page, otherwise open the Messages Dialog.
      * @param {Event} event Event associated with the control.
+     * @param {string} actionName Name of action associated with touch-tapped
+     *      element.
      */
-    handleHeaderTouchTap = (event: Event): void => {
+    handleHeaderTouchTap = (event: Event, actionName: string): void => {
         event.preventDefault();
-        const target = event.target;
-        if (target instanceof HTMLSpanElement &&
-            target.innerHTML === 'arrow_back') {
-            browserHistory.push('/leads');
-        } else {
+        if (actionName === 'save') {
             this.setState({ isMessagesDialogOpen: true });
+        } else {
+            browserHistory.push('/leads');
         }
     };
 
@@ -160,7 +160,7 @@ class ManageLeadPage extends React.Component {
             return (<div>Loading...</div>);
         }
 
-        const tabPages = [
+        const tabPages: React.Element<*> = [
             {
                 label: 'Details',
                 content:
@@ -187,8 +187,8 @@ class ManageLeadPage extends React.Component {
             <div>
                 <PageHeaderToolbar
                     handleTouchTap={this.handleHeaderTouchTap}
-                    headerText={lead.leadName}
-                    subheaderText={lead.status}
+                    headerText={leadOnPage.leadName}
+                    subheaderText={leadOnPage.status}
                 />
                 <TabsToolbar
                     tabPages={tabPages}

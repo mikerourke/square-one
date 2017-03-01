@@ -9,6 +9,8 @@ import IconButton from 'material-ui/IconButton';
 /* Internal dependencies */
 import { alternateTextColor } from 'style/mui/palette';
 
+const iconColor: string = alternateTextColor;
+
 /**
  * Styled container for all child elements.
  */
@@ -17,22 +19,33 @@ const Container = styled.div`
 `;
 
 /**
- * Styled row for the page header text element.
+ * Styled container for the header and subheader text elements.
  */
-const TextRow = styled.div`
-    clear: both;
-    display: inline-block;
-    float: left;
-    font-weight: 300;
-    padding: 4px 0;
+const TextRowContainer = styled.div`
+    display: flex;
+    flex-flow: row wrap;
 `;
 
 /**
- * Styled container for the page header text elements.
+ * Styled component representing the Header text.
  */
-const TextRowContainer = styled.div`
-    columns: auto 1;
+const HeaderTextRow = styled.div`
+    align-self: center;
+    color: ${iconColor};
+    flex: 1 0 100%;
+    font-size: 18px;
 `;
+
+/**
+ * Styled component representing the Subheader text.
+ */
+const SubheaderTextRow = styled.div`
+    align-self: center;
+    color: ${iconColor};
+    flex: 0 0 100%;
+    font-size: 14px;
+`;
+
 
 /**
  * Title component in the page header.
@@ -61,8 +74,6 @@ export default class PageHeaderTitle extends React.Component {
             titleIconName,
         } = this.props;
 
-        const iconColor: string = alternateTextColor;
-
         const backArrowElement: React.Element<*> = (
             <IconButton
                 iconClassName="material-icons"
@@ -73,17 +84,6 @@ export default class PageHeaderTitle extends React.Component {
             >
                 arrow_back
             </IconButton>
-        );
-
-        const subheaderTextRow: React.Element<*> = (
-            <TextRow
-                style={{
-                    color: iconColor,
-                    fontSize: 14,
-                }}
-            >
-                {subheaderText}
-            </TextRow>
         );
 
         return (
@@ -100,15 +100,8 @@ export default class PageHeaderTitle extends React.Component {
                     {titleIconName}
                 </FontIcon>
                 <TextRowContainer>
-                    <TextRow
-                        style={{
-                            color: iconColor,
-                            fontSize: 18,
-                        }}
-                    >
-                        {headerText}
-                    </TextRow>
-                    {subheaderText && subheaderTextRow}
+                    <HeaderTextRow>{headerText}</HeaderTextRow>
+                    <SubheaderTextRow>{subheaderText}</SubheaderTextRow>
                 </TextRowContainer>
             </Container>
         );

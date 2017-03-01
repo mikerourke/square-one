@@ -14,33 +14,14 @@ const Container = styled.div`
 `;
 
 /**
- * Adds the inline style based on the column index.  A left column (with
- *      index of 0) has right padding.  A right column (with index of 1) has
- *      left padding.
- * @param {number} columnIndex Index of the column representing the left or
- *      right side.
- * @returns {Object} Object representing the style for the component.
- */
-const getInlineStyle = (columnIndex: number): Object => {
-    if (columnIndex === 0) {
-        return { paddingRight: 8 };
-    }
-    return { paddingLeft: 8 };
-};
-
-/**
  * Column on a two-column form.
  */
 const FormColumn = ({
     children,
-    columnIndex,
 }: {
     children?: React.Element<*>,
-    columnIndex: number,
 }): React.Element<*> => (
-    <Container
-        style={getInlineStyle(columnIndex)}
-    >
+    <Container style={{ padding: '0 8px' }}>
         {children}
     </Container>
 );

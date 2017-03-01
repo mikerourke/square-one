@@ -20,7 +20,7 @@ const PageHeaderToolbar = ({
     headerText,
     subheaderText,
 }: {
-    handleTouchTap: (event: Event) => void,
+    handleTouchTap: (event: Event, actionName: string) => void,
     headerText: string,
     subheaderText: string,
 }): React.Element<*> => (
@@ -28,13 +28,17 @@ const PageHeaderToolbar = ({
         actionButtonRight={
             (<RaisedButton
                 label="Save"
-                onTouchTap={handleTouchTap}
+                onTouchTap={
+                    (event: Event) => handleTouchTap(event, 'save')
+                }
             />)
         }
         titleLeft={
             (<PageHeaderTitle
                 backArrowTooltip="Return to Leads"
-                handleBackArrowTouchTap={handleTouchTap}
+                handleBackArrowTouchTap={
+                    (event: Event) => handleTouchTap(event, 'back')
+                }
                 headerText={headerText}
                 subheaderText={subheaderText}
                 titleIconName="person_outline"

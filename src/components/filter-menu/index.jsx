@@ -16,8 +16,8 @@ import type { Selection } from 'lib/types';
 /**
  * Dropdown menu for applying filters.
  * @param {Array} [filterSelections=[]] Array of items for the Filter dropdown.
- * @param {Function} [handleFilterMenuChange: () => {}] Action to perform when
- *      an item is selected from the Filter dropdown menu.
+ * @param {Function} handleFilterMenuChange Action to perform when an item is
+ *      selected from the Filter dropdown menu.
  */
 const FilterMenu = ({
     filterSelections,

@@ -19,7 +19,7 @@ import type { Map } from 'immutable';
 /**
  * List of card components.
  * @param {Array} cardContents Array of data objects to display on card.
- * @param {Array} [searchFieldExclusion=[]] Fields within the Card contents
+ * @param {Array} [searchFieldExclusions=[]] Fields within the Card contents
  *      array that should be excluded from searches.
  */
 export default class CardList extends React.Component {

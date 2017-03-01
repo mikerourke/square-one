@@ -106,7 +106,7 @@ export default class Table extends React.Component {
         this.setState({ data: results });
     };
 
-    getDataForTable = () => {
+    getTableData = () => {
         const { columns, handleEditTouchTap } = this.props;
         return this.state.data.toArray().map((item) => {
             const tableItem = {};
@@ -146,8 +146,6 @@ export default class Table extends React.Component {
             },
         }].concat(columns);
 
-        const tableData = this.getDataForTable();
-
         return (
             <div>
                 <SearchToolbar
@@ -171,7 +169,7 @@ export default class Table extends React.Component {
                     <DataTables
                         columns={columnsWithIcons}
                         count={20}
-                        data={tableData}
+                        data={this.getTableData()}
                         height={'auto'}
                         onNextPageClick={this.handleNextPageClick}
                         onPreviousPageClick={this.handlePreviousPageClick}

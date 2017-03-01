@@ -16,7 +16,7 @@ module.exports = {
     },
     module: {
         rules: [{
-            test: /\.js$|.jsx$/,
+            test: /\.(js|jsx)$/,
             exclude: /node_modules/,
             loader: 'babel-loader',
         }, {
@@ -40,6 +40,13 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             },
         }),
+        new webpack.NamedModulesPlugin(),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            children: true,
+            minChunks: 2,
+            async: true,
+        }),
         new ExtractTextPlugin({
             filename: 'styles.css',
             disable: false,
@@ -50,7 +57,7 @@ module.exports = {
             path.join(process.cwd(), 'src'),
             'node_modules',
         ],
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.css'],
         alias: {
             containers: path.resolve(process.cwd(), 'src/containers'),
             types: path.resolve(process.cwd(), 'internals/flow'),

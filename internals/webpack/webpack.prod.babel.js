@@ -12,20 +12,16 @@ const baseConfig = require('./webpack.base.babel');
 const packageFile = require('../../package.json');
 
 module.exports = Object.assign(baseConfig, {
-    devtool: 'no-sources-sourcemap',
-    entry: {
-        app: path.join(process.cwd(), 'src/index.js'),
-        vendor: Object.keys(packageFile.dependencies),
-    },
+    entry: [
+        path.join(process.cwd(), 'src/index.js'),
+    ],
+    output: Object.assign({}, baseConfig.output, {
+        filename: '[name].[chunkhash].js',
+        chunkFilename: '[name].[chunkhash].chunk.js',
+    }),
     plugins: baseConfig.plugins.concat([
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
         new webpack.optimize.AggressiveMergingPlugin(),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            chunks: ['vendor'],
-            filename: 'vendor.bundle.js',
-            minChunks: Infinity
-        }),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: false,
             compress: {

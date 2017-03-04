@@ -20,17 +20,28 @@ const ChildrenContainer = styled.div`
     top: 64px;
 `;
 
+const mapStateToProps = state => ({
+    appSidebarOpen: state.getIn(['gui', 'appSidebarOpen']),
+    user: state.user,
+});
+
+const mapDispatchToProps = dispatch => ({
+    dispatch,
+    toggleSidebar: () => dispatch(toggleAppSidebar()),
+});
+
 /**
  * Layout container for the application.  This is used to handle navigation
  *      within the entire application.
+ * @param {React.Element} children React components to display as children.
  */
 const Layout = ({
     children,
-    gui,
+    appSidebarOpen,
     toggleSidebar,
 }: {
     children?: React.Element<*>,
-    gui: Object,
+    appSidebarOpen: boolean,
     toggleSidebar: () => void,
 }): React.Element<*> => (
     <MuiThemeProvider muiTheme={getMuiTheme}>
@@ -39,7 +50,7 @@ const Layout = ({
                 handleToggle={toggleSidebar}
             />
             <Sidebar
-                open={gui.appSidebarOpen}
+                open={appSidebarOpen}
                 handleToggle={toggleSidebar}
             />
             <ChildrenContainer>
@@ -48,15 +59,5 @@ const Layout = ({
         </div>
     </MuiThemeProvider>
 );
-
-const mapStateToProps = state => ({
-    gui: state.gui,
-    user: state.user,
-});
-
-const mapDispatchToProps = dispatch => ({
-    dispatch,
-    toggleSidebar: () => dispatch(toggleAppSidebar()),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);

@@ -58,7 +58,6 @@ export default class Table extends React.Component {
 
     constructor(props: any) {
         super(props);
-
         this.state = {
             data: this.props.data,
             page: 1,

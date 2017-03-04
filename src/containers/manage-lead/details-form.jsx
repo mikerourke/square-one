@@ -10,7 +10,7 @@ import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
 import { preventSubmissionOnEnter } from 'lib/form-events';
-import Lead from 'state/leads/model';
+import { Lead } from 'state/entities/leads/model';
 import FormColumn from 'components/forms/form-column';
 import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';

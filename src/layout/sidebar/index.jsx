@@ -12,6 +12,11 @@ import SidebarHeader from './sidebar-header';
 
 /**
  * Sidebar drawer in the application layout.
+ * @param {boolean} open Indicates if the sidebar is visible.
+ * @param {Function} handleToggle Action to perform when the hamburger menu
+ *      button on the AppBar is pressed.
+ * @param {string} userEmail Email address to display in the header of the
+ *      sidebar.
  */
 const Sidebar = ({
     open,

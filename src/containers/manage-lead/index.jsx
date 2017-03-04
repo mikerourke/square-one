@@ -9,12 +9,8 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 /* Internal dependencies */
-import { getAllChanges } from 'state/changes/actions';
-import { createLead, updateLead } from 'state/leads/actions';
-import { getAllNotes } from 'state/notes/actions';
-import Change from 'state/changes/model';
-import Lead from 'state/leads/model';
-import Note from 'state/notes/model';
+import { createLead, updateLead } from 'state/entities/leads/actions';
+import { Change, Lead, Note } from 'state/entities/leads/model';
 import Timeline from 'components/timeline';
 import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
@@ -23,44 +19,64 @@ import PageHeaderToolbar from './page-header-toolbar';
 import TabsToolbar from 'components/tabs-toolbar';
 
 /* Types */
-import type { MapLocation, Selection } from 'lib/types';
 import type { Map } from 'immutable';
+import type { MapLocation, Selection } from 'lib/types';
+import type { TimelineEvent } from 'components/timeline';
+
+const mapStateToProps = (state, ownProps) => {
+    const entities = state.getIn(['entities', 'leads', 'entities']);
+    let leadOnPage = new Lead();
+    const leadId = parseInt(ownProps.params.id, 10) || 0;
+    if (leadId !== 0) {
+        leadOnPage = entities.get('leads').find(
+            (value, key) => key.toString() === leadId.toString());
+    }
+
+    const getEntitiesInLead = entityGroupName =>
+        entities.get(entityGroupName)
+            .filter((value, key) => value.leadId === leadId)
+            .map((value, key) => value.toJS())
+            .toArray();
+
+    const settings = state.get('settings');
+
+    return {
+        lead: leadOnPage,
+        notes: getEntitiesInLead('notes'),
+        representativesList: settings.get('representatives').getData(),
+        sourcesList: settings.get('sources').getData(),
+        timelineEvents: getEntitiesInLead('changes'),
+    };
+};
+
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators({
+        createLead,
+        updateLead,
+    }, dispatch),
+});
 
 class ManageLeadPage extends React.Component {
     props: {
         actions: any,
-        changes: Map<number, Change>,
         lead: Lead,
         notes: Map<number, Note>,
         representativesList: Array<Selection>,
         sourcesList: Array<Selection>,
+        timelineEvents: Array<TimelineEvent>,
     };
 
     state: {
-        areChildEntitiesLoaded: boolean,
         isMessagesDialogOpen: boolean,
-        leadOnPage: Object,
+        leadOnPage: Lead,
     };
 
     constructor(props: any): void {
         super(props);
-
         this.state = {
-            areChildEntitiesLoaded: false,
             isMessagesDialogOpen: false,
             leadOnPage: this.props.lead,
         };
-    }
-
-    // TODO: Add comments to this method.
-    componentDidMount(): void {
-        const { actions, lead } = this.props;
-        const urlPrefix = `/leads/${lead.id}`;
-        const getChanges = actions.getAllChanges(urlPrefix);
-        const getNotes = actions.getAllNotes(urlPrefix);
-        Promise.all([getChanges, getNotes]).then(() => {
-            this.setState({ areChildEntitiesLoaded: true });
-        });
     }
 
     /**
@@ -143,24 +159,19 @@ class ManageLeadPage extends React.Component {
 
     render(): React.Element<*> {
         const {
-            changes,
             lead,
             notes,
             representativesList,
             sourcesList,
+            timelineEvents,
         } = this.props;
 
         const {
-            areChildEntitiesLoaded,
             isMessagesDialogOpen,
             leadOnPage,
         } = this.state;
 
-        if (!areChildEntitiesLoaded) {
-            return (<div>Loading...</div>);
-        }
-
-        const tabPages: React.Element<*> = [
+        const tabPages = [
             {
                 label: 'Details',
                 content:
@@ -174,7 +185,7 @@ class ManageLeadPage extends React.Component {
             },
             {
                 label: 'History',
-                content: (<Timeline changes={changes} />),
+                content: (<Timeline timelineEvents={timelineEvents} />),
             },
             {
                 label: 'Notes',
@@ -201,29 +212,5 @@ class ManageLeadPage extends React.Component {
         );
     }
 }
-
-const mapStateToProps = (state, ownProps) => {
-    let leadOnPage = new Lead();
-    if (ownProps.params.id) {
-        const leadId = ownProps.params.id.toString();
-        leadOnPage = state.leads.get(leadId);
-    }
-    return {
-        changes: state.changes,
-        lead: leadOnPage,
-        notes: state.notes,
-        representativesList: state.settings.get('representatives').getData(),
-        sourcesList: state.settings.get('sources').getData(),
-    };
-};
-
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators({
-        createLead,
-        getAllChanges,
-        getAllNotes,
-        updateLead,
-    }, dispatch),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageLeadPage);

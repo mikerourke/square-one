@@ -8,7 +8,7 @@ import FontIcon from 'material-ui/FontIcon';
 /* Internal dependencies */
 import {
     alternateTextColor,
-    primary1Color
+    primary1Color,
 } from 'style/mui/palette';
 
 /**
@@ -31,6 +31,7 @@ const EmailWrapper = styled.div`
 
 /**
  * Header used by the Sidebar in the application layout.
+ * @param {string} userEmail Email address to show in the header.
  */
 const SidebarHeader = ({
     userEmail,

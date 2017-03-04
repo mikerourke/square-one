@@ -31,6 +31,14 @@ const HeaderContainer = styled.div`
     text-align: center;
 `;
 
+const mapStateToProps = state => ({
+    user: state.user,
+});
+
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(userActions, dispatch),
+});
+
 /**
  * Login page for accessing the application.
  */
@@ -92,13 +100,5 @@ export class LoginPage extends React.Component {
         );
     }
 }
-
-const mapStateToProps = state => ({
-    user: state.user,
-});
-
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(userActions, dispatch),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -8,12 +8,21 @@ import { Map } from 'immutable';
 import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
-import { getAllLeads } from 'state/leads/actions';
-import Lead from 'state/leads/model';
+import { getAllLeads } from 'state/entities/leads/actions';
+import { Lead } from 'state/entities/leads/model';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
 import Table from 'components/table';
+
+const mapStateToProps = state => ({
+    leads: state.getIn(['entities', 'leads', 'entities', 'leads']),
+});
+
+const mapDispatchToProps = dispatch => ({
+    dispatch,
+    populateLeads: () => dispatch(getAllLeads()),
+});
 
 export class LeadsList extends React.Component {
     props: {
@@ -103,14 +112,5 @@ export class LeadsList extends React.Component {
         );
     }
 }
-
-const mapStateToProps = state => ({
-    leads: state.leads,
-});
-
-const mapDispatchToProps = dispatch => ({
-    dispatch,
-    populateLeads: () => dispatch(getAllLeads()),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeadsList);

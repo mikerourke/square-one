@@ -13,9 +13,6 @@ import {
 import { getSearchResults, getSortedData } from 'lib/query-actions';
 import SearchToolbar from 'components/search-toolbar';
 
-/* Types */
-import type { Map } from 'immutable';
-
 /**
  * List of card components.
  * @param {Array} cardContents Array of data objects to display on card.
@@ -24,12 +21,12 @@ import type { Map } from 'immutable';
  */
 export default class CardList extends React.Component {
     props: {
-        cardContents: Map<number, any>,
+        cardContents: Array<any>,
         searchFieldExclusions?: Array<string>,
     };
 
     state: {
-        cardContents: Map<number, any>,
+        cardContents: Array<any>,
     };
 
     static defaultProps = {
@@ -38,7 +35,9 @@ export default class CardList extends React.Component {
 
     constructor(props: any): void {
         super(props);
-        this.state = { cardContents: this.props.cardContents };
+        this.state = {
+            cardContents: this.props.cardContents,
+        };
     }
 
     /**
@@ -73,7 +72,7 @@ export default class CardList extends React.Component {
                         justifyContent: 'flex-start',
                     }}
                 >
-                    {cardContents.toList().map(cardEntity => (
+                    {cardContents.map(cardEntity => (
                         <Card
                             key={cardEntity.id}
                             style={{

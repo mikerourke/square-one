@@ -12,44 +12,32 @@ import {
 
 /* Internal dependencies */
 import { accent1Color } from 'style/mui/palette';
-import Change from 'state/changes/model';
 
-/* Types */
-import type { Map } from 'immutable';
+export type TimelineEvent = {
+    id: number,
+    iconName: string,
+    title: string,
+    details: string,
+}
 
 /**
- * Shows timeline of changes associated with an entity.
- * @param {List} changes Change entities to display in the timeline.
+ * Shows timeline of events associated with an entity.
+ * @param {Array} timelineEvents Events to display in the timeline.
  */
 export default class Timeline extends React.Component {
     props: {
-        changes: Map<number, Change>,
+        timelineEvents: Array<TimelineEvent>,
     };
 
-    state = {
-        stepIndex: 0,
+    state: {
+        stepIndex: number,
     };
 
-    /**
-     * Returns the name of the Material Icon to show next to the title based
-     *      on the type of change that took place.
-     * @param {Change} change Change entity to reference.
-     * @returns {string} Name of the Material Icon to display.
-     */
-    getIconName(change: Change): string {
-        switch (change.changeType) {
-            case 'sendEmail':
-                return 'contact_mail';
-
-            case 'sendMessage':
-                return 'contact_phone';
-
-            case 'create':
-                return 'add_circle_outline';
-
-            default:
-                return '';
-        }
+    constructor() {
+        super();
+        this.state = {
+            stepIndex: 0,
+        };
     }
 
     /**
@@ -62,7 +50,7 @@ export default class Timeline extends React.Component {
     };
 
     render() {
-        const { changes } = this.props;
+        const { timelineEvents } = this.props;
         const { stepIndex } = this.state;
 
         return (
@@ -77,30 +65,30 @@ export default class Timeline extends React.Component {
                     linear={false}
                     orientation="vertical"
                 >
-                    {changes.toArray().map((change, index) => (
-                            <Step key={change.id}>
-                                <StepButton
-                                    icon={
-                                        <FontIcon
-                                            color={accent1Color}
-                                            className="material-icons"
-                                        >
-                                            {this.getIconName(change)}
-                                        </FontIcon>
-                                    }
-                                    onTouchTap={
-                                        () => this.handleTouchTap(index)
-                                    }
-                                >
-                                    {change.title}
-                                </StepButton>
-                                <StepContent>
-                                    <p>
-                                        {change.details}
-                                    </p>
-                                </StepContent>
-                            </Step>
-                        ))}
+                    {timelineEvents.map((timelineEvent, index) => (
+                        <Step key={timelineEvent.id}>
+                            <StepButton
+                                icon={
+                                    <FontIcon
+                                        color={accent1Color}
+                                        className="material-icons"
+                                    >
+                                        {timelineEvent.iconName}
+                                    </FontIcon>
+                                }
+                                onTouchTap={
+                                    () => this.handleTouchTap(index)
+                                }
+                            >
+                                {timelineEvent.title}
+                            </StepButton>
+                            <StepContent>
+                                <p>
+                                    {timelineEvent.details}
+                                </p>
+                            </StepContent>
+                        </Step>
+                    ))}
                 </Stepper>
             </div>
         );

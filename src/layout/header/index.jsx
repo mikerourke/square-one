@@ -10,6 +10,8 @@ import { primary1Color } from 'style/mui/palette';
 
 /**
  * Header AppBar element for the application layout.
+ * @param {Function} handleToggle Action to perform when the hamburger menu
+ *      button is pressed.
  */
 const Header = ({
     handleToggle,

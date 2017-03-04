@@ -3,18 +3,17 @@
 /* External dependencies */
 import {
     applyMiddleware,
-    combineReducers,
     compose,
     createStore,
 } from 'redux';
+import { combineReducers } from 'redux-immutable';
+import { Map } from 'immutable';
 import axiosMiddleware from 'redux-axios-middleware';
 import thunk from 'redux-thunk';
 
 /* Internal dependencies */
-import changes from './changes/reducer';
+import entities from './entities/reducer';
 import gui from './gui/reducer';
-import leads from './leads/reducer';
-import notes from './notes/reducer';
 import settings from './settings/reducer';
 import user from './user/reducer';
 
@@ -25,10 +24,8 @@ import type { AxiosRequestConfig } from 'axios';
  * Combined Redux reducers for the application.
  */
 const rootReducer = combineReducers({
-    changes,
+    entities,
     gui,
-    leads,
-    notes,
     settings,
     user,
 });
@@ -36,7 +33,7 @@ const rootReducer = combineReducers({
 /**
  * Creates the global Redux store.
  */
-export default (client: AxiosRequestConfig, initialState?: any) => {
+export default (client: AxiosRequestConfig) => {
     // Setup the Redux Dev Tools in Chrome:
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
                              compose;
@@ -47,7 +44,7 @@ export default (client: AxiosRequestConfig, initialState?: any) => {
 
     return createStore(
         rootReducer,
-        initialState,
+        Map(),
         composeEnhancers(applyMiddleware(...middleware)),
     );
 };

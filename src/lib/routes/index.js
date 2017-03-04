@@ -19,7 +19,9 @@ const configureRoutes = (history: Object, store: Store<*>) => {
      *      visible).
      */
     history.listen((location) => {
-        if (store.getState().gui.appSidebarOpen) {
+        const state = store.getState();
+        const isAppSidebarOpen = state.getIn(['gui', 'appSidebarOpen']);
+        if (isAppSidebarOpen) {
             store.dispatch(toggleAppSidebar());
         }
     });

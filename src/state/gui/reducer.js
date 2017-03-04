@@ -1,26 +1,25 @@
 /* @flow */
 
+/* External dependencies */
+import { fromJS, Map } from 'immutable';
+
 /* Internal dependencies */
 import { GUI_TOGGLE_APP_SIDEBAR } from '../action-types';
 
 /* Types */
 import type { Action } from 'lib/types';
 
-type State = {
-    appSidebarOpen: boolean,
-};
+type State = Map<string, any>;
 
-const initialState = {
+const initialState = fromJS({
     appSidebarOpen: false,
-};
+});
 
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
         case GUI_TOGGLE_APP_SIDEBAR:
-            return {
-                ...state,
-                appSidebarOpen: !state.appSidebarOpen,
-            };
+            const currentStatus = state.get('appSidebarOpen');
+            return state.set('appSidebarOpen', !currentStatus);
 
         default:
             return state;

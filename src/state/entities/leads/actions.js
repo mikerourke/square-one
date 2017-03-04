@@ -11,8 +11,9 @@ import {
     LEAD_GET_ALL,
     LEAD_GET_SINGLE,
     LEAD_UPDATE,
-} from '../action-types';
-import Lead, { leadSchema } from './model';
+} from '../../action-types';
+import { Lead } from './model';
+import { leads as leadSchema } from './schema';
 
 /* Types */
 import type { Action } from 'lib/types';

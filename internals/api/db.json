@@ -14,6 +14,48 @@
       "description": "This is a lead",
       "status": "New",
       "assignTo": "Chuckles",
+      "notes": [
+        {
+          "id": 1,
+          "title": "Example Note",
+          "details": "Note details",
+          "isPrivate": false,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        },
+        {
+          "id": 2,
+          "title": "Example Note 2",
+          "details": "Note details 2",
+          "isPrivate": true,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        }
+      ],
+      "changes": [
+        {
+          "id": 1,
+          "changeType": "create",
+          "iconName": "add_circle_outline",
+          "title": "Example Change",
+          "details": "Change details",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        },
+        {
+          "id": 2,
+          "changeType": "sendMessage",
+          "iconName": "contact_mail",
+          "title": "Example Change 2",
+          "details": "Change details 2",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        }
+      ],
       "createdAt": "2017-02-02 14:53:35.764000",
       "updatedAt": "2017-02-02 14:53:35.764000"
     },
@@ -31,6 +73,48 @@
       "description": "This is another lead",
       "status": "Existing",
       "assignTo": "",
+      "notes": [
+        {
+          "id": 3,
+          "title": "Example Note",
+          "details": "Note details",
+          "isPrivate": false,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        },
+        {
+          "id": 4,
+          "title": "Example Note 2",
+          "details": "Note details 2",
+          "isPrivate": true,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        }
+      ],
+      "changes": [
+        {
+          "id": 3,
+          "changeType": "create",
+          "iconName": "add_circle_outline",
+          "title": "Example Change",
+          "details": "Change details",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        },
+        {
+          "id": 4,
+          "changeType": "sendMessage",
+          "iconName": "contact_mail",
+          "title": "Example Change 2",
+          "details": "Change details 2",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        }
+      ],
       "createdAt": "2017-02-02 14:53:35.764000",
       "updatedAt": "2017-02-02 14:53:35.764000"
     },
@@ -48,54 +132,48 @@
       "description": "This is a third lead",
       "status": "New",
       "assignTo": "",
-      "createdAt": "2017-02-02 14:53:35.764000",
-      "updatedAt": "2017-02-02 14:53:35.764000"
-    }
-  ],
-  "notes": [
-    {
-      "id": 1,
-      "entityType": "lead",
-      "entityId": 1,
-      "title": "Example Note",
-      "details": "Note details",
-      "isPrivate": false,
-      "createdBy": "mike",
-      "createdAt": "2017-02-02 14:53:35.764000",
-      "updatedAt": "2017-02-02 14:53:35.764000"
-    },
-    {
-      "id": 2,
-      "entityType": "lead",
-      "entityId": 1,
-      "title": "Example Note 2",
-      "details": "Note details 2",
-      "isPrivate": true,
-      "createdBy": "mike",
-      "createdAt": "2017-02-02 14:53:35.764000",
-      "updatedAt": "2017-02-02 14:53:35.764000"
-    }
-  ],
-  "changes": [
-    {
-      "id": 1,
-      "entityType": "lead",
-      "entityId": 1,
-      "changeType": "create",
-      "title": "Example Change",
-      "details": "Change details",
-      "createdBy": "mike",
-      "createdAt": "2017-02-02 14:53:35.764000",
-      "updatedAt": "2017-02-02 14:53:35.764000"
-    },
-    {
-      "id": 2,
-      "entityType": "lead",
-      "entityId": 1,
-      "changeType": "sendMessage",
-      "title": "Example Change 2",
-      "details": "Change details 2",
-      "createdBy": "mike",
+      "notes": [
+        {
+          "id": 5,
+          "title": "Example Note",
+          "details": "Note details",
+          "isPrivate": false,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        },
+        {
+          "id": 6,
+          "title": "Example Note 2",
+          "details": "Note details 2",
+          "isPrivate": true,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        }
+      ],
+      "changes": [
+        {
+          "id": 5,
+          "changeType": "create",
+          "iconName": "add_circle_outline",
+          "title": "Example Change",
+          "details": "Change details",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        },
+        {
+          "id": 6,
+          "changeType": "sendMessage",
+          "iconName": "contact_mail",
+          "title": "Example Change 2",
+          "details": "Change details 2",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:53:35.764000",
+          "updatedAt": "2017-02-02 14:53:35.764000"
+        }
+      ],
       "createdAt": "2017-02-02 14:53:35.764000",
       "updatedAt": "2017-02-02 14:53:35.764000"
     }

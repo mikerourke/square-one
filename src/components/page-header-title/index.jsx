@@ -49,6 +49,16 @@ const SubheaderTextRow = styled.div`
 
 /**
  * Title component in the page header.
+ * @param {string} [backArrowTooltip=""] Tooltip to display when the Back arrow
+ *      is hovered.
+ * @param {Function} [handleBackArrowTouchTap] Action to perform when the Back
+ *      arrow is pressed.
+ * @param {string} headerText Text to display in the top row of the text next
+ *      to the Title Icon.
+ * @param {string} [subheaderText=""] Text to display in the bottom row of the
+ *      text next to the Title Icon.
+ * @param {string} titleIconName Name of the Material Icon to display in the
+ *      title.
  */
 export default class PageHeaderTitle extends React.Component {
     props: {

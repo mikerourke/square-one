@@ -4,7 +4,7 @@
 import { List } from 'immutable';
 
 // TODO: Fix this for Flow.  For some reason disjoint unions aren't working.
-type QueryData = any
+type QueryData = Array<any> | List<*>;
 
 /**
  * Filters data by a specified value and returns the applicable items.

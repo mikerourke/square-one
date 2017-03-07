@@ -13,6 +13,13 @@ import {
 import { getSearchResults, getSortedData } from 'lib/query-actions';
 import SearchToolbar from 'components/search-toolbar';
 
+export type CardEntity = {
+    details: string,
+    id: number,
+    subtitle: string,
+    title: string,
+};
+
 /**
  * List of card components.
  * @param {Array} cardContents Array of data objects to display on card.
@@ -21,12 +28,12 @@ import SearchToolbar from 'components/search-toolbar';
  */
 export default class CardList extends React.Component {
     props: {
-        cardContents: Array<any>,
+        cardContents: Array<CardEntity>,
         searchFieldExclusions?: Array<string>,
     };
 
     state: {
-        cardContents: Array<any>,
+        cardContents: Array<CardEntity>,
     };
 
     static defaultProps = {

@@ -14,10 +14,10 @@ import {
 import { accent1Color } from 'style/mui/palette';
 
 export type TimelineEvent = {
-    id: number,
-    iconName: string,
-    title: string,
     details: string,
+    iconName: string,
+    id: number,
+    title: string,
 }
 
 /**
@@ -33,7 +33,7 @@ export default class Timeline extends React.Component {
         stepIndex: number,
     };
 
-    constructor() {
+    constructor(): void {
         super();
         this.state = {
             stepIndex: 0,
@@ -49,7 +49,7 @@ export default class Timeline extends React.Component {
         this.setState({ stepIndex });
     };
 
-    render() {
+    render(): React.Element<*> {
         const { timelineEvents } = this.props;
         const { stepIndex } = this.state;
 
@@ -70,8 +70,8 @@ export default class Timeline extends React.Component {
                             <StepButton
                                 icon={
                                     <FontIcon
-                                        color={accent1Color}
                                         className="material-icons"
+                                        color={accent1Color}
                                     >
                                         {timelineEvent.iconName}
                                     </FontIcon>

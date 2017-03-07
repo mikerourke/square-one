@@ -24,9 +24,9 @@
   "author": "Mike Rourke",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/wolfspace/square1-web/issues"
+    "url": "https://github.com/wolfspace/square1/issues"
   },
-  "homepage": "https://github.com/wolfspace/square1-web#readme",
+  "homepage": "https://github.com/wolfspace/square1#readme",
   "dependencies": {
     "axios": "^0.15.3",
     "google-maps": "^3.2.1",
@@ -38,15 +38,13 @@
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-immutable-proptypes": "^2.1.0",
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-axios-middleware": "^3.0.0",
     "redux-immutable": "^3.1.0",
-    "redux-thunk": "^2.1.0",
-    "reselect": "^2.5.4"
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.7.1",
@@ -84,7 +82,7 @@
     "eslint-watch": "^3.0.0",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.10.0",
-    "flow-bin": "^0.40.0",
+    "flow-bin": "^0.41.0",
     "html-loader": "^0.4.4",
     "html-webpack-plugin": "^2.28.0",
     "jest-cli": "^19.0.0",

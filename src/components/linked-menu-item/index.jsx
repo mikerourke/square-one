@@ -8,6 +8,9 @@ import { MenuItem } from 'material-ui/Menu';
 
 /**
  * Menu item in the sidebar linked to a route.
+ * @param {string} iconName Name of the icon to display next to the text.
+ * @param {string} linkTo Path to component associated with the menu item.
+ * @param {...Object} props Additional props associated with the component.
  */
 const LinkedMenuItem = ({
     iconName,

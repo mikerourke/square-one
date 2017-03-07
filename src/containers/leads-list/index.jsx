@@ -13,7 +13,7 @@ import Lead from 'state/entities/leads/model';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
-import Table from 'components/table';
+import SearchableTable from 'components/searchable-table';
 
 const mapStateToProps = state => ({
     leads: state.getIn(['entities', 'leads', 'entities', 'leads']),
@@ -95,7 +95,7 @@ export class LeadsList extends React.Component {
                     actionButtonRight={headerButton}
                     titleLeft={headerTitle}
                 />
-                <Table
+                <SearchableTable
                     columns={tableColumns}
                     data={leads}
                     filterSelections={filterSelections}

@@ -10,11 +10,29 @@ import {
     SETTING_GET_ALL,
     SETTING_UPDATE,
 } from '../action-types';
-import { settingSchema } from './model';
+import Setting from './model';
+import settingsSchema from './schema';
 
 import type { Action } from 'lib/types';
 
 const BASE_URL = '/settings';
+
+export const getAllSettings = (): Action => ({
+    type: SETTING_GET_ALL,
+    payload: {
+        request: {
+            method: 'get',
+            url: BASE_URL,
+            transformResponse:
+                axios.defaults.transformResponse.concat((data) => {
+                    if (data) {
+                        return normalize(data, settingsSchema);
+                    }
+                    return {};
+                }),
+        },
+    },
+});
 
 export const getSetting = (settingName: string): Action => ({
     type: SETTING_GET_SINGLE,
@@ -26,19 +44,13 @@ export const getSetting = (settingName: string): Action => ({
     },
 });
 
-export const getAllSettings = (): Action => ({
-    type: SETTING_GET_ALL,
+export const updateSetting = (setting: Setting): Action => ({
+    type: SETTING_UPDATE,
     payload: {
         request: {
-            method: 'get',
-            url: BASE_URL,
-            transformResponse:
-                axios.defaults.transformResponse.concat((data) => {
-                    if (data) {
-                        return normalize(data, settingSchema);
-                    }
-                    return {};
-                }),
+            method: 'patch',
+            url: `${BASE_URL}/${setting.id}`,
+            data: setting.toJS(),
         },
     },
 });

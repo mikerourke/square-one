@@ -10,9 +10,6 @@ import MenuItem from 'material-ui/MenuItem';
 /* Internal dependencies */
 import { primary1Color } from 'style/mui/palette';
 
-/* Types */
-import type { Selection } from 'lib/types';
-
 /**
  * Dropdown menu for applying filters.
  * @param {Array} [filterSelections=[]] Array of items for the Filter dropdown.
@@ -23,7 +20,7 @@ const FilterMenu = ({
     filterSelections,
     handleFilterMenuChange,
 }: {
-    filterSelections: Array<Selection>,
+    filterSelections: Array<string>,
     handleFilterMenuChange: (event: Event, key: string, value: string) => void,
 }): React.Element<*> => (
     <IconMenu
@@ -40,25 +37,21 @@ const FilterMenu = ({
         {filterSelections.map(selection => (
             <MenuItem
                 innerDivStyle={{ padding: '0 0 0 48px' }}
-                key={selection.id}
+                key={selection}
                 leftIcon={
-                    (<FontIcon
-                        iconClassName="material-icons"
-                    >
+                    (<FontIcon className="material-icons">
                         check_box
                     </FontIcon>)
                 }
-                primaryText={selection.value}
-                value={selection.value}
+                primaryText={selection}
+                value={selection}
             />
         ))}
         <MenuItem
             innerDivStyle={{ padding: '0 0 0 48px' }}
             key={999}
             leftIcon={
-                (<FontIcon
-                    iconClassName="material-icons"
-                >
+                (<FontIcon className="material-icons">
                     add_circle_outline
                 </FontIcon>)
             }

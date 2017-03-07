@@ -3,60 +3,102 @@ import { normalize } from 'normalizr';
 import { fromJS } from 'immutable';
 
 /* Internal dependencies */
-import Setting, { settingSchema } from '../model';
-import { mockDb } from '../../../../internals/testing/mock/for-state';
+import Setting from '../model';
+import settingsSchema from '../schema';
+
+export const mockData = [{
+        "id": 1,
+        "category": "lists",
+        "settingName": "sources",
+        "data": [
+            "Did work in area",
+            "Facebook",
+            "Flyer",
+            "HomeAdvisor",
+            "Saw Sign"
+        ]
+    },
+    {
+        "id": 2,
+        "category": "lists",
+        "settingName": "leadStatuses",
+        "data": [
+            "New",
+            "Selling",
+            "Won",
+            "Qualified",
+            "Lost"
+        ]
+    },
+    {
+        "id": 3,
+        "category": "general",
+        "settingName": "companyInfo",
+        "data": {
+            "companyName": "Legend",
+            "address": "123 Company Lane",
+            "phone": "(630) 123-5555"
+        }
+    },
+    {
+        "id": 4,
+        "category": "lists",
+        "settingName": "representatives",
+        "data": [
+            "Scott",
+            "Chuckles",
+            "Biscuits"
+        ]
+    }
+]
 
 /**
  * Helper method that finds the specified setting in the mock database and
  *      converts it to an Immutable Record representing a Setting entity.
  */
 const getSettingFromName = (settingName) => {
-    const settingFromDb = mockDb.settings.find(setting =>
+    const settingFromDb = mockData.find(setting =>
         setting.settingName === settingName);
     return new Setting(fromJS(settingFromDb));
 };
 
 describe('Settings Model', () => {
     it('normalizes Settings entities', () => {
-        const normalizedData = normalize(mockDb.settings, settingSchema);
+        const normalizedData = normalize(mockData, settingsSchema);
         const expectedData = {
             "entities": {
                 "settings": {
-                "companyInfo": {
-                    "category": "general",
-                    "data": {
-                    "address": "123 Company Lane",
-                    "companyName": "Legend",
-                    "phone": "(630) 123-5555"
+                    "companyInfo": {
+                        "category": "general",
+                        "data": {
+                            "address": "123 Company Lane",
+                            "companyName": "Legend",
+                            "phone": "(630) 123-5555"
+                        },
+                        "id": 3,
+                        "settingName": "companyInfo"
                     },
-                    "id": 3,
-                    "settingName": "companyInfo"
-                },
-                "leadStatuses": {
-                    "category": "lists",
-                    "data": [
-                    { "id": 1, "value": "New" },
-                    { "id": 2, "value": "Selling" },
-                    { "id": 3, "value": "Won" },
-                    { "id": 4, "value": "Qualified" },
-                    { "id": 5, "value": "Lost"}],
-                    "id": 2,
-                    "settingName": "leadStatuses"
-                },
-                "sources": {
-                    "category": "lists",
-                    "data": [
-                    { "id": 1, "value": "Did work in area" },
-                    { "id": 2, "value": "Facebook" },
-                    { "id": 3, "value": "Flyer" },
-                    { "id": 4, "value": "HomeAdvisor" },
-                    { "id": 5, "value": "Saw Sign" }],
-                    "id": 1,
-                    "settingName": "sources"
-                }
+                    "leadStatuses": {
+                        "category": "lists",
+                        "data": ["New", "Selling", "Won", "Qualified", "Lost"],
+                        "id": 2,
+                        "settingName": "leadStatuses"
+                    },
+                    "representatives": {
+                        "category": "lists",
+                        "data": ["Scott", "Chuckles", "Biscuits"],
+                        "id": 4,
+                        "settingName": "representatives"
+                    },
+                    "sources": {
+                        "category": "lists",
+                        "data": ["Did work in area", "Facebook", "Flyer", "HomeAdvisor", "Saw Sign"],
+                        "id": 1,
+                        "settingName": "sources"
+                    }
                 }
             },
-            "result": ["sources", "leadStatuses", "companyInfo"]
+            "result": ["sources", "leadStatuses", "companyInfo", "representatives"]
         }
         expect(normalizedData).toEqual(expectedData);
     });

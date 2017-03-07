@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router';
 
 /* Internal dependencies */
 import { createLead, updateLead } from 'state/entities/leads/actions';
-import { Change, Lead, Note } from 'state/entities/leads/model';
+import Lead, { Change, Note } from 'state/entities/leads/model';
 import Timeline from 'components/timeline';
 import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
@@ -20,7 +20,7 @@ import TabsToolbar from 'components/tabs-toolbar';
 
 /* Types */
 import type { Map } from 'immutable';
-import type { MapLocation, Selection } from 'lib/types';
+import type { MapLocation } from 'lib/types';
 import type { TimelineEvent } from 'components/timeline';
 
 const mapStateToProps = (state, ownProps) => {
@@ -32,20 +32,14 @@ const mapStateToProps = (state, ownProps) => {
             (value, key) => key.toString() === leadId.toString());
     }
 
-    const getEntitiesInLead = entityGroupName =>
-        entities.get(entityGroupName)
-            .filter((value, key) => value.leadId === leadId)
-            .map((value, key) => value.toJS())
-            .toArray();
-
     const settings = state.get('settings');
 
     return {
         lead: leadOnPage,
-        notes: getEntitiesInLead('notes'),
+        notes: leadOnPage.getNotes(),
         representativesList: settings.get('representatives').getData(),
         sourcesList: settings.get('sources').getData(),
-        timelineEvents: getEntitiesInLead('changes'),
+        timelineEvents: leadOnPage.getChanges(),
     };
 };
 
@@ -60,10 +54,10 @@ class ManageLeadPage extends React.Component {
     props: {
         actions: any,
         lead: Lead,
-        notes: Map<number, Note>,
-        representativesList: Array<Selection>,
-        sourcesList: Array<Selection>,
-        timelineEvents: Array<TimelineEvent>,
+        notes: Array<Object>,
+        representativesList: Array<string>,
+        sourcesList: Array<string>,
+        timelineEvents: Array<Object>,
     };
 
     state: {

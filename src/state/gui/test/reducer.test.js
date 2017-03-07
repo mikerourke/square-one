@@ -7,6 +7,6 @@ describe('GUI Reducer', () => {
         const expectedValue = {
             appSidebarOpen: false,
         }
-        expect(reducerValue).toEqual(expectedValue);
+        expect(reducerValue.toJS()).toEqual(expectedValue);
     });
 });

@@ -25,22 +25,22 @@ const appendParentId = (
 /**
  * Schema entity for Changes within a Lead.
  */
-export const change = new schema.Entity('changes', {}, {
+const changeSchema = new schema.Entity('changes', {}, {
     processStrategy: (value, parent) => appendParentId(value, parent, 'lead'),
 });
 
 /**
  * Schema entity for Notes within a Lead.
  */
-export const note = new schema.Entity('notes', {}, {
+const noteSchema = new schema.Entity('notes', {}, {
     processStrategy: (value, parent) => appendParentId(value, parent, 'lead'),
 });
 
 /**
  * Schema entity for a Lead with child Changes and Notes.
  */
-const lead = new schema.Entity('leads', {
-    changes: [change],
-    notes: [note],
+const leadSchema = new schema.Entity('leads', {
+    changes: [changeSchema],
+    notes: [noteSchema],
 });
-export const leads = [lead];
+export default [leadSchema];

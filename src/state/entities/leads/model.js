@@ -3,7 +3,7 @@
 /* External dependencies */
 import { List, Record } from 'immutable';
 
-export class Lead extends Record({
+export default class Lead extends Record({
     id: (0: number),
     leadName: ('': string),
     contactName: ('': string),
@@ -21,7 +21,15 @@ export class Lead extends Record({
     notes: (new List(): List<number>),
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
-}) {}
+}) {
+    getChanges(): Array<Object> {
+        return this.changes.toArray();
+    }
+
+    getNotes(): Array<Object> {
+        return this.notes.toArray();
+    }
+}
 
 export class Note extends Record({
     leadId: (0: number),

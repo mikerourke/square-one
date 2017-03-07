@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
 import { getAllLeads } from 'state/entities/leads/actions';
-import { Lead } from 'state/entities/leads/model';
+import Lead from 'state/entities/leads/model';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
@@ -66,13 +66,6 @@ export class LeadsList extends React.Component {
         browserHistory.push(`leads/${row.id}`);
     };
 
-    getSelections() {
-        return [
-            { id: 1, value: 'Test1' },
-            { id: 2, value: 'Test2' },
-        ];
-    }
-
     render(): React.Element<*> {
         const { isLoading, leads } = this.state;
 
@@ -90,7 +83,7 @@ export class LeadsList extends React.Component {
         );
 
         // TODO: Add filter selection handling and saving.
-        const filterSelections = this.getSelections();
+        const filterSelections = ['Test 1', 'Test 2'];
 
         if (isLoading) {
             return (<div>Loading...</div>);

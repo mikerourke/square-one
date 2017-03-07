@@ -12,8 +12,8 @@ import {
     LEAD_GET_SINGLE,
     LEAD_UPDATE,
 } from '../../action-types';
-import { Lead } from './model';
-import { leads as leadSchema } from './schema';
+import Lead from './model';
+import leadsSchema from './schema';
 
 /* Types */
 import type { Action } from 'lib/types';
@@ -34,20 +34,10 @@ export const createLead = (lead: Lead): Action => ({
 export const deleteLead = (id: number): Action => ({
     type: LEAD_DELETE,
     payload: {
+        id,
         request: {
             method: 'delete',
             url: `${BASE_URL}/${id}`,
-        },
-    },
-});
-
-export const updateLead = (lead: Lead): Action => ({
-    type: LEAD_UPDATE,
-    payload: {
-        request: {
-            method: 'patch',
-            url: `${BASE_URL}/${lead.id}`,
-            data: lead,
         },
     },
 });
@@ -71,10 +61,21 @@ export const getAllLeads = (): Action => ({
             transformResponse:
                 axios.defaults.transformResponse.concat((data) => {
                     if (data) {
-                        return normalize(data, leadSchema);
+                        return normalize(data, leadsSchema);
                     }
                     return {};
                 }),
+        },
+    },
+});
+
+export const updateLead = (lead: Lead): Action => ({
+    type: LEAD_UPDATE,
+    payload: {
+        request: {
+            method: 'patch',
+            url: `${BASE_URL}/${lead.id}`,
+            data: lead,
         },
     },
 });

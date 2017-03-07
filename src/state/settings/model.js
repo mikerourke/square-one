@@ -1,22 +1,13 @@
 /* @flow */
 
 /* External dependencies */
-import { schema } from 'normalizr';
 import { Record, List } from 'immutable';
-
-/* Types */
-import type { Selection } from 'lib/types';
-
-const setting = new schema.Entity('settings', {}, {
-    idAttribute: 'settingName',
-});
-export const settingSchema = [setting];
 
 export default class Setting extends Record({
     id: (0: number),
     category: ('': string),
     settingName: ('': string),
-    data: (null: ?string | ?List<Selection>),
+    data: (null: ?string | ?List<string>),
 }) {
     /**
      * Converts the data associated with the specified Setting to an Array (for
@@ -26,9 +17,7 @@ export default class Setting extends Record({
     getData(): Object | Array<*> {
         const settingData = this.data;
         if (List.isList(settingData)) {
-            return settingData
-                .map((value, key) => value.toJS())
-                .toArray();
+            return settingData.toArray();
         }
         return settingData.toJS();
     }

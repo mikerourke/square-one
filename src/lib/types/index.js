@@ -1,15 +1,6 @@
 /* @flow */
 
 /**
- * Item in a dropdown menu/field.
- * @typedef Selection
- */
-export type Selection = {
-    id: string,
-    value: string,
-}
-
-/**
  * Geographical location on a map.
  * @typedef MapLocation
  */

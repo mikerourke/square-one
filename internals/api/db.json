@@ -196,26 +196,11 @@
       "category": "lists",
       "settingName": "sources",
       "data": [
-        {
-          "id": 1,
-          "value": "Did work in area"
-        },
-        {
-          "id": 2,
-          "value": "Facebook"
-        },
-        {
-          "id": 3,
-          "value": "Flyer"
-        },
-        {
-          "id": 4,
-          "value": "HomeAdvisor"
-        },
-        {
-          "id": 5,
-          "value": "Saw Sign"
-        }
+        "Did work in area",
+        "Facebook",
+        "Flyer",
+        "HomeAdvisor",
+        "Saw Sign"
       ]
     },
     {
@@ -223,26 +208,11 @@
       "category": "lists",
       "settingName": "leadStatuses",
       "data": [
-        {
-          "id": 1,
-          "value": "New"
-        },
-        {
-          "id": 2,
-          "value": "Selling"
-        },
-        {
-          "id": 3,
-          "value": "Won"
-        },
-        {
-          "id": 4,
-          "value": "Qualified"
-        },
-        {
-          "id": 5,
-          "value": "Lost"
-        }
+        "New",
+        "Selling",
+        "Won",
+        "Qualified",
+        "Lost"
       ]
     },
     {
@@ -260,18 +230,9 @@
       "category": "lists",
       "settingName": "representatives",
       "data": [
-        {
-          "id": 1,
-          "value": "Scott"
-        },
-        {
-          "id": 2,
-          "value": "Chuckles"
-        },
-        {
-          "id": 3,
-          "value": "Biscuits"
-        }
+        "Scott",
+        "Chuckles",
+        "Biscuits"
       ]
     }
   ]

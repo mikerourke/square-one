@@ -14,7 +14,6 @@ import FilterMenu from 'components/filter-menu';
 import SearchToolbar from 'components/search-toolbar';
 
 /* Types */
-import type { Selection } from 'lib/types';
 import type { Record } from 'immutable';
 
 /**
@@ -41,7 +40,7 @@ export default class Table extends React.Component {
     props: {
         columns: Array<Column>,
         data: Map<number, Record<*>>,
-        filterSelections: Array<Selection>,
+        filterSelections: Array<string>,
         handleEditTouchTap: (event: Event, row: Object) => void,
     };
 

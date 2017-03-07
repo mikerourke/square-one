@@ -17,4 +17,4 @@ const middleware = [
     axiosMiddleware(client),
     thunk,
 ];
-export const mockStore = configureStore(middleware);
+export const createMockStore = configureStore(middleware);

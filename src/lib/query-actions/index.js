@@ -1,29 +1,23 @@
 /* @flow */
 
 /* External dependencies */
-import { Map } from 'immutable';
+import { List } from 'immutable';
 
-export const getSearchResultsAsMap = (
-    data: Map<any, any>,
-    searchFor?: string = '',
-): Map<any, any> => {
-    return data.filter((value, key) => {
-        console.log(key + ': ' + value);
-    });
-};
+// TODO: Fix this for Flow.  For some reason disjoint unions aren't working.
+type QueryData = any
 
 /**
  * Filters data by a specified value and returns the applicable items.
- * @param {Array | Map} data Data to apply the filter to.
+ * @param {Array | List} data Data to apply the filter to.
  * @param {string} [searchFor=''] Words/characters to filter by.
  * @param {Array} [fieldsToExclude=[]] Fields to exclude from search.
- * @returns {Array | Map} Items from data that meet conditions.
+ * @returns {Array | List} Items from data that meet conditions.
  */
 export const getSearchResults = (
-    data: Array<any>,
+    data: QueryData,
     searchFor?: string = '',
     fieldsToExclude?: Array<string> = [],
-): Array<any> => {
+): QueryData => {
     const items = data;
     // Return the original dataset if the field is search for value is falsy.
     if (!searchFor || searchFor === '') {
@@ -50,16 +44,16 @@ export const getSearchResults = (
 
 /**
  * Sorts an array of data by the specified key and order.
- * @param {Array | Map} data Data to be sorted.
+ * @param {Array | List} data Data to be sorted.
  * @param {string} key Field to sort by.
  * @param {string} [order='asc'] Order to sort by (asc or desc).
- * @returns {Array | Map} Sorted items from data.
+ * @returns {Array | List} Sorted items from data.
  */
 export const getSortedData = (
-    data: Array<any> | Map<number, any>,
+    data: QueryData | List<*>,
     key: string,
     order?: string = 'asc',
-): Array<any> | Map<number, any> =>
+): QueryData =>
     data.slice().sort((leftHandItem, rightHandItem) => {
         const sortValue = (leftHandItem[key] > rightHandItem[key]) ? 1 : -1;
 

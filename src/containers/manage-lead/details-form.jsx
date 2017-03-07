@@ -10,13 +10,13 @@ import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
 import { preventSubmissionOnEnter } from 'lib/form-events';
-import { Lead } from 'state/entities/leads/model';
+import Lead from 'state/entities/leads/model';
 import FormColumn from 'components/forms/form-column';
 import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';
 
 /* Types */
-import type { MapLocation, Selection } from 'lib/types';
+import type { MapLocation } from 'lib/types';
 
 /**
  * Form component for entering Lead details.
@@ -36,8 +36,8 @@ export default class LeadDetailsForm extends React.Component {
                             inputName?: string) => void,
         handleLocationChange: (newLocation: MapLocation) => void,
         lead: Lead,
-        representativesList: Array<Selection>,
-        sourcesList: Array<Selection>,
+        representativesList: Array<string>,
+        sourcesList: Array<string>,
     };
 
     componentDidMount(): void {
@@ -77,9 +77,9 @@ export default class LeadDetailsForm extends React.Component {
                         >
                             {sourcesList.map(selection => (
                                 <MenuItem
-                                    key={selection.id}
-                                    primaryText={selection.value}
-                                    value={selection.value}
+                                    key={selection}
+                                    primaryText={selection}
+                                    value={selection}
                                 />
                             ))}
                         </SelectField>
@@ -122,9 +122,9 @@ export default class LeadDetailsForm extends React.Component {
                         >
                             {representativesList.map(selection => (
                                 <MenuItem
-                                    key={selection.id}
-                                    primaryText={selection.value}
-                                    value={selection.value}
+                                    key={selection}
+                                    primaryText={selection}
+                                    value={selection}
                                 />
                             ))}
                         </SelectField>

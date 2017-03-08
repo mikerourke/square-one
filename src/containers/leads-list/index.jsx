@@ -5,9 +5,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import { Map } from 'immutable';
+import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
+import { primary1Color } from 'style/mui/palette';
 import { getAllLeads } from 'state/entities/leads/actions';
 import Lead from 'state/entities/leads/model';
 import tableColumns from './table-columns';
@@ -41,7 +43,6 @@ export class LeadsList extends React.Component {
 
     constructor(): void {
         super();
-
         this.state = {
             isLoading: true,
             leads: new Map(),
@@ -66,6 +67,22 @@ export class LeadsList extends React.Component {
         browserHistory.push(`leads/${row.id}`);
     };
 
+    getTableData = (): List<*> => {
+        const { leads } = this.state;
+        return leads.map(lead => lead.set('editIcon', (
+            <IconButton
+                iconClassName="material-icons"
+                iconStyle={{ color: primary1Color }}
+                onTouchTap={event => this.handleEditTouchTap(event, lead)}
+                tooltip="Edit this lead"
+                tooltipPosition="bottom-right"
+                tooltipStyles={{ fontSize: 12 }}
+            >
+                mode_edit
+            </IconButton>
+        )));
+    }
+
     render(): React.Element<*> {
         const { isLoading, leads } = this.state;
 
@@ -88,7 +105,7 @@ export class LeadsList extends React.Component {
         if (isLoading) {
             return (<div>Loading...</div>);
         }
-
+        const tableData = this.getTableData().toList();
         return (
             <div>
                 <PageHeader
@@ -97,7 +114,7 @@ export class LeadsList extends React.Component {
                 />
                 <SearchableTable
                     columns={tableColumns}
-                    data={leads}
+                    data={tableData}
                     filterSelections={filterSelections}
                     handleEditTouchTap={this.handleEditTouchTap}
                 />

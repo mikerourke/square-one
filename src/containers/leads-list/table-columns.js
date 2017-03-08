@@ -8,6 +8,13 @@ export default [
         },
     },
     {
+        key: 'editIcon',
+        style: {
+            paddingLeft: 8,
+            width: 16,
+        },
+    },
+    {
         key: 'leadName',
         label: 'Lead Name',
         sortable: true,

@@ -21,15 +21,8 @@ export default class Lead extends Record({
     notes: (new List(): List<number>),
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
-}) {
-    getChanges(): Array<Object> {
-        return this.changes.toArray();
-    }
-
-    getNotes(): Array<Object> {
-        return this.notes.toArray();
-    }
-}
+    editIcon: (null: ?Object),
+}) {}
 
 export class Note extends Record({
     leadId: (0: number),

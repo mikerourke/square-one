@@ -7,6 +7,9 @@ import FontIcon from 'material-ui/FontIcon';
 import { TableHeaderColumn } from 'material-ui/Table';
 import Tooltip from 'material-ui/internal/Tooltip';
 
+/**
+ * Styled component wrapper for the header icon.
+ */
 const IconWrapper = styled.div`
     display: inline-block;
     height: 16px;
@@ -15,11 +18,19 @@ const IconWrapper = styled.div`
     width: 16px;
 `;
 
+/**
+ * Styled component wrapper for the title.
+ */
 const TitleWrapper = styled.div`
     display: inline-block;
     vertical-align: middle;
 `;
 
+/**
+ * Represents a column in the table header.
+ * @export
+ * @class HeaderColumn
+ */
 export default class HeaderColumn extends TableHeaderColumn {
     props: {
         children?: React.Element<*>,
@@ -31,25 +42,26 @@ export default class HeaderColumn extends TableHeaderColumn {
         onHoverExit?: () => void,
         order?: string,
         sortable?: boolean,
+        sorted?: boolean,
         style?: Object,
         tooltip?: string,
     };
-
-    static muiName = 'TableHeaderColumn';
 
     static defaultProps = {
         sortable: false,
         order: 'asc',
     };
 
-    constructor(props: any, context: any) {
+    static muiName = 'TableHeaderColumn';
+
+    constructor(props: any, context: any): void {
         super(props, context);
         this.state = {
             sortHovered: false,
         };
     }
 
-    onMouseEnter = () => {
+    onMouseEnter = (): void => {
         const { sortable, tooltip } = this.props;
         if (tooltip !== undefined) {
             this.setState({ hovered: true });
@@ -59,7 +71,7 @@ export default class HeaderColumn extends TableHeaderColumn {
         }
     };
 
-    onMouseLeave = () => {
+    onMouseLeave = (): void => {
         const { sortable, tooltip } = this.props;
         if (tooltip !== undefined) {
             this.setState({ hovered: false });
@@ -69,34 +81,22 @@ export default class HeaderColumn extends TableHeaderColumn {
         }
     };
 
-    getStyles = () => {
-        const { context, props, state } = this;
-        const { tableHeaderColumn } = context.muiTheme;
+    getRootStyle = (): Object => {
+        const { alignRight, sortable, sorted } = (this.props: Object);
+        const { muiTheme: { tableHeaderColumn } } = (this.context: Object);
 
         return {
-            root: {
-                color: props.sorted ? '#3A3A3A' : tableHeaderColumn.textColor,
-                cursor: props.sortable ? 'pointer' : 'default',
-                fontSize: 12,
-                fontWeight: 'normal',
-                height: tableHeaderColumn.height,
-                paddingLeft: tableHeaderColumn.spacing,
-                paddingRight: tableHeaderColumn.spacing,
-                position: 'relative',
-                textAlign: props.alignRight ? 'right' : 'left',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-            },
-            sortIcon: {
-                display: state.sortHovered || props.sorted ? 'inline' : 'none',
-                height: '100%',
-                opacity: props.sorted ? 0.87 : 0.54,
-                width: '100%',
-            },
-            tooltip: {
-                boxSizing: 'border-box',
-                marginTop: tableHeaderColumn.height / 2,
-            },
+            color: sorted ? '#3A3A3A' : tableHeaderColumn.textColor,
+            cursor: sortable ? 'pointer' : 'default',
+            fontSize: 12,
+            fontWeight: 'normal',
+            height: tableHeaderColumn.height,
+            paddingLeft: tableHeaderColumn.spacing,
+            paddingRight: tableHeaderColumn.spacing,
+            position: 'relative',
+            textAlign: alignRight ? 'right' : 'left',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
         };
     };
 
@@ -109,21 +109,21 @@ export default class HeaderColumn extends TableHeaderColumn {
             onClick,
             onHover,
             onHoverExit,
-            style,
-            tooltip,
+            order,
             sortable,
             sorted,
-            order,
+            style,
+            tooltip,
             ...props
         } = this.props;
 
         const { prepareStyles } = this.context.muiTheme;
-        const styles = this.getStyles();
+        const rootStyle = this.getRootStyle();
 
         const handlers = {
+            onClick: this.onClick,
             onMouseEnter: this.onMouseEnter,
             onMouseLeave: this.onMouseLeave,
-            onClick: this.onClick,
         };
 
         let tooltipNode;
@@ -132,7 +132,10 @@ export default class HeaderColumn extends TableHeaderColumn {
                 <Tooltip
                     label={tooltip}
                     show={this.state.hovered}
-                    style={styles.tooltip}
+                    style={{
+                        boxSizing: 'border-box',
+                        marginTop: 8,
+                    }}
                 />
             );
         }
@@ -152,7 +155,13 @@ export default class HeaderColumn extends TableHeaderColumn {
                 <IconWrapper>
                     <FontIcon
                         className="material-icons"
-                        style={styles.sortIcon}
+                        style={{
+                            display: sorted ? 'inline' : 'none',
+                            fontSize: 18,
+                            height: '100%',
+                            opacity: sorted ? 0.87 : 0.54,
+                            width: '100%',
+                        }}
                     >
                         {sortIconName}
                     </FontIcon>
@@ -162,17 +171,16 @@ export default class HeaderColumn extends TableHeaderColumn {
 
         let leftSortIcon;
         let rightSortIcon;
-
-        if (sortable && styles.root.textAlign === 'left') {
+        if (sortable && rootStyle.textAlign === 'left') {
             rightSortIcon = sortIcon;
-        } else if (sortable && styles.root.textAlign === 'right') {
+        } else if (sortable && rootStyle.textAlign === 'right') {
             leftSortIcon = sortIcon;
         }
 
         return (
             <th
                 className={className}
-                style={prepareStyles(Object.assign(styles.root, style))}
+                style={prepareStyles(Object.assign(rootStyle, style))}
                 {...handlers}
                 {...props}
             >

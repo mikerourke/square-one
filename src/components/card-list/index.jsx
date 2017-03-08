@@ -13,27 +13,20 @@ import {
 import { getSearchResults, getSortedData } from 'lib/query-actions';
 import SearchToolbar from 'components/search-toolbar';
 
-export type CardEntity = {
-    details: string,
-    id: number,
-    subtitle: string,
-    title: string,
-};
-
 /**
  * List of card components.
- * @param {Array} cardContents Array of data objects to display on card.
+ * @param {List} cardContents List of data objects to display on card.
  * @param {Array} [searchFieldExclusions=[]] Fields within the Card contents
  *      array that should be excluded from searches.
  */
 export default class CardList extends React.Component {
     props: {
-        cardContents: Array<CardEntity>,
+        cardContents: List<*>,
         searchFieldExclusions?: Array<string>,
     };
 
     state: {
-        cardContents: Array<CardEntity>,
+        cardContents: List<*>,
     };
 
     static defaultProps = {

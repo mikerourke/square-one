@@ -1,9 +1,14 @@
 /* @flow */
 
 /* External dependencies */
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { TableRowColumn } from 'material-ui/Table';
 
+/**
+ * Represents a column within a row of the table body.
+ * @export
+ * @class RowColumn
+ */
 export default class RowColumn extends TableRowColumn {
     props: {
         children?: React.Element<*>,
@@ -18,38 +23,31 @@ export default class RowColumn extends TableRowColumn {
 
     static muiName = 'TableRowColumn';
 
-    getStyles = () => {
-        const { context, props } = this;
-        const { tableRowColumn } = context.muiTheme;
+    getRootStyle = (): Object => {
+        const { children } = (this.props: Object);
+        const { muiTheme: { tableRowColumn } } = (this.context: Object);
 
-        const styles = {
-            root: {
-                paddingLeft: tableRowColumn.spacing,
-                paddingRight: tableRowColumn.spacing,
-                height: tableRowColumn.height,
-                textAlign: 'left',
-                fontSize: 13,
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-            },
+        const isRightAlign = (React.Children.count(children) === 1
+                              && !isNaN(children));
+
+        return {
+            fontSize: 13,
+            height: tableRowColumn.height,
+            paddingLeft: tableRowColumn.spacing,
+            paddingRight: tableRowColumn.spacing,
+            textAlign: isRightAlign ? 'right' : 'left',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
         };
-
-        if (React.Children.count(props.children) === 1
-            && !isNaN(props.children)) {
-            styles.textAlign = 'right';
-        }
-
-        return styles;
     };
 
-    render() {
+    render(): React.Element<*> {
         const {
             children,
             className,
             columnNumber,
             hoverable,
             onClick,
-            onDoubleClick,
             onHover,
             onHoverExit,
             style,
@@ -57,7 +55,7 @@ export default class RowColumn extends TableRowColumn {
         } = this.props;
 
         const { prepareStyles } = this.context.muiTheme;
-        const styles = this.getStyles();
+        const rootStyle = this.getRootStyle();
 
         const handlers = {
             onClick: this.onClick,
@@ -68,7 +66,7 @@ export default class RowColumn extends TableRowColumn {
         return (
             <td
                 className={className}
-                style={prepareStyles(Object.assign(styles.root, style))}
+                style={prepareStyles(Object.assign(rootStyle, style))}
                 {...handlers}
                 {...props}
             >

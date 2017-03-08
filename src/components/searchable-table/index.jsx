@@ -26,19 +26,19 @@ type Column = {
 /**
  * Table with pagination, sorting, and filtering capabilities.
  * @param {Array} columns Columns to display in the table.
- * @param {Array | List} data Data objects to display in the table.
+ * @param {List} data Data objects to display in the table.
  * @param {Array} filterSelections Array of items to display in the Filter
  *      menu dropdown.
  */
 export default class SearchableTable extends React.Component {
     props: {
         columns: Array<Column>,
-        data: Array<any> | List<*>,
+        data: List<*>,
         filterSelections: Array<string>,
     };
 
     state: {
-        data: Array<any> | List<*>,
+        data: List<*>,
         page: number,
         rowSize: number,
     };
@@ -129,13 +129,12 @@ export default class SearchableTable extends React.Component {
                 >
                     <Table
                         columns={columns}
-                        count={20}
                         data={data}
                         fixedHeader={true}
-                        onNextPageClick={this.handleNextPageClick}
-                        onPreviousPageClick={this.handlePreviousPageClick}
-                        onRowSizeChange={this.handleRowSizeChange}
-                        onSortOrderChange={this.handleSortOrderChange}
+                        handleNextPageClick={this.handleNextPageClick}
+                        handlePreviousPageClick={this.handlePreviousPageClick}
+                        handleRowSizeChange={this.handleRowSizeChange}
+                        handleSortOrderChange={this.handleSortOrderChange}
                         showRowHover={true}
                         {...state}
                     />

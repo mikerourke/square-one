@@ -4,6 +4,11 @@
 import React from 'react';
 import { TableBody } from 'material-ui/Table';
 
+/**
+ * Represents the body of the table that contains data rows.
+ * @export
+ * @class Body
+ */
 export default class Body extends TableBody {
     props: {
         allRowsSelected?: boolean,
@@ -22,6 +27,7 @@ export default class Body extends TableBody {
     };
 
     static defaultProps = {
+        allRowsSelected: false,
         deselectOnClickaway: false,
         displayRowCheckbox: false,
         selectable: false,
@@ -35,17 +41,18 @@ export default class Body extends TableBody {
         const handlers = {
             onCellHover: this.onCellHover,
             onCellHoverExit: this.onCellHoverExit,
+            onRowClick: this.onRowClick,
             onRowHover: this.onRowHover,
             onRowHoverExit: this.onRowHoverExit,
-            onRowClick: this.onRowClick,
         };
 
         return React.Children.map(this.props.children, (child) => {
             if (React.isValidElement(child)) {
                 const props = {
+                    displayBorder: true,
                     hoverable: this.props.showRowHover,
-                    striped: this.props.stripedRows && (rowNumber % 2 === 0),
                     rowNumber: rowNumber += 1,
+                    striped: this.props.stripedRows && (rowNumber % 2 === 0),
                 };
 
                 if (rowNumber === numChildren) {

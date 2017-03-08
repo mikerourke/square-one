@@ -4,6 +4,7 @@
 
 /* External dependencies */
 import React from 'react';
+import { connect } from 'react-redux';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
@@ -18,6 +19,14 @@ import FormGeolocation from 'components/forms/form-geolocation';
 /* Types */
 import type { MapLocation } from 'lib/types';
 
+const mapStateToProps = (state, ownProps) => {
+    const settings = state.getIn(['settings', 'entities']);
+    return {
+        representativesList: settings.get('representatives').getData(),
+        sourcesList: settings.get('sources').getData(),
+    };
+};
+
 /**
  * Form component for entering Lead details.
  * @param {Function} handleInputChange Action to perform when the value of an
@@ -25,12 +34,8 @@ import type { MapLocation } from 'lib/types';
  * @param {Function} handleLocationChange Action to perform when the value
  *      of the Geolocation field is changed.
  * @param {Object} lead Lead entity associated with the form.
- * @param {Array} representativesList List of items that populate the
- *      Representatives select field.
- * @param {Array} sourcesList List of items that populate the Sources select
- *      field.
  */
-export default class LeadDetailsForm extends React.Component {
+class LeadDetailsForm extends React.Component {
     props: {
         handleInputChange: (event: Event, newValue: string,
                             inputName?: string) => void,
@@ -145,3 +150,5 @@ export default class LeadDetailsForm extends React.Component {
         );
     }
 }
+
+export default connect(mapStateToProps)(LeadDetailsForm);

@@ -5,28 +5,23 @@ import React from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import {
     Step,
-    Stepper,
     StepButton,
     StepContent,
+    Stepper,
 } from 'material-ui/Stepper';
 
 /* Internal dependencies */
 import { accent1Color } from 'style/mui/palette';
 
-export type TimelineEvent = {
-    details: string,
-    iconName: string,
-    id: number,
-    title: string,
-}
+import type { List } from 'immutable';
 
 /**
  * Shows timeline of events associated with an entity.
- * @param {Array} timelineEvents Events to display in the timeline.
+ * @param {List} timelineEvents Events to display in the timeline.
  */
 export default class Timeline extends React.Component {
     props: {
-        timelineEvents: Array<TimelineEvent>,
+        timelineEvents: List<*>,
     };
 
     state: {

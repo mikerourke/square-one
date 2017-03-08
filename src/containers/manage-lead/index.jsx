@@ -7,6 +7,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import { List } from 'immutable';
 
 /* Internal dependencies */
 import { createLead, updateLead } from 'state/entities/leads/actions';
@@ -21,25 +22,26 @@ import TabsToolbar from 'components/tabs-toolbar';
 /* Types */
 import type { Map } from 'immutable';
 import type { MapLocation } from 'lib/types';
-import type { TimelineEvent } from 'components/timeline';
 
 const mapStateToProps = (state, ownProps) => {
-    const entities = state.getIn(['entities', 'leads', 'entities']);
-    let leadOnPage = new Lead();
+    const entitiesPath = ['entities', 'leads', 'entities'];
+    let lead = new Lead();
+    let notes = new List();
+    let changes = new List();
     const leadId = parseInt(ownProps.params.id, 10) || 0;
     if (leadId !== 0) {
-        leadOnPage = entities.get('leads').find(
-            (value, key) => key.toString() === leadId.toString());
+        lead = state.getIn(entitiesPath.concat(['leads', leadId.toString()]));
+        notes = state.getIn(entitiesPath.concat(['notes']))
+            .filter(note => note.leadId === leadId)
+            .toList();
+        changes = state.getIn(entitiesPath.concat(['changes']))
+            .filter(change => change.leadId === leadId)
+            .toList();
     }
-
-    const settings = state.get('settings');
-
     return {
-        lead: leadOnPage,
-        notes: leadOnPage.getNotes(),
-        representativesList: settings.get('representatives').getData(),
-        sourcesList: settings.get('sources').getData(),
-        timelineEvents: leadOnPage.getChanges(),
+        changes,
+        lead,
+        notes,
     };
 };
 
@@ -53,23 +55,21 @@ const mapDispatchToProps = dispatch => ({
 class ManageLeadPage extends React.Component {
     props: {
         actions: any,
+        changes: List<Change>,
         lead: Lead,
-        notes: Array<Object>,
-        representativesList: Array<string>,
-        sourcesList: Array<string>,
-        timelineEvents: Array<Object>,
+        notes: List<Note>,
     };
 
     state: {
         isMessagesDialogOpen: boolean,
-        leadOnPage: Lead,
+        lead: Lead,
     };
 
     constructor(props: any): void {
         super(props);
         this.state = {
             isMessagesDialogOpen: false,
-            leadOnPage: this.props.lead,
+            lead: this.props.lead,
         };
     }
 
@@ -108,9 +108,9 @@ class ManageLeadPage extends React.Component {
         }
 
         // Update the Lead held in local state (Immutable Record).
-        const { leadOnPage } = this.state;
-        const updatedLead = leadOnPage.set(nameOfField, newValue);
-        this.setState({ leadOnPage: updatedLead });
+        const { lead } = this.state;
+        const updatedLead = lead.set(nameOfField, newValue);
+        this.setState({ lead: updatedLead });
     };
 
     /**
@@ -120,10 +120,10 @@ class ManageLeadPage extends React.Component {
      * @param {MapLocation} newLocation New location to apply to the Lead.
      */
     handleLocationChange = (newLocation: MapLocation): void => {
-        const { leadOnPage } = this.state;
+        const { lead } = this.state;
         const { address, lat, lng } = newLocation;
-        const updatedLead = leadOnPage.merge({ address, lat, lng });
-        this.setState({ leadOnPage: updatedLead });
+        const updatedLead = lead.merge({ address, lat, lng });
+        this.setState({ lead: updatedLead });
     };
 
     /**
@@ -138,31 +138,25 @@ class ManageLeadPage extends React.Component {
         // performed.
         this.setState({ isMessagesDialogOpen: false });
 
-        // Convert the Lead in local state from an Immutable Record to a
-        // JavaScript object for the API call.
-        const leadEntity = this.state.leadOnPage.toJS();
-
         // If the ID is 0 (the default), a new Lead needs to be created,
         // otherwise update the Lead that corresponds with the ID.
+        const { lead } = this.state;
         let performAction: Function = this.props.actions.createLead;
-        if (leadEntity.id !== 0) {
+        if (lead.id !== 0) {
             performAction = this.props.actions.updateLead;
         }
-        performAction(leadEntity).then(() => browserHistory.push('/leads'));
+        performAction(lead).then(() => browserHistory.push('/leads'));
     };
 
     render(): React.Element<*> {
         const {
-            lead,
+            changes,
             notes,
-            representativesList,
-            sourcesList,
-            timelineEvents,
         } = this.props;
 
         const {
             isMessagesDialogOpen,
-            leadOnPage,
+            lead,
         } = this.state;
 
         const tabPages = [
@@ -172,14 +166,12 @@ class ManageLeadPage extends React.Component {
                     (<LeadDetailsForm
                         handleInputChange={this.handleInputChange}
                         handleLocationChange={this.handleLocationChange}
-                        lead={leadOnPage}
-                        representativesList={representativesList}
-                        sourcesList={sourcesList}
+                        lead={lead}
                     />),
             },
             {
                 label: 'History',
-                content: (<Timeline timelineEvents={timelineEvents} />),
+                content: (<Timeline timelineEvents={changes} />),
             },
             {
                 label: 'Notes',
@@ -192,8 +184,8 @@ class ManageLeadPage extends React.Component {
             <div>
                 <PageHeaderToolbar
                     handleTouchTap={this.handleHeaderTouchTap}
-                    headerText={leadOnPage.leadName}
-                    subheaderText={leadOnPage.status}
+                    headerText={lead.leadName}
+                    subheaderText={lead.status}
                 />
                 <TabsToolbar
                     tabPages={tabPages}

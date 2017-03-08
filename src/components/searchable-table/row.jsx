@@ -4,6 +4,11 @@
 import React from 'react';
 import { TableRow } from 'material-ui/Table';
 
+/**
+ * Represents a row of data in the table body.
+ * @export
+ * @class Row
+ */
 export default class Row extends TableRow {
     props: {
         children?: React.Element<*>,
@@ -17,25 +22,27 @@ export default class Row extends TableRow {
         onRowClick?: () => void,
         onRowHover?: () => void,
         onRowHoverExit?: () => void,
-        rowNumber?: number,
+        rowNumber: number,
+        selectable?: boolean,
         striped?: boolean,
         style?: Object,
     };
 
-    getStyles = () => {
+    getStyles = (): Object => {
         const { context, props, state } = this;
-        const { tableRow } = context.muiTheme;
+        const { hovered, striped, displayBorder } = (this.props: Object);
+        const { muiTheme: { tableRow } } = (this.context: Object);
 
         let cellBgColor = 'inherit';
-        if (props.hovered || state.hovered) {
-            cellBgColor = tableRow.hoverColor;
-        } else if (props.striped) {
+        if (hovered || state.hovered) {
+            cellBgColor = tableRow.overColor;
+        } else if (striped) {
             cellBgColor = tableRow.stripeColor;
         }
 
         return {
             root: {
-                borderBottom: props.displayBorder
+                borderBottom: displayBorder
                               && `1px solid ${tableRow.borderColor}`,
                 color: tableRow.textColor,
                 height: tableRow.height,
@@ -65,7 +72,7 @@ export default class Row extends TableRow {
             ...props
         } = this.props;
 
-        const { prepareStyles } = this.context.muiTheme;
+        const { muiTheme: { prepareStyles } } = (this.context: Object);
         const styles = this.getStyles();
 
         const rowColumns = React.Children.map(this.props.children,
@@ -73,8 +80,8 @@ export default class Row extends TableRow {
                 if (React.isValidElement(child)) {
                     return React.cloneElement(child, {
                         columnNumber,
-                        hoverable: this.props.hoverable,
-                        key: `${this.props.rowNumber}-${columnNumber}`,
+                        hoverable,
+                        key: `${rowNumber.toString()}-${columnNumber}`,
                         onClick: this.onCellClick,
                         onHover: this.onCellHover,
                         onHoverExit: this.onCellHoverExit,

@@ -4,10 +4,12 @@
 
 /* External dependencies */
 import React from 'react';
+import { List } from 'immutable';
 import { Table as MuiTable, TableHeader } from 'material-ui/Table';
 
 /* Internal dependencies */
 import Body from './body';
+import Footer from './footer';
 import HeaderColumn from './header-column';
 import Row from './row';
 import RowColumn from './row-column';
@@ -15,13 +17,16 @@ import RowColumn from './row-column';
 export default class Table extends React.Component {
     props: {
         columns: Array<any>,
-        count: number,
-        data: Array<any>,
+        data: List<*>,
         fixedFooter?: boolean,
         fixedHeader?: boolean,
+        handleNextPageClick: () => void,
+        handlePreviousPageClick: () => void,
+        handleRowSizeChange: (index?: number, value: number) => void,
+        handleSortOrderChange?: (key: string, order: string) => void,
         height?: string,
-        onSortOrderChange?: () => void,
         page?: number,
+        rowSize?: number,
         showRowHover?: boolean,
         stripedRows?: boolean,
     };
@@ -31,12 +36,9 @@ export default class Table extends React.Component {
         sortOrder: string,
     };
 
-    static muiName = 'Table';
-
     static defaultProps = {
         columns: [],
-        count: 0,
-        data: [],
+        data: new List(),
         fixedFooter: false,
         fixedHeader: false,
         height: 'inherit',
@@ -44,6 +46,8 @@ export default class Table extends React.Component {
         showRowHover: false,
         stripedRows: false,
     };
+
+    static muiName = 'Table';
 
     constructor(props: any, context: any): void {
         super(props, context);
@@ -58,7 +62,7 @@ export default class Table extends React.Component {
         rowIndex: number,
         columnIndex: number,
     ): void => {
-        const { columns, onSortOrderChange } = this.props;
+        const { columns, handleSortOrderChange } = this.props;
         const adjustedColumnIndex = columnIndex - 1;
         const column = columns[adjustedColumnIndex];
         if (column && column.sortable) {
@@ -71,78 +75,94 @@ export default class Table extends React.Component {
                 sortColumn: key,
                 sortOrder: order,
             });
-            if (onSortOrderChange) {
-                onSortOrderChange(key, order);
+            if (handleSortOrderChange) {
+                handleSortOrderChange(key, order);
             }
         }
     };
 
     render(): React.Element<*> {
         const {
-            fixedHeader,
-            fixedFooter,
-            stripedRows,
-            showRowHover,
-            height,
             columns,
             data,
+            fixedFooter,
+            fixedHeader,
+            handleNextPageClick,
+            handlePreviousPageClick,
+            handleRowSizeChange,
+            height,
             page,
-            count,
+            rowSize,
+            showRowHover,
+            stripedRows,
             ...props
         } = this.props;
         const { sortColumn, sortOrder } = this.state;
 
+        // This fails the type check even though it's a valid statement:
+        // $FlowIgnore
+        const recordCount = (List.isList(data)) ? data.count() : data.length;
+
         return (
-            <MuiTable
-                height={height}
-                fixedFooter={fixedFooter}
-                fixedHeader={fixedHeader}
-            >
-                <TableHeader
-                    adjustForCheckbox={false}
-                    displaySelectAll={false}
-                    enableSelectAll={false}
+            <div>
+                <MuiTable
+                    height={height}
+                    fixedFooter={fixedFooter}
+                    fixedHeader={fixedHeader}
                 >
-                    <Row onCellClick={this.handleHeaderColumnClick}>
-                        {columns.map((row, index) => (
-                            <HeaderColumn
-                                className={row.className}
-                                key={index}
-                                order={sortColumn === row.key
-                                       ? sortOrder
-                                       : 'asc'}
-                                sortable={row.sortable}
-                                sorted={sortColumn === row.key}
-                                style={Object.assign({},
-                                    { fontWeight: 600 },
-                                    row.style || {})}
-                                tooltip={row.tooltip}
-                            >
-                                <span>{row.label}</span>
-                            </HeaderColumn>
-                        ), this)}
-                    </Row>
-                </TableHeader>
-                <Body
-                    deselectOnClickaway={false}
-                    displayRowCheckbox={false}
-                    showRowHover={showRowHover}
-                    stripedRows={stripedRows}
-                >
-                    {data.map((row, rowIndex) => (
-                        <Row key={rowIndex}>
-                            {columns.map((column, columnIndex) => (
-                                <RowColumn
-                                    key={columnIndex}
-                                    style={column.style}
+                    <TableHeader
+                        adjustForCheckbox={false}
+                        displaySelectAll={false}
+                        enableSelectAll={false}
+                    >
+                        <Row onCellClick={this.handleHeaderColumnClick}>
+                            {columns.map((row, index) => (
+                                <HeaderColumn
+                                    className={row.className}
+                                    key={index}
+                                    order={sortColumn === row.key
+                                        ? sortOrder
+                                        : 'asc'}
+                                    sortable={row.sortable}
+                                    sorted={sortColumn === row.key}
+                                    style={Object.assign({},
+                                        { fontWeight: 600 },
+                                        row.style || {})}
+                                    tooltip={row.tooltip}
                                 >
-                                    {row[column.key]}
-                                </RowColumn>
-                            ))}
+                                    <span>{row.label}</span>
+                                </HeaderColumn>
+                            ), this)}
                         </Row>
-                    ))}
-                </Body>
-            </MuiTable>
+                    </TableHeader>
+                    <Body
+                        deselectOnClickaway={false}
+                        displayRowCheckbox={false}
+                        showRowHover={showRowHover}
+                        stripedRows={stripedRows}
+                    >
+                        {data.map((row, rowIndex) => (
+                            <Row key={rowIndex}>
+                                {columns.map((column, columnIndex) => (
+                                    <RowColumn
+                                        key={columnIndex}
+                                        style={column.style}
+                                    >
+                                        {row[column.key]}
+                                    </RowColumn>
+                                ))}
+                            </Row>
+                        ))}
+                    </Body>
+                </MuiTable>
+                <Footer
+                    handleNextPageClick={handleNextPageClick}
+                    handlePreviousPageClick={handlePreviousPageClick}
+                    handleRowSizeChange={handleRowSizeChange}
+                    recordCount={recordCount}
+                    rowSize={rowSize}
+                />
+            </div>
         );
     }
 }

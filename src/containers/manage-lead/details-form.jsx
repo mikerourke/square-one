@@ -19,7 +19,7 @@ import FormGeolocation from 'components/forms/form-geolocation';
 /* Types */
 import type { MapLocation } from 'lib/types';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     const settings = state.getIn(['settings', 'entities']);
     return {
         representativesList: settings.get('representatives').getData(),
@@ -29,21 +29,26 @@ const mapStateToProps = (state, ownProps) => {
 
 /**
  * Form component for entering Lead details.
- * @param {Function} handleInputChange Action to perform when the value of an
- *      input is changed.
- * @param {Function} handleLocationChange Action to perform when the value
- *      of the Geolocation field is changed.
  * @param {Object} lead Lead entity associated with the form.
  */
 class LeadDetailsForm extends React.Component {
     props: {
-        handleInputChange: (event: Event, newValue: string,
-                            inputName?: string) => void,
-        handleLocationChange: (newLocation: MapLocation) => void,
         lead: Lead,
-        representativesList: Array<string>,
-        sourcesList: Array<string>,
+        representativesList?: Array<string>,
+        sourcesList?: Array<string>,
     };
+
+    static defaultProps = {
+        representativesList: [],
+        sourcesList: [],
+    };
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            lead: this.props.lead,
+        };
+    }
 
     componentDidMount(): void {
         // Ensure the form submission event isn't fired if the user presses
@@ -51,10 +56,44 @@ class LeadDetailsForm extends React.Component {
         preventSubmissionOnEnter('geo-address');
     }
 
+    /**
+     * Updates the Lead held in local state with the data from the field on the
+     *      Details Form component.
+     * @param {Event} event Event associated with the input.
+     * @param {string} newValue
+     * @param {string} fieldName
+     */
+    handleInputChange = (event: Event, newValue: string,
+                         fieldName?: string = ''): void => {
+        let nameOfField = fieldName;
+
+        // This is done to pass Flow type checking.
+        const target = event.target;
+        if (target instanceof HTMLInputElement) {
+            nameOfField = target.name;
+        }
+
+        // Update the Lead held in local state (Immutable Record).
+        const { lead } = this.state;
+        const updatedLead = lead.set(nameOfField, newValue);
+        this.setState({ lead: updatedLead });
+    };
+
+    /**
+     * Updates the address, latitude, and longitude of the Lead held in local
+     *      state when the Places Autocomplete input is changed on the
+     *      Details Form.
+     * @param {MapLocation} newLocation New location to apply to the Lead.
+     */
+    handleLocationChange = (newLocation: MapLocation): void => {
+        const { lead } = this.state;
+        const { address, lat, lng } = newLocation;
+        const updatedLead = lead.merge({ address, lat, lng });
+        this.setState({ lead: updatedLead });
+    };
+
     render(): React.Element<*> {
         const {
-            handleInputChange,
-            handleLocationChange,
             lead,
             representativesList,
             sourcesList,
@@ -68,7 +107,7 @@ class LeadDetailsForm extends React.Component {
                             floatingLabelText="Lead Name"
                             fullWidth={true}
                             name="leadName"
-                            onChange={handleInputChange}
+                            onChange={this.handleInputChange}
                             value={lead.leadName}
                         />
                         <SelectField
@@ -76,7 +115,8 @@ class LeadDetailsForm extends React.Component {
                             fullWidth={true}
                             onChange={
                                 (event: Event, key: string, value: string) => {
-                                    handleInputChange(event, value, 'source');
+                                    this.handleInputChange(event, value,
+                                        'source');
                                 }}
                             value={lead.source}
                         >
@@ -92,28 +132,28 @@ class LeadDetailsForm extends React.Component {
                             floatingLabelText="Lead Fee"
                             fullWidth={true}
                             name="leadFee"
-                            onChange={handleInputChange}
+                            onChange={this.handleInputChange}
                             value={lead.leadFee === 0 ? '' : lead.leadFee}
                         />
                         <TextField
                             floatingLabelText="Phone"
                             fullWidth={true}
                             name="phone"
-                            onChange={handleInputChange}
+                            onChange={this.handleInputChange}
                             value={lead.phone}
                         />
                         <TextField
                             floatingLabelText="Email"
                             fullWidth={true}
                             name="email"
-                            onChange={handleInputChange}
+                            onChange={this.handleInputChange}
                             value={lead.email}
                         />
                         <TextField
                             floatingLabelText="Description"
                             fullWidth={true}
                             name="description"
-                            onChange={handleInputChange}
+                            onChange={this.handleInputChange}
                             value={lead.description}
                         />
                         <SelectField
@@ -121,7 +161,8 @@ class LeadDetailsForm extends React.Component {
                             fullWidth={true}
                             onChange={
                                 (event: Event, key: string, value: string) => {
-                                    handleInputChange(event, value, 'assignTo');
+                                    this.handleInputChange(event, value,
+                                        'assignTo');
                                 }}
                             value={lead.assignTo}
                         >
@@ -137,7 +178,7 @@ class LeadDetailsForm extends React.Component {
                     <FormColumn>
                         <FormGeolocation
                             floatingLabelText="Address"
-                            handleLocationChange={handleLocationChange}
+                            handleLocationChange={this.handleLocationChange}
                             startingLocation={{
                                 address: lead.address,
                                 lat: lead.lat,

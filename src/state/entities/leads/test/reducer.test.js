@@ -5,7 +5,7 @@ import { normalize } from 'normalizr';
 /* Internal dependencies */
 import reducer from '../reducer';
 import * as types from '../../../action-types';
-import leadsSchema from '../schema';
+import leadsSchema from '../../schema';
 import { createMockStore, mockClient } from '../../../index.test';
 import { mockData } from './model.test';
 

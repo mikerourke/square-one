@@ -46,12 +46,12 @@ export default class Footer extends React.Component {
         handleRowSizeChange: (index?: number, value: number) => void,
         recordCount: number,
         rowSize: number,
-    }
+    };
 
     state: {
         page: number,
         rowSize: number,
-    }
+    };
 
     constructor(props: any) {
         super(props);
@@ -88,7 +88,7 @@ export default class Footer extends React.Component {
             previousButtonDisabled,
             start,
         };
-    }
+    };
 
     render(): React.Element<*> {
         const {

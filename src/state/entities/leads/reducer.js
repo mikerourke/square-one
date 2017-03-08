@@ -16,7 +16,7 @@ import {
     LEAD_GET_SINGLE, LEAD_GET_SINGLE_SUCCESS, LEAD_GET_SINGLE_FAIL,
     LEAD_UPDATE, LEAD_UPDATE_SUCCESS, LEAD_UPDATE_FAIL,
 } from '../../action-types';
-import Lead, { Note, Change } from './model';
+import { Change, Lead, Note } from '../models';
 
 /* Types */
 import type { Action } from 'lib/types';

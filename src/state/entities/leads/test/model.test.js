@@ -4,7 +4,7 @@ import { normalize } from 'normalizr';
 
 /* Internal dependencies */
 import Lead from '../model';
-import leadsSchema from '../schema';
+import { leadsSchema } from '../../schema';
 
 export const mockData = [{
         "id": 1,

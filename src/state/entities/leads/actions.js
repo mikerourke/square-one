@@ -13,7 +13,7 @@ import {
     LEAD_UPDATE,
 } from '../../action-types';
 import Lead from './model';
-import leadsSchema from './schema';
+import { leadsSchema } from '../schema';
 
 /* Types */
 import type { Action } from 'lib/types';

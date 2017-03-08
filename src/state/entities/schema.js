@@ -43,4 +43,4 @@ const leadSchema = new schema.Entity('leads', {
     changes: [changeSchema],
     notes: [noteSchema],
 });
-export default [leadSchema];
+export const leadsSchema = [leadSchema];

@@ -3,10 +3,9 @@
 /* External dependencies */
 import React from 'react';
 import { connect } from 'react-redux';
-import { browserHistory, Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import { Map } from 'immutable';
 import IconButton from 'material-ui/IconButton';
-import RaisedButton from 'material-ui/RaisedButton';
 
 /* Internal dependencies */
 import { primary1Color } from 'style/mui/palette';
@@ -16,6 +15,9 @@ import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
 import SearchableTable from 'components/searchable-table';
+
+/* Types */
+import type { List } from 'immutable';
 
 const mapStateToProps = state => ({
     leads: state.getIn(['entities', 'leads', 'entities', 'leads']),
@@ -62,6 +64,11 @@ export class LeadsList extends React.Component {
         }
     }
 
+    handleAddTouchTap = (event: Event): void => {
+        event.preventDefault();
+        browserHistory.push('leads/new');
+    };
+
     handleEditTouchTap = (event: Event, row: Object): void => {
         event.preventDefault();
         browserHistory.push(`leads/${row.id}`);
@@ -73,7 +80,8 @@ export class LeadsList extends React.Component {
             <IconButton
                 iconClassName="material-icons"
                 iconStyle={{ color: primary1Color }}
-                onTouchTap={event => this.handleEditTouchTap(event, lead)}
+                onTouchTap={(event: Event) =>
+                    this.handleEditTouchTap(event, lead)}
                 tooltip="Edit this lead"
                 tooltipPosition="bottom-right"
                 tooltipStyles={{ fontSize: 12 }}
@@ -81,23 +89,10 @@ export class LeadsList extends React.Component {
                 mode_edit
             </IconButton>
         )));
-    }
+    };
 
     render(): React.Element<*> {
-        const { isLoading, leads } = this.state;
-
-        const headerButton: React.Element<*> = (
-            <Link to="/leads/new">
-                <RaisedButton label="Add" />
-            </Link>
-        );
-
-        const headerTitle: React.Element<*> = (
-            <PageHeaderTitle
-                headerText="Leads"
-                titleIconName="people_outline"
-            />
-        );
+        const { isLoading } = this.state;
 
         // TODO: Add filter selection handling and saving.
         const filterSelections = ['Test 1', 'Test 2'];
@@ -109,14 +104,18 @@ export class LeadsList extends React.Component {
         return (
             <div>
                 <PageHeader
-                    actionButtonRight={headerButton}
-                    titleLeft={headerTitle}
+                    titleLeft={(
+                        <PageHeaderTitle
+                            headerText="Leads"
+                            titleIconName="people_outline"
+                        />
+                    )}
                 />
                 <SearchableTable
                     columns={tableColumns}
                     data={tableData}
                     filterSelections={filterSelections}
-                    handleEditTouchTap={this.handleEditTouchTap}
+                    handleAddTouchTap={this.handleAddTouchTap}
                 />
             </div>
         );

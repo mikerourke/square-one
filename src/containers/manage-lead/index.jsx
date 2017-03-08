@@ -1,26 +1,22 @@
 /* @flow */
 
-// TODO: Split Manage Lead into multiple components, it's getting too big.
-
 /* External dependencies */
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { List } from 'immutable';
 
 /* Internal dependencies */
 import { createLead, updateLead } from 'state/entities/leads/actions';
-import Lead, { Change, Note } from 'state/entities/leads/model';
+import { Change, Lead, Note } from 'state/entities/models';
 import Timeline from 'components/timeline';
 import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
-import CardList from 'components/card-list';
+import NotesList from './notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
 import TabsToolbar from 'components/tabs-toolbar';
 
 /* Types */
-import type { Map } from 'immutable';
 import type { MapLocation } from 'lib/types';
 
 const mapStateToProps = (state, ownProps) => {
@@ -46,18 +42,18 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators({
-        createLead,
-        updateLead,
-    }, dispatch),
+    dispatch,
+    createLead: lead => dispatch(createLead(lead)),
+    updateLead: lead => dispatch(updateLead(lead)),
 });
 
 class ManageLeadPage extends React.Component {
     props: {
-        actions: any,
         changes: List<Change>,
+        createLead: () => void,
         lead: Lead,
         notes: List<Note>,
+        updateLead: () => void,
     };
 
     state: {
@@ -72,6 +68,10 @@ class ManageLeadPage extends React.Component {
             lead: this.props.lead,
         };
     }
+
+    getUpdatedLead = (updatedLead: Lead) => {
+        this.setState({ lead: updatedLead });
+    };
 
     /**
      * Performs an action based on the button pressed in the page header
@@ -91,42 +91,6 @@ class ManageLeadPage extends React.Component {
     };
 
     /**
-     * Updates the Lead held in local state with the data from the field on the
-     *      Details Form component.
-     * @param {Event} event Event associated with the input.
-     * @param {string} newValue
-     * @param {string} fieldName
-     */
-    handleInputChange = (event: Event, newValue: string,
-                         fieldName?: string = ''): void => {
-        let nameOfField = fieldName;
-
-        // This is done to pass Flow type checking.
-        const target = event.target;
-        if (target instanceof HTMLInputElement) {
-            nameOfField = target.name;
-        }
-
-        // Update the Lead held in local state (Immutable Record).
-        const { lead } = this.state;
-        const updatedLead = lead.set(nameOfField, newValue);
-        this.setState({ lead: updatedLead });
-    };
-
-    /**
-     * Updates the address, latitude, and longitude of the Lead held in local
-     *      state when the Places Autocomplete input is changed on the
-     *      Details Form.
-     * @param {MapLocation} newLocation New location to apply to the Lead.
-     */
-    handleLocationChange = (newLocation: MapLocation): void => {
-        const { lead } = this.state;
-        const { address, lat, lng } = newLocation;
-        const updatedLead = lead.merge({ address, lat, lng });
-        this.setState({ lead: updatedLead });
-    };
-
-    /**
      * Updates existing Lead or creates a new Lead based on the ID of the Lead
      *      held in local state.
      * @param {Event} event Event associated with the button pressed.
@@ -141,44 +105,16 @@ class ManageLeadPage extends React.Component {
         // If the ID is 0 (the default), a new Lead needs to be created,
         // otherwise update the Lead that corresponds with the ID.
         const { lead } = this.state;
-        let performAction: Function = this.props.actions.createLead;
+        let performActionPromise: Function = this.props.createLead;
         if (lead.id !== 0) {
-            performAction = this.props.actions.updateLead;
+            performActionPromise = this.props.updateLead;
         }
-        performAction(lead).then(() => browserHistory.push('/leads'));
+        performActionPromise(lead).then(() => browserHistory.push('/leads'));
     };
 
     render(): React.Element<*> {
-        const {
-            changes,
-            notes,
-        } = this.props;
-
-        const {
-            isMessagesDialogOpen,
-            lead,
-        } = this.state;
-
-        const tabPages = [
-            {
-                label: 'Details',
-                content:
-                    (<LeadDetailsForm
-                        handleInputChange={this.handleInputChange}
-                        handleLocationChange={this.handleLocationChange}
-                        lead={lead}
-                    />),
-            },
-            {
-                label: 'History',
-                content: (<Timeline timelineEvents={changes} />),
-            },
-            {
-                label: 'Notes',
-                content:
-                    (<CardList cardContents={notes} />),
-            },
-        ];
+        const { changes, notes } = this.props;
+        const { isMessagesDialogOpen, lead } = this.state;
 
         return (
             <div>
@@ -188,7 +124,25 @@ class ManageLeadPage extends React.Component {
                     subheaderText={lead.status}
                 />
                 <TabsToolbar
-                    tabPages={tabPages}
+                    tabPages={[
+                        {
+                            label: 'Details',
+                            content: (
+                                <LeadDetailsForm
+                                    getUpdatedLead={this.getUpdatedLead}
+                                    lead={lead}
+                                />
+                            ),
+                        },
+                        {
+                            label: 'History',
+                            content: (<Timeline timelineEvents={changes} />),
+                        },
+                        {
+                            label: 'Notes',
+                            content: (<NotesList notes={notes} />),
+                        },
+                    ]}
                 />
                 <MessagesDialog
                     handleTouchTap={this.handleModalTouchTap}

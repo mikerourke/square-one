@@ -2,26 +2,37 @@
 
 /* External dependencies */
 import React from 'react';
-import { List } from 'material-ui/List';
 import {
     Card,
+    CardActions,
     CardText,
     CardTitle,
 } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import FontIcon from 'material-ui/FontIcon';
+import { List as MuiList } from 'material-ui/List';
 
 /* Internal dependencies */
+import { primary1Color } from 'style/mui/palette';
 import { getSearchResults, getSortedData } from 'lib/query-actions';
 import SearchToolbar from 'components/search-toolbar';
+
+/* Types */
+import type { List } from 'immutable';
 
 /**
  * List of card components.
  * @param {List} cardContents List of data objects to display on card.
+ * @param {Function} handleTouchTap Action to perform when an element is
+ *      pressed.
  * @param {Array} [searchFieldExclusions=[]] Fields within the Card contents
  *      array that should be excluded from searches.
  */
 export default class CardList extends React.Component {
     props: {
         cardContents: List<*>,
+        handleTouchTap: (event: Event) => void,
         searchFieldExclusions?: Array<string>,
     };
 
@@ -57,6 +68,7 @@ export default class CardList extends React.Component {
     };
 
     render(): React.Element<*> {
+        const { handleTouchTap } = this.props;
         const { cardContents } = this.state;
         return (
             <div>
@@ -64,7 +76,7 @@ export default class CardList extends React.Component {
                     handleSearchBoxChange={this.handleSearchBoxChange}
                     isStandalone={false}
                 />
-                <List
+                <MuiList
                     style={{
                         alignItems: 'stretch',
                         display: 'flex',
@@ -76,7 +88,7 @@ export default class CardList extends React.Component {
                         <Card
                             key={cardEntity.id}
                             style={{
-                                height: 150,
+                                minHeight: 150,
                                 flex: '1 0 auto',
                                 margin: 16,
                                 minWidth: 300,
@@ -90,9 +102,38 @@ export default class CardList extends React.Component {
                             <CardText>
                                 {cardEntity.details}
                             </CardText>
+                            <CardActions>
+                                <FlatButton
+                                    id="card-edit"
+                                    label="Edit"
+                                    onTouchTap={handleTouchTap}
+                                    primary={true}
+                                    style={{ minWidth: 72 }}
+                                />
+                                <FlatButton
+                                    id="card-delete"
+                                    label="Delete"
+                                    onTouchTap={handleTouchTap}
+                                    primary={true}
+                                    style={{ minWidth: 72 }}
+                                />
+                            </CardActions>
                         </Card>
                     ))}
-                </List>
+                </MuiList>
+                <FloatingActionButton
+                    id="card-add"
+                    onTouchTap={handleTouchTap}
+                    secondary={true}
+                    style={{ float: 'right' }}
+                >
+                    <FontIcon
+                        className="material-icons"
+                        style={{ fontSize: 32 }}
+                    >
+                        add
+                    </FontIcon>
+                </FloatingActionButton>
             </div>
         );
     }

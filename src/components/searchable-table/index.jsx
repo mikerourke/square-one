@@ -3,6 +3,8 @@
 /* External dependencies */
 import React from 'react';
 import { List } from 'immutable';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 
 /* Internal dependencies */
@@ -34,6 +36,7 @@ export default class SearchableTable extends React.Component {
     props: {
         columns: Array<Column>,
         data: List<*>,
+        handleAddTouchTap: (event: Event) => void,
         filterSelections: Array<string>,
     };
 
@@ -99,6 +102,7 @@ export default class SearchableTable extends React.Component {
     render(): React.Element<*> {
         const {
             columns,
+            handleAddTouchTap,
             filterSelections,
         } = this.props;
 
@@ -131,6 +135,7 @@ export default class SearchableTable extends React.Component {
                         columns={columns}
                         data={data}
                         fixedHeader={true}
+                        fixedFooter={false}
                         handleNextPageClick={this.handleNextPageClick}
                         handlePreviousPageClick={this.handlePreviousPageClick}
                         handleRowSizeChange={this.handleRowSizeChange}
@@ -138,6 +143,18 @@ export default class SearchableTable extends React.Component {
                         showRowHover={true}
                         {...state}
                     />
+                    <FloatingActionButton
+                        onTouchTap={handleAddTouchTap}
+                        secondary={true}
+                        style={{ float: 'right' }}
+                    >
+                        <FontIcon
+                            className="material-icons"
+                            style={{ fontSize: 32 }}
+                        >
+                            add
+                        </FontIcon>
+                    </FloatingActionButton>
                 </Paper>
             </div>
         );

@@ -5,6 +5,7 @@ import React from 'react';
 import {
     Card,
     CardActions,
+    CardHeader,
     CardText,
     CardTitle,
 } from 'material-ui/Card';
@@ -87,19 +88,26 @@ export default class CardList extends React.Component {
                     {cardContents.map(cardEntity => (
                         <Card
                             key={cardEntity.id}
+                            containerStyle={{  }}
                             style={{
-                                minHeight: 150,
                                 flex: '1 0 auto',
                                 margin: 16,
                                 minWidth: 300,
                                 width: '30%',
                             }}
                         >
-                            <CardTitle
-                                subtitle={cardEntity.subtitle}
+                            <CardHeader
+                                subtitle={cardEntity.createdAt}
                                 title={cardEntity.title}
                             />
-                            <CardText>
+                            <CardText
+                                style={{
+                                    maxHeight: 48,
+                                    overflow: 'hidden',
+                                    whiteSpace: 'nowrap',
+                                    textOverflow: 'ellipsis',
+                                }}
+                            >
                                 {cardEntity.details}
                             </CardText>
                             <CardActions>

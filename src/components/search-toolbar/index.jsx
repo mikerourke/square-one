@@ -26,15 +26,15 @@ const getInlineStyle = (transparency?: number = 1): Object => {
  * Toolbar for performing searching and filtering functions.
  * @param {Function} handleSearchBoxChange Action to perform when a value is
  *      entered in the Search box.
- * @param {Node} [iconElementRight] Optional element to display at the end of
+ * @param {Node} [children] Optional element to display at the end of
  *      the search bar.
  * @param {boolean} [isStandalone=true] Indicates if the toolbar is a separate
  *      entity or integrated into a form.
  */
 export default class SearchToolbar extends React.Component {
     props: {
+        children?: ?React.Element<*>,
         handleSearchBoxChange: (event: Event, newValue: string) => void,
-        iconElementRight?: ?React.Element<*>,
         // If this value is false, don't show a box shadow and remove the
         // padding.
         isStandalone: boolean,
@@ -46,12 +46,12 @@ export default class SearchToolbar extends React.Component {
      *      or integrated into a form.
      */
     getPaddingForToolbar = (): string | number => {
-        const { iconElementRight, isStandalone } = this.props;
+        const { children, isStandalone } = this.props;
         if (isStandalone) {
             return '0 24px';
         }
 
-        if (iconElementRight) {
+        if (children) {
             return 0;
         }
         return '0 16px 0 0';
@@ -59,8 +59,8 @@ export default class SearchToolbar extends React.Component {
 
     render(): React.Element<*> {
         const {
+            children,
             handleSearchBoxChange,
-            iconElementRight,
             isStandalone,
         } = this.props;
 
@@ -91,7 +91,7 @@ export default class SearchToolbar extends React.Component {
                         inputStyle={getInlineStyle()}
                         onChange={handleSearchBoxChange}
                     />
-                    {iconElementRight}
+                    {children}
                 </ToolbarGroup>
             </Toolbar>
         );

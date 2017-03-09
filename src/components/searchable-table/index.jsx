@@ -143,19 +143,23 @@ export default class SearchableTable extends React.Component {
                         showRowHover={true}
                         {...state}
                     />
-                    <FloatingActionButton
-                        onTouchTap={handleAddTouchTap}
-                        secondary={true}
-                        style={{ float: 'right' }}
-                    >
-                        <FontIcon
-                            className="material-icons"
-                            style={{ fontSize: 32 }}
-                        >
-                            add
-                        </FontIcon>
-                    </FloatingActionButton>
                 </Paper>
+                <FloatingActionButton
+                    onTouchTap={handleAddTouchTap}
+                    secondary={true}
+                    style={{
+                        position: 'fixed',
+                        bottom: 24,
+                        right: 24,
+                    }}
+                >
+                    <FontIcon
+                        className="material-icons"
+                        style={{ fontSize: 32 }}
+                    >
+                        add
+                    </FontIcon>
+                </FloatingActionButton>
             </div>
         );
     }

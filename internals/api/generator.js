@@ -1,190 +1,47 @@
-const { blue, green, red } = require('chalk');
+/**
+ * Generates data based on a specified schema for testing in the application.
+ */
+const path = require('path');
+const { blue, cyan, green, red } = require('chalk');
 const jsf = require('json-schema-faker');
 const jsonFile = require('jsonfile');
 const moment = require('moment');
 
-const currentDb = require('./db.json');
+// JSON files associated with data generation:
+const schema = require('./schema.json');
+const backupFilePath = path.resolve(process.cwd(), 'internals/api/backup.json');
+const dbFilePath = path.resolve(process.cwd(), 'internals/api/db.json');
 
-const MIN_ITEMS = 10;
-const MAX_ITEMS = 10;
-
-const leadsSchema = {
-    type: 'array',
-    minItems: MIN_ITEMS,
-    maxItems: MAX_ITEMS,
-    items: {
-        type: 'object',
-        properties: {
-            id: {
-                type: 'integer',
-                minimum: 0,
-                exclusiveMinimum: true
-            },
-            leadName: {
-                type: 'string',
-                faker: 'name.findName'
-            },
-            contactName: {
-                type: 'string',
-                faker: 'name.findName'
-            },
-            source: {
-                type: 'string',
-                pattern: 'Did work in area|Facebook|Flyer|' +
-                         'Home Advisor|Saw Sign'
-            },
-            leadFee: {
-                type: 'integer',
-                faker: 'finance.amount'
-            },
-            phone: {
-                type: 'string',
-                faker: 'phone.phoneNumber'
-            },
-            email: {
-                type: 'string',
-                format: 'email',
-                faker: 'internet.email'
-            },
-            address: {
-                type: 'string',
-                faker: 'address.streetAddress'
-            },
-            lat: {
-                type: 'number',
-                faker: 'address.latitude'
-            },
-            lng: {
-                type: 'number',
-                faker: 'address.longitude'
-            },
-            description: {
-                type: 'string',
-                faker: 'lorem.sentence'
-            },
-            status: {
-                type: 'string',
-                pattern: 'New|Selling|Won|Qualified|Lost'
-            },
-            assignTo: {
-                type: 'string',
-                pattern: 'Scott|Chuckles|Biscuits'
-            },
-            notes: {
-                type: 'array',
-                minItems: MIN_ITEMS,
-                maxItems: MAX_ITEMS,
-                items: {
-                    type: 'object',
-                    properties: {
-                        id: {
-                            type: 'integer',
-                            minimum: 0,
-                            exclusiveMinimum: true
-                        },
-                        title: {
-                            type: 'string',
-                            faker: 'lorem.sentence'
-                        },
-                        details: {
-                            type: 'string',
-                            faker: 'lorem.paragraph'
-                        },
-                        isPrivate: {
-                            type: 'boolean'
-                        },
-                        createdBy: {
-                            type: 'string',
-                            faker: 'internet.userName'
-                        },
-                        createdAt: {
-                            type: 'string',
-                            chance: 'timestamp'
-                        },
-                        updatedAt: {
-                            type: 'string',
-                            chance: 'timestamp'
-                        }
-                    },
-                    required: ['id', 'title', 'details', 'isPrivate',
-                               'createdBy', 'createdAt', 'updatedAt']
-                }
-            },
-            changes: {
-                type: 'array',
-                minItems: MIN_ITEMS,
-                maxItems: MAX_ITEMS,
-                items: {
-                    type: 'object',
-                    properties: {
-                        id: {
-                            type: 'integer',
-                            minimum: 0,
-                            exclusiveMinimum: true
-                        },
-                        changeType: {
-                            type: 'string',
-                            pattern: 'create|update'
-                        },
-                        iconName: {
-                            type: 'string',
-                            pattern: 'add_circle_outline|contact_mail|' +
-                                     'contact_phone'
-                        },
-                        title: {
-                            type: 'string',
-                            faker: 'lorem.sentence'
-                        },
-                        details: {
-                            type: 'string',
-                            faker: 'lorem.paragraph'
-                        },
-                        createdBy: {
-                            type: 'string',
-                            faker: 'internet.userName'
-                        },
-                        createdAt: {
-                            type: 'string',
-                            chance: 'timestamp'
-                        },
-                        updatedAt: {
-                            type: 'string',
-                            chance: 'timestamp'
-                        }
-                    },
-                    required: ['id', 'changeType', 'iconName', 'title',
-                               'details', 'createdBy', 'createdAt', 'updatedAt']
-                }
-            },
-            createdAt: {
-                type: 'string',
-                chance: 'timestamp'
-            },
-            updatedAt: {
-                type: 'string',
-                chance: 'timestamp'
-            }
-        },
-        required: ['id', 'leadName', 'contactName', 'source', 'leadFee',
-                   'phone', 'email', 'address', 'lat', 'lng',
-                   'description', 'status', 'assignTo', 'notes', 'changes',
-                   'createdAt', 'updatedAt'],
-    }
-};
-
+/**
+ * Converts the UNIX timestamp value that was generated to a readable date
+ *      format in the generated data file.
+ * @param {string} timeToFormat Time in milliseconds to format.  The value needs
+ *      to be converted to a number prior to formatting.
+ * @returns {string} Formatted date.
+ */
 const getFormattedTime = (timeToFormat) => {
     const timeInMs = parseInt(timeToFormat, 10);
     const newFormat = 'YYYY-MM-DD HH:mm:ss';
     return moment(timeInMs).format(newFormat);
 };
 
+/**
+ * Loops through each entity in the specified entity group and updates the
+ *      created and updated dates to the formatted time.
+ * @param {Array} entityGroup Group of entities with times that need to be
+ *      formatted.
+ */
 const updateTimeFormat = (entityGroup) => entityGroup.map(entityItem => {
     entityItem.createdAt = getFormattedTime(entityItem.createdAt);
     entityItem.updatedAt = getFormattedTime(entityItem.updatedAt);
 });
 
+/**
+ * Generates data based on the specified schema and formats the time fields to
+ *      be in a usable format.
+ */
 const getFormattedSampleData = () => {
-    const sampleLeads = jsf(leadsSchema);
+    const sampleLeads = jsf(schema.leads);
     updateTimeFormat(sampleLeads);
     sampleLeads.map(sampleLead => {
         updateTimeFormat(sampleLead.changes);
@@ -193,41 +50,64 @@ const getFormattedSampleData = () => {
     return sampleLeads;
 };
 
+/**
+ * Writes the specified data (as a JSON object) to the specified file path and
+ *      returns a promise when complete.
+ * @param {string} filePath Path of the file to write to.
+ * @param {Object} dataToWrite JSON object to write to the file.
+ * @returns {Promise}
+ */
 const writeDataToJsonFile = (filePath, dataToWrite) => {
     return new Promise((resolve, reject) => {
+        const fileName = path.basename(filePath);
         jsonFile.writeFile(filePath, dataToWrite, { spaces: 2 }, (err) => {
             if (err) {
                 console.log(red(`Error writing data to file: ${err}`));
                 reject();
             }
-            console.log(blue(`Successfully wrote to file: ${filePath}`));
+            console.log(blue(`Successfully wrote to file: ${fileName}`));
             resolve();
         });
     });
 };
 
+/**
+ * Writes the result of the generated data to the db.json file.
+ * @param {Object} existingData Data present in the existing db.json.
+ * @returns {Promise}
+ */
 const writeGeneratedDataToFile = (existingData) => {
     return new Promise((resolve, reject) => {
+        console.log(cyan('Generating sample data...'));
         const dataToWrite = Object.assign({}, existingData, {
             leads: getFormattedSampleData()
         });
+        console.log(cyan('Writing data to file...'));
         writeDataToJsonFile(dbFilePath, dataToWrite)
             .then(() => resolve())
             .catch(err => reject(err));
     });
 };
 
-const dbFilePath = `${__dirname}\\db.json`;
-
+/**
+ * Copies the data from db.json to a backup file in case errors occur.
+ * @param {Object} existingData Data present in the existing db.json.
+ * @returns {Promise}
+ */
 const backupExistingData = (existingData) => {
     return new Promise((resolve, reject) => {
-        const backupFilePath = `${__dirname}\\backup.json`;
+        console.log(cyan('Backing up existing data...'));
         writeDataToJsonFile(backupFilePath, existingData)
             .then(() => resolve(existingData))
             .catch(err => reject(err));
     });
 };
 
+/**
+ * Reads the contents of the db.json file and returns a promise with the
+ *      content as the resolution.
+ * @returns {Promise}
+ */
 const getCurrentDbFileContent = () => {
     return new Promise((resolve, reject) => {
         jsonFile.readFile(dbFilePath, (err, data) => {

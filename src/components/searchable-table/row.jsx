@@ -22,19 +22,18 @@ export default class Row extends TableRow {
         onRowClick?: () => void,
         onRowHover?: () => void,
         onRowHoverExit?: () => void,
-        rowNumber: number,
+        rowNumber?: number,
         selectable?: boolean,
         striped?: boolean,
         style?: Object,
     };
 
     getStyles = (): Object => {
-        const { context, props, state } = this;
         const { hovered, striped, displayBorder } = (this.props: Object);
         const { muiTheme: { tableRow } } = (this.context: Object);
 
         let cellBgColor = 'inherit';
-        if (hovered || state.hovered) {
+        if (hovered || this.state.hovered) {
             cellBgColor = tableRow.overColor;
         } else if (striped) {
             cellBgColor = tableRow.stripeColor;
@@ -78,10 +77,14 @@ export default class Row extends TableRow {
         const rowColumns = React.Children.map(this.props.children,
             (child, columnNumber) => {
                 if (React.isValidElement(child)) {
+                    let numberOfRow = 0;
+                    if (rowNumber) {
+                        numberOfRow = rowNumber;
+                    }
                     return React.cloneElement(child, {
                         columnNumber,
                         hoverable,
-                        key: `${rowNumber.toString()}-${columnNumber}`,
+                        key: `${numberOfRow.toString()}-${columnNumber}`,
                         onClick: this.onCellClick,
                         onHover: this.onCellHover,
                         onHoverExit: this.onCellHoverExit,

@@ -1,0 +1,193 @@
+{
+  "leads": {
+    "type": "array",
+    "minItems": 20,
+    "maxItems": 30,
+    "items": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0,
+          "exclusiveMinimum": true
+        },
+        "leadName": {
+          "type": "string",
+          "faker": "name.findName"
+        },
+        "contactName": {
+          "type": "string",
+          "faker": "name.findName"
+        },
+        "source": {
+          "type": "string",
+          "pattern": "Did work in area|Facebook|Flyer|Home Advisor|Saw Sign"
+        },
+        "leadFee": {
+          "type": "integer",
+          "faker": "finance.amount"
+        },
+        "phone": {
+          "type": "string",
+          "faker": "phone.phoneNumber"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "faker": "internet.email"
+        },
+        "address": {
+          "type": "string",
+          "faker": "address.streetAddress"
+        },
+        "lat": {
+          "type": "number",
+          "faker": "address.latitude"
+        },
+        "lng": {
+          "type": "number",
+          "faker": "address.longitude"
+        },
+        "description": {
+          "type": "string",
+          "faker": "lorem.sentence"
+        },
+        "status": {
+          "type": "string",
+          "pattern": "New|Selling|Won|Qualified|Lost"
+        },
+        "assignTo": {
+          "type": "string",
+          "pattern": "Scott|Chuckles|Biscuits"
+        },
+        "notes": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 0,
+                "exclusiveMinimum": true
+              },
+              "title": {
+                "type": "string",
+                "faker": "lorem.sentence"
+              },
+              "details": {
+                "type": "string",
+                "faker": "lorem.paragraph"
+              },
+              "isPrivate": {
+                "type": "boolean"
+              },
+              "createdBy": {
+                "type": "string",
+                "faker": "internet.userName"
+              },
+              "createdAt": {
+                "type": "string",
+                "chance": "timestamp"
+              },
+              "updatedAt": {
+                "type": "string",
+                "chance": "timestamp"
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "details",
+              "isPrivate",
+              "createdBy",
+              "createdAt",
+              "updatedAt"
+            ]
+          }
+        },
+        "changes": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 0,
+                "exclusiveMinimum": true
+              },
+              "changeType": {
+                "type": "string",
+                "pattern": "create|update"
+              },
+              "iconName": {
+                "type": "string",
+                "pattern": "add_circle_outline|contact_mail|contact_phone"
+              },
+              "title": {
+                "type": "string",
+                "faker": "lorem.sentence"
+              },
+              "details": {
+                "type": "string",
+                "faker": "lorem.paragraph"
+              },
+              "createdBy": {
+                "type": "string",
+                "faker": "internet.userName"
+              },
+              "createdAt": {
+                "type": "string",
+                "chance": "timestamp"
+              },
+              "updatedAt": {
+                "type": "string",
+                "chance": "timestamp"
+              }
+            },
+            "required": [
+              "id",
+              "changeType",
+              "iconName",
+              "title",
+              "details",
+              "createdBy",
+              "createdAt",
+              "updatedAt"
+            ]
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "chance": "timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "chance": "timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "leadName",
+        "contactName",
+        "source",
+        "leadFee",
+        "phone",
+        "email",
+        "address",
+        "lat",
+        "lng",
+        "description",
+        "status",
+        "assignTo",
+        "notes",
+        "changes",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  }
+}

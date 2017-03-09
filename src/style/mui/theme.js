@@ -20,6 +20,12 @@ export default getMuiTheme({
     raisedButton: {
         textColor: palette.primary1Color,
     },
+    tableHeaderColumn: {
+        spacing: 8,
+    },
+    tableRowColumn: {
+        spacing: 8,
+    },
     tabs: {
         backgroundColor: palette.canvasColor,
         textColor: palette.primary1Color,

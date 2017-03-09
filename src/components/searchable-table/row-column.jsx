@@ -33,6 +33,7 @@ export default class RowColumn extends TableRowColumn {
         return {
             fontSize: 13,
             height: tableRowColumn.height,
+            overflow: 'hidden',
             paddingLeft: tableRowColumn.spacing,
             paddingRight: tableRowColumn.spacing,
             textAlign: isRightAlign ? 'right' : 'left',

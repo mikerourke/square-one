@@ -23,16 +23,15 @@ export const getSearchResults = (
     if (!searchFor || searchFor === '') {
         return data;
     }
-
     return items.filter((item) => {
         let countFound = 0;
-        Object.entries(item).forEach(([key, value]: [string, any]) => {
+        item.forEach((value, key) => {
             // If any fields were specified in the "fieldsToExclude" array,
             // don't include these in the results.
             if (!fieldsToExclude.includes(key)) {
                 // To ensure a valid match is made, convert all values to
                 // lowercase.
-                const itemValue = value.toString().toLowerCase();
+                const itemValue = item.get(key).toString().toLowerCase();
                 if (itemValue.includes(searchFor.toLowerCase())) {
                     countFound += 1;
                 }

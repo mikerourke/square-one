@@ -32,6 +32,7 @@ dictionaries
 # Build/documentation directories:
 client
 docs/
+backup.json
 !internals/docs/
 .ssl/
 

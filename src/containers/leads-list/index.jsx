@@ -88,7 +88,7 @@ export class LeadsList extends React.Component {
             >
                 mode_edit
             </IconButton>
-        )));
+        ))).toList();
     };
 
     render(): React.Element<*> {

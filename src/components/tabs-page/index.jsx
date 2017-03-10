@@ -24,20 +24,40 @@ type TabPage = {
     label: string,
     map?: () => void,
     onActive?: () => void,
+    paperStyle?: ?Object,
     value: string,
 };
 
 /**
- * Toolbar containing tabs for navigating a detail form.
+ * Applies any custom styles specified in the props passed to the component
+ *      which applies to all the pages, or the props for each individual tab.
+ *      Applies a default style that can be overridden by either parameter.
+ * @param {Object} [styleFromProps={}] Style object passed to the TabsPage
+ *      component.
+ * @param {Object} [styleFromTabPage={}] Style object passed to each individual
+ *      TabPage component.
+ */
+const getPaperStyle = (styleFromProps = {}, styleFromTabPage = {}): Object =>
+    Object.assign({}, {
+        margin: '24px 0',
+        padding: 24,
+    }, styleFromProps, styleFromTabPage);
+
+/**
+ * Page containing a tab control and corresponding pages.
  * @param {Function} [handleTabPageChange] Action to perform when the tab page
  *      is changed.
+ * @param {Object} [paperStyle] Style to assign to the paper of the tab page.
+ *      This is overridden by the setting for each TabPage element.
  * @param {Array} tabPages Array of TabPage components.
  */
-const TabsToolbar = ({
+const TabsPage = ({
     handleTabPageChange,
+    paperStyle,
     tabPages,
 }: {
     handleTabPageChange?: (value: string) => void,
+    paperStyle?: ?Object,
     tabPages: Array<TabPage>,
 }): React.Element<*> => (
     <Container className="square1-toolbar">
@@ -58,10 +78,7 @@ const TabsToolbar = ({
                     value={tabPage.value}
                 >
                     <Paper
-                        style={{
-                            margin: '24px 0',
-                            padding: 24,
-                        }}
+                        style={getPaperStyle(paperStyle, tabPage.paperStyle)}
                     >
                         {tabPage.content}
                     </Paper>
@@ -71,4 +88,4 @@ const TabsToolbar = ({
     </Container>
 );
 
-export default TabsToolbar;
+export default TabsPage;

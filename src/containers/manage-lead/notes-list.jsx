@@ -8,12 +8,13 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
 /* Internal dependencies */
+import { updateLead } from 'state/entities/leads/actions';
 import { Lead, Note } from 'state/entities/models';
 import ActionButton from 'components/action-button';
 import CardList from 'components/card-list';
+import ConfirmationDialog from 'components/confirmation-dialog';
 
 const mapStateToProps = (state, ownProps) => {
-    const entitiesPath = ['entities', 'leads', 'entities'];
     const lead = ownProps.lead;
     let notes = new List();
     if (lead.leadId !== 0) {
@@ -25,6 +26,11 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
+const mapDispatchToProps = dispatch => ({
+    dispatch,
+    updateLead: lead => dispatch(updateLead(lead)),
+});
+
 class NotesList extends React.Component {
     props: {
         isAddButtonShown: boolean,
@@ -33,45 +39,71 @@ class NotesList extends React.Component {
     };
 
     state: {
-        isDialogOpen: boolean,
+        isConfirmationDialogOpen: boolean,
+        isEditDialogOpen: boolean,
     };
 
     constructor(): void {
         super();
         this.state = {
-            isDialogOpen: false,
+            isConfirmationDialogOpen: false,
+            isEditDialogOpen: false,
         };
     }
 
     handleAddButtonTouchTap = (event: Event): void => {
         event.preventDefault();
-        this.setState({ isDialogOpen: true });
+        this.setState({ isEditDialogOpen: true });
     };
 
-    handleCardTouchTap = (event: Event): void => {
-        console.log(event);
-    };
-
-    handleDialogButtonTouchTap = (event: Event, action: string) => {
+    handleCardDeleteTouchTap = (event: Event, cardEntity: Object): void => {
         event.preventDefault();
+        console.log(cardEntity);
+        this.setState({ isConfirmationDialogOpen: true });
+    };
+
+    handleCardEditTouchTap = (event: Event, cardEntity: Object): void => {
+        event.preventDefault();
+        console.log(cardEntity);
+        this.setState({ isEditDialogOpen: true });
+    };
+
+    handleConfirmationYesTouchTap = (event: Event): void => {
+        event.preventDefault();
+        const { lead } = this.props;
+
+        this.setState({ isConfirmationDialogOpen: false });
+    };
+
+    handleConfirmationNoTouchTap = (event: Event): void => {
+        event.preventDefault();
+        this.setState({ isConfirmationDialogOpen: false });
+    };
+
+    handleEditDialogCancelTouchTap = (event: Event): void => {
+        event.preventDefault();
+        this.setState({ isEditDialogOpen: false });
+    };
+
+    handleEditDialogSaveTouchTap = (event: Event): void => {
+        event.preventDefault();
+        this.setState({ isEditDialogOpen: false });
     };
 
     render(): React.Element<*> {
         const { isAddButtonShown, notes } = this.props;
-        const { isDialogOpen } = this.state;
+        const { isConfirmationDialogOpen, isEditDialogOpen} = this.state;
 
-        const dialogActions = [
+        const editDialogActions = [
             <FlatButton
                 label="Save"
-                onTouchTap={(event: Event) =>
-                    this.handleDialogButtonTouchTap(event, 'save')}
+                onTouchTap={this.handleEditDialogSaveTouchTap}
                 primary={true}
             />,
             <FlatButton
                 label="Cancel"
                 name="cancel"
-                onTouchTap={(event: Event) =>
-                    this.handleDialogButtonTouchTap(event, 'cancel')}
+                onTouchTap={this.handleEditDialogCancelTouchTap}
                 secondary={true}
             />,
         ];
@@ -80,7 +112,8 @@ class NotesList extends React.Component {
             <div>
                 <CardList
                     cardContents={notes}
-                    handleTouchTap={this.handleCardTouchTap}
+                    handleDeleteTouchTap={this.handleCardDeleteTouchTap}
+                    handleEditTouchTap={this.handleCardEditTouchTap}
                 />
                 {isAddButtonShown && (
                     <ActionButton
@@ -89,15 +122,21 @@ class NotesList extends React.Component {
                     />
                 )}
                 <Dialog
-                    actions={dialogActions}
-                    open={isDialogOpen}
-                    title="Add new note"
+                    actions={editDialogActions}
+                    open={isEditDialogOpen}
+                    title="Add/Edit Note"
                 >
                     Test!
                 </Dialog>
+                <ConfirmationDialog
+                    handleNoTouchTap={this.handleConfirmationNoTouchTap}
+                    handleYesTouchTap={this.handleConfirmationYesTouchTap}
+                    message="Are you sure you want to delete this note?"
+                    open={isConfirmationDialogOpen}
+                />
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps)(NotesList);
+export default connect(mapStateToProps, mapDispatchToProps)(NotesList);

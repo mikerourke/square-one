@@ -14,7 +14,7 @@ import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
 import NotesList from './notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
-import TabsToolbar from 'components/tabs-toolbar';
+import TabsPage from 'components/tabs-page';
 
 /* Types */
 import type { MapLocation } from 'lib/types';
@@ -119,8 +119,9 @@ class ManageLeadPage extends React.Component {
                     headerText={lead.leadName}
                     subheaderText={lead.status}
                 />
-                <TabsToolbar
+                <TabsPage
                     handleTabPageChange={this.handleTabPageChange}
+                    paperStyle={{ minHeight: 620 }}
                     tabPages={[
                         {
                             content: (

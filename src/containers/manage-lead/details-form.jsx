@@ -6,12 +6,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import FlatButton from 'material-ui/FlatButton';
+import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
+import { accent1Color } from 'style/mui/palette';
 import { preventSubmissionOnEnter } from 'lib/form-events';
 import Lead from 'state/entities/leads/model';
 import FormColumn from 'components/forms/form-column';
@@ -30,6 +32,7 @@ const mapStateToProps = (state) => {
 };
 
 const ButtonContainer = styled.div`
+    margin-top: 28px;
     width: 100%;
 `;
 
@@ -201,8 +204,9 @@ class LeadDetailsForm extends React.Component {
                     </FormColumn>
                 </FormColumnsContainer>
                 <ButtonContainer>
-                    <FlatButton
+                    <RaisedButton
                         label="Save"
+                        primary={true}
                         onTouchTap={(event: Event) =>
                             handleSaveTouchTap(event, lead)}
                     />

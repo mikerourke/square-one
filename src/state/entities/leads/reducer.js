@@ -28,22 +28,38 @@ type State = Map<string, EntitiesMap | ResultList | ErrorMap>;
 
 const initialState = OrderedMap();
 
-const createLeadRecord = (leadAsJs: Object) => {
-    const { changes, notes } = (leadAsJs: Object);
+/**
+ * Creates lists of Change and Note Records within a Lead Record.
+ * @param {Object} lead Lead object to convert to a Record.
+ */
+const generateLeadRecord = (lead: Object) => {
+    const { changes, notes } = (lead: Object);
     const changesList = new List(changes.map(change =>
-        new Change(fromJS(change))));
+        new Change(fromJS(change)).set('parentId', lead.id)));
+
     const notesList = new List(notes.map(note =>
-        new Note(fromJS(note))));
-    return new Lead(fromJS(leadAsJs))
+        new Note(fromJS(note)).set('parentId', lead.id)));
+
+    return new Lead(fromJS(lead))
         .set('changes', changesList)
         .set('notes', notesList);
 };
 
+/**
+ * Creates Lead Record instances from the API return call.
+ * @param {Array} leads Array of leads to generate Records from.
+ */
 const getEntitiesAsMap = leads => OrderedMap(
     [...Object.entries(leads).map(
-        ([key, value]: [any, any]) => ([key, createLeadRecord(value)]),
+        ([key, value]: [any, any]) => ([key, generateLeadRecord(value)]),
 )]);
 
+/**
+ * Returns the new state with updated entity data and any error details.
+ * @param {State} state Existing Redux state.
+ * @param {Object} data Data from the API return call.
+ * @returns {State} Updated state with new data.
+ */
 const mergeEntities = (state: State, data: Object): State => {
     const { entities: { leads }, result } = (data: Object);
     return state.merge({
@@ -69,7 +85,7 @@ export default (state: State = initialState, action: Action) => {
         case LEAD_UPDATE_SUCCESS:
             const { payload: { data: leadToSet } } = (action: Object);
             return state.setIn(leadsPath.concat([leadToSet.id]),
-                createLeadRecord(leadToSet));
+                generateLeadRecord(leadToSet));
 
         case LEAD_DELETE_SUCCESS:
             const { id } = (action: Object);

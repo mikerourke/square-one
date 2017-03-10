@@ -7,7 +7,6 @@ import {
     CardActions,
     CardHeader,
     CardText,
-    CardTitle,
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { List as MuiList } from 'material-ui/List';
@@ -23,15 +22,18 @@ import type { List } from 'immutable';
 /**
  * List of card components.
  * @param {List} cardContents List of data objects to display on card.
- * @param {Function} handleTouchTap Action to perform when an element is
- *      pressed.
+ * @param {Function} handleDeleteTouchTap Action to perform when the Delete
+ *      button is pressed.
+ * @param {Function} handleSaveTouchTap Action to perform when the Save button
+ *      is pressed.
  * @param {Array} [searchFieldExclusions=[]] Fields within the Card contents
  *      array that should be excluded from searches.
  */
 export default class CardList extends React.Component {
     props: {
         cardContents: List<*>,
-        handleTouchTap: (event: Event) => void,
+        handleDeleteTouchTap: (event: Event, cardEntity: Object) => void,
+        handleEditTouchTap: (event: Event, cardEntity: Object) => void,
         searchFieldExclusions?: Array<string>,
     };
 
@@ -67,7 +69,7 @@ export default class CardList extends React.Component {
     };
 
     render(): React.Element<*> {
-        const { handleTouchTap } = this.props;
+        const { handleDeleteTouchTap, handleEditTouchTap } = this.props;
         const { cardContents } = this.state;
 
         return (
@@ -112,15 +114,15 @@ export default class CardList extends React.Component {
                                 <FlatButton
                                     id="card-edit"
                                     label="Edit"
-                                    onTouchTap={handleTouchTap}
-                                    primary={true}
+                                    onTouchTap={(event: Event) =>
+                                        handleEditTouchTap(event, cardEntity)}
                                     style={{ minWidth: 72 }}
                                 />
                                 <FlatButton
                                     id="card-delete"
                                     label="Delete"
-                                    onTouchTap={handleTouchTap}
-                                    primary={true}
+                                    onTouchTap={(event: Event) =>
+                                        handleDeleteTouchTap(event, cardEntity)}
                                     style={{ minWidth: 72 }}
                                 />
                             </CardActions>

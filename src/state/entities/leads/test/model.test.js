@@ -177,7 +177,7 @@ export const mockData = [{
         "createdAt": "2017-02-02 14:53:35.764000",
         "updatedAt": "2017-02-02 14:53:35.764000"
     }
-]
+];
 
 const getLeadFromId = (leadId) => {
     const leadFromDb = mockData.find(lead => lead.id === leadId);
@@ -197,7 +197,7 @@ describe('Lead Model', () => {
                         "details": "Change details",
                         "iconName": "add_circle_outline",
                         "id": 1,
-                        "leadId": 1,
+                        "parentId": 1,
                         "title": "Example Change",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -208,7 +208,7 @@ describe('Lead Model', () => {
                         "details": "Change details 2",
                         "iconName": "contact_mail",
                         "id": 2,
-                        "leadId": 1,
+                        "parentId": 1,
                         "title": "Example Change 2",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -219,7 +219,7 @@ describe('Lead Model', () => {
                         "details": "Change details",
                         "iconName": "add_circle_outline",
                         "id": 3,
-                        "leadId": 2,
+                        "parentId": 2,
                         "title": "Example Change",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -230,7 +230,7 @@ describe('Lead Model', () => {
                         "details": "Change details 2",
                         "iconName": "contact_mail",
                         "id": 4,
-                        "leadId": 2,
+                        "parentId": 2,
                         "title": "Example Change 2",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -241,7 +241,7 @@ describe('Lead Model', () => {
                         "details": "Change details",
                         "iconName": "add_circle_outline",
                         "id": 5,
-                        "leadId": 3,
+                        "parentId": 3,
                         "title": "Example Change",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -252,7 +252,7 @@ describe('Lead Model', () => {
                         "details": "Change details 2",
                         "iconName": "contact_mail",
                         "id": 6,
-                        "leadId": 3,
+                        "parentId": 3,
                         "title": "Example Change 2",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     }
@@ -323,7 +323,7 @@ describe('Lead Model', () => {
                         "details": "Note details",
                         "id": 1,
                         "isPrivate": false,
-                        "leadId": 1,
+                        "parentId": 1,
                         "title": "Example Note",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -333,7 +333,7 @@ describe('Lead Model', () => {
                         "details": "Note details 2",
                         "id": 2,
                         "isPrivate": true,
-                        "leadId": 1,
+                        "parentId": 1,
                         "title": "Example Note 2",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -343,7 +343,7 @@ describe('Lead Model', () => {
                         "details": "Note details",
                         "id": 3,
                         "isPrivate": false,
-                        "leadId": 2,
+                        "parentId": 2,
                         "title": "Example Note",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -353,7 +353,7 @@ describe('Lead Model', () => {
                         "details": "Note details 2",
                         "id": 4,
                         "isPrivate": true,
-                        "leadId": 2,
+                        "parentId": 2,
                         "title": "Example Note 2",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -363,7 +363,7 @@ describe('Lead Model', () => {
                         "details": "Note details",
                         "id": 5,
                         "isPrivate": false,
-                        "leadId": 3,
+                        "parentId": 3,
                         "title": "Example Note",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     },
@@ -373,7 +373,7 @@ describe('Lead Model', () => {
                         "details": "Note details 2",
                         "id": 6,
                         "isPrivate": true,
-                        "leadId": 3,
+                        "parentId": 3,
                         "title": "Example Note 2",
                         "updatedAt": "2017-02-02 14:53:35.764000"
                     }

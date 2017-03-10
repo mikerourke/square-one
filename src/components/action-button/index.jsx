@@ -23,7 +23,7 @@ const ActionButton = ({
     handleTouchTap: (event: Event) => void,
     iconName: string,
     style?: ?Object,
-}) => (
+}): React.Element<*> => (
     <FloatingActionButton
         onTouchTap={handleTouchTap}
         secondary={true}

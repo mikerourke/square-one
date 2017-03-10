@@ -25,22 +25,9 @@ module.exports = {
     rules: {
         'class-methods-use-this': 0,
         'eol-last': 0,
-        'indent': [
-            1,
-            4,
-            {
-                'SwitchCase': 1
-            }
-        ],
+        'indent': [1,4, { 'SwitchCase': 1 }],
         'linebreak-style': 0,
-        'max-len': [
-            2,
-            80,
-            4,
-            {
-                'ignoreUrls': true,
-            },
-        ],
+        'max-len': [2, 80, 4, { 'ignoreUrls': true }],
         'newline-per-chained-call': 0,
         'no-alert': 0,
         'no-case-declarations': 0,
@@ -50,24 +37,18 @@ module.exports = {
         'no-lone-blocks': 0,
         'no-trailing-spaces': 0,
         'no-underscore-dangle': 0,
-        'no-unused-vars': 0,
+        'no-unused-vars': [1, {
+            ignoreRestSiblings: true,
+        }],
         'no-use-before-define': 0, // This causes issues with type declarations.
-        'semi': [
-            1,
-            'always',
-        ],
+        'semi': [1, 'always'],
         'import/default': 0,
         'import/extensions': 0,
         'import/first': 0,
         'import/no-duplicates': 0,
         'import/no-extraneous-dependencies': 0,
         'import/named': 0,
-        'import/namespace': [
-            0,
-            {
-                'allowComputed': true,
-            },
-        ],
+        'import/namespace': [0, { 'allowComputed': true }],
         'import/no-named-as-default': 0,
         'import/no-named-as-default-member': 0,
         'import/no-unresolved': 2,
@@ -76,10 +57,7 @@ module.exports = {
         'react/forbid-prop-types': 0,
         'react/jsx-boolean-value': 0,
         'react/jsx-filename-extension': 0,
-        'react/jsx-indent': [
-            1,
-            4,
-        ],
+        'react/jsx-indent': [1, 4],
         'react/jsx-indent-props': 0,
         // This is handled by Flow with default values:
         'react/require-default-props': 0,

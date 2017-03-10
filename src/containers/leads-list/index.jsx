@@ -5,7 +5,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Map } from 'immutable';
-import IconButton from 'material-ui/IconButton';
 
 /* Internal dependencies */
 import { primary1Color } from 'style/mui/palette';
@@ -20,7 +19,7 @@ import SearchableTable from 'components/searchable-table';
 import type { List } from 'immutable';
 
 const mapStateToProps = state => ({
-    leads: state.getIn(['entities', 'leads', 'entities', 'leads']),
+    leads: state.getIn(['entities', 'leads', 'entities']),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -74,25 +73,8 @@ export class LeadsList extends React.Component {
         browserHistory.push(`leads/${row.id}`);
     };
 
-    getTableData = (): List<*> => {
-        const { leads } = this.state;
-        return leads.map(lead => lead.set('editIcon', (
-            <IconButton
-                iconClassName="material-icons"
-                iconStyle={{ color: primary1Color }}
-                onTouchTap={(event: Event) =>
-                    this.handleEditTouchTap(event, lead)}
-                tooltip="Edit this lead"
-                tooltipPosition="bottom-right"
-                tooltipStyles={{ fontSize: 12 }}
-            >
-                mode_edit
-            </IconButton>
-        ))).toList();
-    };
-
     render(): React.Element<*> {
-        const { isLoading } = this.state;
+        const { isLoading, leads } = this.state;
 
         // TODO: Add filter selection handling and saving.
         const filterSelections = ['Test 1', 'Test 2'];
@@ -100,7 +82,6 @@ export class LeadsList extends React.Component {
         if (isLoading) {
             return (<div>Loading...</div>);
         }
-        const tableData = this.getTableData().toList();
         return (
             <div>
                 <PageHeader
@@ -113,9 +94,10 @@ export class LeadsList extends React.Component {
                 />
                 <SearchableTable
                     columns={tableColumns}
-                    data={tableData}
+                    data={leads.toList()}
                     filterSelections={filterSelections}
                     handleAddTouchTap={this.handleAddTouchTap}
+                    handleRowIconTouchTap={this.handleEditTouchTap}
                 />
             </div>
         );

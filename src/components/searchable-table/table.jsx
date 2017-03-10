@@ -6,8 +6,10 @@
 import React from 'react';
 import { List } from 'immutable';
 import { Table as MuiTable, TableHeader } from 'material-ui/Table';
+import IconButton from 'material-ui/IconButton';
 
 /* Internal dependencies */
+import { primary1Color } from 'style/mui/palette';
 import Body from './body';
 import Footer from './footer';
 import HeaderColumn from './header-column';
@@ -20,6 +22,7 @@ export default class Table extends React.Component {
         data: List<*>,
         fixedFooter?: boolean,
         fixedHeader?: boolean,
+        handleRowIconTouchTap: (event: Event, row: Object) => void,
         handleNextPageClick: () => void,
         handlePreviousPageClick: () => void,
         handleRowSizeChange: (index?: number, value: number) => void,
@@ -87,6 +90,7 @@ export default class Table extends React.Component {
             data,
             fixedFooter,
             fixedHeader,
+            handleRowIconTouchTap,
             handleNextPageClick,
             handlePreviousPageClick,
             handleRowSizeChange,
@@ -116,6 +120,13 @@ export default class Table extends React.Component {
                         enableSelectAll={false}
                     >
                         <Row onCellClick={this.handleHeaderColumnClick}>
+                            <HeaderColumn
+                                key="icons"
+                                style={{
+                                    paddingLeft: 8,
+                                    width: 48,
+                                }}
+                            />
                             {columns.map((row, index) => (
                                 <HeaderColumn
                                     className={row.className}
@@ -143,6 +154,22 @@ export default class Table extends React.Component {
                     >
                         {data.map((row, rowIndex) => (
                             <Row key={rowIndex}>
+                                <RowColumn
+                                    key="icons"
+                                    style={{
+                                        paddingLeft: 8,
+                                        width: 48,
+                                    }}
+                                >
+                                    <IconButton
+                                        iconClassName="material-icons"
+                                        iconStyle={{ color: primary1Color }}
+                                        onTouchTap={(event: Event) =>
+                                            handleRowIconTouchTap(event, row)}
+                                    >
+                                        mode_edit
+                                    </IconButton>
+                                </RowColumn>
                                 {columns.map((column, columnIndex) => (
                                     <RowColumn
                                         key={columnIndex}

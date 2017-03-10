@@ -8,7 +8,7 @@ import { List } from 'immutable';
 
 /* Internal dependencies */
 import { createLead, updateLead } from 'state/entities/leads/actions';
-import { Change, Lead, Note } from 'state/entities/models';
+import { Change, Lead } from 'state/entities/models';
 import Timeline from 'components/timeline';
 import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
@@ -22,22 +22,15 @@ import type { MapLocation } from 'lib/types';
 const mapStateToProps = (state, ownProps) => {
     const entitiesPath = ['entities', 'leads', 'entities'];
     let lead = new Lead();
-    let notes = new List();
     let changes = new List();
     const leadId = parseInt(ownProps.params.id, 10) || 0;
     if (leadId !== 0) {
-        lead = state.getIn(entitiesPath.concat(['leads', leadId.toString()]));
-        notes = state.getIn(entitiesPath.concat(['notes']))
-            .filter(note => note.leadId === leadId)
-            .toList();
-        changes = state.getIn(entitiesPath.concat(['changes']))
-            .filter(change => change.leadId === leadId)
-            .toList();
+        lead = state.getIn(entitiesPath.concat([leadId.toString()]));
+        changes = lead.get('changes').toList();
     }
     return {
         changes,
         lead,
-        notes,
     };
 };
 
@@ -52,11 +45,11 @@ class ManageLeadPage extends React.Component {
         changes: List<Change>,
         createLead: () => void,
         lead: Lead,
-        notes: List<Note>,
         updateLead: () => void,
     };
 
     state: {
+        activeTabName: string,
         isMessagesDialogOpen: boolean,
         lead: Lead,
     };
@@ -64,30 +57,21 @@ class ManageLeadPage extends React.Component {
     constructor(props: any): void {
         super(props);
         this.state = {
+            activeTabName: 'details',
             isMessagesDialogOpen: false,
             lead: this.props.lead,
         };
     }
 
-    getUpdatedLead = (updatedLead: Lead) => {
-        this.setState({ lead: updatedLead });
-    };
-
     /**
-     * Performs an action based on the button pressed in the page header
-     *      toolbar.  If the Back button was pressed, return to the Leads List
-     *      page, otherwise open the Messages Dialog.
+     * If the back button in the page header toolbar is pressed, redirects the
+     *      user back to the Leads List page after confirming the action.
      * @param {Event} event Event associated with the control.
-     * @param {string} actionName Name of action associated with touch-tapped
-     *      element.
      */
-    handleHeaderTouchTap = (event: Event, actionName: string): void => {
+    handleBackArrowTouchTap = (event: Event): void => {
         event.preventDefault();
-        if (actionName === 'save') {
-            this.setState({ isMessagesDialogOpen: true });
-        } else {
-            browserHistory.push('/leads');
-        }
+        // TODO: Add confirmation prior to going back to Leads List.
+        browserHistory.push('/leads');
     };
 
     /**
@@ -112,35 +96,56 @@ class ManageLeadPage extends React.Component {
         performActionPromise(lead).then(() => browserHistory.push('/leads'));
     };
 
+    handleSaveTouchTap = (event: Event, lead: Lead): void => {
+        event.preventDefault();
+        this.setState({
+            isMessagesDialogOpen: true,
+            lead,
+        });
+    };
+
+    handleTabPageChange = (value: string): void => {
+        this.setState({ activeTabName: value });
+    };
+
     render(): React.Element<*> {
-        const { changes, notes } = this.props;
-        const { isMessagesDialogOpen, lead } = this.state;
+        const { changes } = this.props;
+        const { activeTabName, isMessagesDialogOpen, lead } = this.state;
 
         return (
             <div>
                 <PageHeaderToolbar
-                    handleTouchTap={this.handleHeaderTouchTap}
+                    handleBackArrowTouchTap={this.handleBackArrowTouchTap}
                     headerText={lead.leadName}
                     subheaderText={lead.status}
                 />
                 <TabsToolbar
+                    handleTabPageChange={this.handleTabPageChange}
                     tabPages={[
                         {
-                            label: 'Details',
                             content: (
                                 <LeadDetailsForm
-                                    getUpdatedLead={this.getUpdatedLead}
+                                    handleSaveTouchTap={this.handleSaveTouchTap}
                                     lead={lead}
                                 />
                             ),
+                            label: 'Details',
+                            value: 'details',
                         },
                         {
-                            label: 'History',
                             content: (<Timeline timelineEvents={changes} />),
+                            label: 'History',
+                            value: 'history',
                         },
                         {
+                            content: (
+                                <NotesList
+                                    isAddButtonShown={activeTabName === 'notes'}
+                                    lead={lead}
+                                />
+                            ),
                             label: 'Notes',
-                            content: (<NotesList notes={notes} />),
+                            value: 'notes',
                         },
                     ]}
                 />

@@ -37,6 +37,7 @@ export default class SearchableTable extends React.Component {
         columns: Array<Column>,
         data: List<*>,
         handleAddTouchTap: (event: Event) => void,
+        handleRowIconTouchTap: (event: Event, row: Object) => void,
         filterSelections: Array<string>,
     };
 
@@ -103,6 +104,7 @@ export default class SearchableTable extends React.Component {
         const {
             columns,
             handleAddTouchTap,
+            handleRowIconTouchTap,
             filterSelections,
         } = this.props;
 
@@ -138,6 +140,7 @@ export default class SearchableTable extends React.Component {
                         fixedFooter={false}
                         handleNextPageClick={this.handleNextPageClick}
                         handlePreviousPageClick={this.handlePreviousPageClick}
+                        handleRowIconTouchTap={handleRowIconTouchTap}
                         handleRowSizeChange={this.handleRowSizeChange}
                         handleSortOrderChange={this.handleSortOrderChange}
                         showRowHover={true}

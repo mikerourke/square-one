@@ -3,6 +3,10 @@
 /* External dependencies */
 import { List, Record } from 'immutable';
 
+/* Internal dependencies */
+import Change from '../changes/model';
+import Note from '../notes/model';
+
 export default class Lead extends Record({
     id: (0: number),
     leadName: ('': string),
@@ -17,9 +21,8 @@ export default class Lead extends Record({
     description: ('': string),
     status: ('New': string),
     assignTo: ('': string),
-    changes: (new List(): List<number>),
-    notes: (new List(): List<number>),
+    changes: (new List(): List<Change>),
+    notes: (new List(): List<Note>),
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
-    editIcon: (null: ?Object),
 }) {}

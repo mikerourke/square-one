@@ -8,13 +8,6 @@ export default [
         },
     },
     {
-        key: 'editIcon',
-        style: {
-            paddingLeft: 8,
-            width: 48,
-        },
-    },
-    {
         key: 'leadName',
         label: 'Lead Name',
         sortable: true,
@@ -29,5 +22,10 @@ export default [
         label: 'Status',
         sortable: true,
         style: { width: 96 },
+    },
+    {
+        key: 'createdAt',
+        label: 'Created On',
+        sortable: true,
     },
 ];

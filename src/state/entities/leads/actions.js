@@ -26,7 +26,7 @@ export const createLead = (lead: Lead): Action => ({
         request: {
             method: 'post',
             url: BASE_URL,
-            data: lead,
+            data: lead.toJS(),
         },
     },
 });
@@ -75,7 +75,7 @@ export const updateLead = (lead: Lead): Action => ({
         request: {
             method: 'patch',
             url: `${BASE_URL}/${lead.id}`,
-            data: lead,
+            data: lead.toJS(),
         },
     },
 });

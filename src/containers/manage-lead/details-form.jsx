@@ -5,6 +5,8 @@
 /* External dependencies */
 import React from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
+import FlatButton from 'material-ui/FlatButton';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
@@ -27,15 +29,24 @@ const mapStateToProps = (state) => {
     };
 };
 
+const ButtonContainer = styled.div`
+    width: 100%;
+`;
+
 /**
  * Form component for entering Lead details.
  * @param {Object} lead Lead entity associated with the form.
  */
 class LeadDetailsForm extends React.Component {
     props: {
+        handleSaveTouchTap: (event: Event, lead: Lead) => void,
         lead: Lead,
-        representativesList?: Array<string>,
-        sourcesList?: Array<string>,
+        representativesList: Array<string>,
+        sourcesList: Array<string>,
+    };
+
+    state: {
+        lead: Lead,
     };
 
     static defaultProps = {
@@ -94,10 +105,12 @@ class LeadDetailsForm extends React.Component {
 
     render(): React.Element<*> {
         const {
-            lead,
+            handleSaveTouchTap,
             representativesList,
             sourcesList,
         } = this.props;
+
+        const { lead } = this.state;
 
         return (
             <form id="lead-details-form">
@@ -187,6 +200,13 @@ class LeadDetailsForm extends React.Component {
                         />
                     </FormColumn>
                 </FormColumnsContainer>
+                <ButtonContainer>
+                    <FlatButton
+                        label="Save"
+                        onTouchTap={(event: Event) =>
+                            handleSaveTouchTap(event, lead)}
+                    />
+                </ButtonContainer>
             </form>
         );
     }

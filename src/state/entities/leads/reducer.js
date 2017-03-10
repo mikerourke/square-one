@@ -28,50 +28,29 @@ type State = Map<string, EntitiesMap | ResultList | ErrorMap>;
 
 const initialState = OrderedMap();
 
-const getEntitiesAsMap = (entities) => {
-    const { changes, leads, notes } = entities;
-    return new Map({
-        changes: OrderedMap([...Object.entries(changes).map(
-                ([key, value]) => ([key, new Change(fromJS(value))]),
-            )]),
-        leads: OrderedMap([...Object.entries(leads).map(
-                ([key, value]) => ([key, new Lead(fromJS(value))]),
-            )]),
-        notes: OrderedMap([...Object.entries(notes).map(
-                ([key, value]) => ([key, new Note(fromJS(value))]),
-            )]),
-    });
+const createLeadRecord = (leadAsJs: Object) => {
+    const { changes, notes } = (leadAsJs: Object);
+    const changesList = new List(changes.map(change =>
+        new Change(fromJS(change))));
+    const notesList = new List(notes.map(note =>
+        new Note(fromJS(note))));
+    return new Lead(fromJS(leadAsJs))
+        .set('changes', changesList)
+        .set('notes', notesList);
 };
 
+const getEntitiesAsMap = leads => OrderedMap(
+    [...Object.entries(leads).map(
+        ([key, value]: [any, any]) => ([key, createLeadRecord(value)]),
+)]);
+
 const mergeEntities = (state: State, data: Object): State => {
-    const { entities, result } = (data: Object);
+    const { entities: { leads }, result } = (data: Object);
     return state.merge({
-        entities: getEntitiesAsMap(entities),
+        entities: getEntitiesAsMap(leads),
         result: new List(result),
         error: new Map(),
     });
-};
-
-const getStateAfterDeletion = (state: State, leadId: number): State => {
-    const leadsPath = ['entities', 'leads'];
-    const newLeads = state.deleteIn(leadsPath.concat([leadId.toString()]));
-
-    const notesPath = ['entities', 'notes'];
-    // $FlowIgnore
-    const newNotes = state
-        .getIn(notesPath)
-        .filter(note => note.leadId !== leadId);
-
-    const changesPath = ['entities', 'changes'];
-    // $FlowIgnore
-    const newChanges = state
-        .getIn(changesPath)
-        .filter(change => change.leadId !== leadId);
-
-    return state
-        .setIn(leadsPath, newLeads)
-        .setIn(changesPath, newChanges)
-        .setIn(notesPath, newNotes);
 };
 
 export default (state: State = initialState, action: Action) => {
@@ -90,16 +69,15 @@ export default (state: State = initialState, action: Action) => {
         case LEAD_UPDATE_SUCCESS:
             const { payload: { data: leadToSet } } = (action: Object);
             return state.setIn(leadsPath.concat([leadToSet.id]),
-                fromJS(leadToSet));
+                createLeadRecord(leadToSet));
 
         case LEAD_DELETE_SUCCESS:
             const { id } = (action: Object);
-            return getStateAfterDeletion(state, id);
-
+            return state.deleteIn(leadsPath.concat([id.toString()]));
 
         case LEAD_GET_ALL_SUCCESS:
-            const { payload: { data: entities } } = (action: Object);
-            return mergeEntities(state, entities);
+            const { payload: { data } } = (action: Object);
+            return mergeEntities(state, data);
 
         default:
             return state;

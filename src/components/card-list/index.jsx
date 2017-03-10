@@ -10,8 +10,6 @@ import {
     CardTitle,
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import FontIcon from 'material-ui/FontIcon';
 import { List as MuiList } from 'material-ui/List';
 
 /* Internal dependencies */
@@ -71,6 +69,7 @@ export default class CardList extends React.Component {
     render(): React.Element<*> {
         const { handleTouchTap } = this.props;
         const { cardContents } = this.state;
+
         return (
             <div>
                 <SearchToolbar
@@ -88,7 +87,6 @@ export default class CardList extends React.Component {
                     {cardContents.map(cardEntity => (
                         <Card
                             key={cardEntity.id}
-                            containerStyle={{  }}
                             style={{
                                 flex: '1 0 auto',
                                 margin: 16,
@@ -98,7 +96,7 @@ export default class CardList extends React.Component {
                         >
                             <CardHeader
                                 subtitle={cardEntity.createdAt}
-                                title={cardEntity.title}
+                                title={cardEntity.createdBy}
                             />
                             <CardText
                                 style={{
@@ -129,19 +127,6 @@ export default class CardList extends React.Component {
                         </Card>
                     ))}
                 </MuiList>
-                <FloatingActionButton
-                    id="card-add"
-                    onTouchTap={handleTouchTap}
-                    secondary={true}
-                    style={{ float: 'right' }}
-                >
-                    <FontIcon
-                        className="material-icons"
-                        style={{ fontSize: 32 }}
-                    >
-                        add
-                    </FontIcon>
-                </FloatingActionButton>
             </div>
         );
     }

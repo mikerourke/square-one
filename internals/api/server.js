@@ -8,6 +8,7 @@
 const { blue } = require('chalk');
 const path = require('path');
 const jsonServer = require('json-server');
+const moment = require('moment');
 
 /* Internal dependencies */
 const routes = require('./routes.json');
@@ -19,11 +20,12 @@ const middlewares = jsonServer.defaults();
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
-// Creates a random ID number associated with a lead.
 server.use((req, res, next) => {
-    // TODO: Fix the issue with POST requests not creating a new record.
     if (req.method === 'POST') {
-        req.body.id = Math.floor(Math.random() * (50000 - 1)) + 1;
+        // Creates a random ID number when a new item is added.
+        if (!req.url.includes('notes')) {
+            req.body.id = Math.floor(Math.random() * (50000 - 1)) + 1;
+        }
     }
     next();
 });

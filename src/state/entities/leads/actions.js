@@ -11,9 +11,14 @@ import {
     LEAD_GET_ALL,
     LEAD_GET_SINGLE,
     LEAD_UPDATE,
+    NOTE_CREATE,
+    NOTE_DELETE,
+    NOTE_UPDATE,
 } from '../../action-types';
 import Lead from './model';
+import Note from '../notes/model';
 import { leadsSchema } from '../schema';
+
 
 /* Types */
 import type { Action } from 'lib/types';
@@ -75,6 +80,17 @@ export const updateLead = (lead: Lead): Action => ({
         request: {
             method: 'patch',
             url: `${BASE_URL}/${lead.id}`,
+            data: lead.toJS(),
+        },
+    },
+});
+
+export const createNoteInLead = (lead: Lead) => ({
+    type: NOTE_CREATE,
+    payload: {
+        request: {
+            method: 'post',
+            url: `${BASE_URL}/${lead.id}/notes`,
             data: lead.toJS(),
         },
     },

@@ -8,7 +8,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
 /* Internal dependencies */
-import { updateLead } from 'state/entities/leads/actions';
+import { createNoteInLead } from 'state/entities/leads/actions';
 import { Lead, Note } from 'state/entities/models';
 import ActionButton from 'components/action-button';
 import CardList from 'components/card-list';
@@ -28,7 +28,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
-    updateLead: lead => dispatch(updateLead(lead)),
+    createNoteInLead: lead => dispatch(createNoteInLead(lead)),
 });
 
 class NotesList extends React.Component {
@@ -87,7 +87,16 @@ class NotesList extends React.Component {
 
     handleEditDialogSaveTouchTap = (event: Event): void => {
         event.preventDefault();
-        this.setState({ isEditDialogOpen: false });
+        const { createNoteInLead, lead } = this.props;
+        const note = new Note({
+            parentId: lead.id,
+        });
+        // TODO: Finish routines to create notes.
+        const updatedLead = lead.updateIn(['notes'], notes => notes.push(note));
+        console.log(updatedLead);
+        createNoteInLead(updatedLead).then(() => {
+            this.setState({ isEditDialogOpen: false });
+        });
     };
 
     render(): React.Element<*> {

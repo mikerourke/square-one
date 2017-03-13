@@ -2,7 +2,5 @@
   "/api/": "/",
   "/users/:username": "/users?username=:username",
   "/settings/:settingName": "/settings?settingName=:settingName",
-  "/settings/:category/:settingName": "/settings?category=:category&settingName=:settingName",
-  "/leads/:id/notes": "/notes?entityType=lead&entityId=:id",
-  "/leads/:id/changes": "/changes?entityType=lead&entityId=:id"
+  "/settings/:category/:settingName": "/settings?category=:category&settingName=:settingName"
 }

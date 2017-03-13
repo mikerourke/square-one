@@ -31,6 +31,10 @@ export default getMuiTheme({
         textColor: palette.primary1Color,
         selectedTextColor: palette.primary1Color,
     },
+    textField: {
+        floatingLabelColor: palette.primary2Color,
+        hintColor: palette.primary2Color,
+    },
     toolbar: {
         backgroundColor: palette.alternateTextColor,
         height: 48,

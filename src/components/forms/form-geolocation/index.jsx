@@ -21,7 +21,6 @@ import type {
     Autocomplete,
     Google,
     LatLng,
-    LatLngLiteral,
     Map,
     MapOptions,
     Marker,

@@ -1,3 +1,15 @@
+/**
+ * This code was taken from the material-ui-datatables library and modified
+ *      slightly to use the styled-components library.  I also stripped the
+ *      comments for each prop and removed some of the code that allowed for
+ *      customization.  I copied and modified the code because all of the
+ *      material-ui library components that the material-ui-datatables library
+ *      depended on were being tacked on to my Webpack bundle, rather than
+ *      being pulled from the version that my project depends on.  This was
+ *      adding more than 500kb to the bundle size.
+ * @see https://github.com/hyojin/material-ui-datatables
+ */
+
 /* @flow */
 
 /* External dependencies */

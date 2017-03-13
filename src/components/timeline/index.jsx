@@ -13,6 +13,7 @@ import {
 /* Internal dependencies */
 import { accent1Color } from 'style/mui/palette';
 
+/* Types */
 import type { List } from 'immutable';
 
 /**

@@ -27,5 +27,6 @@ export default [
         key: 'createdAt',
         label: 'Created On',
         sortable: true,
+        style: { width: 96 },
     },
 ];

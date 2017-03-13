@@ -8,7 +8,7 @@ import FlatButton from 'material-ui/FlatButton';
 import getRgbFromHex from 'lib/rgb-to-hex';
 import {
     accent1Color,
-    alternateTextColor,
+    canvasColor,
     primary1Color,
 } from 'style/mui/palette';
 
@@ -30,7 +30,7 @@ const getBackgroundColor = (primary: boolean, secondary: boolean): string => {
         return accent1Color;
     }
 
-    return 'black';
+    return canvasColor;
 };
 
 /**
@@ -61,8 +61,8 @@ const getHoverColor = (primary: boolean, secondary: boolean): string => {
  */
 const ColoredFlatButton = ({
     handleTouchTap,
-    primary,
-    secondary,
+    primary = false,
+    secondary = false,
     ...props
 }: {
     handleTouchTap: () => void,
@@ -72,7 +72,9 @@ const ColoredFlatButton = ({
     <FlatButton
         backgroundColor={getBackgroundColor(primary, secondary)}
         hoverColor={getHoverColor(primary, secondary)}
-        labelStyle={{ color: 'white' }}
+        labelStyle={{ color: (primary || secondary)
+                             ? canvasColor
+                             : primary1Color }}
         onTouchTap={handleTouchTap}
         {...props}
     />

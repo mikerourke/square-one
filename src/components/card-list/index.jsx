@@ -12,8 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 import { List as MuiList } from 'material-ui/List';
 
 /* Internal dependencies */
-import { primary1Color } from 'style/mui/palette';
-import { getSearchResults, getSortedData } from 'lib/query-actions';
+import { getSearchResults } from 'lib/query-actions';
 import SearchToolbar from 'components/search-toolbar';
 
 /* Types */

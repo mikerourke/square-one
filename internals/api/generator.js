@@ -15,15 +15,11 @@ const dbFilePath = path.resolve(process.cwd(), 'internals/api/db.json');
 /**
  * Converts the UNIX timestamp value that was generated to a readable date
  *      format in the generated data file.
- * @param {string} timeToFormat Time in milliseconds to format.  The value needs
- *      to be converted to a number prior to formatting.
- * @returns {string} Formatted date.
+ * @param {number} timeToFormat Unix time to format.
+ * @returns {string} Formatted date/time.
  */
-const getFormattedTime = (timeToFormat) => {
-    const timeInMs = parseInt(timeToFormat, 10);
-    const newFormat = 'YYYY-MM-DD HH:mm:ss';
-    return moment(timeInMs).format(newFormat);
-};
+const getFormattedTime = (timeToFormat) =>
+    moment.unix(timeToFormat).format('YYYY-MM-DD HH:mm:ss.SSS Z');
 
 /**
  * Loops through each entity in the specified entity group and updates the
@@ -37,11 +33,28 @@ const updateTimeFormat = (entityGroup) => entityGroup.map(entityItem => {
 });
 
 /**
+ * If any arguments were passed to the generation command, update the min and
+ *      max items (first argument is min, second is max).
+ * @param {Object} leadsSchema Schema structure from the schema.json file.
+ * @returns {Object} Schema with updated min and max values.
+ */
+const updateMinAndMaxItems = (leadsSchema) => {
+    const minItems = process.argv[2] || 20;
+    const maxItems = process.argv[3] || 30;
+    return Object.assign({}, leadsSchema, {
+        minItems: parseInt(minItems, 10),
+        maxItems: parseInt(maxItems, 10),
+    });
+};
+
+/**
  * Generates data based on the specified schema and formats the time fields to
  *      be in a usable format.
  */
 const getFormattedSampleData = () => {
-    const sampleLeads = jsf(schema.leads);
+    const leadsSchema = updateMinAndMaxItems(schema.leads);
+    console.log(leadsSchema);
+    const sampleLeads = jsf(leadsSchema);
     updateTimeFormat(sampleLeads);
     sampleLeads.map(sampleLead => {
         updateTimeFormat(sampleLead.changes);

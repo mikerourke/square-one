@@ -27,7 +27,9 @@ module.exports = {
         'eol-last': 0,
         'indent': [1,4, { 'SwitchCase': 1 }],
         'linebreak-style': 0,
-        'max-len': [2, 80, 4, { 'ignoreUrls': true }],
+        'max-len': [2, 80, 4, {
+            ignoreUrls: true
+        }],
         'newline-per-chained-call': 0,
         'no-alert': 0,
         'no-case-declarations': 0,
@@ -38,7 +40,7 @@ module.exports = {
         'no-trailing-spaces': 0,
         'no-underscore-dangle': 0,
         'no-unused-vars': [1, {
-            ignoreRestSiblings: true,
+            ignoreRestSiblings: true
         }],
         'no-use-before-define': 0, // This causes issues with type declarations.
         'semi': [1, 'always'],
@@ -48,7 +50,9 @@ module.exports = {
         'import/no-duplicates': 0,
         'import/no-extraneous-dependencies': 0,
         'import/named': 0,
-        'import/namespace': [0, { 'allowComputed': true }],
+        'import/namespace': [0, {
+            allowComputed: true
+        }],
         'import/no-named-as-default': 0,
         'import/no-named-as-default-member': 0,
         'import/no-unresolved': 2,

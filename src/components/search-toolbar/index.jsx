@@ -88,6 +88,7 @@ export default class SearchToolbar extends React.Component {
                         fullWidth={true}
                         hintText="Search"
                         hintStyle={getInlineStyle(0.5)}
+                        id="search-box"
                         inputStyle={getInlineStyle()}
                         onChange={handleSearchBoxChange}
                     />

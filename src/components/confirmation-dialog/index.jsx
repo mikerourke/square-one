@@ -21,8 +21,8 @@ const ConfirmationDialog = ({
     message,
     open,
 }: {
-    handleNoTouchTap: () => void,
-    handleYesTouchTap: () => void,
+    handleNoTouchTap: (event: Event) => void,
+    handleYesTouchTap: (event: Event) => void,
     message: string,
     open: boolean,
 }): React.Element<*> => (
@@ -37,7 +37,7 @@ const ConfirmationDialog = ({
                 label="No"
                 onTouchTap={handleNoTouchTap}
                 secondary={true}
-            />
+            />,
         ]}
         open={open}
         title="Confirmation"

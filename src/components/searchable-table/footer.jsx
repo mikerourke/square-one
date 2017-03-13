@@ -1,3 +1,15 @@
+/**
+ * This code was taken from the material-ui-datatables library and modified
+ *      slightly to use the styled-components library.  I also stripped the
+ *      comments for each prop and removed some of the code that allowed for
+ *      customization.  I copied and modified the code because all of the
+ *      material-ui library components that the material-ui-datatables library
+ *      depended on were being tacked on to my Webpack bundle, rather than
+ *      being pulled from the version that my project depends on.  This was
+ *      adding more than 500kb to the bundle size.
+ * @see https://github.com/hyojin/material-ui-datatables
+ */
+
 /* @flow */
 
 /* External dependencies */
@@ -16,6 +28,7 @@ import {
 } from 'style/mui/palette';
 
 const ControlGroupContainer = styled.div`
+    align-items: center;
     color: ${accent3Color};
     display: flex;
     font-size: 12px;
@@ -43,27 +56,20 @@ export default class Footer extends React.Component {
     props: {
         handleNextPageClick: () => void,
         handlePreviousPageClick: () => void,
-        handleRowSizeChange: (index?: number, value: number) => void,
+        handleRowSizeChange: (event: Event, key?: number,
+                              value: number) => void,
+        page: number,
         recordCount: number,
         rowSize: number,
     };
 
-    state: {
-        page: number,
-        rowSize: number,
-    };
-
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            page: 1,
-            rowSize: this.props.rowSize,
-        };
-    }
-
+    /**
+     * Returns pagination details and previous/next page button enablement
+     *      to apply to the footer elements.
+     * @returns {Object} Properties to apply to the pagination elements.
+     */
     getPaginationDetails = (): Object => {
-        const { recordCount } = this.props;
-        const { page, rowSize } = this.state;
+        const { page, recordCount, rowSize } = this.props;
 
         let start = ((page - 1) * rowSize) + 1;
         let previousButtonDisabled = (page === 1);
@@ -106,11 +112,20 @@ export default class Footer extends React.Component {
             start,
         } = this.getPaginationDetails();
 
+        const pageButtonStyle = {
+            marginLeft: 4,
+            marginRight: 4,
+            minWidth: 24,
+            opacity: 0.54,
+            width: 24,
+        };
+
         return (
             <Toolbar
                 style={{
                     backgroundColor: canvasColor,
                     borderTop: `1px solid ${borderColor}`,
+                    padding: 0,
                 }}
             >
                 <ControlGroupContainer>
@@ -118,8 +133,16 @@ export default class Footer extends React.Component {
                         <div>Rows per page:</div>
                     </ControlWrapper>
                     <DropDownMenu
-                        labelStyle={{ color: accent3Color }}
+                        labelStyle={{
+                            color: accent3Color,
+                            fontSize: 12,
+                        }}
+                        listStyle={{ fontSize: 12 }}
+                        menuItemStyle={{ fontSize: 12 }}
+                        menuStyle={{ paddingRight: 52 }}
                         onChange={handleRowSizeChange}
+                        style={{ height: 'inherit' }}
+                        underlineStyle={{ display: 'none' }}
                         value={rowSize}
                     >
                         {[10, 30, 50, 100].map(rowSizeOption => (
@@ -138,7 +161,7 @@ export default class Footer extends React.Component {
                             icon={(<FontIcon className="material-icons">
                                        chevron_left
                                    </FontIcon>)}
-                            style={{ opacity: 0.54 }}
+                            style={pageButtonStyle}
                             onClick={handlePreviousPageClick}
                             disabled={previousButtonDisabled}
                         />
@@ -146,7 +169,7 @@ export default class Footer extends React.Component {
                             icon={(<FontIcon className="material-icons">
                                        chevron_right
                                    </FontIcon>)}
-                            style={{ opacity: 0.54 }}
+                            style={pageButtonStyle}
                             onClick={handleNextPageClick}
                             disabled={nextButtonDisabled}
                         />

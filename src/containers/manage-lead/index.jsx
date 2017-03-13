@@ -16,9 +16,6 @@ import NotesList from './notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
 import TabsPage from 'components/tabs-page';
 
-/* Types */
-import type { MapLocation } from 'lib/types';
-
 const mapStateToProps = (state, ownProps) => {
     const entitiesPath = ['entities', 'leads', 'entities'];
     let lead = new Lead();
@@ -40,7 +37,12 @@ const mapDispatchToProps = dispatch => ({
     updateLead: lead => dispatch(updateLead(lead)),
 });
 
-class ManageLeadPage extends React.Component {
+/**
+ * Top level container for managing single Lead entities.
+ * @export
+ * @class ManageLeadPage
+ */
+export class ManageLeadPage extends React.Component {
     props: {
         changes: List<Change>,
         createLead: () => void,
@@ -96,6 +98,12 @@ class ManageLeadPage extends React.Component {
         performActionPromise(lead).then(() => browserHistory.push('/leads'));
     };
 
+    /**
+     * Updates the Lead entity in local state and opens the Messages dialog
+     *      when the Save button is pressed.
+     * @param {Event} event Event associated with the Save button.
+     * @param {Lead} lead Lead being edited on the page.
+     */
     handleSaveTouchTap = (event: Event, lead: Lead): void => {
         event.preventDefault();
         this.setState({
@@ -104,6 +112,11 @@ class ManageLeadPage extends React.Component {
         });
     };
 
+    /**
+     * Updates the local state to ensure the Add button for new notes is
+     *      hidden if the active tab isn't on the Notes page.
+     * @param {string} value Value (name) of the active tab.
+     */
     handleTabPageChange = (value: string): void => {
         this.setState({ activeTabName: value });
     };

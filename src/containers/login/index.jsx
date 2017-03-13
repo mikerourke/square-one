@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';

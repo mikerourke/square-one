@@ -5,6 +5,7 @@
 - Indent using 4 spaces.
 - Add blank line at end of file.
 - Use trailing commas for all mulitline items.
+- Surround boolean statements or calculations with parentheses.
 
 ### File Structure
 - Split external and internal dependencies with line break and comment headers:

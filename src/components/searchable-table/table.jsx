@@ -1,3 +1,15 @@
+/**
+ * This code was taken from the material-ui-datatables library and modified
+ *      slightly to use the styled-components library.  I also stripped the
+ *      comments for each prop and removed some of the code that allowed for
+ *      customization.  I copied and modified the code because all of the
+ *      material-ui library components that the material-ui-datatables library
+ *      depended on were being tacked on to my Webpack bundle, rather than
+ *      being pulled from the version that my project depends on.  This was
+ *      adding more than 500kb to the bundle size.
+ * @see https://github.com/hyojin/material-ui-datatables
+ */
+
 /* @flow */
 
 /* eslint-disable react/no-array-index-key */
@@ -16,6 +28,8 @@ import HeaderColumn from './header-column';
 import Row from './row';
 import RowColumn from './row-column';
 
+import type { Sort } from './index';
+
 export default class Table extends React.Component {
     props: {
         columns: Array<any>,
@@ -25,18 +39,20 @@ export default class Table extends React.Component {
         handleRowIconTouchTap: (event: Event, row: Object) => void,
         handleNextPageClick: () => void,
         handlePreviousPageClick: () => void,
-        handleRowSizeChange: (index?: number, value: number) => void,
+        handleRowSizeChange: (event: Event, key?: number,
+                              value: number) => void,
         handleSortOrderChange?: (key: string, order: string) => void,
         height?: string,
+        initialSort?: Sort,
         page?: number,
+        recordCount: number,
         rowSize?: number,
         showRowHover?: boolean,
         stripedRows?: boolean,
     };
 
     state: {
-        sortColumn: string,
-        sortOrder: string,
+        sort: Sort,
     };
 
     static defaultProps = {
@@ -45,6 +61,10 @@ export default class Table extends React.Component {
         fixedFooter: false,
         fixedHeader: false,
         height: 'inherit',
+        initialSort: {
+            column: '',
+            order: 'asc',
+        },
         page: 1,
         showRowHover: false,
         stripedRows: false,
@@ -54,9 +74,9 @@ export default class Table extends React.Component {
 
     constructor(props: any, context: any): void {
         super(props, context);
+        const { initialSort } = (this.props: Object);
         this.state = {
-            sortColumn: '',
-            sortOrder: 'asc',
+            sort: initialSort,
         };
     }
 
@@ -66,17 +86,19 @@ export default class Table extends React.Component {
         columnIndex: number,
     ): void => {
         const { columns, handleSortOrderChange } = this.props;
-        const adjustedColumnIndex = columnIndex - 1;
+        const adjustedColumnIndex = (columnIndex - 2);
         const column = columns[adjustedColumnIndex];
         if (column && column.sortable) {
-            const { sortColumn, sortOrder } = this.state;
+            const { sort } = this.state;
             const key = column.key;
-            const order = sortColumn === column.key && sortOrder === 'asc'
+            const order = sort.column === column.key && sort.order === 'asc'
                           ? 'desc'
                           : 'asc';
             this.setState({
-                sortColumn: key,
-                sortOrder: order,
+                sort: {
+                    column: key,
+                    order,
+                },
             });
             if (handleSortOrderChange) {
                 handleSortOrderChange(key, order);
@@ -96,16 +118,13 @@ export default class Table extends React.Component {
             handleRowSizeChange,
             height,
             page,
+            recordCount,
             rowSize,
             showRowHover,
             stripedRows,
-            ...props
+            ...props // eslint-disable-line
         } = this.props;
-        const { sortColumn, sortOrder } = this.state;
-
-        // This fails the type check even though it's a valid statement:
-        // $FlowIgnore
-        const recordCount = (List.isList(data)) ? data.count() : data.length;
+        const { sort } = this.state;
 
         return (
             <div>
@@ -131,11 +150,11 @@ export default class Table extends React.Component {
                                 <HeaderColumn
                                     className={row.className}
                                     key={index}
-                                    order={sortColumn === row.key
-                                        ? sortOrder
+                                    order={sort.column === row.key
+                                        ? sort.order
                                         : 'asc'}
                                     sortable={row.sortable}
-                                    sorted={sortColumn === row.key}
+                                    sorted={sort.column === row.key}
                                     style={Object.assign({},
                                         { fontWeight: 600 },
                                         row.style || {})}
@@ -149,6 +168,7 @@ export default class Table extends React.Component {
                     <Body
                         deselectOnClickaway={false}
                         displayRowCheckbox={false}
+                        preScanRows={false}
                         showRowHover={showRowHover}
                         stripedRows={stripedRows}
                     >
@@ -186,6 +206,7 @@ export default class Table extends React.Component {
                     handleNextPageClick={handleNextPageClick}
                     handlePreviousPageClick={handlePreviousPageClick}
                     handleRowSizeChange={handleRowSizeChange}
+                    page={page}
                     recordCount={recordCount}
                     rowSize={rowSize}
                 />

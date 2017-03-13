@@ -6,7 +6,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import Divider from 'material-ui/Divider';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
@@ -19,6 +18,7 @@ import Lead from 'state/entities/leads/model';
 import FormColumn from 'components/forms/form-column';
 import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';
+import FormTextField from 'components/forms/form-text-field';
 
 /* Types */
 import type { MapLocation } from 'lib/types';
@@ -119,11 +119,13 @@ class LeadDetailsForm extends React.Component {
             <form id="lead-details-form">
                 <FormColumnsContainer>
                     <FormColumn>
-                        <TextField
+                        <FormTextField
                             floatingLabelText="Lead Name"
+                            dataType="text"
                             fullWidth={true}
+                            isRequired={true}
                             name="leadName"
-                            onChange={this.handleInputChange}
+                            onValidInputChange={this.handleInputChange}
                             value={lead.leadName}
                         />
                         <SelectField
@@ -144,18 +146,23 @@ class LeadDetailsForm extends React.Component {
                                 />
                             ))}
                         </SelectField>
-                        <TextField
+                        <FormTextField
                             floatingLabelText="Lead Fee"
+                            dataType="number"
                             fullWidth={true}
                             name="leadFee"
-                            onChange={this.handleInputChange}
+                            onValidInputChange={this.handleInputChange}
                             value={lead.leadFee === 0 ? '' : lead.leadFee}
                         />
-                        <TextField
+                        <FormTextField
                             floatingLabelText="Phone"
+                            format="phone"
                             fullWidth={true}
+                            isRequired={true}
                             name="phone"
-                            onChange={this.handleInputChange}
+                            onValidInputChange={this.handleInputChange}
+                            type="tel"
+                            pattern="^\d{3}-\d{3}-\d{4}$"
                             value={lead.phone}
                         />
                         <TextField

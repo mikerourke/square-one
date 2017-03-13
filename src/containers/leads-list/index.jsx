@@ -5,18 +5,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Map } from 'immutable';
+import moment from 'moment';
 
 /* Internal dependencies */
-import { primary1Color } from 'style/mui/palette';
 import { getAllLeads } from 'state/entities/leads/actions';
 import Lead from 'state/entities/leads/model';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';
+import ProgressIndicator from 'components/progress-indicator';
 import SearchableTable from 'components/searchable-table';
 
 /* Types */
-import type { List } from 'immutable';
+import type { Sort } from 'components/searchable-table';
 
 const mapStateToProps = state => ({
     leads: state.getIn(['entities', 'leads', 'entities']),
@@ -63,11 +64,23 @@ export class LeadsList extends React.Component {
         }
     }
 
+    /**
+     * Redirects the user to the Manage Lead page with empty fields for
+     *      creating a new Lead.
+     * @param {Event} event Event associated with the Add button.
+     */
     handleAddTouchTap = (event: Event): void => {
         event.preventDefault();
         browserHistory.push('leads/new');
     };
 
+    /**
+     * Redirects the user to the Manage Lead page with the fields populated
+     *      with properties from the selected Lead.
+     * @param {Event} event Event associated with the Edit button.
+     * @param {Object} row Row element associated with the row on which the
+     *      Edit button is located.
+     */
     handleEditTouchTap = (event: Event, row: Object): void => {
         event.preventDefault();
         browserHistory.push(`leads/${row.id}`);
@@ -79,9 +92,26 @@ export class LeadsList extends React.Component {
         // TODO: Add filter selection handling and saving.
         const filterSelections = ['Test 1', 'Test 2'];
 
+        const leadData = leads
+            .toList()
+            .sortBy(lead => lead.createdAt)
+            .reverse()
+            .map((lead) => {
+                const newDate = moment(lead.createdAt).format('MM/DD/YY');
+                return lead.set('createdAt', newDate);
+            });
+
+        const initialSort: Sort = {
+            column: 'createdAt',
+            order: 'desc',
+        };
+
+        const searchFields = ['leadName', 'description'];
+
         if (isLoading) {
-            return (<div>Loading...</div>);
+            return (<ProgressIndicator />);
         }
+
         return (
             <div>
                 <PageHeader
@@ -94,10 +124,12 @@ export class LeadsList extends React.Component {
                 />
                 <SearchableTable
                     columns={tableColumns}
-                    data={leads.toList()}
+                    data={leadData}
                     filterSelections={filterSelections}
                     handleAddTouchTap={this.handleAddTouchTap}
                     handleRowIconTouchTap={this.handleEditTouchTap}
+                    initialSort={initialSort}
+                    searchFields={searchFields}
                 />
             </div>
         );

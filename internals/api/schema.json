@@ -88,12 +88,14 @@
                 "faker": "internet.userName"
               },
               "createdAt": {
-                "type": "string",
-                "chance": "timestamp"
+                "type": "number",
+                "chance": "timestamp",
+                "minimum": 1451606400
               },
               "updatedAt": {
-                "type": "string",
-                "chance": "timestamp"
+                "type": "number",
+                "chance": "timestamp",
+                "minimum": 1451606400
               }
             },
             "required": [
@@ -140,12 +142,14 @@
                 "faker": "internet.userName"
               },
               "createdAt": {
-                "type": "string",
-                "chance": "timestamp"
+                "type": "number",
+                "chance": "timestamp",
+                "minimum": 1451606400
               },
               "updatedAt": {
-                "type": "string",
-                "chance": "timestamp"
+                "type": "number",
+                "chance": "timestamp",
+                "minimum": 1451606400
               }
             },
             "required": [
@@ -161,12 +165,14 @@
           }
         },
         "createdAt": {
-          "type": "string",
-          "chance": "timestamp"
+          "type": "number",
+          "chance": "timestamp",
+          "minimum": 1451606400
         },
         "updatedAt": {
-          "type": "string",
-          "chance": "timestamp"
+          "type": "number",
+          "chance": "timestamp",
+          "minimum": 1451606400
         }
       },
       "required": [

@@ -9,7 +9,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /* Internal dependencies */
-const baseConfig = require('./webpack.base.babel');
+const baseConfig = require('./webpack.base.js');
 
 const serverHost = process.env.IP || 'localhost';
 const serverPort = process.env.PORT || 8081;

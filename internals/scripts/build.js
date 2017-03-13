@@ -4,7 +4,7 @@ const path = require('path');
 const shell = require('shelljs');
 const webpack = require('webpack');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const config = require('../webpack/webpack.prod.babel');
+const config = require('../webpack/webpack.prod.js');
 
 /**
  * Copies the favicon.ico to the client directory.  This is done because the

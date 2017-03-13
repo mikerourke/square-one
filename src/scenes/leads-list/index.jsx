@@ -96,10 +96,9 @@ export class LeadsList extends React.Component {
             .toList()
             .sortBy(lead => lead.createdAt)
             .reverse()
-            .map((lead) => {
-                const newDate = moment(lead.createdAt).format('MM/DD/YY');
-                return lead.set('createdAt', newDate);
-            });
+            .map(lead => lead.set('createdAt',
+                moment(lead.createdAt, 'MM/DD/YY')),
+            );
 
         const initialSort: Sort = {
             column: 'createdAt',

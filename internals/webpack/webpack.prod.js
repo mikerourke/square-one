@@ -9,7 +9,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /* Internal dependencies */
-const baseConfig = require('./webpack.base.babel');
+const baseConfig = require('./webpack.base.js');
 const packageFile = require('../../package.json');
 
 const extractBundles = (bundles) => ({

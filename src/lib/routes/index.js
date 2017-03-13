@@ -7,7 +7,7 @@ import type { Store } from 'redux';
 
 /* Internal dependencies */
 import Layout from '../../layout';
-import { LoginPage, LeadsListPage, ManageLeadPage } from '../../containers';
+import { LoginPage, LeadsListPage, ManageLeadPage } from '../../scenes';
 import { toggleAppSidebar } from 'state/gui/actions';
 
 /**

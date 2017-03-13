@@ -59,7 +59,7 @@ module.exports = {
         ],
         extensions: ['.js', '.jsx', '.css'],
         alias: {
-            containers: path.resolve(process.cwd(), 'src/containers'),
+            scenes: path.resolve(process.cwd(), 'src/scenes'),
             types: path.resolve(process.cwd(), 'internals/flow'),
         },
     },

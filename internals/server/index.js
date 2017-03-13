@@ -10,7 +10,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const webpack = require('webpack');
 
 /* Internal dependencies */
-const webpackConfig = require('../webpack/webpack.dev.babel');
+const webpackConfig = require('../webpack/webpack.dev.js');
 
 const port = process.env.PORT || 8081;
 const buildPath = path.join(process.cwd(), 'src/www');

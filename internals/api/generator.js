@@ -48,18 +48,44 @@ const updateMinAndMaxItems = (leadsSchema) => {
 };
 
 /**
+ * Updates the ID of the entities to match the custom format indicating the
+ *      entity type.
+ * @param {Array} leads Array of lead entities to update.
+ * @returns {Array} Updated lead entities.
+ */
+const updateIdsToMatchCustomFormat = (leads) => {
+    let leadCounter = 1;
+    let noteCounter = 1;
+    let changeCounter = 1;
+    leads.forEach((lead) => {
+        lead.id = 10117030000 + leadCounter;
+        lead.changes.forEach((changes) => {
+            changes.id = 10217030000 + changeCounter;
+            changeCounter += 1;
+        });
+
+        lead.notes.forEach((note) => {
+            note.id = 10317030000 + noteCounter;
+            noteCounter += 1;
+        });
+        leadCounter += 1;
+    });
+    return leads;
+};
+
+/**
  * Generates data based on the specified schema and formats the time fields to
  *      be in a usable format.
  */
 const getFormattedSampleData = () => {
     const leadsSchema = updateMinAndMaxItems(schema.leads);
-    console.log(leadsSchema);
     const sampleLeads = jsf(leadsSchema);
     updateTimeFormat(sampleLeads);
     sampleLeads.map(sampleLead => {
         updateTimeFormat(sampleLead.changes);
         updateTimeFormat(sampleLead.notes);
     });
+    updateIdsToMatchCustomFormat(sampleLeads);
     return sampleLeads;
 };
 

@@ -15,6 +15,8 @@ export type MapLocation = {
  */
 export type Action =
     { type: string, payload: { data: any } | Promise<any> }
+  | { type: string, payload: { id: number, data: any } }
+  | { type: string, payload: { leadId: number, group: string, data: any } }
   | { type: string }
 
 export type GetState = () => Object;

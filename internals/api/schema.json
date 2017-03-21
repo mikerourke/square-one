@@ -1,8 +1,8 @@
 {
   "leads": {
     "type": "array",
-    "minItems": 20,
-    "maxItems": 30,
+    "minItems": 100,
+    "maxItems": 150,
     "items": {
       "type": "object",
       "properties": {
@@ -164,6 +164,61 @@
             ]
           }
         },
+        "messages": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 0,
+                "exclusiveMinimum": true
+              },
+              "messageType": {
+                "type": "string",
+                "pattern": "text|email"
+              },
+              "recipient": {
+                "type": "string",
+                "pattern": "phoneNumber"
+              },
+              "subject": {
+                "type": "string",
+                "faker": "lorem.sentence"
+              },
+              "body": {
+                "type": "string",
+                "faker": "lorem.paragraph"
+              },
+              "createdBy": {
+                "type": "string",
+                "faker": "internet.userName"
+              },
+              "createdAt": {
+                "type": "number",
+                "chance": "timestamp",
+                "minimum": 1451606400
+              },
+              "updatedAt": {
+                "type": "number",
+                "chance": "timestamp",
+                "minimum": 1451606400
+              }
+            },
+            "required": [
+              "id",
+              "messageType",
+              "recipient",
+              "subject",
+              "body",
+              "createdBy",
+              "createdAt",
+              "updatedAt"
+            ]
+          }
+        },
         "createdAt": {
           "type": "number",
           "chance": "timestamp",
@@ -191,6 +246,7 @@
         "assignTo",
         "notes",
         "changes",
+        "messages",
         "createdAt",
         "updatedAt"
       ]

@@ -9,8 +9,8 @@ import FlatButton from 'material-ui/FlatButton';
 
 /* Internal dependencies */
 import {
-    createNoteInLead,
-    deleteNoteInLead,
+    createItemInLead,
+    deleteItemInLead,
 } from 'state/entities/leads/actions';
 import { Lead, Note } from 'state/entities/models';
 import ActionButton from 'components/action-button';
@@ -31,15 +31,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
-    createNoteInLead: lead => dispatch(createNoteInLead(lead)),
-    deleteNoteInLead: (leadId, noteId) =>
-        dispatch(deleteNoteInLead(leadId, noteId)),
+    createNoteInLead: (leadId, group, item) =>
+        dispatch(createItemInLead(leadId, group, item)),
+    deleteNoteInLead: (leadId, group, noteId) =>
+        dispatch(deleteItemInLead(leadId, group, noteId)),
 });
 
 class NotesList extends React.Component {
     props: {
-        createNoteInLead: (lead: Lead) => void,
-        deleteNoteInLead: (leadId: number, noteId: number) => void,
+        createNoteInLead: (leadId: number, group: string, item: Note) => void,
+        deleteNoteInLead: (leadId: number, group: string,
+                           itemId: number) => void,
         handleChange: (lead: Lead) => void,
         isAddButtonShown: boolean,
         lead: Lead,
@@ -87,7 +89,7 @@ class NotesList extends React.Component {
             editDialogTitle: title,
             isEditDialogOpen: true,
         });
-    }
+    };
 
     handleConfirmationNoTouchTap = (event: Event): void => {
         event.preventDefault();
@@ -100,7 +102,7 @@ class NotesList extends React.Component {
         const { activeNoteId } = this.state;
         const updatedLead = lead.deleteIn(['notes', activeNoteId]);
         const deleteNoteInLeadPromise: Function = this.props.deleteNoteInLead;
-        deleteNoteInLeadPromise(lead.id, activeNoteId).then(() => {
+        deleteNoteInLeadPromise(lead.id, 'notes', activeNoteId).then(() => {
             this.setState({
                 activeNoteId: 0,
                 isConfirmationDialogOpen: false,

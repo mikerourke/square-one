@@ -25,7 +25,9 @@ module.exports = {
     rules: {
         'class-methods-use-this': 0,
         'eol-last': 0,
-        'indent': [1,4, { 'SwitchCase': 1 }],
+        'indent': [1, 4, {
+            SwitchCase: 1,
+        }],
         'linebreak-style': 0,
         'max-len': [2, 80, 4, {
             ignoreUrls: true
@@ -56,6 +58,7 @@ module.exports = {
         'import/no-named-as-default': 0,
         'import/no-named-as-default-member': 0,
         'import/no-unresolved': 2,
+        'import/prefer-default-export': 0,
         'jsx-a11y/no-marquee': 0,
         'react/display-name': 0,
         'react/forbid-prop-types': 0,

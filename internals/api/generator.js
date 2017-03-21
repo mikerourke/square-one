@@ -33,21 +33,6 @@ const updateTimeFormat = (entityGroup) => entityGroup.map(entityItem => {
 });
 
 /**
- * If any arguments were passed to the generation command, update the min and
- *      max items (first argument is min, second is max).
- * @param {Object} leadsSchema Schema structure from the schema.json file.
- * @returns {Object} Schema with updated min and max values.
- */
-const updateMinAndMaxItems = (leadsSchema) => {
-    const minItems = process.argv[2] || 20;
-    const maxItems = process.argv[3] || 30;
-    return Object.assign({}, leadsSchema, {
-        minItems: parseInt(minItems, 10),
-        maxItems: parseInt(maxItems, 10),
-    });
-};
-
-/**
  * Updates the ID of the entities to match the custom format indicating the
  *      entity type.
  * @param {Array} leads Array of lead entities to update.
@@ -55,17 +40,23 @@ const updateMinAndMaxItems = (leadsSchema) => {
  */
 const updateIdsToMatchCustomFormat = (leads) => {
     let leadCounter = 1;
-    let noteCounter = 1;
     let changeCounter = 1;
+    let messageCounter = 1;
+    let noteCounter = 1;
     leads.forEach((lead) => {
-        lead.id = 10117030000 + leadCounter;
+        lead.id = 1011703210000 + leadCounter;
         lead.changes.forEach((changes) => {
-            changes.id = 10217030000 + changeCounter;
+            changes.id = 1021703210000 + changeCounter;
             changeCounter += 1;
         });
 
+        lead.messages.forEach((message) => {
+            message.id = 1041703210000 + messageCounter;
+            messageCounter += 1;
+        });
+
         lead.notes.forEach((note) => {
-            note.id = 10317030000 + noteCounter;
+            note.id = 1031703210000 + noteCounter;
             noteCounter += 1;
         });
         leadCounter += 1;
@@ -78,8 +69,7 @@ const updateIdsToMatchCustomFormat = (leads) => {
  *      be in a usable format.
  */
 const getFormattedSampleData = () => {
-    const leadsSchema = updateMinAndMaxItems(schema.leads);
-    const sampleLeads = jsf(leadsSchema);
+    const sampleLeads = jsf(schema.leads);
     updateTimeFormat(sampleLeads);
     sampleLeads.map(sampleLead => {
         updateTimeFormat(sampleLead.changes);
@@ -118,6 +108,7 @@ const writeDataToJsonFile = (filePath, dataToWrite) => {
 const writeGeneratedDataToFile = (existingData) => {
     return new Promise((resolve, reject) => {
         console.log(cyan('Generating sample data...'));
+        delete existingData.leads;
         const dataToWrite = Object.assign({}, existingData, {
             leads: getFormattedSampleData()
         });

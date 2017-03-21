@@ -13,9 +13,10 @@ type QueryData = any;
  * @param {Array} [fieldsToInclude=[]] Fields to include in search.
  * @returns {Array | List} Items from data that meet conditions.
  */
-export const getSearchResults = (data: QueryData, searchFor?: string = '',
-                                 fieldsToInclude?: Array<string> = [],
-                                 ): QueryData => {
+export const getSearchResults = (
+    data: QueryData,
+    searchFor?: string = '',
+    fieldsToInclude?: Array<string> = []): QueryData => {
     const items = data;
     // Return the original dataset if the field is search for value is falsy.
     if (!searchFor || searchFor === '') {
@@ -39,14 +40,17 @@ export const getSearchResults = (data: QueryData, searchFor?: string = '',
  * @param {string} [order='asc'] Order to sort by (asc or desc).
  * @returns {Array | List} Sorted items from data.
  */
-export const getSortedData = (data: QueryData | List<*>, key: string,
-                              order?: string = 'asc'): QueryData =>
-    data.slice().sort((leftHandItem, rightHandItem) => {
-        const sortValue = (leftHandItem[key] > rightHandItem[key]) ? 1 : -1;
+export const getSortedData = (
+    data: QueryData | List<*>,
+    key: string,
+    order?: string = 'asc'): QueryData =>
+        data.slice().sort((leftHandItem, rightHandItem) => {
+            const sortValue = (leftHandItem[key] > rightHandItem[key]) ? 1 : -1;
 
-        // Multiplying the value by -1 ensures the array is sorted descending.
-        if (order === 'desc') {
-            return (sortValue * -1);
-        }
-        return sortValue;
-    });
+            // Multiplying the value by -1 ensures the array is sorted
+            // descending.
+            if (order === 'desc') {
+                return (sortValue * -1);
+            }
+            return sortValue;
+        });

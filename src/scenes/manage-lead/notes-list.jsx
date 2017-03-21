@@ -8,7 +8,10 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
 /* Internal dependencies */
-import { createNoteInLead } from 'state/entities/leads/actions';
+import {
+    createNoteInLead,
+    deleteNoteInLead,
+} from 'state/entities/leads/actions';
 import { Lead, Note } from 'state/entities/models';
 import ActionButton from 'components/action-button';
 import CardList from 'components/card-list';
@@ -29,23 +32,32 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
     dispatch,
     createNoteInLead: lead => dispatch(createNoteInLead(lead)),
+    deleteNoteInLead: (leadId, noteId) =>
+        dispatch(deleteNoteInLead(leadId, noteId)),
 });
 
 class NotesList extends React.Component {
     props: {
+        createNoteInLead: (lead: Lead) => void,
+        deleteNoteInLead: (leadId: number, noteId: number) => void,
+        handleChange: (lead: Lead) => void,
         isAddButtonShown: boolean,
         lead: Lead,
         notes?: List<Note>,
     };
 
     state: {
+        activeNoteId: number,
+        editDialogTitle: string,
         isConfirmationDialogOpen: boolean,
         isEditDialogOpen: boolean,
     };
 
-    constructor(): void {
-        super();
+    constructor(props: any): void {
+        super(props);
         this.state = {
+            activeNoteId: 0,
+            editDialogTitle: '',
             isConfirmationDialogOpen: false,
             isEditDialogOpen: false,
         };
@@ -53,31 +65,48 @@ class NotesList extends React.Component {
 
     handleAddButtonTouchTap = (event: Event): void => {
         event.preventDefault();
-        this.setState({ isEditDialogOpen: true });
+        this.showEditDialogForCard('Add New Note');
     };
 
     handleCardDeleteTouchTap = (event: Event, cardEntity: Object): void => {
         event.preventDefault();
-        console.log(cardEntity);
-        this.setState({ isConfirmationDialogOpen: true });
+        this.setState({
+            activeNoteId: cardEntity.id,
+            isConfirmationDialogOpen: true,
+        });
     };
 
     handleCardEditTouchTap = (event: Event, cardEntity: Object): void => {
         event.preventDefault();
-        console.log(cardEntity);
-        this.setState({ isEditDialogOpen: true });
+        this.showEditDialogForCard('Edit Note', cardEntity.id);
     };
 
-    handleConfirmationYesTouchTap = (event: Event): void => {
-        event.preventDefault();
-        const { lead } = this.props;
-
-        this.setState({ isConfirmationDialogOpen: false });
-    };
+    showEditDialogForCard = (title: string, noteId?: number = 0): void => {
+        this.setState({
+            activeNoteId: noteId,
+            editDialogTitle: title,
+            isEditDialogOpen: true,
+        });
+    }
 
     handleConfirmationNoTouchTap = (event: Event): void => {
         event.preventDefault();
         this.setState({ isConfirmationDialogOpen: false });
+    };
+
+    handleConfirmationYesTouchTap = (event: Event): void => {
+        event.preventDefault();
+        const { handleChange, lead } = this.props;
+        const { activeNoteId } = this.state;
+        const updatedLead = lead.deleteIn(['notes', activeNoteId]);
+        const deleteNoteInLeadPromise: Function = this.props.deleteNoteInLead;
+        deleteNoteInLeadPromise(lead.id, activeNoteId).then(() => {
+            this.setState({
+                activeNoteId: 0,
+                isConfirmationDialogOpen: false,
+            });
+            handleChange(updatedLead);
+        });
     };
 
     handleEditDialogCancelTouchTap = (event: Event): void => {
@@ -87,21 +116,22 @@ class NotesList extends React.Component {
 
     handleEditDialogSaveTouchTap = (event: Event): void => {
         event.preventDefault();
-        const { createNoteInLead, lead } = this.props;
+        const { handleChange, lead } = this.props;
         const note = new Note({
             parentId: lead.id,
         });
         // TODO: Finish routines to create notes.
         const updatedLead = lead.updateIn(['notes'], notes => notes.push(note));
-        console.log(updatedLead);
-        createNoteInLead(updatedLead).then(() => {
+        const createNoteInLeadPromise: Function = this.props.createNoteInLead;
+        createNoteInLeadPromise(updatedLead).then(() => {
             this.setState({ isEditDialogOpen: false });
+            handleChange(updatedLead);
         });
     };
 
     render(): React.Element<*> {
         const { isAddButtonShown, notes } = this.props;
-        const { isConfirmationDialogOpen, isEditDialogOpen} = this.state;
+        const { isConfirmationDialogOpen, isEditDialogOpen } = this.state;
 
         const editDialogActions = [
             <FlatButton

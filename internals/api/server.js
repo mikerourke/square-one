@@ -20,16 +20,6 @@ const middlewares = jsonServer.defaults();
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
-server.use((req, res, next) => {
-    if (req.method === 'POST') {
-        // Creates a random ID number when a new item is added.
-        if (!req.url.includes('notes')) {
-            req.body.id = Math.floor(Math.random() * (50000 - 1)) + 1;
-        }
-    }
-    next();
-});
-
 // Use custom routes from routes.json file.
 server.use(jsonServer.rewriter(routes));
 
@@ -50,6 +40,44 @@ router.render = (req, res) => {
     }
     res.jsonp(responseData);
 };
+
+server.get('/leads/:leadId/notes/:noteId', (req, res) => {
+    const leadId = req.params.leadId;
+    const noteId = req.params.noteId;
+    const db = router.db;
+    const noteToFind = db.get('leads')
+      .getById(leadId)
+      .get('notes')
+      .getById(noteId)
+      .value();
+    res.jsonp(noteToFind);
+});
+
+server.patch('/leads/:leadId/notes/:noteId', (req, res) => {
+    const leadId = req.params.leadId;
+    const noteId = req.params.noteId;
+    const db = router.db;
+    db.get('leads')
+      .getById(leadId)
+      .get('notes')
+      .getById(noteId)
+      .assign(req.body)
+      .value();
+    res.jsonp(db.get('leads').getById(leadId).value());
+});
+
+server.delete('/leads/:leadId/notes/:noteId', (req, res) => {
+    const leadId = req.params.leadId;
+    const noteId = req.params.noteId;
+    const db = router.db;
+    db.get('leads')
+      .getById(leadId)
+      .get('notes')
+      .remove({ id: parseInt(noteId, 10) })
+      .value();
+
+    res.jsonp(db.get('leads').getById(leadId).value());
+});
 
 server.use(router);
 

@@ -95,3 +95,13 @@ export const createNoteInLead = (lead: Lead) => ({
         },
     },
 });
+
+export const deleteNoteInLead = (leadId: number, noteId: number) => ({
+    type: NOTE_DELETE,
+    payload: {
+        request: {
+            method: 'delete',
+            url: `${BASE_URL}/${leadId}/notes/${noteId}`,
+        },
+    },
+});

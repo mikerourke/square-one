@@ -85,6 +85,7 @@ export default class SearchableTable extends React.Component {
      * Filters the data in the table based on the specified custom filter from
      *      the Filter Menu select field in the Search Toolbar.
      * @param {Event} event Event associated with the Filter Menu.
+     * @param {string} key Key associated with the Filter Menu selection.
      * @param {string} value Value of the Filter Menu selection.
      */
     handleFilterMenuChange = (event: Event, key: string,

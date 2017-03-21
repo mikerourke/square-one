@@ -9,12 +9,13 @@ import { List } from 'immutable';
 /* Internal dependencies */
 import { createLead, updateLead } from 'state/entities/leads/actions';
 import { Change, Lead } from 'state/entities/models';
-import Timeline from 'components/timeline';
+import ConfirmationDialog from 'components/confirmation-dialog';
 import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
 import NotesList from './notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
 import TabsPage from 'components/tabs-page';
+import Timeline from 'components/timeline';
 
 const mapStateToProps = (state, ownProps) => {
     const entitiesPath = ['entities', 'leads', 'entities'];
@@ -52,6 +53,7 @@ export class ManageLeadPage extends React.Component {
 
     state: {
         activeTabName: string,
+        isConfirmationDialogOpen: boolean,
         isMessagesDialogOpen: boolean,
         lead: Lead,
     };
@@ -60,42 +62,49 @@ export class ManageLeadPage extends React.Component {
         super(props);
         this.state = {
             activeTabName: 'details',
+            isConfirmationDialogOpen: false,
             isMessagesDialogOpen: false,
             lead: this.props.lead,
         };
     }
 
     /**
-     * If the back button in the page header toolbar is pressed, redirects the
-     *      user back to the Leads List page after confirming the action.
+     * If the back button in the page header toolbar is pressed, confirm the
+     *      user wants to exit the page if changes were made.
      * @param {Event} event Event associated with the control.
      */
     handleBackArrowTouchTap = (event: Event): void => {
         event.preventDefault();
-        // TODO: Add confirmation prior to going back to Leads List.
+        this.setState({ isConfirmationDialogOpen: true });
+    };
+
+    /**
+     * If the user does not wish to lose their changes, hide the dialog.
+     * @param {Event} event Event associated with the control.
+     */
+    handleConfirmationNoTouchTap = (event: Event): void => {
+        event.preventDefault();
+        this.setState({ isConfirmationDialogOpen: false });
+    };
+
+    /**
+     * If the user confirms that they want to exit the page, redirect to the
+     *      Leads List.
+     * @param {Event} event Event associated with the control.
+     */
+    handleConfirmationYesTouchTap = (event: Event): void => {
+        event.preventDefault();
+        this.setState({ isConfirmationDialogOpen: false });
         browserHistory.push('/leads');
     };
 
     /**
-     * Updates existing Lead or creates a new Lead based on the ID of the Lead
-     *      held in local state.
-     * @param {Event} event Event associated with the button pressed.
-     */
-    handleModalTouchTap = (event: Event): void => {
-        event.preventDefault();
-
-        // Ensure the Messages dialog closes before the save/update action is
-        // performed.
-        this.setState({ isMessagesDialogOpen: false });
-
-        // If the ID is 0 (the default), a new Lead needs to be created,
-        // otherwise update the Lead that corresponds with the ID.
-        const { lead } = this.state;
-        let performActionPromise: Function = this.props.createLead;
-        if (lead.id !== 0) {
-            performActionPromise = this.props.updateLead;
-        }
-        performActionPromise(lead).then(() => browserHistory.push('/leads'));
+     * Updates the Lead in local state if an item was added, updated, or deleted
+     *      within the lead.
+     * @param {Lead} lead Lead being edited on the page.
+      */
+    handleChangeToChildItems = (lead: Lead) => {
+        this.setState({ lead });
     };
 
     /**
@@ -106,10 +115,26 @@ export class ManageLeadPage extends React.Component {
      */
     handleSaveTouchTap = (event: Event, lead: Lead): void => {
         event.preventDefault();
-        this.setState({
-            isMessagesDialogOpen: true,
-            lead,
+
+        // If the ID is 0 (the default), a new Lead needs to be created,
+        // otherwise update the Lead that corresponds with the ID.
+        let performActionPromise: Function = this.props.createLead;
+        if (lead.id !== 0) {
+            performActionPromise = this.props.updateLead;
+        }
+        performActionPromise(lead).then(() => {
+            this.setState({ isMessagesDialogOpen: true });
         });
+    };
+
+    /**
+     * Hides the Message creation dialog box regardless of the action that was
+     *      performed.
+     * @param {Event} event Event associated with the button pressed.
+     */
+    handleMessageDialogTouchTap = (event: Event) => {
+        event.preventDefault();
+        this.setState({ isMessagesDialogOpen: false });
     };
 
     /**
@@ -123,8 +148,16 @@ export class ManageLeadPage extends React.Component {
 
     render(): React.Element<*> {
         const { changes } = this.props;
-        const { activeTabName, isMessagesDialogOpen, lead } = this.state;
+        const {
+            activeTabName,
+            isConfirmationDialogOpen,
+            isMessagesDialogOpen,
+            lead,
+        } = this.state;
 
+        const confirmationMessage =
+            'If you go back without pressing save, your changes will be ' +
+            'lost, do you wish to continue?';
         return (
             <div>
                 <PageHeaderToolbar
@@ -155,6 +188,7 @@ export class ManageLeadPage extends React.Component {
                             content: (
                                 <NotesList
                                     isAddButtonShown={activeTabName === 'notes'}
+                                    handleChange={this.handleChangeToChildItems}
                                     lead={lead}
                                 />
                             ),
@@ -164,8 +198,15 @@ export class ManageLeadPage extends React.Component {
                     ]}
                 />
                 <MessagesDialog
-                    handleTouchTap={this.handleModalTouchTap}
-                    isOpen={isMessagesDialogOpen}
+                    handleTouchTap={this.handleMessageDialogTouchTap}
+                    lead={lead}
+                    open={isMessagesDialogOpen}
+                />
+                <ConfirmationDialog
+                    handleNoTouchTap={this.handleConfirmationNoTouchTap}
+                    handleYesTouchTap={this.handleConfirmationYesTouchTap}
+                    message={confirmationMessage}
+                    open={isConfirmationDialogOpen}
                 />
             </div>
         );

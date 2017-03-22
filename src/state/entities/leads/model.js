@@ -23,10 +23,10 @@ export default class Lead extends Record({
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
 }) {
-    getChildrenFromState(stateEntities: Object, groupName: string) {
-        const groupArray = this[groupName];
+    getChildrenFromState(stateEntities: Object, group: string) {
+        const groupArray = this[group];
         const childrenMap = stateEntities
-            .get(groupName)
+            .get(group)
             .filter(groupItem => groupArray.includes(groupItem.id));
         return childrenMap.toList();
     }

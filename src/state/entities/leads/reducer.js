@@ -64,6 +64,16 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
+const deleteLeadItem = (state: State, meta: Object) => {
+    const { previousAction: {
+        payload: { leadId, group, itemId },
+    } } = (meta: Object);
+    return state.setIn(['entities', group],
+        state.getIn(['entities', group])
+            .filter(groupItem => groupItem.id.toString() !== itemId.toString()),
+    );
+};
+
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
         case LEAD_CREATE_FAIL:
@@ -91,6 +101,12 @@ export default (state: State = initialState, action: Action) => {
 
         case LEAD_ITEM_CREATE_SUCCESS:
             return state;
+
+        case LEAD_ITEM_DELETE_SUCCESS:
+            const {
+                meta: metaForDelete,
+            } = (action: Object);
+            return deleteLeadItem(state, metaForDelete);
 
         default:
             return state;

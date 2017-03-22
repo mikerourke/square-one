@@ -132,9 +132,8 @@ export class ManageLeadPage extends React.Component {
     handleNoteListDelete = (id: number): void => {
         const { actions, lead } = this.props;
         const { deleteItemInLead } = (actions: Object);
-        console.log(this.props.notes);
         deleteItemInLead(lead.id, 'notes', id).then(() => {
-            console.log(this.props.notes);
+            this.setState(this.state);
         });
     };
 

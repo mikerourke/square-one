@@ -2,13 +2,14 @@
 
 /* External dependencies */
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { List } from 'immutable';
 
 /* Internal dependencies */
-import { createLead, updateLead } from 'state/entities/leads/actions';
-import { Change, Lead } from 'state/entities/models';
+import * as leadActions from 'state/entities/leads/actions';
+import { Change, Lead, Note } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
@@ -21,21 +22,25 @@ const mapStateToProps = (state, ownProps) => {
     const entitiesPath = ['entities', 'leads', 'entities'];
     let lead = new Lead();
     let changes = new List();
+    let notes = new List();
     const leadId = parseInt(ownProps.params.id, 10) || 0;
     if (leadId !== 0) {
+        console.log(leadId);
+        console.log(state.getIn(['entities', 'leads', 'entities']));
         lead = state.getIn(entitiesPath.concat([leadId.toString()]));
-        changes = lead.get('changes').toList();
+        console.log(lead);
+        changes = lead.get('changes');
+        notes = lead.get('notes');
     }
     return {
         changes,
         lead,
+        notes,
     };
 };
 
 const mapDispatchToProps = dispatch => ({
-    dispatch,
-    createLead: lead => dispatch(createLead(lead)),
-    updateLead: lead => dispatch(updateLead(lead)),
+    actions: bindActionCreators(leadActions, dispatch),
 });
 
 /**
@@ -45,26 +50,24 @@ const mapDispatchToProps = dispatch => ({
  */
 export class ManageLeadPage extends React.Component {
     props: {
+        actions: Object,
         changes: List<Change>,
-        createLead: () => void,
         lead: Lead,
-        updateLead: () => void,
+        notes: List<Note>,
     };
 
     state: {
         activeTabName: string,
         isConfirmationDialogOpen: boolean,
         isMessagesDialogOpen: boolean,
-        lead: Lead,
     };
 
-    constructor(props: any): void {
-        super(props);
+    constructor(): void {
+        super();
         this.state = {
             activeTabName: 'details',
             isConfirmationDialogOpen: false,
             isMessagesDialogOpen: false,
-            lead: this.props.lead,
         };
     }
 
@@ -99,15 +102,6 @@ export class ManageLeadPage extends React.Component {
     };
 
     /**
-     * Updates the Lead in local state if an item was added, updated, or deleted
-     *      within the lead.
-     * @param {Lead} lead Lead being edited on the page.
-      */
-    handleChangeToChildItems = (lead: Lead) => {
-        this.setState({ lead });
-    };
-
-    /**
      * Updates the Lead entity in local state and opens the Messages dialog
      *      when the Save button is pressed.
      * @param {Event} event Event associated with the Save button.
@@ -115,12 +109,13 @@ export class ManageLeadPage extends React.Component {
      */
     handleSaveTouchTap = (event: Event, lead: Lead): void => {
         event.preventDefault();
+        const { createLead, updateLead } = this.props.actions;
 
         // If the ID is 0 (the default), a new Lead needs to be created,
         // otherwise update the Lead that corresponds with the ID.
-        let performActionPromise: Function = this.props.createLead;
+        let performActionPromise: Function = createLead;
         if (lead.id !== 0) {
-            performActionPromise = this.props.updateLead;
+            performActionPromise = updateLead;
         }
         performActionPromise(lead).then(() => {
             this.setState({ isMessagesDialogOpen: true });
@@ -137,6 +132,18 @@ export class ManageLeadPage extends React.Component {
         this.setState({ isMessagesDialogOpen: false });
     };
 
+    handleNoteListDelete = (id: number): void => {
+        const { actions, lead } = this.props;
+        const { deleteItemInLead } = (actions: Object);
+        deleteItemInLead(lead.id, 'notes', id).then(() => {
+            console.log('Hooray');
+        });
+    };
+
+    handleNoteListUpdate = (note: Note): void => {
+
+    };
+
     /**
      * Updates the local state to ensure the Add button for new notes is
      *      hidden if the active tab isn't on the Notes page.
@@ -147,12 +154,11 @@ export class ManageLeadPage extends React.Component {
     };
 
     render(): React.Element<*> {
-        const { changes } = this.props;
+        const { changes, lead, notes } = this.props;
         const {
             activeTabName,
             isConfirmationDialogOpen,
             isMessagesDialogOpen,
-            lead,
         } = this.state;
 
         const confirmationMessage =
@@ -187,9 +193,10 @@ export class ManageLeadPage extends React.Component {
                         {
                             content: (
                                 <NotesList
+                                    handleNoteDelete={this.handleNoteListDelete}
+                                    handleNoteUpdate={this.handleNoteListUpdate}
                                     isAddButtonShown={activeTabName === 'notes'}
-                                    handleChange={this.handleChangeToChildItems}
-                                    lead={lead}
+                                    notes={notes}
                                 />
                             ),
                             label: 'Notes',

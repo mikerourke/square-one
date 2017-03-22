@@ -76,26 +76,41 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
-const updateItemInLead = (state: State, payload: Object) => {
-    const { leadId, group, data } = (payload: Object);
-    let newItem;
+const getNewItem = (data: Object, leadId: number, group: string) => {
     switch (group) {
         case 'changes':
-            newItem = new Change(fromJS(data)).set('parentId', leadId);
-            break;
+            return new Change(fromJS(data)).set('parentId', leadId);
 
         case 'messages':
-            newItem = new Message(fromJS(data)).set('parentId', leadId);
-            break;
+            return new Message(fromJS(data)).set('parentId', leadId);
 
         case 'notes':
-            newItem = new Note(fromJS(data)).set('parentId', leadId);
-            break;
+            return new Note(fromJS(data)).set('parentId', leadId);
 
         default:
-            break;
+            return undefined;
     }
-    return state.setIn(['entities', leadId, group], newItem);
+};
+
+const deleteLeadItem = (state: State, meta: Object) => {
+    const { previousAction: {
+        payload: { leadId, group, itemId },
+    } } = (meta: Object);
+    const items: any = state.getIn(['entities', leadId.toString(), group]);
+    if (items.size !== 0) {
+        const newItems = items.filter((item: any) =>
+            item.id.toString() !== itemId.toString());
+        // TODO: Fix the state update for notes.
+        return state.setIn(['entities', leadId.toString(), group], newItems);
+    }
+    return state;
+};
+
+const updateLeadItem = (state: State, meta: Object, payload: Object) => {
+    const { leadId, group } = (meta: Object);
+    const { data } = (payload: Object);
+    const newItem = getNewItem(data, leadId, group);
+    return state;
 };
 
 export default (state: State = initialState, action: Action) => {
@@ -125,8 +140,17 @@ export default (state: State = initialState, action: Action) => {
 
         case LEAD_ITEM_CREATE_SUCCESS:
         case LEAD_ITEM_UPDATE_SUCCESS:
-            const { payload } = (action: Object);
-            return updateItemInLead(state, payload);
+            const {
+                meta: metaForUpdate,
+                payload: payloadForUpdate,
+            } = (action: Object);
+            return updateLeadItem(state, metaForUpdate, payloadForUpdate);
+
+        case LEAD_ITEM_DELETE_SUCCESS:
+            const {
+                meta: metaForDelete,
+            } = (action: Object);
+            return deleteLeadItem(state, metaForDelete);
 
         default:
             return state;

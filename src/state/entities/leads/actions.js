@@ -106,6 +106,7 @@ export const deleteItemInLead = (
         payload: {
             leadId,
             group,
+            itemId,
             request: {
                 method: 'delete',
                 url: `${BASE_URL}/${leadId}/${group}/${itemId}`,

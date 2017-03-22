@@ -20,18 +20,18 @@ import SearchableTable from 'components/searchable-table';
 import type { Sort } from 'components/searchable-table';
 
 const mapStateToProps = state => ({
-    leads: state.getIn(['entities', 'leads', 'entities']),
+    leads: state.getIn(['entities', 'leads', 'entities', 'leads']),
 });
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
-    populateLeads: () => dispatch(getAllLeads()),
+    getAllLeads: () => dispatch(getAllLeads()),
 });
 
 export class LeadsList extends React.Component {
     props: {
         leads: Map<number, Lead>,
-        populateLeads: () => void,
+        getAllLeads: () => void,
     };
 
     state: {
@@ -40,7 +40,7 @@ export class LeadsList extends React.Component {
     };
 
     static defaultProps = {
-        populateLeads: () => {},
+        getAllLeads: () => {},
     };
 
     constructor(): void {
@@ -52,9 +52,9 @@ export class LeadsList extends React.Component {
     }
 
     componentDidMount(): void {
-        const { populateLeads }: { populateLeads: Function} = this.props;
-        if (populateLeads) {
-            populateLeads().then(() => {
+        const getAllLeadsPromise = this.props.getAllLeads;
+        if (getAllLeadsPromise) {
+            getAllLeadsPromise().then(() => {
                 const leads = this.props.leads;
                 this.setState({
                     isLoading: false,

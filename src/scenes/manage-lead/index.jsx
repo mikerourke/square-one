@@ -19,18 +19,15 @@ import TabsPage from 'components/tabs-page';
 import Timeline from 'components/timeline';
 
 const mapStateToProps = (state, ownProps) => {
-    const entitiesPath = ['entities', 'leads', 'entities'];
+    const leadEntities = state.getIn(['entities', 'leads', 'entities']);
     let lead = new Lead();
     let changes = new List();
     let notes = new List();
-    const leadId = parseInt(ownProps.params.id, 10) || 0;
-    if (leadId !== 0) {
-        console.log(leadId);
-        console.log(state.getIn(['entities', 'leads', 'entities']));
-        lead = state.getIn(entitiesPath.concat([leadId.toString()]));
-        console.log(lead);
-        changes = lead.get('changes');
-        notes = lead.get('notes');
+    const leadId = ownProps.params.id || '0';
+    if (leadId !== '0') {
+        lead = leadEntities.getIn(['leads', leadId]);
+        changes = lead.getChildrenFromState(leadEntities, 'changes');
+        notes = lead.getChildrenFromState(leadEntities, 'notes');
     }
     return {
         changes,
@@ -135,8 +132,9 @@ export class ManageLeadPage extends React.Component {
     handleNoteListDelete = (id: number): void => {
         const { actions, lead } = this.props;
         const { deleteItemInLead } = (actions: Object);
+        console.log(this.props.notes);
         deleteItemInLead(lead.id, 'notes', id).then(() => {
-            console.log('Hooray');
+            console.log(this.props.notes);
         });
     };
 

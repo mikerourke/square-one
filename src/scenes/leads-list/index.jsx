@@ -20,7 +20,7 @@ import SearchableTable from 'components/searchable-table';
 import type { Sort } from 'components/searchable-table';
 
 const mapStateToProps = state => ({
-    leads: state.getIn(['entities', 'leads', 'entities', 'leads']),
+    leads: state.getIn(['entities', 'leads', 'byId']),
 });
 
 const mapDispatchToProps = dispatch => ({

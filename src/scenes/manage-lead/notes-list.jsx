@@ -2,21 +2,33 @@
 
 /* External dependencies */
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { List } from 'immutable';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
 /* Internal dependencies */
-import { Note } from 'state/entities/models';
+import * as noteActions from 'state/entities/notes/actions';
+import { selectNotesInLead } from 'state/entities/notes/selectors';
+import Note from 'state/entities/notes/model';
 import ActionButton from 'components/action-button';
 import CardList from 'components/card-list';
 import ConfirmationDialog from 'components/confirmation-dialog';
 
-export default class NotesList extends React.Component {
+const mapStateToProps = (state, ownProps) => ({
+    notes: selectNotesInLead(state, ownProps),
+});
+
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(noteActions, dispatch),
+});
+
+export class NotesList extends React.Component {
     props: {
-        handleNoteDelete: (id: number) => void,
-        handleNoteUpdate: (note: Note) => void,
+        actions?: Object,
         isAddButtonShown: boolean,
+        leadId: number,
         notes?: List<Note>,
     };
 
@@ -70,9 +82,7 @@ export default class NotesList extends React.Component {
 
     handleConfirmationYesTouchTap = (event: Event): void => {
         event.preventDefault();
-        const { handleNoteDelete } = this.props;
         const { activeNoteId } = this.state;
-        handleNoteDelete(activeNoteId);
         this.setState({
             activeNoteId: 0,
             isConfirmationDialogOpen: false,
@@ -86,10 +96,8 @@ export default class NotesList extends React.Component {
 
     handleEditDialogSaveTouchTap = (event: Event): void => {
         event.preventDefault();
-        const { handleNoteUpdate } = this.props;
         const note = new Note({
         });
-        handleNoteUpdate(note);
         this.setState({ isEditDialogOpen: false });
     };
 
@@ -141,3 +149,5 @@ export default class NotesList extends React.Component {
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotesList);

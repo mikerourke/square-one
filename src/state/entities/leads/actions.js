@@ -1,5 +1,7 @@
 /* @flow */
 
+// TODO: Add code to de-normalize data.
+
 /* External dependencies */
 import { normalize } from 'normalizr';
 import axios from 'axios';
@@ -13,8 +15,7 @@ import {
     LEAD_UPDATE,
 } from '../../action-types';
 import Lead from './model';
-import { leadsSchema } from '../schema';
-
+import { leadSchema, leadsSchema } from '../schema';
 
 /* Types */
 import type { Action } from 'lib/types';
@@ -49,6 +50,13 @@ export const getLead = (id: number): Action => ({
         request: {
             method: 'get',
             url: `${BASE_URL}/${id}`,
+            transformResponse:
+                axios.defaults.transformResponse.concat((data) => {
+                    if (data) {
+                        return normalize(data, leadSchema);
+                    }
+                    return {};
+                }),
         },
     },
 });

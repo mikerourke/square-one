@@ -10,10 +10,10 @@ import {
 
 /* Internal dependencies */
 import {
-    NOTE_CREATE, NOTE_CREATE_SUCCESS, NOTE_CREATE_FAIL,
-    NOTE_DELETE, NOTE_DELETE_SUCCESS, NOTE_DELETE_FAIL,
-    NOTE_UPDATE, NOTE_UPDATE_SUCCESS, NOTE_UPDATE_FAIL,
-    LEAD_GET_ALL, LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
+    NOTE_CREATE_SUCCESS, NOTE_CREATE_FAIL,
+    NOTE_DELETE_SUCCESS, NOTE_DELETE_FAIL,
+    NOTE_UPDATE_SUCCESS, NOTE_UPDATE_FAIL,
+    LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Note from './model';
 
@@ -45,6 +45,14 @@ const mergeEntities = (state: State, data: Object): State => {
 
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
+        case NOTE_CREATE_SUCCESS:
+        case NOTE_UPDATE_SUCCESS:
+            return state;
+
+        case NOTE_DELETE_SUCCESS:
+            console.log(action);
+            return state;
+
         case LEAD_GET_ALL_SUCCESS:
             const { payload: { data: entities } } = (action: Object);
             return mergeEntities(state, entities);

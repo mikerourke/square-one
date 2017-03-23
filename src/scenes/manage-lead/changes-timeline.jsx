@@ -7,16 +7,16 @@ import { List } from 'immutable';
 
 /* Internal dependencies */
 import { selectChangesInLead } from 'state/entities/changes/selectors';
-import Change from 'state/entities/changes/model';
+import { Change, Lead } from 'state/entities/models';
 import Timeline from 'components/timeline';
 
 const mapStateToProps = (state, ownProps) => ({
-    changes: selectChangesInLead(ownProps),
+    changes: selectChangesInLead(state, ownProps),
 });
 
 export class ChangesTimeline extends React.Component {
     props: {
-        leadId: number,
+        lead: Lead,
         changes?: List<Change>,
     };
 

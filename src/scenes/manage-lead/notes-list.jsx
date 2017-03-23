@@ -9,9 +9,13 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
 /* Internal dependencies */
-import * as noteActions from 'state/entities/notes/actions';
+import {
+    createNote,
+    deleteNote,
+    updateNote,
+} from 'state/entities/notes/actions';
 import { selectNotesInLead } from 'state/entities/notes/selectors';
-import Note from 'state/entities/notes/model';
+import { Lead, Note } from 'state/entities/models';
 import ActionButton from 'components/action-button';
 import CardList from 'components/card-list';
 import ConfirmationDialog from 'components/confirmation-dialog';
@@ -21,15 +25,20 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(noteActions, dispatch),
+    dispatch,
+    createNote: (lead, note) => dispatch(createNote(lead, note)),
+    deleteNote: (lead, id) => dispatch(deleteNote(lead, id)),
+    updateNote: (lead, note) => dispatch(updateNote(lead, note)),
 });
 
 export class NotesList extends React.Component {
     props: {
-        actions?: Object,
+        createNote: () => void,
+        deleteNote: () => void,
         isAddButtonShown: boolean,
-        leadId: number,
+        lead: Lead,
         notes?: List<Note>,
+        updateNote: () => void,
     };
 
     state: {
@@ -82,10 +91,14 @@ export class NotesList extends React.Component {
 
     handleConfirmationYesTouchTap = (event: Event): void => {
         event.preventDefault();
+        const { lead } = this.props;
+        const deleteNotePromise: Function = this.props.deleteNote;
         const { activeNoteId } = this.state;
-        this.setState({
-            activeNoteId: 0,
-            isConfirmationDialogOpen: false,
+        deleteNotePromise(lead, activeNoteId).then(() => {
+            this.setState({
+                activeNoteId: 0,
+                isConfirmationDialogOpen: false,
+            });
         });
     };
 
@@ -104,6 +117,7 @@ export class NotesList extends React.Component {
     render(): React.Element<*> {
         const { isAddButtonShown, notes } = this.props;
         const { isConfirmationDialogOpen, isEditDialogOpen } = this.state;
+        const searchFieldInclusions = ['createdBy', 'details', 'title'];
 
         const editDialogActions = [
             <FlatButton
@@ -125,6 +139,7 @@ export class NotesList extends React.Component {
                     cardContents={notes}
                     handleDeleteTouchTap={this.handleCardDeleteTouchTap}
                     handleEditTouchTap={this.handleCardEditTouchTap}
+                    searchFieldInclusions={searchFieldInclusions}
                 />
                 {isAddButtonShown && (
                     <ActionButton

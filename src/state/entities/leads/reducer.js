@@ -10,11 +10,14 @@ import {
 
 /* Internal dependencies */
 import {
-    LEAD_CREATE, LEAD_CREATE_SUCCESS, LEAD_CREATE_FAIL,
-    LEAD_DELETE, LEAD_DELETE_SUCCESS, LEAD_DELETE_FAIL,
-    LEAD_GET_ALL, LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
-    LEAD_GET_SINGLE, LEAD_GET_SINGLE_SUCCESS, LEAD_GET_SINGLE_FAIL,
-    LEAD_UPDATE, LEAD_UPDATE_SUCCESS, LEAD_UPDATE_FAIL,
+    LEAD_CREATE_SUCCESS, LEAD_CREATE_FAIL,
+    LEAD_DELETE_SUCCESS, LEAD_DELETE_FAIL,
+    LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
+    LEAD_GET_SINGLE_SUCCESS, LEAD_GET_SINGLE_FAIL,
+    LEAD_UPDATE_SUCCESS, LEAD_UPDATE_FAIL,
+    CHANGE_CREATE_SUCCESS, CHANGE_DELETE_SUCCESS,
+    MESSAGE_CREATE_SUCCESS, MESSAGE_DELETE_SUCCESS,
+    NOTE_CREATE_SUCCESS, NOTE_DELETE_SUCCESS,
 } from '../../action-types';
 import Lead from './model';
 
@@ -58,16 +61,37 @@ export default (state: State = initialState, action: Action) => {
         case LEAD_GET_SINGLE_SUCCESS:
         case LEAD_UPDATE_SUCCESS:
             const { payload: { data: leadToSet } } = (action: Object);
-            return state.setIn(['entities', 'leads', leadToSet.id],
-                fromJS(leadToSet));
+            return state
+                .setIn(['byId', leadToSet.id], fromJS(leadToSet))
+                .setIn(['allIds', leadToSet.id]);
 
         case LEAD_DELETE_SUCCESS:
             const { id } = (action: Object);
-            return state.deleteIn(['entities', id]);
+            return state
+                .deleteIn(['byId', id])
+                .get('allIds')
+                .filter(leadId => leadId.toString() !== id.toString());
 
         case LEAD_GET_ALL_SUCCESS:
             const { payload: { data: entities } } = (action: Object);
             return mergeEntities(state, entities);
+
+        case CHANGE_CREATE_SUCCESS:
+        case MESSAGE_CREATE_SUCCESS:
+        case NOTE_CREATE_SUCCESS:
+            console.log(action);
+            return state;
+
+        case CHANGE_DELETE_SUCCESS:
+        case MESSAGE_DELETE_SUCCESS:
+        case NOTE_DELETE_SUCCESS:
+            const { meta: {
+                previousAction: {
+                    payload: { parent },
+                },
+            } } = (action: Object);
+            const groupName = action.type.split('/')[0];
+            return state.deleteIn(['byId']);
 
         default:
             return state;

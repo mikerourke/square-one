@@ -25,23 +25,19 @@ import type { List } from 'immutable';
  *      button is pressed.
  * @param {Function} handleSaveTouchTap Action to perform when the Save button
  *      is pressed.
- * @param {Array} [searchFieldExclusions=[]] Fields within the Card contents
- *      array that should be excluded from searches.
+ * @param {Array} searchFieldInclusions Fields within the Card contents
+ *      array that should be included in searches.
  */
 export default class CardList extends React.Component {
     props: {
         cardContents: List<*>,
         handleDeleteTouchTap: (event: Event, cardEntity: Object) => void,
         handleEditTouchTap: (event: Event, cardEntity: Object) => void,
-        searchFieldExclusions?: Array<string>,
+        searchFieldInclusions: Array<string>,
     };
 
     state: {
         cardContents: List<*>,
-    };
-
-    static defaultProps = {
-        searchFieldExclusions: [],
     };
 
     constructor(props: any): void {
@@ -58,12 +54,9 @@ export default class CardList extends React.Component {
      * @param {string} newValue Value to search by.
      */
     handleSearchBoxChange = (event: Event, newValue: string): void => {
-        const { cardContents, searchFieldExclusions } = this.props;
-        let exclusions = [];
-        if (searchFieldExclusions) {
-            exclusions = searchFieldExclusions;
-        }
-        const results = getSearchResults(cardContents, newValue, exclusions);
+        const { cardContents, searchFieldInclusions } = this.props;
+        const results = getSearchResults(
+            cardContents, newValue, searchFieldInclusions);
         this.setState({ cardContents: results });
     };
 

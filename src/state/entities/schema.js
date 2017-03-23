@@ -19,11 +19,12 @@ const noteSchema = new schema.Entity('notes', {}, {
 });
 
 /**
- * Schema entity for a Lead with child Changes and Notes.
+ * Schema entity for a Lead with child entities.
  */
-const leadSchema = new schema.Entity('leads', {
+export const leadSchema = new schema.Entity('leads', {
     changes: [changeSchema],
     messages: [messageSchema],
     notes: [noteSchema],
 });
+
 export const leadsSchema = [leadSchema];

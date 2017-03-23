@@ -132,7 +132,7 @@ export class ManageLeadPage extends React.Component {
     };
 
     render(): React.Element<*> {
-        const { lead, params: { id } } = this.props;
+        const { lead } = this.props;
         const {
             activeTabName,
             isConfirmationDialogOpen,
@@ -164,7 +164,7 @@ export class ManageLeadPage extends React.Component {
                             value: 'details',
                         },
                         {
-                            content: (<ChangesTimeline leadId={id} />),
+                            content: (<ChangesTimeline lead={lead} />),
                             label: 'History',
                             value: 'history',
                         },
@@ -172,7 +172,7 @@ export class ManageLeadPage extends React.Component {
                             content: (
                                 <NotesList
                                     isAddButtonShown={activeTabName === 'notes'}
-                                    leadId={id}
+                                    lead={lead}
                                 />
                             ),
                             label: 'Notes',

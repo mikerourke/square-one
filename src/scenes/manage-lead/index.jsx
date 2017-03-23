@@ -2,42 +2,35 @@
 
 /* External dependencies */
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { List } from 'immutable';
 
 /* Internal dependencies */
-import * as leadActions from 'state/entities/leads/actions';
-import { Change, Lead, Note } from 'state/entities/models';
+import { createLead, updateLead } from 'state/entities/leads/actions';
+import Lead from 'state/entities/leads/model';
+import ChangesTimeline from './changes-timeline';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
 import NotesList from './notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
 import TabsPage from 'components/tabs-page';
-import Timeline from 'components/timeline';
 
 const mapStateToProps = (state, ownProps) => {
-    const leadEntities = state.getIn(['entities', 'leads', 'entities']);
     let lead = new Lead();
-    let changes = new List();
-    let notes = new List();
     const leadId = ownProps.params.id || '0';
     if (leadId !== '0') {
-        lead = leadEntities.getIn(['leads', leadId]);
-        changes = lead.getChildrenFromState(leadEntities, 'changes');
-        notes = lead.getChildrenFromState(leadEntities, 'notes');
+        lead = state.getIn(['entities', 'leads', 'byId', leadId]);
     }
     return {
-        changes,
         lead,
-        notes,
     };
 };
 
 const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(leadActions, dispatch),
+    dispatch,
+    createLead: lead => dispatch(createLead(lead)),
+    updateLead: lead => dispatch(updateLead(lead)),
 });
 
 /**
@@ -47,10 +40,9 @@ const mapDispatchToProps = dispatch => ({
  */
 export class ManageLeadPage extends React.Component {
     props: {
-        actions: Object,
-        changes: List<Change>,
+        createLead: () => void,
         lead: Lead,
-        notes: List<Note>,
+        updateLead: () => void,
     };
 
     state: {
@@ -106,13 +98,14 @@ export class ManageLeadPage extends React.Component {
      */
     handleSaveTouchTap = (event: Event, lead: Lead): void => {
         event.preventDefault();
-        const { createLead, updateLead } = this.props.actions;
+        const createLeadPromise: Function = this.props.createLead;
+        const updateLeadPromise: Function = this.props.updateLead;
 
         // If the ID is 0 (the default), a new Lead needs to be created,
         // otherwise update the Lead that corresponds with the ID.
-        let performActionPromise: Function = createLead;
+        let performActionPromise: Function = createLeadPromise;
         if (lead.id !== 0) {
-            performActionPromise = updateLead;
+            performActionPromise = updateLeadPromise;
         }
         performActionPromise(lead).then(() => {
             this.setState({ isMessagesDialogOpen: true });
@@ -129,18 +122,6 @@ export class ManageLeadPage extends React.Component {
         this.setState({ isMessagesDialogOpen: false });
     };
 
-    handleNoteListDelete = (id: number): void => {
-        const { actions, lead } = this.props;
-        const { deleteItemInLead } = (actions: Object);
-        deleteItemInLead(lead.id, 'notes', id).then(() => {
-            this.setState(this.state);
-        });
-    };
-
-    handleNoteListUpdate = (note: Note): void => {
-
-    };
-
     /**
      * Updates the local state to ensure the Add button for new notes is
      *      hidden if the active tab isn't on the Notes page.
@@ -151,7 +132,7 @@ export class ManageLeadPage extends React.Component {
     };
 
     render(): React.Element<*> {
-        const { changes, lead, notes } = this.props;
+        const { lead } = this.props;
         const {
             activeTabName,
             isConfirmationDialogOpen,
@@ -183,17 +164,15 @@ export class ManageLeadPage extends React.Component {
                             value: 'details',
                         },
                         {
-                            content: (<Timeline timelineEvents={changes} />),
+                            content: (<ChangesTimeline lead={lead} />),
                             label: 'History',
                             value: 'history',
                         },
                         {
                             content: (
                                 <NotesList
-                                    handleNoteDelete={this.handleNoteListDelete}
-                                    handleNoteUpdate={this.handleNoteListUpdate}
                                     isAddButtonShown={activeTabName === 'notes'}
-                                    notes={notes}
+                                    lead={lead}
                                 />
                             ),
                             label: 'Notes',

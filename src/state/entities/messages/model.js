@@ -13,4 +13,5 @@ export default class Message extends Record({
     createdBy: ('': string),
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
+    typeName: ('message': string),
 }) {}

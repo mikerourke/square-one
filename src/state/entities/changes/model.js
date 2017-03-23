@@ -13,4 +13,5 @@ export default class Change extends Record({
     createdBy: ('': string),
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
+    typeName: ('change': string),
 }) {}

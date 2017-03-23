@@ -12,4 +12,5 @@ export default class Note extends Record({
     createdBy: ('': string),
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
+    typeName: ('note': string),
 }) {}

@@ -11,18 +11,13 @@ import {
     LEAD_GET_ALL,
     LEAD_GET_SINGLE,
     LEAD_UPDATE,
-    LEAD_ITEM_CREATE,
-    LEAD_ITEM_DELETE,
-    LEAD_ITEM_UPDATE,
 } from '../../action-types';
-import { Change, Lead, Message, Note } from '../models';
+import Lead from './model';
 import { leadsSchema } from '../schema';
 
 
 /* Types */
 import type { Action } from 'lib/types';
-
-type ChildItem = Change | Message | Note;
 
 const BASE_URL = '/leads';
 
@@ -85,45 +80,3 @@ export const updateLead = (lead: Lead): Action => ({
         },
     },
 });
-
-export const createItemInLead = (
-    leadId: number, group: string, item: ChildItem): Action => ({
-        type: LEAD_ITEM_CREATE,
-        payload: {
-            leadId,
-            group,
-            request: {
-                method: 'post',
-                url: `${BASE_URL}/${leadId}/${group}`,
-                data: item.toJS(),
-            },
-        },
-    });
-
-export const deleteItemInLead = (
-    leadId: number, group: string, itemId: number): Action => ({
-        type: LEAD_ITEM_DELETE,
-        payload: {
-            leadId,
-            group,
-            itemId,
-            request: {
-                method: 'delete',
-                url: `${BASE_URL}/${leadId}/${group}/${itemId}`,
-            },
-        },
-    });
-
-export const updateItemInLead = (
-    leadId: number, group: string, item: ChildItem): Action => ({
-        type: LEAD_ITEM_UPDATE,
-        payload: {
-            leadId,
-            group,
-            request: {
-                method: 'patch',
-                url: `${BASE_URL}/${leadId}/${group}/${item.id}`,
-                data: item.toJS(),
-            },
-        },
-    });

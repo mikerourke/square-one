@@ -22,12 +22,5 @@ export default class Lead extends Record({
     notes: (new List(): List<number>),
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
-}) {
-    getChildrenFromState(stateEntities: Object, group: string) {
-        const groupArray = this[group];
-        const childrenMap = stateEntities
-            .get(group)
-            .filter(groupItem => groupArray.includes(groupItem.id));
-        return childrenMap.toList();
-    }
-}
+    typeName: ('lead': string),
+}) { }

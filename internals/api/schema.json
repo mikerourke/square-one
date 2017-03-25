@@ -72,11 +72,7 @@
                 "minimum": 0,
                 "exclusiveMinimum": true
               },
-              "title": {
-                "type": "string",
-                "faker": "lorem.sentence"
-              },
-              "details": {
+              "contents": {
                 "type": "string",
                 "faker": "lorem.paragraph"
               },
@@ -100,8 +96,7 @@
             },
             "required": [
               "id",
-              "title",
-              "details",
+              "contents",
               "isPrivate",
               "createdBy",
               "createdAt",

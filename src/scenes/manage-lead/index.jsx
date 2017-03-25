@@ -12,6 +12,7 @@ import ChangesTimeline from './changes-timeline';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import LeadDetailsForm from './details-form';
 import MessagesDialog from './messages-dialog';
+import MessagesList from './messages-list';
 import NotesList from './notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
 import TabsPage from 'components/tabs-page';
@@ -170,8 +171,18 @@ export class ManageLeadPage extends React.Component {
                         },
                         {
                             content: (
+                                <MessagesList
+                                    showAddButton={activeTabName === 'messages'}
+                                    lead={lead}
+                                />
+                            ),
+                            label: 'Messages',
+                            value: 'messages',
+                        },
+                        {
+                            content: (
                                 <NotesList
-                                    isAddButtonShown={activeTabName === 'notes'}
+                                    showAddButton={activeTabName === 'notes'}
                                     lead={lead}
                                 />
                             ),

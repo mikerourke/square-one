@@ -4,7 +4,6 @@
 import { Record } from 'immutable';
 
 export default class Change extends Record({
-    parentId: (0: number),
     id: (0: number),
     changeType: ('': string),
     iconName: ('': string),

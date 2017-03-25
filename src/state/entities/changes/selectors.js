@@ -6,8 +6,7 @@ import { createSelector } from 'reselect';
 const getParentLead = (state, props) =>
     state.getIn(['entities', 'leads', 'byId', props.lead.id.toString()]);
 
-const getChanges = (state, props) =>
-    state.getIn(['entities', 'changes', 'byId']);
+const getChanges = state => state.getIn(['entities', 'changes', 'byId']);
 
 export const selectChangesInLead = createSelector(
     [getParentLead, getChanges],

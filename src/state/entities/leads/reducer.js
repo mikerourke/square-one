@@ -47,6 +47,27 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
+const getChildDataFromPayload = (payload: Object): Object => {
+    const {
+        config: { url },
+        data: { id },
+    } = (payload: Object);
+
+    const urlArray = url.split('/');
+    let leadId = '';
+    let groupName = '';
+    urlArray.forEach((value, index) => {
+        if (value.includes('lead')) {
+            leadId = urlArray[index + 1];
+            groupName = urlArray[index + 2];
+        }
+    });
+    return {
+        id,
+        pathInState: ['byId', leadId, groupName],
+    };
+};
+
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
         case LEAD_CREATE_FAIL:
@@ -54,23 +75,28 @@ export default (state: State = initialState, action: Action) => {
         case LEAD_GET_ALL_FAIL:
         case LEAD_GET_SINGLE_FAIL:
         case LEAD_UPDATE_FAIL:
-            const { error } = (action: Object);
-            return state.set('error', fromJS(error));
+            const { error: { response } } = (action: Object);
+            return state.set('error', fromJS(response));
 
         case LEAD_CREATE_SUCCESS:
+            const { payload: { data: newLead } } = (action: Object);
+            return state
+                .setIn(['byId', newLead.id], new Lead(fromJS(newLead)))
+                .get('allIds')
+                .push(newLead.id);
+
         case LEAD_GET_SINGLE_SUCCESS:
         case LEAD_UPDATE_SUCCESS:
-            const { payload: { data: leadToSet } } = (action: Object);
-            return state
-                .setIn(['byId', leadToSet.id], fromJS(leadToSet))
-                .setIn(['allIds', leadToSet.id]);
+            const { payload: { data: updatedLead } } = (action: Object);
+            return state.setIn(['byId', updatedLead.id],
+                new Lead(fromJS(updatedLead)));
 
         case LEAD_DELETE_SUCCESS:
-            const { id } = (action: Object);
+            const { payload: { data: { id } } } = (action: Object);
             return state
-                .deleteIn(['byId', id])
+                .deleteIn(['byId', id.toString()])
                 .get('allIds')
-                .filter(leadId => leadId.toString() !== id.toString());
+                .filter(idNumber => idNumber !== id);
 
         case LEAD_GET_ALL_SUCCESS:
             const { payload: { data: entities } } = (action: Object);
@@ -79,19 +105,20 @@ export default (state: State = initialState, action: Action) => {
         case CHANGE_CREATE_SUCCESS:
         case MESSAGE_CREATE_SUCCESS:
         case NOTE_CREATE_SUCCESS:
-            console.log(action);
-            return state;
+            const { payload: createdPayload } = (action: Object);
+            const newChild = getChildDataFromPayload(createdPayload);
+            return state.setIn(newChild.pathInState,
+                state.getIn(newChild.pathInState).push(newChild.id));
 
         case CHANGE_DELETE_SUCCESS:
         case MESSAGE_DELETE_SUCCESS:
         case NOTE_DELETE_SUCCESS:
-            const { meta: {
-                previousAction: {
-                    payload: { parent },
-                },
-            } } = (action: Object);
-            const groupName = action.type.split('/')[0];
-            return state.deleteIn(['byId']);
+            const { payload: deletedPayload } = (action: Object);
+            const deletedChild = getChildDataFromPayload(deletedPayload);
+            return state.setIn(deletedChild.pathInState,
+                state.getIn(deletedChild.pathInState)
+                    .filter(childId => childId !== deletedChild.id));
+
 
         default:
             return state;

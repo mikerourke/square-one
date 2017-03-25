@@ -3,17 +3,16 @@
 /* External dependencies */
 import {
     fromJS,
-    List,
     Map,
     OrderedMap,
 } from 'immutable';
 
 /* Internal dependencies */
 import {
-    CHANGE_CREATE, CHANGE_CREATE_SUCCESS, CHANGE_CREATE_FAIL,
-    CHANGE_DELETE, CHANGE_DELETE_SUCCESS, CHANGE_DELETE_FAIL,
-    CHANGE_UPDATE, CHANGE_UPDATE_SUCCESS, CHANGE_UPDATE_FAIL,
-    LEAD_GET_ALL, LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
+    CHANGE_CREATE_SUCCESS, CHANGE_CREATE_FAIL,
+    CHANGE_DELETE_SUCCESS, CHANGE_DELETE_FAIL,
+    CHANGE_UPDATE_SUCCESS, CHANGE_UPDATE_FAIL,
+    LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Change from './model';
 
@@ -21,9 +20,8 @@ import Change from './model';
 import type { Action } from 'lib/types';
 
 type ByIdMap = Map<number, Change>;
-type AllIdsList = List<number>;
 type ErrorMap = Map<string, any>;
-type State = Map<string, ByIdMap | AllIdsList | ErrorMap>;
+type State = Map<string, ByIdMap | ErrorMap>;
 
 const initialState = OrderedMap();
 
@@ -38,16 +36,32 @@ const mergeEntities = (state: State, data: Object): State => {
     return state.merge({
         byId: OrderedMap([...Object.entries(changes).map(
             ([key, value]) => ([key, new Change(fromJS(value))]))]),
-        allIds: new List(Object.keys(changes).map(key => parseInt(key, 10))),
         error: new Map(),
     });
 };
 
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
+        case LEAD_GET_ALL_FAIL:
+        case CHANGE_CREATE_FAIL:
+        case CHANGE_DELETE_FAIL:
+        case CHANGE_UPDATE_FAIL:
+            const { error: { response } } = (action: Object);
+            return state.set('error', fromJS(response));
+
         case LEAD_GET_ALL_SUCCESS:
             const { payload: { data: entities } } = (action: Object);
             return mergeEntities(state, entities);
+
+        case CHANGE_CREATE_SUCCESS:
+        case CHANGE_UPDATE_SUCCESS:
+            const { payload: { data: newChange } } = (action: Object);
+            return state.setIn(['byId', newChange.id.toString()],
+                new Change(fromJS(newChange)));
+
+        case CHANGE_DELETE_SUCCESS:
+            const { payload: { data: { id } } } = (action: Object);
+            return state.deleteIn(['byId', id.toString()]);
 
         default:
             return state;

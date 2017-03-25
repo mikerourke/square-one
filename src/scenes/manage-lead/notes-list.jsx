@@ -2,11 +2,11 @@
 
 /* External dependencies */
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
 import {
@@ -33,16 +33,16 @@ const mapDispatchToProps = dispatch => ({
 
 export class NotesList extends React.Component {
     props: {
-        createNote: () => void,
-        deleteNote: () => void,
-        isAddButtonShown: boolean,
+        createNote?: () => void,
+        deleteNote?: () => void,
+        showAddButton: boolean,
         lead: Lead,
         notes?: List<Note>,
-        updateNote: () => void,
+        updateNote?: () => void,
     };
 
     state: {
-        activeNoteId: number,
+        activeNote: Note,
         editDialogTitle: string,
         isConfirmationDialogOpen: boolean,
         isEditDialogOpen: boolean,
@@ -51,35 +51,40 @@ export class NotesList extends React.Component {
     constructor(): void {
         super();
         this.state = {
-            activeNoteId: 0,
+            activeNote: new Note(),
             editDialogTitle: '',
             isConfirmationDialogOpen: false,
             isEditDialogOpen: false,
         };
     }
 
+    getNoteById = noteId => this.props.notes.find(note => note.id === noteId);
+
     handleAddButtonTouchTap = (event: Event): void => {
         event.preventDefault();
-        this.showEditDialogForCard('Add New Note');
+        this.setState({
+            activeNote: new Note(),
+            editDialogTitle: 'Add Note',
+            isEditDialogOpen: true,
+        });
     };
 
     handleCardDeleteTouchTap = (event: Event, cardEntity: Object): void => {
         event.preventDefault();
+        const activeNote = this.getNoteById(cardEntity.id);
         this.setState({
-            activeNoteId: cardEntity.id,
+            activeNote,
             isConfirmationDialogOpen: true,
         });
     };
 
     handleCardEditTouchTap = (event: Event, cardEntity: Object): void => {
         event.preventDefault();
-        this.showEditDialogForCard('Edit Note', cardEntity.id);
-    };
-
-    showEditDialogForCard = (title: string, noteId?: number = 0): void => {
+        const activeNote = this.getNoteById(cardEntity.id);
+        console.log(activeNote);
         this.setState({
-            activeNoteId: noteId,
-            editDialogTitle: title,
+            activeNote,
+            editDialogTitle: 'Edit Note',
             isEditDialogOpen: true,
         });
     };
@@ -91,14 +96,11 @@ export class NotesList extends React.Component {
 
     handleConfirmationYesTouchTap = (event: Event): void => {
         event.preventDefault();
+        const { activeNote } = this.state;
         const { lead } = this.props;
-        const deleteNotePromise: Function = this.props.deleteNote;
-        const { activeNoteId } = this.state;
-        deleteNotePromise(lead, activeNoteId).then(() => {
-            this.setState({
-                activeNoteId: 0,
-                isConfirmationDialogOpen: false,
-            });
+        const deleteNotePromise = this.props.deleteNote;
+        deleteNotePromise(lead, activeNote.id).then(() => {
+            this.setState({ isConfirmationDialogOpen: false });
         });
     };
 
@@ -109,15 +111,38 @@ export class NotesList extends React.Component {
 
     handleEditDialogSaveTouchTap = (event: Event): void => {
         event.preventDefault();
-        const note = new Note({
+        const { activeNote } = this.state;
+        const { lead } = this.props;
+        let performActionPromise: Function = this.props.createNote;
+        if (activeNote.id !== 0) {
+            performActionPromise = this.props.updateNote;
+        }
+        performActionPromise(lead, activeNote).then(() => {
+            this.setState({ isEditDialogOpen: false });
         });
-        this.setState({ isEditDialogOpen: false });
+    };
+
+    handleInputChange = (event: Event, newValue: string = ''): void => {
+        const { activeNote } = this.state;
+        const target = event.target;
+
+        // The element type is checked to conform with Flow type checking.
+        if (target instanceof HTMLInputElement ||
+            target instanceof HTMLTextAreaElement) {
+            const fieldName = target.name;
+            const updatedNote = activeNote.set(fieldName, newValue);
+            this.setState({ activeNote: updatedNote });
+        }
     };
 
     render(): React.Element<*> {
-        const { isAddButtonShown, notes } = this.props;
-        const { isConfirmationDialogOpen, isEditDialogOpen } = this.state;
-        const searchFieldInclusions = ['createdBy', 'details', 'title'];
+        const { showAddButton, notes } = this.props;
+        const {
+            activeNote,
+            editDialogTitle,
+            isConfirmationDialogOpen,
+            isEditDialogOpen,
+        } = this.state;
 
         const editDialogActions = [
             <FlatButton
@@ -139,9 +164,9 @@ export class NotesList extends React.Component {
                     cardContents={notes}
                     handleDeleteTouchTap={this.handleCardDeleteTouchTap}
                     handleEditTouchTap={this.handleCardEditTouchTap}
-                    searchFieldInclusions={searchFieldInclusions}
+                    searchFieldInclusions={['contents']}
                 />
-                {isAddButtonShown && (
+                {showAddButton && (
                     <ActionButton
                         handleTouchTap={this.handleAddButtonTouchTap}
                         iconName="add"
@@ -150,9 +175,16 @@ export class NotesList extends React.Component {
                 <Dialog
                     actions={editDialogActions}
                     open={isEditDialogOpen}
-                    title="Add/Edit Note"
+                    title={editDialogTitle}
                 >
-                    Test!
+                    <TextField
+                        floatingLabelText="Contents"
+                        fullWidth={true}
+                        multiLine={true}
+                        name="contents"
+                        onChange={this.handleInputChange}
+                        value={activeNote.contents}
+                    />
                 </Dialog>
                 <ConfirmationDialog
                     handleNoTouchTap={this.handleConfirmationNoTouchTap}

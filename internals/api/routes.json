@@ -1,6 +1,0 @@
-{
-  "/api/": "/",
-  "/users/:username": "/users?username=:username",
-  "/settings/:settingName": "/settings?settingName=:settingName",
-  "/settings/:category/:settingName": "/settings?category=:category&settingName=:settingName"
-}

@@ -3,7 +3,6 @@
 /* External dependencies */
 import {
     fromJS,
-    List,
     Map,
     OrderedMap,
 } from 'immutable';
@@ -21,9 +20,8 @@ import Note from './model';
 import type { Action } from 'lib/types';
 
 type ByIdMap = Map<number, Note>;
-type AllIdsList = List<number>;
 type ErrorMap = Map<string, any>;
-type State = Map<string, ByIdMap | AllIdsList | ErrorMap>;
+type State = Map<string, ByIdMap | ErrorMap>;
 
 const initialState = OrderedMap();
 
@@ -38,24 +36,32 @@ const mergeEntities = (state: State, data: Object): State => {
     return state.merge({
         byId: OrderedMap([...Object.entries(notes).map(
             ([key, value]) => ([key, new Note(fromJS(value))]))]),
-        allIds: new List(Object.keys(notes).map(key => parseInt(key, 10))),
         error: new Map(),
     });
 };
 
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
-        case NOTE_CREATE_SUCCESS:
-        case NOTE_UPDATE_SUCCESS:
-            return state;
-
-        case NOTE_DELETE_SUCCESS:
-            console.log(action);
-            return state;
+        case LEAD_GET_ALL_FAIL:
+        case NOTE_CREATE_FAIL:
+        case NOTE_DELETE_FAIL:
+        case NOTE_UPDATE_FAIL:
+            const { error: { response } } = (action: Object);
+            return state.set('error', fromJS(response));
 
         case LEAD_GET_ALL_SUCCESS:
             const { payload: { data: entities } } = (action: Object);
             return mergeEntities(state, entities);
+
+        case NOTE_CREATE_SUCCESS:
+        case NOTE_UPDATE_SUCCESS:
+            const { payload: { data: newNote } } = (action: Object);
+            return state.setIn(['byId', newNote.id.toString()],
+                new Note(fromJS(newNote)));
+
+        case NOTE_DELETE_SUCCESS:
+            const { payload: { data: { id } } } = (action: Object);
+            return state.deleteIn(['byId', id.toString()]);
 
         default:
             return state;

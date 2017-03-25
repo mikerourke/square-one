@@ -11,7 +11,7 @@ const jsonServer = require('json-server');
 const moment = require('moment');
 
 /* Internal dependencies */
-const routes = require('./routes.json');
+const assignCustomRoutes = require('./routes');
 
 const port = process.env.API_PORT || 8082;
 
@@ -20,8 +20,14 @@ const middlewares = jsonServer.defaults();
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
-// Use custom routes from routes.json file.
-server.use(jsonServer.rewriter(routes));
+// Use custom routes:
+const rewrittenRoutes = {
+    '/api/': '/',
+    '/users/:username': '/users?username=:username',
+    '/settings/:settingName': '/settings?settingName=:settingName',
+    '/settings/:category/:settingName': '/settings?category=:category&settingName=:settingName'
+};
+server.use(jsonServer.rewriter(rewrittenRoutes));
 
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
 
@@ -41,44 +47,7 @@ router.render = (req, res) => {
     res.jsonp(responseData);
 };
 
-server.get('/leads/:leadId/notes/:noteId', (req, res) => {
-    const leadId = req.params.leadId;
-    const noteId = req.params.noteId;
-    const db = router.db;
-    const noteToFind = db.get('leads')
-      .getById(leadId)
-      .get('notes')
-      .getById(noteId)
-      .value();
-    res.jsonp(noteToFind);
-});
-
-server.patch('/leads/:leadId/notes/:noteId', (req, res) => {
-    const leadId = req.params.leadId;
-    const noteId = req.params.noteId;
-    const db = router.db;
-    db.get('leads')
-      .getById(leadId)
-      .get('notes')
-      .getById(noteId)
-      .assign(req.body)
-      .value();
-    res.jsonp(db.get('leads').getById(leadId).value());
-});
-
-server.delete('/leads/:leadId/notes/:noteId', (req, res) => {
-    const leadId = req.params.leadId;
-    const noteId = req.params.noteId;
-    const db = router.db;
-    db.get('leads')
-      .getById(leadId)
-      .get('notes')
-      .remove({ id: parseInt(noteId, 10) })
-      .value();
-
-    res.jsonp(db.get('leads').getById(leadId).value());
-});
-
+assignCustomRoutes(router, server);
 server.use(router);
 
 server.listen(port, () => {

@@ -1,7 +1,5 @@
 /* @flow */
 
-// TODO: Add code to de-normalize data.
-
 /* External dependencies */
 import { normalize } from 'normalizr';
 import axios from 'axios';
@@ -17,10 +15,25 @@ import {
 import Lead from './model';
 import { leadSchema, leadsSchema } from '../schema';
 
+
 /* Types */
 import type { Action } from 'lib/types';
 
 const BASE_URL = '/leads';
+
+const transformForAll = axios.defaults.transformResponse.concat((data) => {
+    if (data) {
+        return normalize(data, leadsSchema);
+    }
+    return {};
+});
+
+const transformForSingle = axios.defaults.transformResponse.concat((data) => {
+    if (data) {
+        return normalize(data, leadSchema);
+    }
+    return {};
+});
 
 export const createLead = (lead: Lead): Action => ({
     type: LEAD_CREATE,
@@ -33,13 +46,14 @@ export const createLead = (lead: Lead): Action => ({
     },
 });
 
-export const deleteLead = (id: number): Action => ({
+export const deleteLead = (lead: Lead): Action => ({
     type: LEAD_DELETE,
     payload: {
-        id,
         request: {
             method: 'delete',
-            url: `${BASE_URL}/${id}`,
+            url: `${BASE_URL}/${lead.id}`,
+            data: lead.toJS(),
+            transformResponse: transformForSingle,
         },
     },
 });
@@ -50,13 +64,7 @@ export const getLead = (id: number): Action => ({
         request: {
             method: 'get',
             url: `${BASE_URL}/${id}`,
-            transformResponse:
-                axios.defaults.transformResponse.concat((data) => {
-                    if (data) {
-                        return normalize(data, leadSchema);
-                    }
-                    return {};
-                }),
+            transformResponse: transformForSingle,
         },
     },
 });
@@ -67,13 +75,7 @@ export const getAllLeads = (): Action => ({
         request: {
             method: 'get',
             url: BASE_URL,
-            transformResponse:
-                axios.defaults.transformResponse.concat((data) => {
-                    if (data) {
-                        return normalize(data, leadsSchema);
-                    }
-                    return {};
-                }),
+            transformResponse: transformForAll,
         },
     },
 });
@@ -85,6 +87,7 @@ export const updateLead = (lead: Lead): Action => ({
             method: 'patch',
             url: `${BASE_URL}/${lead.id}`,
             data: lead.toJS(),
+            transformResponse: transformForSingle,
         },
     },
 });

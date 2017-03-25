@@ -47,6 +47,16 @@ export default class CardList extends React.Component {
         };
     }
 
+    componentWillReceiveProps(nextProps: any): void {
+        const { cardContents } = this.state;
+        const newCardContents = nextProps.cardContents;
+        if (newCardContents.size !== cardContents.size) {
+            this.setState({
+                cardContents: newCardContents,
+            });
+        }
+    }
+
     /**
      * Limits the Cards displayed on the page to only those containing the
      *      specified value entered in the Search box.
@@ -100,7 +110,7 @@ export default class CardList extends React.Component {
                                     textOverflow: 'ellipsis',
                                 }}
                             >
-                                {cardEntity.details}
+                                {cardEntity.contents}
                             </CardText>
                             <CardActions>
                                 <FlatButton

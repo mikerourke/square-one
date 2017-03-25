@@ -16,7 +16,6 @@ type Parent = Lead;
 export const createNote = (parent: Parent, note: Note): Action => ({
     type: NOTE_CREATE,
     payload: {
-        parent,
         request: {
             method: 'post',
             url: `${parent.typeName}s/${parent.id}/notes`,
@@ -28,8 +27,6 @@ export const createNote = (parent: Parent, note: Note): Action => ({
 export const deleteNote = (parent: Parent, id: number): Action => ({
     type: NOTE_DELETE,
     payload: {
-        id,
-        parent,
         request: {
             method: 'delete',
             url: `${parent.typeName}s/${parent.id}/notes/${id}`,
@@ -40,7 +37,6 @@ export const deleteNote = (parent: Parent, id: number): Action => ({
 export const updateNote = (parent: Parent, note: Note): Action => ({
     type: NOTE_UPDATE,
     payload: {
-        parent,
         request: {
             method: 'patch',
             url: `${parent.typeName}s/${parent.id}/notes/${note.id}`,

@@ -4,6 +4,18 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
+/**
+ * Text field on forms with validation, requirement check, and format
+ *      cleanup.
+ * @param {string} dataType Indicates the type of data in the field.
+ * @param {string} format Special formatting that needs to be applied to the
+ *      field.
+ * @param {boolean} [isRequired=false] Indicates if the field is required.
+ * @param {string} name Name of the field.
+ * @param {Function} onValidInputChange Action to perform after a valid input
+ *      is entered into the field.
+ * @param {string|number} value Initial value of the field.
+ */
 export default class FormTextField extends React.Component {
     props: {
         dataType?: 'text' | 'number' | 'any',
@@ -18,14 +30,14 @@ export default class FormTextField extends React.Component {
     state: {
         errorText: string,
         value: any,
-    }
+    };
 
     static defaultProps = {
         dataType: 'any',
         format: 'none',
         isRequired: false,
         value: '',
-    }
+    };
 
     constructor(props: any): void {
         super(props);
@@ -36,6 +48,13 @@ export default class FormTextField extends React.Component {
         };
     }
 
+    /**
+     * If the value entered into the field was specified as text and a number
+     *      is entered (or vice versa), this is the error text displayed for
+     *      the field.
+     * @param {string|number} newValue Value entered into the input.
+     * @returns {string} Error text to display.
+     */
     errorTextForDataType = (newValue: any): string => {
         const { dataType } = this.props;
 
@@ -65,6 +84,12 @@ export default class FormTextField extends React.Component {
         return '';
     };
 
+    /**
+     * If the field is required and nothing was entered into the input, this
+     *      is the error text to display in the field.
+     * @param {string|number} newValue Value of the input.
+     * @returns {string} Error text to display.
+     */
     errorTextForRequiredField = (newValue: any): string => {
         const { isRequired } = this.props;
         if (newValue === '' && isRequired) {
@@ -74,6 +99,12 @@ export default class FormTextField extends React.Component {
         return '';
     };
 
+    /**
+     * Returns the error for invalid entry by precendence.  If the field is
+     *      required and nothing was entered, show that error message first.
+     * @param {string|number} newValue Value of the input.
+     * @returns {string} Error text to display.
+     */
     errorTextByPrecedence = (newValue: any): string => {
         const requiredErrorText = this.errorTextForRequiredField(newValue);
         if (requiredErrorText) {
@@ -86,30 +117,15 @@ export default class FormTextField extends React.Component {
         }
 
         return '';
-    }
-
-    cleanupValue = (oldValue: any) => {
-        const charArray = [...oldValue];
-        const newChars = charArray.filter(char => !isNaN(char));
-        return newChars.join('');
-    }
-
-    updatedFormat = (newValue: any): string => {
-        const { format } = this.props;
-        if (format === 'phone') {
-            if (newValue.match(/^\(\d{3}\) \d{3}-\d{4}/)) {
-                return newValue;
-            }
-            const cleanValue = this.cleanupValue(newValue);
-            const zipCode = cleanValue.substring(0, 3);
-            const prefix = cleanValue.substring(3, 6);
-            const suffix = cleanValue.substring(6, 10);
-            const other = cleanValue.substring(10, cleanValue.length);
-            const phoneNumber = `(${zipCode}) ${prefix}-${suffix} ${other}`;
-            return phoneNumber.replace(/\s{2,}/g, ' ');
-        }
     };
 
+    /**
+     * Updates the value of the input and any applicable error messages in
+     *      local state.
+     * @param {Event} event Event associated with the input.
+     * @param {string|number} newValue Value of the input.
+     * @param {string} errorText Error text associated with the input (if any).
+     */
     updateInput = (event: Event, newValue: any, errorText: string) => {
         const { name, onValidInputChange } = this.props;
 
@@ -121,30 +137,35 @@ export default class FormTextField extends React.Component {
             errorText,
             value: newValue,
         });
-    }
+    };
 
+    /**
+     * Updates the input value and applicable error text in local state after
+     *      the input loses focus.
+     * @param {Event} event Event associated with the input.
+     */
     handleBlur = (event: Event) => {
-        const { format } = this.props;
         const { errorText } = this.state;
 
         const target = event.target;
         if (target instanceof HTMLInputElement) {
             const newValue = target.value;
-
-            let formattedValue = newValue;
-            if (format !== 'none') {
-                formattedValue = this.updatedFormat(newValue);
-            }
-            this.updateInput(event, formattedValue, errorText);
+            this.updateInput(event, newValue, errorText);
         }
     };
 
+    /**
+     * Updates the input value and applicable error text in local state after
+     *      a change is made to the input value.
+     * @param {Event} event Event associated with the input.
+     * @param {string|number} newValue New value of the input.
+     */
     handleChange = (event: Event, newValue: any): void => {
         const errorText = this.errorTextByPrecedence(newValue);
         this.updateInput(event, newValue, errorText);
     };
 
-    render() {
+    render(): React.Element<*> {
         const {
             dataType,
             format,

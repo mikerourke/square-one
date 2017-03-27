@@ -31,6 +31,12 @@ const mapDispatchToProps = dispatch => ({
     updateNote: (lead, note) => dispatch(updateNote(lead, note)),
 });
 
+/**
+ * List of notes associated with a Lead entity.
+ * @param {boolean} showAddButton Indicates if the add button should be shown
+ *      for creating new notes.
+ * @param {Lead} lead Parent Lead containing the notes.
+ */
 export class NotesList extends React.Component {
     props: {
         createNote?: () => void,
@@ -58,8 +64,14 @@ export class NotesList extends React.Component {
         };
     }
 
-    getNoteById = noteId => this.props.notes.find(note => note.id === noteId);
+    getNoteById = (noteId: number): Note =>
+        this.props.notes.find(note => note.id === noteId);
 
+    /**
+     * Creates a new Note in local state and show the Add/Edit Dialog when the
+     *      Add button is pressed.
+     * @param {Event} event Event associated with the Add button.
+     */
     handleAddButtonTouchTap = (event: Event): void => {
         event.preventDefault();
         this.setState({
@@ -69,6 +81,12 @@ export class NotesList extends React.Component {
         });
     };
 
+    /**
+     * Stores the selected Note in local state and shows the Confirmation
+     *      Dialog when the Delete button is pressed on a Note card.
+     * @param {Event} event Event associated with the Delete button.
+     * @param {Object} cardEntity Entity associated with the selected card.
+     */
     handleCardDeleteTouchTap = (event: Event, cardEntity: Object): void => {
         event.preventDefault();
         const activeNote = this.getNoteById(cardEntity.id);
@@ -78,10 +96,15 @@ export class NotesList extends React.Component {
         });
     };
 
+    /**
+     * Stores the selected Note in local state and shows the Add/Edit Dialog
+     *      when the Edit button is pressed on a Note card.
+     * @param {Event} event Event associated with the Edit button.
+     * @param {Object} cardEntity Entity associated with the selected card.
+     */
     handleCardEditTouchTap = (event: Event, cardEntity: Object): void => {
         event.preventDefault();
         const activeNote = this.getNoteById(cardEntity.id);
-        console.log(activeNote);
         this.setState({
             activeNote,
             editDialogTitle: 'Edit Note',
@@ -89,11 +112,20 @@ export class NotesList extends React.Component {
         });
     };
 
+    /**
+     * Hides the Confirmation Dialog if the No button is pressed.
+     * @param {Event} event Event associated with the Cancel button.
+     */
     handleConfirmationNoTouchTap = (event: Event): void => {
         event.preventDefault();
         this.setState({ isConfirmationDialogOpen: false });
     };
 
+    /**
+     * Dispatches a delete note action when the Yes button is pressed in the
+     *      Confirmation Dialog and closes.
+     * @param {Event} event Event associated with the Yes button.
+     */
     handleConfirmationYesTouchTap = (event: Event): void => {
         event.preventDefault();
         const { activeNote } = this.state;
@@ -104,11 +136,21 @@ export class NotesList extends React.Component {
         });
     };
 
+    /**
+     * Closes the Add/Edit Dialog if the Cancel button is pressed.
+     * @param {Event} event Event associated with the Cancel button.
+     */
     handleEditDialogCancelTouchTap = (event: Event): void => {
         event.preventDefault();
         this.setState({ isEditDialogOpen: false });
     };
 
+    /**
+     * Dispatches either a create note or update note action depending on if
+     *      the Note is new or existing when the Save button is pressed in the
+     *      Add/Edit Dialog.
+     * @param {Event} event Event associated with the Save button.
+     */
     handleEditDialogSaveTouchTap = (event: Event): void => {
         event.preventDefault();
         const { activeNote } = this.state;
@@ -122,6 +164,12 @@ export class NotesList extends React.Component {
         });
     };
 
+    /**
+     * Updates the value of the corresponding field in local state for the
+     *      active Note entity when the field value is changed.
+     * @param {Event} event Event associated with the input.
+     * @param {string} newValue Value of the input.
+     */
     handleInputChange = (event: Event, newValue: string = ''): void => {
         const { activeNote } = this.state;
         const target = event.target;
@@ -136,7 +184,7 @@ export class NotesList extends React.Component {
     };
 
     render(): React.Element<*> {
-        const { showAddButton, notes } = this.props;
+        const { notes, showAddButton } = this.props;
         const {
             activeNote,
             editDialogTitle,

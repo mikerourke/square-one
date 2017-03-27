@@ -23,7 +23,7 @@ import type { List } from 'immutable';
  * @param {List} cardContents List of data objects to display on card.
  * @param {Function} handleDeleteTouchTap Action to perform when the Delete
  *      button is pressed.
- * @param {Function} handleSaveTouchTap Action to perform when the Save button
+ * @param {Function} handleEditTouchTap Action to perform when the Edit button
  *      is pressed.
  * @param {Array} searchFieldInclusions Fields within the Card contents
  *      array that should be included in searches.

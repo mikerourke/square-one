@@ -2,6 +2,7 @@
 
 /* External dependencies */
 import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -9,7 +10,7 @@ import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
-import { Lead } from 'state/entities/models';
+import { Lead, Message } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
 
 /**
@@ -37,7 +38,7 @@ const mapDispatchToProps = dispatch => ({
  *      dialog is pressed.
  * @param {boolean} open Indicates if the dialog is open.
  */
-export default class MessagesDialog extends React.Component {
+export class MessagesDialog extends React.Component {
     props: {
         handleTouchTap: (event: Event) => void,
         lead: Lead,
@@ -192,3 +193,5 @@ export default class MessagesDialog extends React.Component {
         );
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessagesDialog);

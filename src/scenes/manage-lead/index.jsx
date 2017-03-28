@@ -52,8 +52,13 @@ export class ManageLeadPage extends React.Component {
         isMessagesDialogOpen: boolean,
     };
 
-    constructor(): void {
-        super();
+    static contextTypes = {
+        store: React.PropTypes.object.isRequired,
+    };
+
+    constructor(props: any, context: any): void {
+        super(props, context);
+        this.store = this.context.store;
         this.state = {
             activeTabName: 'details',
             isConfirmationDialogOpen: false,
@@ -99,6 +104,8 @@ export class ManageLeadPage extends React.Component {
      */
     handleSaveTouchTap = (event: Event, lead: Lead): void => {
         event.preventDefault();
+        const currentState = this.store.getState();
+
         const createLeadPromise: Function = this.props.createLead;
         const updateLeadPromise: Function = this.props.updateLead;
 

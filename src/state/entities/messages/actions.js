@@ -14,7 +14,7 @@ export const createMessage = (parent: Parent, message: Message): Action => ({
     payload: {
         request: {
             method: 'post',
-            url: `${parent.typeName}s/${parent.id}/messages`,
+            url: `/${parent.typeName}s/${parent.id}/messages`,
             data: message.toJS(),
         },
     },

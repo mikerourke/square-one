@@ -18,7 +18,7 @@ export const createNote = (parent: Parent, note: Note): Action => ({
     payload: {
         request: {
             method: 'post',
-            url: `${parent.typeName}s/${parent.id}/notes`,
+            url: `/${parent.typeName}s/${parent.id}/notes`,
             data: note.toJS(),
         },
     },
@@ -29,7 +29,7 @@ export const deleteNote = (parent: Parent, id: number): Action => ({
     payload: {
         request: {
             method: 'delete',
-            url: `${parent.typeName}s/${parent.id}/notes/${id}`,
+            url: `/${parent.typeName}s/${parent.id}/notes/${id}`,
         },
     },
 });
@@ -39,7 +39,7 @@ export const updateNote = (parent: Parent, note: Note): Action => ({
     payload: {
         request: {
             method: 'patch',
-            url: `${parent.typeName}s/${parent.id}/notes/${note.id}`,
+            url: `/${parent.typeName}s/${parent.id}/notes/${note.id}`,
             data: note.toJS(),
         },
     },

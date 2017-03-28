@@ -38,6 +38,7 @@ module.exports = (router, server) => {
         }
 
         const idString = `${type}${dateForId}${sequenceForId}`;
+        console.log(idString);
         return (parseInt(idString, 10) + 1);
     };
 

@@ -10,8 +10,6 @@ import {
 /* Internal dependencies */
 import {
     CHANGE_CREATE_SUCCESS, CHANGE_CREATE_FAIL,
-    CHANGE_DELETE_SUCCESS, CHANGE_DELETE_FAIL,
-    CHANGE_UPDATE_SUCCESS, CHANGE_UPDATE_FAIL,
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Change from './model';
@@ -44,8 +42,6 @@ export default (state: State = initialState, action: Action) => {
     switch (action.type) {
         case LEAD_GET_ALL_FAIL:
         case CHANGE_CREATE_FAIL:
-        case CHANGE_DELETE_FAIL:
-        case CHANGE_UPDATE_FAIL:
             const { error: { response } } = (action: Object);
             return state.set('error', fromJS(response));
 
@@ -54,14 +50,9 @@ export default (state: State = initialState, action: Action) => {
             return mergeEntities(state, entities);
 
         case CHANGE_CREATE_SUCCESS:
-        case CHANGE_UPDATE_SUCCESS:
             const { payload: { data: newChange } } = (action: Object);
             return state.setIn(['byId', newChange.id.toString()],
                 new Change(fromJS(newChange)));
-
-        case CHANGE_DELETE_SUCCESS:
-            const { payload: { data: { id } } } = (action: Object);
-            return state.deleteIn(['byId', id.toString()]);
 
         default:
             return state;

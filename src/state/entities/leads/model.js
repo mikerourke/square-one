@@ -23,4 +23,19 @@ export default class Lead extends Record({
     createdAt: (null: ?Date),
     updatedAt: (null: ?Date),
     typeName: ('lead': string),
-}) { }
+}) {
+    wasModifiedFrom(lead: Lead): boolean {
+        const thisLead = this.toJS();
+        const leadToCompare = lead.toJS();
+        let unmatchingValues = 0;
+        Object.keys(thisLead).forEach((key) => {
+            const valueForKey = thisLead[key];
+            if (!Array.isArray(valueForKey)) {
+                if (leadToCompare[key] !== valueForKey) {
+                    unmatchingValues += 1;
+                }
+            }
+        });
+        return (unmatchingValues > 0);
+    }
+}

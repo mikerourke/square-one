@@ -52,8 +52,8 @@ export class ManageLeadPage extends React.Component {
         isMessagesDialogOpen: boolean,
     };
 
-    constructor(props: any): void {
-        super(props);
+    constructor(): void {
+        super();
         this.state = {
             activeTabName: 'details',
             isConfirmationDialogOpen: false,
@@ -140,6 +140,48 @@ export class ManageLeadPage extends React.Component {
             isMessagesDialogOpen,
         } = this.state;
 
+        let tabPagesToShow = [
+            {
+                content: (
+                    <LeadDetailsForm
+                        handleSaveTouchTap={this.handleSaveTouchTap}
+                        lead={lead}
+                    />
+                ),
+                label: 'Details',
+                value: 'details',
+            },
+            {
+                content: (
+                    <NotesList
+                        showAddButton={activeTabName === 'notes'}
+                        lead={lead}
+                    />
+                ),
+                label: 'Notes',
+                value: 'notes',
+            },
+        ];
+        if (lead.id !== 0) {
+            tabPagesToShow = tabPagesToShow.concat([
+                {
+                    content: (<ChangesTimeline lead={lead} />),
+                    label: 'History',
+                    value: 'history',
+                },
+                {
+                    content: (
+                        <MessagesList
+                            showAddButton={activeTabName === 'messages'}
+                            lead={lead}
+                        />
+                    ),
+                    label: 'Messages',
+                    value: 'messages',
+                },
+            ]);
+        }
+
         const confirmationMessage =
             'If you go back without pressing save, your changes will be ' +
             'lost, do you wish to continue?';
@@ -153,43 +195,7 @@ export class ManageLeadPage extends React.Component {
                 <TabsPage
                     handleTabPageChange={this.handleTabPageChange}
                     paperStyle={{ minHeight: 620 }}
-                    tabPages={[
-                        {
-                            content: (
-                                <LeadDetailsForm
-                                    handleSaveTouchTap={this.handleSaveTouchTap}
-                                    lead={lead}
-                                />
-                            ),
-                            label: 'Details',
-                            value: 'details',
-                        },
-                        {
-                            content: (<ChangesTimeline lead={lead} />),
-                            label: 'History',
-                            value: 'history',
-                        },
-                        {
-                            content: (
-                                <MessagesList
-                                    showAddButton={activeTabName === 'messages'}
-                                    lead={lead}
-                                />
-                            ),
-                            label: 'Messages',
-                            value: 'messages',
-                        },
-                        {
-                            content: (
-                                <NotesList
-                                    showAddButton={activeTabName === 'notes'}
-                                    lead={lead}
-                                />
-                            ),
-                            label: 'Notes',
-                            value: 'notes',
-                        },
-                    ]}
+                    tabPages={tabPagesToShow}
                 />
                 <MessagesDialog
                     handleTouchTap={this.handleMessageDialogTouchTap}

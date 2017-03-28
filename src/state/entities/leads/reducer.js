@@ -15,8 +15,8 @@ import {
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
     LEAD_GET_SINGLE_SUCCESS, LEAD_GET_SINGLE_FAIL,
     LEAD_UPDATE_SUCCESS, LEAD_UPDATE_FAIL,
-    CHANGE_CREATE_SUCCESS, CHANGE_DELETE_SUCCESS,
-    MESSAGE_CREATE_SUCCESS, MESSAGE_DELETE_SUCCESS,
+    CHANGE_CREATE_SUCCESS,
+    MESSAGE_CREATE_SUCCESS,
     NOTE_CREATE_SUCCESS, NOTE_DELETE_SUCCESS,
 } from '../../action-types';
 import Lead from './model';
@@ -110,8 +110,6 @@ export default (state: State = initialState, action: Action) => {
             return state.setIn(newChild.pathInState,
                 state.getIn(newChild.pathInState).push(newChild.id));
 
-        case CHANGE_DELETE_SUCCESS:
-        case MESSAGE_DELETE_SUCCESS:
         case NOTE_DELETE_SUCCESS:
             const { payload: deletedPayload } = (action: Object);
             const deletedChild = getChildDataFromPayload(deletedPayload);

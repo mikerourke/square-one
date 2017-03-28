@@ -3,6 +3,7 @@
 /* External dependencies */
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import styled from 'styled-components';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -10,6 +11,7 @@ import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
+import { createMessage } from 'state/entities/messages/actions';
 import { Lead, Message } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
 
@@ -20,15 +22,13 @@ const MessageBlock = styled.div`
     margin: 24px 0;
 `;
 
-const mapStateToProps = (state, ownProps) => {
-    const lead = ownProps.lead;
-    return {
-        lead,
-    };
-};
+const mapStateToProps = (state, ownProps) => ({
+    lead: ownProps.lead,
+});
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
+    createMessage: (lead, message) => dispatch(createMessage(lead, message)),
 });
 
 /**
@@ -58,12 +58,34 @@ export class MessagesDialog extends React.Component {
 
         this.state = {
             isConfirmationDialogOpen: false,
-            leadMessage: '',
-            representativeMessage: '',
+            messageToLead: '',
+            messageToRepresentative: '',
             sendLeadMessage: false,
             sendRepresentativeMessage: false,
         };
     }
+
+    handleCancelTouchTap = (event: Event): void => {
+        event.preventDefault();
+        this.setState({ isConfirmationDialogOpen: true });
+    };
+
+    handleSubmitTouchTap = (event: Event): void => {
+        event.preventDefault();
+        const { lead } = this.props;
+        const { messageToLead, messageToRepresentative } = this.state;
+        const createMessagePromise = this.props.createMessage;
+        const leadMessage = new Message({
+            messageType: 'text',
+            recipient: lead.phone,
+            subject: '?',
+            body: messageToLead,
+        });
+        createMessagePromise(lead, leadMessage).then(() => {
+            this.setState({ isConfirmationDialogOpen: false });
+            browserHistory.push('/leads');
+        });
+    };
 
     /**
      * If the user does not wish to lose their changes, hide the dialog.
@@ -81,7 +103,9 @@ export class MessagesDialog extends React.Component {
      */
     handleConfirmationYesTouchTap = (event: Event): void => {
         event.preventDefault();
+        const { handleTouchTap } = this.props;
         this.setState({ isConfirmationDialogOpen: false });
+        handleTouchTap(event);
     };
 
     /**
@@ -102,16 +126,12 @@ export class MessagesDialog extends React.Component {
     };
 
     render(): React.Element<*> {
-        const {
-            handleCancelTouchTap,
-            handleSubmitTouchTap,
-            open,
-        } = this.props;
+        const { open } = this.props;
 
         const {
             isConfirmationDialogOpen,
-            leadMessage,
-            representativeMessage,
+            messageToLead,
+            messageToRepresentative,
             sendLeadMessage,
             sendRepresentativeMessage,
         } = this.state;
@@ -121,13 +141,13 @@ export class MessagesDialog extends React.Component {
                 label="Submit"
                 name="submit"
                 primary={true}
-                onTouchTap={handleSubmitTouchTap}
+                onTouchTap={this.handleSubmitTouchTap}
             />,
             <FlatButton
                 label="Cancel"
                 name="cancel"
                 secondary={true}
-                onTouchTap={handleCancelTouchTap}
+                onTouchTap={this.handleCancelTouchTap}
             />,
         ];
 
@@ -160,9 +180,9 @@ export class MessagesDialog extends React.Component {
                             floatingLabelText="Message to Lead"
                             fullWidth={true}
                             multiLine={true}
-                            name="leadMessage"
+                            name="messageToLead"
                             onChange={this.handleInputChange}
-                            value={leadMessage}
+                            value={messageToLead}
                         />
                     </MessageBlock>
                     <MessageBlock>
@@ -177,9 +197,9 @@ export class MessagesDialog extends React.Component {
                             floatingLabelText="Message to Representative"
                             fullWidth={true}
                             multiLine={true}
-                            name="representativeMessage"
+                            name="messageToRepresentative"
                             onChange={this.handleInputChange}
-                            value={representativeMessage}
+                            value={messageToRepresentative}
                         />
                     </MessageBlock>
                 </Dialog>

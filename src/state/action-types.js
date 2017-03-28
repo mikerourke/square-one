@@ -4,12 +4,6 @@
 export const CHANGE_CREATE: string = 'changes/CHANGE_CREATE';
 export const CHANGE_CREATE_FAIL: string = 'changes/CHANGE_CREATE_FAIL';
 export const CHANGE_CREATE_SUCCESS: string = 'changes/CHANGE_CREATE_SUCCESS';
-export const CHANGE_DELETE: string = 'changes/CHANGE_DELETE';
-export const CHANGE_DELETE_FAIL: string = 'changes/CHANGE_DELETE_FAIL';
-export const CHANGE_DELETE_SUCCESS: string = 'changes/CHANGE_DELETE_SUCCESS';
-export const CHANGE_UPDATE: string = 'changes/CHANGE_UPDATE';
-export const CHANGE_UPDATE_FAIL: string = 'changes/CHANGE_UPDATE_FAIL';
-export const CHANGE_UPDATE_SUCCESS: string = 'changes/CHANGE_UPDATE_SUCCESS';
 export const GUI_TOGGLE_APP_SIDEBAR: string = 'gui/GUI_TOGGLE_APP_SIDEBAR';
 export const LEAD_CREATE: string = 'leads/LEAD_CREATE';
 export const LEAD_CREATE_FAIL: string = 'leads/LEAD_CREATE_FAIL';

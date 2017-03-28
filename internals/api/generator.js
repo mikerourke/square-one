@@ -73,6 +73,7 @@ const getFormattedSampleData = () => {
     updateTimeFormat(sampleLeads);
     sampleLeads.map(sampleLead => {
         updateTimeFormat(sampleLead.changes);
+        updateTimeFormat(sampleLead.messages);
         updateTimeFormat(sampleLead.notes);
     });
     updateIdsToMatchCustomFormat(sampleLeads);

@@ -1,0 +1,245 @@
+{
+  "leads": [
+    {
+      "id": 1011703210001,
+      "leadName": "Steve Leadsman",
+      "contactName": "",
+      "source": "Facebook",
+      "leadFee": 25,
+      "phone": "(630) 123-4567",
+      "email": "steve@leads.com",
+      "address": "123 Yorktown Shopping Center, Lombard, IL 60148, USA",
+      "lat": 41.83931079999999,
+      "lng": -88.00729280000002,
+      "description": "This is a lead",
+      "status": "New",
+      "assignTo": "Chuckles",
+      "notes": [
+        {
+          "id": 1031703210001,
+          "contents": "Note details",
+          "isPrivate": false,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        },
+        {
+          "id": 1031703210002,
+          "contents": "Note details 2",
+          "isPrivate": true,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "changes": [
+        {
+          "id": 1021703210001,
+          "changeType": "create",
+          "iconName": "add_circle_outline",
+          "title": "Example Change",
+          "details": "Change details",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        },
+        {
+          "id": 1021703210002,
+          "changeType": "sendMessage",
+          "iconName": "contact_mail",
+          "title": "Example Change 2",
+          "details": "Change details 2",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "messages": [
+        {
+          "id": 1041703210001,
+          "messageType": "text",
+          "recipient": "(640) 357-9814",
+          "subject": "Test Message 1",
+          "body": "This is a test message.",
+          "createdBy": "lis",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }, {
+          "id": 1041703210002,
+          "messageType": "text",
+          "recipient": "(640) 357-9814",
+          "subject": "Test Message 2",
+          "body": "This is a test message.",
+          "createdBy": "lis",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "createdBy": "mike",
+      "createdAt": "2017-02-02 14:00:00.000 -05:00",
+      "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+    },
+    {
+      "id": 1011703210002,
+      "leadName": "Nancy Leadelstein",
+      "contactName": "",
+      "source": "Saw Sign",
+      "leadFee": 25,
+      "phone": "(630) 123-4567",
+      "email": "nancy@leads.com",
+      "address": "",
+      "lat": 0,
+      "lng": 0,
+      "description": "This is another lead",
+      "status": "Existing",
+      "assignTo": "",
+      "notes": [
+        {
+          "id": 1031703210003,
+          "title": "Example Note",
+          "details": "Note details",
+          "isPrivate": false,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        },
+        {
+          "id": 1031703210004,
+          "title": "Example Note 2",
+          "details": "Note details 2",
+          "isPrivate": true,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "changes": [
+        {
+          "id": 1021703210003,
+          "changeType": "create",
+          "iconName": "add_circle_outline",
+          "title": "Example Change",
+          "details": "Change details",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        },
+        {
+          "id": 1021703210004,
+          "changeType": "sendMessage",
+          "iconName": "contact_mail",
+          "title": "Example Change 2",
+          "details": "Change details 2",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "messages": [
+        {
+          "id": 1041703210003,
+          "messageType": "text",
+          "recipient": "(640) 357-9814",
+          "subject": "Test Message 3",
+          "body": "This is a test message.",
+          "createdBy": "lis",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }, {
+          "id": 1041703210004,
+          "messageType": "text",
+          "recipient": "(640) 357-9814",
+          "subject": "Test Message 4",
+          "body": "This is a test message.",
+          "createdBy": "lis",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "createdBy": "mike",
+      "createdAt": "2017-02-02 14:00:00.000 -05:00",
+      "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+    },
+    {
+      "id": 1011703210003,
+      "leadName": "Paco Leadrojo",
+      "contactName": "",
+      "source": "Saw Sign",
+      "leadFee": 25,
+      "phone": "(630) 123-4567",
+      "email": "paco@leads.com",
+      "address": "",
+      "lat": 0,
+      "lng": 0,
+      "description": "This is a third lead",
+      "status": "New",
+      "assignTo": "",
+      "notes": [
+        {
+          "id": 1031703210005,
+          "title": "Example Note",
+          "details": "Note details",
+          "isPrivate": false,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        },
+        {
+          "id": 1031703210006,
+          "title": "Example Note 2",
+          "details": "Note details 2",
+          "isPrivate": true,
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "changes": [
+        {
+          "id": 1021703210005,
+          "changeType": "create",
+          "iconName": "add_circle_outline",
+          "title": "Example Change",
+          "details": "Change details",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        },
+        {
+          "id": 1021703210006,
+          "changeType": "sendMessage",
+          "iconName": "contact_mail",
+          "title": "Example Change 2",
+          "details": "Change details 2",
+          "createdBy": "mike",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "messages": [
+        {
+          "id": 1041703210005,
+          "messageType": "text",
+          "recipient": "(640) 357-9814",
+          "subject": "Test Message 5",
+          "body": "This is a test message.",
+          "createdBy": "lis",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }, {
+          "id": 1041703210006,
+          "messageType": "text",
+          "recipient": "(640) 357-9814",
+          "subject": "Test Message 6",
+          "body": "This is a test message.",
+          "createdBy": "lis",
+          "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+        }
+      ],
+      "createdBy": "mike",
+      "createdAt": "2017-02-02 14:00:00.000 -05:00",
+      "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+    }
+  ]
+}

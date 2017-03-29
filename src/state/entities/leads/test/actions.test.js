@@ -1,12 +1,8 @@
-/* External dependencies */
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
-
 /* Internal dependencies */
+const db = require('../../db.mock.json');
 import * as actions from '../actions';
 import * as types from '../../../action-types';
-import mockData from './model.test';
-import { createMockStore, mockClient } from '../../../index.test';
+import { createMockStore, mockClient } from '../../../index.mock';
 
 describe('Lead Actions', () => {
     beforeAll(() => {
@@ -14,10 +10,10 @@ describe('Lead Actions', () => {
     });
 
     it('creates LEAD_GET_SINGLE and LEAD_GET_SINGLE_SUCCESS for a valid Lead', (done) => {
-        mockClient.onGet('/leads/1').reply(200);
+        mockClient.onGet('/leads/1011703210001').reply(200);
 
         const store = createMockStore();
-        store.dispatch(actions.getLead(1)).then(() => {
+        store.dispatch(actions.getLead(1011703210001)).then(() => {
             const actions = store.getActions();
             expect(actions[0].type).toEqual(types.LEAD_GET_SINGLE);
             expect(actions[1].type).toEqual(types.LEAD_GET_SINGLE_SUCCESS);
@@ -26,10 +22,10 @@ describe('Lead Actions', () => {
     });
 
     it('creates LEAD_GET_SINGLE and LEAD_GET_SINGLE_FAIL for an invalid Lead', (done) => {
-        mockClient.onGet('/leads/2').reply(404);
+        mockClient.onGet('/leads/1011703210002').reply(404);
 
         const store = createMockStore();
-        store.dispatch(actions.getLead(2)).then(() => {
+        store.dispatch(actions.getLead(1011703210002)).then(() => {
             const actions = store.getActions();
             expect(actions[0].type).toEqual(types.LEAD_GET_SINGLE);
             expect(actions[1].type).toEqual(types.LEAD_GET_SINGLE_FAIL);
@@ -45,7 +41,7 @@ describe('Lead Actions', () => {
              * field is empty:
              */
             mockClient.onGet('/leads').reply(200, {
-                leads: mockData,
+                leads: db,
             });
 
             const store = createMockStore();

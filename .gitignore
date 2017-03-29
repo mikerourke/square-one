@@ -39,3 +39,4 @@ backup.json
 # Configuration/build files:
 local.json
 stats.json
+/config.js

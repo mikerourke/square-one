@@ -29,7 +29,12 @@
         },
         "phone": {
           "type": "string",
-          "faker": "phone.phoneNumber"
+          "chance": {
+            "phone": {
+              "country": "us"
+            }
+          },
+          "pattern": "phoneNumber"
         },
         "email": {
           "type": "string",
@@ -50,7 +55,11 @@
         },
         "description": {
           "type": "string",
-          "faker": "lorem.sentence"
+          "chance": {
+            "sentence": {
+              "words": 10
+            }
+          }
         },
         "status": {
           "type": "string",
@@ -74,14 +83,18 @@
               },
               "contents": {
                 "type": "string",
-                "faker": "lorem.paragraph"
+                "chance": {
+                  "sentence": {
+                    "words": 10
+                  }
+                }
               },
               "isPrivate": {
                 "type": "boolean"
               },
               "createdBy": {
                 "type": "string",
-                "faker": "internet.userName"
+                "pattern": "mike|lis|joe|josh"
               },
               "createdAt": {
                 "type": "number",
@@ -126,15 +139,23 @@
               },
               "title": {
                 "type": "string",
-                "faker": "lorem.sentence"
+                "chance": {
+                  "sentence": {
+                    "words": 5
+                  }
+                }
               },
               "details": {
                 "type": "string",
-                "faker": "lorem.paragraph"
+                "chance": {
+                  "sentence": {
+                    "words": 10
+                  }
+                }
               },
               "createdBy": {
                 "type": "string",
-                "faker": "internet.userName"
+                "pattern": "mike|lis|joe|josh"
               },
               "createdAt": {
                 "type": "number",
@@ -177,19 +198,32 @@
               },
               "recipient": {
                 "type": "string",
+                "chance": {
+                  "phone": {
+                    "country": "us"
+                  }
+                },
                 "pattern": "phoneNumber"
               },
               "subject": {
                 "type": "string",
-                "faker": "lorem.sentence"
+                "chance": {
+                  "sentence": {
+                    "words": 5
+                  }
+                }
               },
               "body": {
                 "type": "string",
-                "faker": "lorem.paragraph"
+                "chance": {
+                  "sentence": {
+                    "words": 10
+                  }
+                }
               },
               "createdBy": {
                 "type": "string",
-                "faker": "internet.userName"
+                "pattern": "mike|lis|joe|josh"
               },
               "createdAt": {
                 "type": "number",
@@ -213,6 +247,10 @@
               "updatedAt"
             ]
           }
+        },
+        "createdBy": {
+          "type": "string",
+          "pattern": "mike|lis|joe|josh"
         },
         "createdAt": {
           "type": "number",
@@ -242,6 +280,7 @@
         "notes",
         "changes",
         "messages",
+        "createdBy",
         "createdAt",
         "updatedAt"
       ]

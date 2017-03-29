@@ -3,13 +3,12 @@ import { OrderedMap, fromJS } from 'immutable';
 import { normalize } from 'normalizr';
 
 /* Internal dependencies */
+const db = require('../../db.mock.json');
 import reducer from '../reducer';
 import * as types from '../../../action-types';
-import leadsSchema from '../../schema';
-import { createMockStore, mockClient } from '../../../index.test';
-import { mockData } from './model.test';
+import { leadsSchema } from '../../schema';
 
-const getNormalizedData = () => normalize(mockData, leadsSchema);
+const getNormalizedData = () => normalize(db.leads, leadsSchema);
 const getStateForAllLeads = () => reducer(
     undefined, {
         type: types.LEAD_GET_ALL_SUCCESS,
@@ -28,21 +27,38 @@ describe('Lead Reducer', () => {
     it('hydrates the state with Leads', () => {
         const normalizedData = getNormalizedData();
         const reducerValue = getStateForAllLeads();
-
-        const counts = [
-            reducerValue.get('entities').count(),
-            reducerValue.get('entities').get('changes').count(),
-            reducerValue.get('entities').get('leads').count(),
-            reducerValue.get('entities').get('notes').count(),
-        ];
-        expect(counts).toEqual([3, 6, 3, 6]);
+        console.log(reducerValue);
+        const countOfLeads = reducerValue.get('byId').size;
+        expect(countOfLeads).toEqual(3);
     });
 
     it('deletes a single Lead from state', () => {
         const initialState = getStateForAllLeads();
         const reducerValue = reducer(initialState, {
             type: types.LEAD_DELETE_SUCCESS,
-            id: 1
+            payload: {
+                data: {
+                    "address": "123 Yorktown Shopping Center, Lombard, IL 60148, USA",
+                    "assignTo": "Chuckles",
+                    "changes": [1021703210001, 1021703210002],
+                    "contactName": "",
+                    "createdAt": "2017-02-02 14:00:00.000 -05:00",
+                    "createdBy": "mike",
+                    "description": "This is a lead",
+                    "email": "steve@leads.com",
+                    "id": 1,
+                    "lat": 41.83931079999999,
+                    "leadFee": 25,
+                    "leadName": "Steve Leadsman",
+                    "lng": -88.00729280000002,
+                    "messages": [1041703210001, 1041703210002],
+                    "notes": [1031703210001, 1031703210002],
+                    "phone": "(630) 123-4567",
+                    "source": "Facebook",
+                    "status": "New",
+                    "updatedAt": "2017-02-02 14:00:00.000 -05:00"
+                }
+            }
         });
 
         // TODO: Finish this test.

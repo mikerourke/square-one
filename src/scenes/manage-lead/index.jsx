@@ -154,8 +154,8 @@ export class ManageLeadPage extends React.Component {
             {
                 content: (
                     <NotesList
-                        showAddButton={activeTabName === 'notes'}
                         lead={lead}
+                        showAddButton={activeTabName === 'notes'}
                     />
                 ),
                 label: 'Notes',
@@ -167,8 +167,8 @@ export class ManageLeadPage extends React.Component {
                 {
                     content: (
                         <MessagesList
-                            showAddButton={activeTabName === 'messages'}
                             lead={lead}
+                            showAddButton={activeTabName === 'messages'}
                         />
                     ),
                     label: 'Messages',

@@ -9,7 +9,8 @@ import {
 
 /* Internal dependencies */
 import {
-    MESSAGE_CREATE_SUCCESS, MESSAGE_CREATE_FAIL,
+    MESSAGE_CREATE_SINGLE_SUCCESS, MESSAGE_CREATE_SINGLE_FAIL,
+    MESSAGE_CREATE_MULTIPLE_SUCCESS, MESSAGE_CREATE_MULTIPLE_FAIL,
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Message from './model';
@@ -41,15 +42,21 @@ const mergeEntities = (state: State, data: Object): State => {
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
         case LEAD_GET_ALL_FAIL:
-        case MESSAGE_CREATE_FAIL:
+        case MESSAGE_CREATE_SINGLE_FAIL:
+        case MESSAGE_CREATE_MULTIPLE_FAIL:
             const { error: { response } } = (action: Object);
             return state.set('error', fromJS(response));
 
         case LEAD_GET_ALL_SUCCESS:
-            const { payload: { data: entities } } = (action: Object);
-            return mergeEntities(state, entities);
+            const { payload: { data: leadsData } } = (action: Object);
+            return mergeEntities(state, leadsData);
 
-        case MESSAGE_CREATE_SUCCESS:
+        case MESSAGE_CREATE_MULTIPLE_SUCCESS:
+            const { payload: { data: newMessages } } = (action: Object);
+            return state.mergeIn(['byId'], newMessages.map(message =>
+                ([message.id, new Message(fromJS(message))])));
+
+        case MESSAGE_CREATE_SINGLE_SUCCESS:
             const { payload: { data: newMessage } } = (action: Object);
             return state.setIn(['byId', newMessage.id.toString()],
                 new Message(fromJS(newMessage)));

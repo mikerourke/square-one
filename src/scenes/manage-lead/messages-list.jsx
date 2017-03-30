@@ -13,7 +13,6 @@ import {
 import { List as MuiList } from 'material-ui/List';
 
 /* Internal dependencies */
-import { createMessage } from 'state/entities/messages/actions';
 import { selectMessagesInLead } from 'state/entities/messages/selectors';
 import { Lead, Message } from 'state/entities/models';
 import ActionButton from 'components/action-button';
@@ -25,9 +24,9 @@ const mapStateToProps = (state, ownProps) => ({
 
 export class MessagesList extends React.Component {
     props: {
-        showAddButton: boolean,
         lead: Lead,
         messages?: List<Message>,
+        showAddButton: boolean,
     };
 
     state: {
@@ -44,6 +43,11 @@ export class MessagesList extends React.Component {
     handleAddButtonTouchTap = (event: Event): void => {
         event.preventDefault();
         this.setState({ isMessageDialogOpen: true });
+    };
+
+    handleDialogTouchTap = (event: Event): void => {
+        event.preventDefault();
+        this.setState({ isMessageDialogOpen: false });
     };
 
     render(): React.Element<*> {
@@ -81,7 +85,7 @@ export class MessagesList extends React.Component {
                     />
                 )}
                 <MessagesDialog
-                    handleTouchTap=""
+                    handleTouchTap={this.handleDialogTouchTap}
                     lead={lead}
                     open={isMessageDialogOpen}
                     redirectToLeads={false}

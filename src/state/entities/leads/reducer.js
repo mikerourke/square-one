@@ -16,7 +16,7 @@ import {
     LEAD_GET_SINGLE_SUCCESS, LEAD_GET_SINGLE_FAIL,
     LEAD_UPDATE_SUCCESS, LEAD_UPDATE_FAIL,
     CHANGE_CREATE_SUCCESS,
-    MESSAGE_CREATE_SUCCESS,
+    MESSAGE_CREATE_SINGLE_SUCCESS, MESSAGE_CREATE_MULTIPLE_SUCCESS,
     NOTE_CREATE_SUCCESS, NOTE_DELETE_SUCCESS,
 } from '../../action-types';
 import Lead from './model';
@@ -51,7 +51,7 @@ const mergeEntities = (state: State, data: Object): State => {
 const getChildDataFromPayload = (payload: Object): Object => {
     const {
         config: { url },
-        data: { id },
+        data,
     } = (payload: Object);
 
     const urlArray = url.split('/');
@@ -63,8 +63,9 @@ const getChildDataFromPayload = (payload: Object): Object => {
             groupName = urlArray[index + 2];
         }
     });
+
     return {
-        id,
+        data,
         pathInState: ['byId', leadId, groupName],
     };
 };
@@ -105,21 +106,24 @@ export default (state: State = initialState, action: Action) => {
             return mergeEntities(state, entities);
 
         case CHANGE_CREATE_SUCCESS:
-        case MESSAGE_CREATE_SUCCESS:
+        case MESSAGE_CREATE_SINGLE_SUCCESS:
+        case MESSAGE_CREATE_MULTIPLE_SUCCESS:
         case NOTE_CREATE_SUCCESS:
             const { payload: createdPayload } = (action: Object);
             const newChild = getChildDataFromPayload(createdPayload);
-            return state.setIn(newChild.pathInState,
-                // $FlowIgnore
-                state.getIn(newChild.pathInState).push(newChild.id));
+            const newChildGroup: any = state.getIn(newChild.pathInState);
+            const newChildState = Array.isArray(newChild.data) ?
+                             newChildGroup.merge(newChild.data) :
+                             newChildGroup.push(newChild.data.id);
+            return state.setIn(newChild.pathInState, newChildState);
 
         case NOTE_DELETE_SUCCESS:
             const { payload: deletedPayload } = (action: Object);
-            const deletedChild = getChildDataFromPayload(deletedPayload);
-            return state.setIn(deletedChild.pathInState,
-                // $FlowIgnore
-                state.getIn(deletedChild.pathInState)
-                    .filter(childId => childId !== deletedChild.id));
+            const deleteChild = getChildDataFromPayload(deletedPayload);
+            const deleteChildGroup: any = state.getIn(deleteChild.pathInState);
+            const deleteChildState = deleteChildGroup
+                .filter(childId => childId !== deleteChild.data.id);
+            return state.setIn(deleteChild.pathInState, deleteChildState);
 
         default:
             return state;

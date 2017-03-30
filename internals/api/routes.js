@@ -73,6 +73,18 @@ module.exports = (router, server) => {
         });
     };
 
+    const getChildRecord = (parentName, childName, entity) => {
+        const currentTime = getCurrentTime();
+        let childRecord = Object.assign({}, entity, {
+            id: getNewId(parentName, childName),
+            createdAt: currentTime,
+            createdBy: 'mike',
+            updatedAt: currentTime,
+        });
+        delete childRecord.typeName;
+        return childRecord;
+    };
+
     const addPostRoute = (parentName, childName, urlPath) => {
         server.post(urlPath, (req, res) => {
             const parentId = req.params[`${parentName}Id`];
@@ -81,20 +93,30 @@ module.exports = (router, server) => {
                 .getById(parentId)
                 .get(`${childName}s`);
 
-            const currentTime = getCurrentTime();
-            let childRecord = Object.assign({}, req.body, {
-                id: getNewId(parentName, childName),
-                createdAt: currentTime,
-                createdBy: 'mike',
-                updatedAt: currentTime,
-            });
-            delete childRecord.typeName;
-
-            childrenInDb
-                .push(childRecord)
-                .write();
-
-            res.jsonp(childRecord);
+            const bodyData = req.body;
+            const childrenForResponse = [];
+            if (Array.isArray(bodyData)) {
+                bodyData.forEach((bodyItem) => {
+                    const childItem =
+                        getChildRecord(parentName, childName, bodyItem);
+                    childrenInDb
+                        .push(childItem)
+                        .write();
+                    childrenForResponse.push(childItem);
+                })
+            } else {
+                const singleItem =
+                    getChildRecord(parentName, childName, bodyData);
+                childrenInDb
+                    .push(childItem)
+                    .write();
+                childrenForResponse.push(singleItem);
+            }
+            if (childrenForResponse.length > 1) {
+                res.jsonp(childrenForResponse);
+            } else {
+                res.jsonp(childrenForResponse[0]);
+            }
         });
     };
 

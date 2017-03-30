@@ -4,6 +4,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import { List } from 'immutable';
 import styled from 'styled-components';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -11,7 +12,10 @@ import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
-import { createMessage } from 'state/entities/messages/actions';
+import {
+    createMultipleMessages,
+    createSingleMessage,
+} from 'state/entities/messages/actions';
 import { Lead, Message } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
 
@@ -28,7 +32,10 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
-    createMessage: (lead, message) => dispatch(createMessage(lead, message)),
+    createMultipleMessages: (lead, messages) =>
+        dispatch(createMultipleMessages(lead, messages)),
+    createSingleMessage: (lead, message) =>
+        dispatch(createSingleMessage(lead, message)),
 });
 
 /**
@@ -42,7 +49,8 @@ const mapDispatchToProps = dispatch => ({
  */
 export class MessagesDialog extends React.Component {
     props: {
-        createMessage?: ?(lead: Lead, message: Message) => void,
+        createMultipleMessages?: ?(lead: Lead, messages: List<Message>) => void,
+        createSingleMessage?: ?(lead: Lead, message: Message) => void,
         handleTouchTap: (event: Event) => void,
         lead: Lead,
         open: boolean,
@@ -73,14 +81,74 @@ export class MessagesDialog extends React.Component {
         this.setState({ isConfirmationDialogOpen: true });
     };
 
+    getMessagesToSend = () => {
+        const {
+            messageToLead,
+            messageToRepresentative,
+            sendLeadMessage,
+            sendRepresentativeMessage,
+        } = this.state;
+
+        const messagesToSend = [];
+
+        if (sendLeadMessage) {
+            messagesToSend.push(new Message({
+                body: messageToLead,
+                messageType: 'text',
+                recipient: '',
+                subject: 'Message to Lead',
+            }));
+        }
+
+        if (sendRepresentativeMessage) {
+            messagesToSend.push(new Message({
+                body: messageToRepresentative,
+                messageType: 'text',
+                recipient: '',
+                subject: 'Message to Representative',
+            }));
+        }
+
+        return messagesToSend;
+    };
+
     // TODO: Add handler for multiple message sending.
     handleSubmitTouchTap = (event: Event): void => {
         event.preventDefault();
-        const { lead, redirectToLeads } = this.props;
-        this.setState({ isConfirmationDialogOpen: false });
-        if (redirectToLeads) {
-            browserHistory.push('/leads');
+        const { handleTouchTap, lead, redirectToLeads } = this.props;
+        const messagesToSend = this.getMessagesToSend();
+
+        let createMessagePromise: any = () => {};
+        let messagePayload;
+
+        switch (messagesToSend.length) {
+            case 1:
+                createMessagePromise = this.props.createSingleMessage;
+                messagePayload = messagesToSend[0];
+                break;
+
+            case 2:
+                createMessagePromise = this.props.createMultipleMessages;
+                messagePayload = new List(messagesToSend);
+                break;
+
+            default:
+                break;
         }
+
+        handleTouchTap(event);
+        createMessagePromise(lead, messagePayload).then(() => {
+            this.setState({
+                isConfirmationDialogOpen: false,
+                messageToLead: '',
+                messageToRepresentative: '',
+                sendLeadMessage: false,
+                sendRepresentativeMessage: false,
+            });
+            if (redirectToLeads) {
+                browserHistory.push('/leads');
+            }
+        });
     };
 
     /**

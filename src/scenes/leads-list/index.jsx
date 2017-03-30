@@ -52,7 +52,7 @@ export class LeadsList extends React.Component {
     }
 
     componentDidMount(): void {
-        const getAllLeadsPromise = this.props.getAllLeads;
+        const getAllLeadsPromise: Function = this.props.getAllLeads;
         if (getAllLeadsPromise) {
             getAllLeadsPromise().then(() => {
                 const leads = this.props.leads;
@@ -90,7 +90,7 @@ export class LeadsList extends React.Component {
         const { isLoading, leads } = this.state;
 
         // TODO: Add filter selection handling and saving.
-        const filterSelections = ['Test 1', 'Test 2'];
+        const filterSelections = [];
 
         const leadData = leads
             .toList()

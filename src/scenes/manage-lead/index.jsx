@@ -41,9 +41,9 @@ const mapDispatchToProps = dispatch => ({
  */
 export class ManageLeadPage extends React.Component {
     props: {
-        createLead: () => void,
+        createLead: (lead: Lead) => void,
         lead: Lead,
-        updateLead: () => void,
+        updateLead: (lead: Lead) => void,
     };
 
     state: {
@@ -52,13 +52,8 @@ export class ManageLeadPage extends React.Component {
         isMessagesDialogOpen: boolean,
     };
 
-    static contextTypes = {
-        store: React.PropTypes.object.isRequired,
-    };
-
-    constructor(props: any, context: any): void {
-        super(props, context);
-        this.store = this.context.store;
+    constructor(): void {
+        super();
         this.state = {
             activeTabName: 'details',
             isConfirmationDialogOpen: false,
@@ -104,8 +99,6 @@ export class ManageLeadPage extends React.Component {
      */
     handleSaveTouchTap = (event: Event, lead: Lead): void => {
         event.preventDefault();
-        const currentState = this.store.getState();
-
         const createLeadPromise: Function = this.props.createLead;
         const updateLeadPromise: Function = this.props.updateLead;
 
@@ -172,11 +165,6 @@ export class ManageLeadPage extends React.Component {
         if (lead.id !== 0) {
             tabPagesToShow = tabPagesToShow.concat([
                 {
-                    content: (<ChangesTimeline lead={lead} />),
-                    label: 'History',
-                    value: 'history',
-                },
-                {
                     content: (
                         <MessagesList
                             showAddButton={activeTabName === 'messages'}
@@ -185,6 +173,11 @@ export class ManageLeadPage extends React.Component {
                     ),
                     label: 'Messages',
                     value: 'messages',
+                },
+                {
+                    content: (<ChangesTimeline lead={lead} />),
+                    label: 'History',
+                    value: 'history',
                 },
             ]);
         }
@@ -208,6 +201,7 @@ export class ManageLeadPage extends React.Component {
                     handleTouchTap={this.handleMessageDialogTouchTap}
                     lead={lead}
                     open={isMessagesDialogOpen}
+                    redirectToLeads={true}
                 />
                 <ConfirmationDialog
                     handleNoTouchTap={this.handleConfirmationNoTouchTap}

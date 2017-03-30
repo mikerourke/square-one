@@ -24,6 +24,7 @@ import Lead from './model';
 /* Types */
 import type { Action } from 'lib/types';
 
+// $FlowFixMe
 type ByIdMap = Map<number, Lead>;
 type AllIdsList = List<number>;
 type ErrorMap = Map<string, any>;
@@ -80,6 +81,7 @@ export default (state: State = initialState, action: Action) => {
 
         case LEAD_CREATE_SUCCESS:
             const { payload: { data: newLead } } = (action: Object);
+            // $FlowIgnore
             return state
                 .setIn(['byId', newLead.id], new Lead(fromJS(newLead)))
                 .get('allIds')
@@ -108,15 +110,16 @@ export default (state: State = initialState, action: Action) => {
             const { payload: createdPayload } = (action: Object);
             const newChild = getChildDataFromPayload(createdPayload);
             return state.setIn(newChild.pathInState,
+                // $FlowIgnore
                 state.getIn(newChild.pathInState).push(newChild.id));
 
         case NOTE_DELETE_SUCCESS:
             const { payload: deletedPayload } = (action: Object);
             const deletedChild = getChildDataFromPayload(deletedPayload);
             return state.setIn(deletedChild.pathInState,
+                // $FlowIgnore
                 state.getIn(deletedChild.pathInState)
                     .filter(childId => childId !== deletedChild.id));
-
 
         default:
             return state;

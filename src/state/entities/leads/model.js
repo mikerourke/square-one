@@ -44,11 +44,4 @@ export default class Lead extends Record({
         });
         return (unmatchingValues > 0);
     }
-
-    denormalizeForApi(state: Object) {
-        const leadEntity = state.getIn(
-            ['entities', 'leads', 'byId', this.id.toString()]);
-        // TODO: Get denormalization for Leads working.
-        return leadEntity;
-    }
 }

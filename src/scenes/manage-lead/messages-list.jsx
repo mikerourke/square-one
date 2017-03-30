@@ -4,13 +4,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
+import {
+    Card,
+    CardHeader,
+    CardTitle,
+    CardText,
+} from 'material-ui/Card';
+import { List as MuiList } from 'material-ui/List';
 
 /* Internal dependencies */
 import { createMessage } from 'state/entities/messages/actions';
 import { selectMessagesInLead } from 'state/entities/messages/selectors';
 import { Lead, Message } from 'state/entities/models';
 import ActionButton from 'components/action-button';
-import CardList from 'components/card-list';
 import MessagesDialog from './messages-dialog';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -25,55 +31,49 @@ export class MessagesList extends React.Component {
     };
 
     state: {
-        activeMessage: Message,
         isMessageDialogOpen: boolean,
     };
 
     constructor(): void {
         super();
         this.state = {
-            activeMessage: new Message(),
             isMessageDialogOpen: false,
         };
     }
 
-    getMessageById = messageId =>
-        this.props.messages.find(message => message.id === messageId);
-
     handleAddButtonTouchTap = (event: Event): void => {
         event.preventDefault();
-        this.setState({
-            activeMessage: new Message(),
-            isMessageDialogOpen: true,
-        });
-    };
-
-    handleCardEditTouchTap = (event: Event, cardEntity: Object): void => {
-        event.preventDefault();
-        const activeMessage = this.getMessageById(cardEntity.id);
-        console.log(activeMessage);
-        this.setState({
-            activeMessage,
-            editDialogTitle: 'Edit Message',
-            isMessageDialogOpen: true,
-        });
+        this.setState({ isMessageDialogOpen: true });
     };
 
     render(): React.Element<*> {
-        const { showAddButton, lead, messages } = this.props;
-        const {
-            activeMessage,
-            isMessageDialogOpen,
-        } = this.state;
+        const { lead, messages, showAddButton } = this.props;
+        const { isMessageDialogOpen } = this.state;
+
+        let messagesInLead = new List();
+        if (messages) {
+            messagesInLead = messages;
+        }
 
         return (
             <div>
-                <CardList
-                    cardContents={messages}
-                    handleDeleteTouchTap={this.handleCardDeleteTouchTap}
-                    handleEditTouchTap={this.handleCardEditTouchTap}
-                    searchFieldInclusions={['contents']}
-                />
+                <MuiList>
+                    {messagesInLead.map(message => (
+                        <Card
+                            key={message.id}
+                            style={{ margin: 16 }}
+                        >
+                            <CardHeader
+                                subtitle={message.createdAt}
+                                title={message.createdBy}
+                            />
+                            <CardTitle title={message.subject} />
+                            <CardText>
+                                {message.body}
+                            </CardText>
+                        </Card>
+                    ))}
+                </MuiList>
                 {showAddButton && (
                     <ActionButton
                         handleTouchTap={this.handleAddButtonTouchTap}
@@ -84,6 +84,7 @@ export class MessagesList extends React.Component {
                     handleTouchTap=""
                     lead={lead}
                     open={isMessageDialogOpen}
+                    redirectToLeads={false}
                 />
             </div>
         );

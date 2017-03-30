@@ -37,25 +37,28 @@ const mapDispatchToProps = dispatch => ({
  * @param {Function} handleTouchTap Action to perform when any button on the
  *      dialog is pressed.
  * @param {boolean} open Indicates if the dialog is open.
+ * @param {boolean} redirectToLeads Indicates if browser is redirected to the
+ *      Leads List page after submitting.
  */
 export class MessagesDialog extends React.Component {
     props: {
+        createMessage?: ?(lead: Lead, message: Message) => void,
         handleTouchTap: (event: Event) => void,
         lead: Lead,
         open: boolean,
+        redirectToLeads: boolean,
     };
 
     state: {
         isConfirmationDialogOpen: boolean,
-        leadMessage: string,
-        representativeMessage: string,
+        messageToLead: string,
+        messageToRepresentative: string,
         sendLeadMessage: boolean,
         sendRepresentativeMessage: boolean,
     };
 
-    constructor(props: any): void {
-        super(props);
-
+    constructor(): void {
+        super();
         this.state = {
             isConfirmationDialogOpen: false,
             messageToLead: '',
@@ -70,21 +73,14 @@ export class MessagesDialog extends React.Component {
         this.setState({ isConfirmationDialogOpen: true });
     };
 
+    // TODO: Add handler for multiple message sending.
     handleSubmitTouchTap = (event: Event): void => {
         event.preventDefault();
-        const { lead } = this.props;
-        const { messageToLead, messageToRepresentative } = this.state;
-        const createMessagePromise = this.props.createMessage;
-        const leadMessage = new Message({
-            messageType: 'text',
-            recipient: lead.phone,
-            subject: '?',
-            body: messageToLead,
-        });
-        createMessagePromise(lead, leadMessage).then(() => {
-            this.setState({ isConfirmationDialogOpen: false });
+        const { lead, redirectToLeads } = this.props;
+        this.setState({ isConfirmationDialogOpen: false });
+        if (redirectToLeads) {
             browserHistory.push('/leads');
-        });
+        }
     };
 
     /**

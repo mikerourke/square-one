@@ -16,7 +16,6 @@ import {
 } from 'state/entities/notes/actions';
 import { selectNotesInLead } from 'state/entities/notes/selectors';
 import { Lead, Note } from 'state/entities/models';
-import ActionButton from 'components/action-button';
 import CardList from 'components/card-list';
 import ConfirmationDialog from 'components/confirmation-dialog';
 
@@ -39,12 +38,12 @@ const mapDispatchToProps = dispatch => ({
  */
 export class NotesList extends React.Component {
     props: {
-        createNote?: () => void,
-        deleteNote?: () => void,
+        createNote?: (lead: Lead, note: Note) => void,
+        deleteNote?: (lead: Lead, id: number) => void,
         showAddButton: boolean,
         lead: Lead,
         notes?: List<Note>,
-        updateNote?: () => void,
+        updateNote?: (lead: Lead, note: Note) => void,
     };
 
     state: {
@@ -64,8 +63,10 @@ export class NotesList extends React.Component {
         };
     }
 
-    getNoteById = (noteId: number): Note =>
-        this.props.notes.find(note => note.id === noteId);
+    getNoteById = (noteId: number): Note => {
+        const notesInLead: any = this.props.notes;
+        return notesInLead.find(note => note.id === noteId);
+    };
 
     /**
      * Creates a new Note in local state and show the Add/Edit Dialog when the
@@ -130,7 +131,7 @@ export class NotesList extends React.Component {
         event.preventDefault();
         const { activeNote } = this.state;
         const { lead } = this.props;
-        const deleteNotePromise = this.props.deleteNote;
+        const deleteNotePromise: any = this.props.deleteNote;
         deleteNotePromise(lead, activeNote.id).then(() => {
             this.setState({ isConfirmationDialogOpen: false });
         });
@@ -155,7 +156,7 @@ export class NotesList extends React.Component {
         event.preventDefault();
         const { activeNote } = this.state;
         const { lead } = this.props;
-        let performActionPromise: Function = this.props.createNote;
+        let performActionPromise: any = this.props.createNote;
         if (activeNote.id !== 0) {
             performActionPromise = this.props.updateNote;
         }
@@ -183,8 +184,30 @@ export class NotesList extends React.Component {
         }
     };
 
+    /**
+     * Extrapolates the required properties for a card entity from the list of
+     *      notes and returns a list of card entities.
+     * @returns {Immutable.List}
+     */
+    getCardEntities = (): List<*> => {
+        const notesInLead = this.props.notes;
+        let cardEntities = new List();
+        if (notesInLead) {
+            cardEntities = notesInLead.map((note) => {
+                const newEntity = {
+                    id: note.id,
+                    title: note.createdBy,
+                    subtitle: note.createdAt,
+                    contents: note.contents,
+                };
+                return newEntity;
+            });
+        }
+        return cardEntities;
+    };
+
     render(): React.Element<*> {
-        const { notes, showAddButton } = this.props;
+        const { showAddButton } = this.props;
         const {
             activeNote,
             editDialogTitle,
@@ -209,17 +232,14 @@ export class NotesList extends React.Component {
         return (
             <div>
                 <CardList
-                    cardContents={notes}
+                    cardEntities={this.getCardEntities()}
+                    handleAddTouchTap={this.handleAddButtonTouchTap}
                     handleDeleteTouchTap={this.handleCardDeleteTouchTap}
                     handleEditTouchTap={this.handleCardEditTouchTap}
+                    hasActions={true}
                     searchFieldInclusions={['contents']}
+                    showAddButton={showAddButton}
                 />
-                {showAddButton && (
-                    <ActionButton
-                        handleTouchTap={this.handleAddButtonTouchTap}
-                        iconName="add"
-                    />
-                )}
                 <Dialog
                     actions={editDialogActions}
                     open={isEditDialogOpen}

@@ -4,7 +4,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { List } from 'immutable';
 import styled from 'styled-components';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -12,12 +11,10 @@ import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
-import {
-    createMultipleMessages,
-    createSingleMessage,
-} from 'state/entities/messages/actions';
+import { sendMessages } from 'state/entities/messages/actions';
 import { Lead, Message } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
+import IconDropdown from 'components/icon-dropdown';
 
 /**
  * Styled container for the message block.
@@ -26,16 +23,22 @@ const MessageBlock = styled.div`
     margin: 24px 0;
 `;
 
-const mapStateToProps = (state, ownProps) => ({
-    lead: ownProps.lead,
-});
+const LeadMessageContainer = styled.div`
+    align-items: flex-end;
+    display: flex;
+`;
+
+const mapStateToProps = (state, ownProps) => {
+    const settings = state.getIn(['settings', 'byName']);
+    return {
+        lead: ownProps.lead,
+        textTemplates: settings.get('textTemplates').getData(),
+    };
+};
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
-    createMultipleMessages: (lead, messages) =>
-        dispatch(createMultipleMessages(lead, messages)),
-    createSingleMessage: (lead, message) =>
-        dispatch(createSingleMessage(lead, message)),
+    sendMessages: (lead, messages) => dispatch(sendMessages(lead, messages)),
 });
 
 /**
@@ -49,12 +52,12 @@ const mapDispatchToProps = dispatch => ({
  */
 export class MessagesDialog extends React.Component {
     props: {
-        createMultipleMessages?: ?(lead: Lead, messages: List<Message>) => void,
-        createSingleMessage?: ?(lead: Lead, message: Message) => void,
+        sendMessages?: ?(lead: Lead, messages: Array<Message>) => void,
         handleTouchTap: (event: Event) => void,
         lead: Lead,
         open: boolean,
         redirectToLeads: boolean,
+        textTemplates: Array<string>,
     };
 
     state: {
@@ -112,32 +115,14 @@ export class MessagesDialog extends React.Component {
         return messagesToSend;
     };
 
-    // TODO: Add handler for multiple message sending.
     handleSubmitTouchTap = (event: Event): void => {
         event.preventDefault();
         const { handleTouchTap, lead, redirectToLeads } = this.props;
         const messagesToSend = this.getMessagesToSend();
-
-        let createMessagePromise: any = () => {};
-        let messagePayload;
-
-        switch (messagesToSend.length) {
-            case 1:
-                createMessagePromise = this.props.createSingleMessage;
-                messagePayload = messagesToSend[0];
-                break;
-
-            case 2:
-                createMessagePromise = this.props.createMultipleMessages;
-                messagePayload = new List(messagesToSend);
-                break;
-
-            default:
-                break;
-        }
+        const createMessagePromise: any = this.props.sendMessages;
 
         handleTouchTap(event);
-        createMessagePromise(lead, messagePayload).then(() => {
+        createMessagePromise(lead, messagesToSend).then(() => {
             this.setState({
                 isConfirmationDialogOpen: false,
                 messageToLead: '',
@@ -189,6 +174,21 @@ export class MessagesDialog extends React.Component {
         }
     };
 
+    handlePredefinedMessageChange = (event: Event, child: Object): void => {
+        // event.preventDefault();
+        this.setState({ messageToLead: child.key });
+    };
+
+    getPopulatedTextTemplates = (): Array<string> => {
+        const { lead, textTemplates } = this.props;
+        return textTemplates.map((textTemplate) => {
+            const { leadName, assignTo } = lead;
+            return textTemplate
+                .replace(/\[leadName\]/g, leadName)
+                .replace(/\[assignTo\]/g, assignTo);
+        });
+    };
+
     render(): React.Element<*> {
         const { open } = this.props;
 
@@ -199,6 +199,8 @@ export class MessagesDialog extends React.Component {
             sendLeadMessage,
             sendRepresentativeMessage,
         } = this.state;
+
+        const textTemplates = this.getPopulatedTextTemplates();
 
         const actions = [
             <FlatButton
@@ -239,15 +241,25 @@ export class MessagesDialog extends React.Component {
                             onToggle={this.handleInputChange}
                             style={{ width: 300 }}
                         />
-                        <TextField
-                            disabled={!sendLeadMessage}
-                            floatingLabelText="Message to Lead"
-                            fullWidth={true}
-                            multiLine={true}
-                            name="messageToLead"
-                            onChange={this.handleInputChange}
-                            value={messageToLead}
-                        />
+                        <LeadMessageContainer>
+                            <IconDropdown
+                                disabled={!sendLeadMessage}
+                                handleItemTouchTap={
+                                    this.handlePredefinedMessageChange}
+                                hasAddButton={false}
+                                menuIconName="message"
+                                selections={textTemplates}
+                            />
+                            <TextField
+                                disabled={!sendLeadMessage}
+                                floatingLabelText="Message to Lead"
+                                fullWidth={true}
+                                multiLine={true}
+                                name="messageToLead"
+                                onChange={this.handleInputChange}
+                                value={messageToLead}
+                            />
+                        </LeadMessageContainer>
                     </MessageBlock>
                     <MessageBlock>
                         <Toggle

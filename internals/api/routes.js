@@ -38,7 +38,6 @@ module.exports = (router, server) => {
         }
 
         const idString = `${type}${dateForId}${sequenceForId}`;
-        console.log(idString);
         return (parseInt(idString, 10) + 1);
     };
 
@@ -94,8 +93,8 @@ module.exports = (router, server) => {
                 .get(`${childName}s`);
 
             const bodyData = req.body;
-            const childrenForResponse = [];
             if (Array.isArray(bodyData)) {
+                const childrenForResponse = [];
                 bodyData.forEach((bodyItem) => {
                     const childItem =
                         getChildRecord(parentName, childName, bodyItem);
@@ -103,19 +102,15 @@ module.exports = (router, server) => {
                         .push(childItem)
                         .write();
                     childrenForResponse.push(childItem);
-                })
+                });
+                res.jsonp(childrenForResponse);
             } else {
                 const singleItem =
                     getChildRecord(parentName, childName, bodyData);
                 childrenInDb
-                    .push(childItem)
+                    .push(singleItem)
                     .write();
-                childrenForResponse.push(singleItem);
-            }
-            if (childrenForResponse.length > 1) {
-                res.jsonp(childrenForResponse);
-            } else {
-                res.jsonp(childrenForResponse[0]);
+                res.jsonp(singleItem);
             }
         });
     };

@@ -1,9 +1,9 @@
 /* @flow */
 
 /* eslint-disable max-len */
-export const CHANGE_CREATE: string = 'changes/CHANGE_CREATE';
-export const CHANGE_CREATE_FAIL: string = 'changes/CHANGE_CREATE_FAIL';
-export const CHANGE_CREATE_SUCCESS: string = 'changes/CHANGE_CREATE_SUCCESS';
+export const CHANGES_CREATE: string = 'changes/CHANGES_CREATE';
+export const CHANGES_CREATE_FAIL: string = 'changes/CHANGES_CREATE_FAIL';
+export const CHANGES_CREATE_SUCCESS: string = 'changes/CHANGES_CREATE_SUCCESS';
 export const GUI_TOGGLE_APP_SIDEBAR: string = 'gui/GUI_TOGGLE_APP_SIDEBAR';
 export const LEAD_CREATE: string = 'leads/LEAD_CREATE';
 export const LEAD_CREATE_FAIL: string = 'leads/LEAD_CREATE_FAIL';
@@ -20,12 +20,9 @@ export const LEAD_GET_SINGLE_SUCCESS: string = 'leads/LEAD_GET_SINGLE_SUCCESS';
 export const LEAD_UPDATE: string = 'leads/LEAD_UPDATE';
 export const LEAD_UPDATE_FAIL: string = 'leads/LEAD_UPDATE_FAIL';
 export const LEAD_UPDATE_SUCCESS: string = 'leads/LEAD_UPDATE_SUCCESS';
-export const MESSAGE_CREATE_MULTIPLE: string = 'messages/MESSAGE_CREATE_MULTIPLE';
-export const MESSAGE_CREATE_MULTIPLE_FAIL: string = 'messages/MESSAGE_CREATE_MULTIPLE_FAIL';
-export const MESSAGE_CREATE_MULTIPLE_SUCCESS: string = 'messages/MESSAGE_CREATE_MULTIPLE_SUCCESS';
-export const MESSAGE_CREATE_SINGLE: string = 'messages/MESSAGE_CREATE_SINGLE';
-export const MESSAGE_CREATE_SINGLE_FAIL: string = 'messages/MESSAGE_CREATE_SINGLE_FAIL';
-export const MESSAGE_CREATE_SINGLE_SUCCESS: string = 'messages/MESSAGE_CREATE_SINGLE_SUCCESS';
+export const MESSAGES_SEND: string = 'messages/MESSAGES_SEND';
+export const MESSAGES_SEND_FAIL: string = 'messages/MESSAGES_SEND_FAIL';
+export const MESSAGES_SEND_SUCCESS: string = 'messages/MESSAGES_SEND_SUCCESS';
 export const NOTE_CREATE: string = 'notes/NOTE_CREATE';
 export const NOTE_CREATE_FAIL: string = 'notes/NOTE_CREATE_FAIL';
 export const NOTE_CREATE_SUCCESS: string = 'notes/NOTE_CREATE_SUCCESS';

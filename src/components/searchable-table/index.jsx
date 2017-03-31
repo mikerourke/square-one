@@ -9,7 +9,7 @@ import Paper from 'material-ui/Paper';
 
 /* Internal dependencies */
 import { getSearchResults, getSortedData } from 'lib/query-actions';
-import FilterMenu from 'components/filter-menu';
+import IconDropdown from 'components/icon-dropdown';
 import SearchToolbar from 'components/search-toolbar';
 import Table from './table';
 
@@ -85,11 +85,9 @@ export default class SearchableTable extends React.Component {
      * Filters the data in the table based on the specified custom filter from
      *      the Filter Menu select field in the Search Toolbar.
      * @param {Event} event Event associated with the Filter Menu.
-     * @param {string} key Key associated with the Filter Menu selection.
-     * @param {string} value Value of the Filter Menu selection.
+     * @param {Object} child Item selected from the menu.
      */
-    handleFilterMenuChange = (event: Event, key: string,
-                              value: string): void => {
+    handleFilterMenuChange = (event: Event, child: Object): void => {
         // TODO: Write code to handle filter menu.
     };
 
@@ -179,9 +177,12 @@ export default class SearchableTable extends React.Component {
                     handleSearchBoxChange={this.handleSearchBoxChange}
                     isStandalone={true}
                 >
-                    <FilterMenu
-                        handleFilterMenuChange={this.handleFilterMenuChange}
-                        filterSelections={filterSelections}
+                    <IconDropdown
+                        handleItemTouchTap={this.handleFilterMenuChange}
+                        hasAddButton={true}
+                        itemIconName="check_box"
+                        menuIconName="filter_list"
+                        selections={filterSelections}
                     />
                 </SearchToolbar>
                 <Paper

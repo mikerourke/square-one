@@ -7,7 +7,7 @@ export default class Setting extends Record({
     id: (0: number),
     category: ('': string),
     settingName: ('': string),
-    data: (null: ?string | ?List<string>),
+    data: (null: ?Object | ?List<string>),
 }) {
     /**
      * Converts the data associated with the specified Setting to an Array (for

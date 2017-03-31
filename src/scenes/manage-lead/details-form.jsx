@@ -12,9 +12,8 @@ import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
-import { accent1Color } from 'style/mui/palette';
 import { preventSubmissionOnEnter } from 'lib/form-events';
-import Lead from 'state/entities/leads/model';
+import { Lead } from 'state/entities/models';
 import FormColumn from 'components/forms/form-column';
 import FormColumnsContainer from 'components/forms/form-columns-container';
 import FormGeolocation from 'components/forms/form-geolocation';
@@ -24,7 +23,7 @@ import FormTextField from 'components/forms/form-text-field';
 import type { MapLocation } from 'lib/types';
 
 const mapStateToProps = (state) => {
-    const settings = state.getIn(['settings', 'entities']);
+    const settings = state.getIn(['settings', 'byName']);
     return {
         representativesList: settings.get('representatives').getData(),
         sourcesList: settings.get('sources').getData(),

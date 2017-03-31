@@ -21,7 +21,7 @@ import type { Action } from 'lib/types';
 
 const BASE_URL = '/leads';
 
-const transformForAll = axios.defaults.transformResponse.concat((data) => {
+const transformForMany = axios.defaults.transformResponse.concat((data) => {
     if (data) {
         return normalize(data, leadsSchema);
     }
@@ -75,7 +75,7 @@ export const getAllLeads = (): Action => ({
         request: {
             method: 'get',
             url: BASE_URL,
-            transformResponse: transformForAll,
+            transformResponse: transformForMany,
         },
     },
 });

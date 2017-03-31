@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 
 /* Internal dependencies */
 import { createLead, updateLead } from 'state/entities/leads/actions';
-import Lead from 'state/entities/leads/model';
+import { Lead } from 'state/entities/models';
 import ChangesTimeline from './changes-timeline';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import LeadDetailsForm from './details-form';

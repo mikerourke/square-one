@@ -9,7 +9,7 @@ import moment from 'moment';
 
 /* Internal dependencies */
 import { getAllLeads } from 'state/entities/leads/actions';
-import Lead from 'state/entities/leads/model';
+import { Lead } from 'state/entities/models';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
 import PageHeaderTitle from 'components/page-header-title';

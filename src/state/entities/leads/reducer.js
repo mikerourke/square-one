@@ -15,8 +15,8 @@ import {
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
     LEAD_GET_SINGLE_SUCCESS, LEAD_GET_SINGLE_FAIL,
     LEAD_UPDATE_SUCCESS, LEAD_UPDATE_FAIL,
-    CHANGE_CREATE_SUCCESS,
-    MESSAGE_CREATE_SINGLE_SUCCESS, MESSAGE_CREATE_MULTIPLE_SUCCESS,
+    CHANGES_CREATE_SUCCESS,
+    MESSAGES_SEND_SUCCESS,
     NOTE_CREATE_SUCCESS, NOTE_DELETE_SUCCESS,
 } from '../../action-types';
 import Lead from './model';
@@ -102,20 +102,22 @@ export default (state: State = initialState, action: Action) => {
                 .filter(idNumber => idNumber !== id);
 
         case LEAD_GET_ALL_SUCCESS:
-            const { payload: { data: entities } } = (action: Object);
-            return mergeEntities(state, entities);
+            const { payload: { data: responseData } } = (action: Object);
+            return mergeEntities(state, responseData);
 
-        case CHANGE_CREATE_SUCCESS:
-        case MESSAGE_CREATE_SINGLE_SUCCESS:
-        case MESSAGE_CREATE_MULTIPLE_SUCCESS:
+        case MESSAGES_SEND_SUCCESS:
+            const { payload: messagesPayload } = (action: Object);
+            const messages = getChildDataFromPayload(messagesPayload);
+            const messageIds = messages.data.map(message => message.id);
+            return state.mergeIn(messages.pathInState, messageIds);
+
+        case CHANGES_CREATE_SUCCESS:
         case NOTE_CREATE_SUCCESS:
             const { payload: createdPayload } = (action: Object);
             const newChild = getChildDataFromPayload(createdPayload);
             const newChildGroup: any = state.getIn(newChild.pathInState);
-            const newChildState = Array.isArray(newChild.data) ?
-                             newChildGroup.merge(newChild.data) :
-                             newChildGroup.push(newChild.data.id);
-            return state.setIn(newChild.pathInState, newChildState);
+            return state.setIn(newChild.pathInState,
+                newChildGroup.push(newChild.data.id));
 
         case NOTE_DELETE_SUCCESS:
             const { payload: deletedPayload } = (action: Object);

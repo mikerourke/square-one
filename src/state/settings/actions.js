@@ -17,19 +17,20 @@ import type { Action } from 'lib/types';
 
 const BASE_URL = '/settings';
 
+const transformForMany = axios.defaults.transformResponse.concat((data) => {
+    if (data) {
+        return normalize(data, settingsSchema);
+    }
+    return {};
+});
+
 export const getAllSettings = (): Action => ({
     type: SETTING_GET_ALL,
     payload: {
         request: {
             method: 'get',
             url: BASE_URL,
-            transformResponse:
-                axios.defaults.transformResponse.concat((data) => {
-                    if (data) {
-                        return normalize(data, settingsSchema);
-                    }
-                    return {};
-                }),
+            transformResponse: transformForMany,
         },
     },
 });

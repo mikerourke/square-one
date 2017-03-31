@@ -84,7 +84,7 @@ export class MessagesDialog extends React.Component {
         this.setState({ isConfirmationDialogOpen: true });
     };
 
-    getMessagesToSend = () => {
+    getMessagesToSend = (): Array<Message> => {
         const {
             messageToLead,
             messageToRepresentative,
@@ -115,6 +115,16 @@ export class MessagesDialog extends React.Component {
         return messagesToSend;
     };
 
+    closeConfirmationDialogAndResetInputs = (): void => {
+        this.setState({
+            isConfirmationDialogOpen: false,
+            messageToLead: '',
+            messageToRepresentative: '',
+            sendLeadMessage: false,
+            sendRepresentativeMessage: false,
+        });
+    };
+
     handleSubmitTouchTap = (event: Event): void => {
         event.preventDefault();
         const { handleTouchTap, lead, redirectToLeads } = this.props;
@@ -123,13 +133,7 @@ export class MessagesDialog extends React.Component {
 
         handleTouchTap(event);
         createMessagePromise(lead, messagesToSend).then(() => {
-            this.setState({
-                isConfirmationDialogOpen: false,
-                messageToLead: '',
-                messageToRepresentative: '',
-                sendLeadMessage: false,
-                sendRepresentativeMessage: false,
-            });
+            this.closeConfirmationDialogAndResetInputs();
             if (redirectToLeads) {
                 browserHistory.push('/leads');
             }
@@ -153,7 +157,7 @@ export class MessagesDialog extends React.Component {
     handleConfirmationYesTouchTap = (event: Event): void => {
         event.preventDefault();
         const { handleTouchTap } = this.props;
-        this.setState({ isConfirmationDialogOpen: false });
+        this.closeConfirmationDialogAndResetInputs();
         handleTouchTap(event);
     };
 
@@ -187,6 +191,10 @@ export class MessagesDialog extends React.Component {
                 .replace(/\[leadName\]/g, leadName)
                 .replace(/\[assignTo\]/g, assignTo);
         });
+    };
+
+    getTemplateForRepresentative = () => {
+        // TODO: Add code to build string template for message to representative using dedent() function.
     };
 
     render(): React.Element<*> {

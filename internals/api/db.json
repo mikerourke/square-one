@@ -55,6 +55,15 @@
         "Chuckles",
         "Biscuits"
       ]
+    },
+    {
+      "id": 5,
+      "category": "lists",
+      "settingName": "textTemplates",
+      "data": [
+        "Hello, [leadName], you will be hearing from [assignTo] soon.",
+        "A representative will be contacting you shortly."
+      ]
     }
   ],
   "leads": [

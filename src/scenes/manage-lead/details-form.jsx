@@ -25,6 +25,7 @@ import type { MapLocation } from 'lib/types';
 const mapStateToProps = (state) => {
     const settings = state.getIn(['settings', 'byName']);
     return {
+        leadStatusesList: settings.get('leadStatuses').getData(),
         representativesList: settings.get('representatives').getData(),
         sourcesList: settings.get('sources').getData(),
     };
@@ -41,8 +42,11 @@ const ButtonContainer = styled.div`
  */
 class LeadDetailsForm extends React.Component {
     props: {
+        handleDeleteTouchTap: (event: Event) => void,
+        handleFieldChange: (lead: Lead) => void,
         handleSaveTouchTap: (event: Event, lead: Lead) => void,
         lead: Lead,
+        leadStatusesList: Array<string>,
         representativesList: Array<string>,
         sourcesList: Array<string>,
     };
@@ -52,6 +56,7 @@ class LeadDetailsForm extends React.Component {
     };
 
     static defaultProps = {
+        leadStatusesList: [],
         representativesList: [],
         sourcesList: [],
     };
@@ -73,11 +78,12 @@ class LeadDetailsForm extends React.Component {
      * Updates the Lead held in local state with the data from the field on the
      *      Details Form component.
      * @param {Event} event Event associated with the input.
-     * @param {string} newValue
-     * @param {string} fieldName
+     * @param {string} newValue New value of the input.
+     * @param {string} fieldName Name of the field associated with the input.
      */
-    handleInputChange = (event: Event, newValue: string,
-                         fieldName?: string = ''): void => {
+    handleInputChange = (
+        event: Event, newValue: string, fieldName?: string = ''): void => {
+        const { handleFieldChange } = this.props;
         let nameOfField = fieldName;
 
         // This is done to pass Flow type checking.
@@ -90,6 +96,7 @@ class LeadDetailsForm extends React.Component {
         const { lead } = this.state;
         const updatedLead = lead.set(nameOfField, newValue);
         this.setState({ lead: updatedLead });
+        handleFieldChange(updatedLead);
     };
 
     /**
@@ -105,9 +112,21 @@ class LeadDetailsForm extends React.Component {
         this.setState({ lead: updatedLead });
     };
 
+    getItemsForSelectField =
+        (selections: Array<string>): Array<React.Element<*>> =>
+            selections.map(selection => (
+                <MenuItem
+                    key={selection}
+                    primaryText={selection}
+                    value={selection}
+                />
+            ));
+
     render(): React.Element<*> {
         const {
+            handleDeleteTouchTap,
             handleSaveTouchTap,
+            leadStatusesList,
             representativesList,
             sourcesList,
         } = this.props;
@@ -132,18 +151,12 @@ class LeadDetailsForm extends React.Component {
                             fullWidth={true}
                             onChange={
                                 (event: Event, key: string, value: string) => {
-                                    this.handleInputChange(event, value,
-                                        'source');
+                                    this.handleInputChange(
+                                        event, value, 'source');
                                 }}
                             value={lead.source}
                         >
-                            {sourcesList.map(selection => (
-                                <MenuItem
-                                    key={selection}
-                                    primaryText={selection}
-                                    value={selection}
-                                />
-                            ))}
+                            {this.getItemsForSelectField(sourcesList)}
                         </SelectField>
                         <FormTextField
                             floatingLabelText="Lead Fee"
@@ -183,21 +196,27 @@ class LeadDetailsForm extends React.Component {
                             fullWidth={true}
                             onChange={
                                 (event: Event, key: string, value: string) => {
-                                    this.handleInputChange(event, value,
-                                        'assignTo');
+                                    this.handleInputChange(
+                                        event, value, 'assignTo');
                                 }}
                             value={lead.assignTo}
                         >
-                            {representativesList.map(selection => (
-                                <MenuItem
-                                    key={selection}
-                                    primaryText={selection}
-                                    value={selection}
-                                />
-                            ))}
+                            {this.getItemsForSelectField(representativesList)}
                         </SelectField>
                     </FormColumn>
                     <FormColumn>
+                        <SelectField
+                            floatingLabelText="Status"
+                            fullWidth={true}
+                            onChange={
+                                (event: Event, key: string, value: string) => {
+                                    this.handleInputChange(
+                                        event, value, 'status');
+                                }}
+                            value={lead.status}
+                        >
+                            {this.getItemsForSelectField(leadStatusesList)}
+                        </SelectField>
                         <FormGeolocation
                             floatingLabelText="Address"
                             handleLocationChange={this.handleLocationChange}
@@ -212,9 +231,15 @@ class LeadDetailsForm extends React.Component {
                 <ButtonContainer>
                     <RaisedButton
                         label="Save"
-                        primary={true}
                         onTouchTap={(event: Event) =>
                             handleSaveTouchTap(event, lead)}
+                        primary={true}
+                    />
+                    <RaisedButton
+                        label="Delete"
+                        onTouchTap={handleDeleteTouchTap}
+                        secondary={true}
+                        style={{ marginLeft: 16 }}
                     />
                 </ButtonContainer>
             </form>

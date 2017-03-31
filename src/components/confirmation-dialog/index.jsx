@@ -40,6 +40,7 @@ const ConfirmationDialog = ({
             />,
         ]}
         open={open}
+        contentStyle={{ maxWidth: 496 }}
         title="Confirmation"
     >
         {message}

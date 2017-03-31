@@ -8,9 +8,10 @@ import type { Record } from 'immutable';
  *      of another Record and returns true if the values don't match.
  * @param {Record} compareFrom Record to compare from.
  * @param {Record} compareTo Record to compare to.
- * @returns {boolean} True if the values don't match.
+ * @returns {Array} Array of items that don't match.
  */
-export default (compareFrom: Record<*>, compareTo: Record<*>): boolean => {
+export default (
+    compareFrom: Record<*>, compareTo: Record<*>): Array<Object> => {
     // Immutable Records have a "toJS()" function, for some reason Flow
     // isn't picking it up.
     // $FlowIgnore
@@ -18,15 +19,20 @@ export default (compareFrom: Record<*>, compareTo: Record<*>): boolean => {
     // $FlowIgnore
     const toObject = compareTo.toJS();
 
-    let unmatchingValues = 0;
+    const unmatchingFields = [];
 
     Object.keys(fromObject).forEach((key) => {
-        const valueForKey = fromObject[key];
-        if (!Array.isArray(valueForKey)) {
-            if (toObject[key] !== valueForKey) {
-                unmatchingValues += 1;
+        const fromValue = fromObject[key];
+        if (!Array.isArray(fromValue)) {
+            const toValue = toObject[key];
+            if (toValue !== fromValue) {
+                unmatchingFields.push({
+                    key,
+                    fromValue,
+                    toValue,
+                });
             }
         }
     });
-    return (unmatchingValues > 0);
+    return unmatchingFields;
 };

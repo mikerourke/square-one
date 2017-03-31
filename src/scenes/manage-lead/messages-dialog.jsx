@@ -57,7 +57,7 @@ export class MessagesDialog extends React.Component {
         lead: Lead,
         open: boolean,
         redirectToLeads: boolean,
-        textTemplates: Array<string>,
+        textTemplates?: ?Array<string>,
     };
 
     state: {
@@ -142,7 +142,7 @@ export class MessagesDialog extends React.Component {
 
     /**
      * If the user does not wish to lose their changes, hide the dialog.
-     * @param {Event} event Event associated with the control.
+     * @param {Event} event Event associated with the No button.
      */
     handleConfirmationNoTouchTap = (event: Event): void => {
         event.preventDefault();
@@ -152,7 +152,7 @@ export class MessagesDialog extends React.Component {
     /**
      * If the user confirms that they want to exit the page, redirect to the
      *      Leads List.
-     * @param {Event} event Event associated with the control.
+     * @param {Event} event Event associated with the Yes button.
      */
     handleConfirmationYesTouchTap = (event: Event): void => {
         event.preventDefault();

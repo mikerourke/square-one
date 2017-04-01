@@ -1,8 +1,8 @@
 /* Internal dependencies */
 import reducer from '../reducer';
-import User from '../model';
+import Session from '../model';
 
-describe('User Reducer', () => {
+describe('Session Reducer', () => {
     it('should return the initial state', () => {
         const reducerValue = reducer(undefined, {});
         const expectedValue = new User();

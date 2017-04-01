@@ -58,17 +58,6 @@ export const deleteLead = (lead: Lead): Action => ({
     },
 });
 
-export const getLead = (id: number): Action => ({
-    type: LEAD_GET_SINGLE,
-    payload: {
-        request: {
-            method: 'get',
-            url: `${BASE_URL}/${id}`,
-            transformResponse: transformForSingle,
-        },
-    },
-});
-
 export const getAllLeads = (): Action => ({
     type: LEAD_GET_ALL,
     payload: {
@@ -76,6 +65,17 @@ export const getAllLeads = (): Action => ({
             method: 'get',
             url: BASE_URL,
             transformResponse: transformForMany,
+        },
+    },
+});
+
+export const getLead = (id: number): Action => ({
+    type: LEAD_GET_SINGLE,
+    payload: {
+        request: {
+            method: 'get',
+            url: `${BASE_URL}/${id}`,
+            transformResponse: transformForSingle,
         },
     },
 });

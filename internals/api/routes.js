@@ -224,6 +224,31 @@ module.exports = (router, server) => {
         });
     };
 
+    const getUserInDb = (userFromReq) => {
+        const usersInDb = db
+            .get('users')
+            .value();
+        return usersInDb.find(userInDb =>
+            userInDb.username === userFromReq.username);
+    };
+
+    const addSessionRoutes = () => {
+        server.post('/login', (req, res) => {
+            const userFromReq = req.body;
+            const userInDb = getUserInDb(userFromReq);
+            if (userFromReq.password === userInDb.password) {
+                delete userInDb.password;
+                res.jsonp(userInDb);
+            } else {
+                res.status(401).send('Invalid password');
+            }
+        });
+
+        server.post('/logout', (req, res) => {
+            res.jsonp(getUserInDb(req));
+        });
+    };
+
     const addChildRoutes = () => {
         const childName = ['change', 'message', 'note'];
         childName.forEach(child => {
@@ -236,6 +261,7 @@ module.exports = (router, server) => {
     };
 
     addLeadRoutes();
+    addSessionRoutes();
     addChildRoutes();
     return server;
 };

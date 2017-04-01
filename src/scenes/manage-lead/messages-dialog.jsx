@@ -11,6 +11,7 @@ import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
+import { getDedentedString } from 'lib/display-formats';
 import { sendMessages } from 'state/entities/messages/actions';
 import { Lead, Message } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
@@ -57,7 +58,7 @@ export class MessagesDialog extends React.Component {
         lead: Lead,
         open: boolean,
         redirectToLeads: boolean,
-        textTemplates?: ?Array<string>,
+        textTemplates?: Array<string>,
     };
 
     state: {
@@ -161,6 +162,20 @@ export class MessagesDialog extends React.Component {
         handleTouchTap(event);
     };
 
+    handleToggleForRepresentativeMessage = (): void => {
+        const { lead } = this.props;
+        const messageTemplate =
+            `You were assigned a lead!%~%
+            Customer: ${lead.leadName}
+            Description: ${lead.description}`;
+        const messageToRepresentative =
+            getDedentedString(messageTemplate).replace(/%~%/g, '\n');
+        this.setState({
+            sendRepresentativeMessage: true,
+            messageToRepresentative,
+        });
+    };
+
     /**
      * Updates the state with the contents of the updated input.
      * @param {Event} event Event associated with the input.
@@ -172,9 +187,14 @@ export class MessagesDialog extends React.Component {
         // The element type is checked to conform with Flow type checking.
         if (target instanceof HTMLInputElement ||
             target instanceof HTMLTextAreaElement) {
-            this.setState({
-                [target.name]: newValue,
-            });
+            if (target.name === 'sendRepresentativeMessage' &&
+                newValue === true) {
+                this.handleToggleForRepresentativeMessage();
+            } else {
+                this.setState({
+                    [target.name]: newValue,
+                });
+            }
         }
     };
 
@@ -184,17 +204,17 @@ export class MessagesDialog extends React.Component {
     };
 
     getPopulatedTextTemplates = (): Array<string> => {
-        const { lead, textTemplates } = this.props;
+        const lead: Lead = this.props.lead;
+        let textTemplates: Array<string> = [];
+        if (this.props.textTemplates) {
+            textTemplates = this.props.textTemplates;
+        }
         return textTemplates.map((textTemplate) => {
             const { leadName, assignTo } = lead;
             return textTemplate
                 .replace(/\[leadName\]/g, leadName)
                 .replace(/\[assignTo\]/g, assignTo);
         });
-    };
-
-    getTemplateForRepresentative = () => {
-        // TODO: Add code to build string template for message to representative using dedent() function.
     };
 
     render(): React.Element<*> {

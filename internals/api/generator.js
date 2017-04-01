@@ -19,7 +19,61 @@ const dbFilePath = path.resolve(process.cwd(), 'internals/api/db.json');
  * @returns {string} Formatted date/time.
  */
 const getFormattedTime = (timeToFormat) =>
-    moment.unix(timeToFormat).format('YYYY-MM-DD HH:mm:ss.SSS Z');
+    moment.unix(timeToFormat).format('YYYY-MM-DD HH:mm:ss');
+
+/**
+ * Finds the user object that matches the specified user name and returns the
+ *      fields to represent the user object in the database.
+ * @param {Array} users Users from the existing db.json.
+ * @param {string} userNameFromEntity User name to find.
+ * @returns {Object} User object to populate in the database.
+ */
+const getUserByUserName = (users, userNameFromEntity) => {
+    const userInDb = users.find(user => user.username === userNameFromEntity);
+    const { id, username, fullName } = userInDb;
+    return {
+        id,
+        username,
+        fullName
+    };
+};
+
+/**
+ * Replaces the user name for the createdBy and updatedBy fields in the database
+ *      with an object representing the user.
+ * @param {Array} users Users from the existing db.json.
+ * @param {Object} entity Entity to update.
+ * @returns {Object} Updated entity.
+ */
+const updateUserInEntity = (users, entity) => {
+    const createdBy = entity.createdBy;
+    if (createdBy) {
+        entity.createdBy = getUserByUserName(users, createdBy);
+    }
+    const updatedBy = entity.updatedBy;
+    if (updatedBy) {
+        entity.updatedBy = getUserByUserName(users, updatedBy);
+    }
+    return entity;
+};
+
+/**
+ * Updates the sample data fields that correspond to a user change with a
+ *      user object rather than just a user name.
+ * @param {Array} leads Array of lead entities to update.
+ * @param {Object} existingData Existing data from db.json file.
+ * @returns {Promise} Promise that resolves with array of updated leads.
+ */
+const updateUserEntities = (leads, existingData) => new Promise((resolve) => {
+    const { users } = existingData;
+    leads.forEach((lead) => {
+        updateUserInEntity(users, lead);
+        lead.changes.forEach(change => updateUserInEntity(users, change));
+        lead.messages.forEach(message => updateUserInEntity(users, message));
+        lead.notes.forEach(note => updateUserInEntity(users, note));
+    });
+    resolve(leads);
+});
 
 /**
  * Loops through each entity in the specified entity group and updates the
@@ -36,17 +90,17 @@ const updateTimeFormat = (entityGroup) => entityGroup.map(entityItem => {
  * Updates the ID of the entities to match the custom format indicating the
  *      entity type.
  * @param {Array} leads Array of lead entities to update.
- * @returns {Array} Updated lead entities.
+ * @returns {Promise} Promise that resolves with array of updated leads.
  */
-const updateIdsToMatchCustomFormat = (leads) => {
+const updateIdsToMatchCustomFormat = (leads) => new Promise((resolve) => {
     let leadCounter = 1;
     let changeCounter = 1;
     let messageCounter = 1;
     let noteCounter = 1;
     leads.forEach((lead) => {
         lead.id = 1011703210000 + leadCounter;
-        lead.changes.forEach((changes) => {
-            changes.id = 1021703210000 + changeCounter;
+        lead.changes.forEach((change) => {
+            change.id = 1021703210000 + changeCounter;
             changeCounter += 1;
         });
 
@@ -61,24 +115,28 @@ const updateIdsToMatchCustomFormat = (leads) => {
         });
         leadCounter += 1;
     });
-    return leads;
-};
+    resolve(leads);
+});
 
 /**
  * Generates data based on the specified schema and formats the time fields to
  *      be in a usable format.
+ * @param {Object} existingData Data from existing db.json file.
  */
-const getFormattedSampleData = () => {
-    const sampleLeads = jsf(schema.leads);
-    updateTimeFormat(sampleLeads);
-    sampleLeads.map(sampleLead => {
-        updateTimeFormat(sampleLead.changes);
-        updateTimeFormat(sampleLead.messages);
-        updateTimeFormat(sampleLead.notes);
-    });
-    updateIdsToMatchCustomFormat(sampleLeads);
-    return sampleLeads;
-};
+const getFormattedSampleData = (existingData) =>
+    new Promise((resolve, reject) => {
+        const sampleLeads = jsf(schema.leads);
+        updateTimeFormat(sampleLeads, existingData);
+        sampleLeads.map(sampleLead => {
+            updateTimeFormat(sampleLead.changes);
+            updateTimeFormat(sampleLead.messages);
+            updateTimeFormat(sampleLead.notes);
+        });
+        updateUserEntities(sampleLeads, existingData)
+            .then(updateIdsToMatchCustomFormat)
+            .then(updatedLeads => resolve(updatedLeads))
+            .catch(err => reject(err));
+});
 
 /**
  * Writes the specified data (as a JSON object) to the specified file path and
@@ -106,19 +164,21 @@ const writeDataToJsonFile = (filePath, dataToWrite) => {
  * @param {Object} existingData Data present in the existing db.json.
  * @returns {Promise}
  */
-const writeGeneratedDataToFile = (existingData) => {
-    return new Promise((resolve, reject) => {
+const writeGeneratedDataToFile = (existingData) =>
+    new Promise((resolve, reject) => {
         console.log(cyan('Generating sample data...'));
         delete existingData.leads;
-        const dataToWrite = Object.assign({}, existingData, {
-            leads: getFormattedSampleData()
+        getFormattedSampleData(existingData).then((formattedData) => {
+            const dataToWrite = Object.assign({}, existingData, {
+                leads: formattedData
+            });
+
+            console.log(cyan('Writing data to file...'));
+            writeDataToJsonFile(dbFilePath, dataToWrite)
+                .then(() => resolve())
+                .catch(err => reject(err));
         });
-        console.log(cyan('Writing data to file...'));
-        writeDataToJsonFile(dbFilePath, dataToWrite)
-            .then(() => resolve())
-            .catch(err => reject(err));
     });
-};
 
 /**
  * Copies the data from db.json to a backup file in case errors occur.

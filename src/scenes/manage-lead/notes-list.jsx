@@ -196,7 +196,7 @@ export class NotesList extends React.Component {
             cardEntities = notesInLead.map((note) => {
                 const newEntity = {
                     id: note.id,
-                    title: note.createdBy,
+                    title: note.getIn(['createdBy', 'fullName']),
                     subtitle: note.createdAt,
                     contents: note.contents,
                 };

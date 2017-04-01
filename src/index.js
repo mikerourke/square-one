@@ -17,7 +17,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 /* Internal dependencies */
 import configureStore from './state';
 import renderRoutes from './lib/routes';
-import { getAllSettings } from 'state/settings/actions';
 
 // Import web assets.
 import './style/global.css'; // eslint-disable-line
@@ -32,9 +31,6 @@ const client: AxiosRequestConfig = axios.create({
 });
 
 const store = configureStore(client);
-
-// TODO: Move settings getter to after user logs in.
-store.dispatch(getAllSettings());
 
 // This is required by Material UI library for mobile tap actions.
 injectTapEventPlugin();

@@ -6,6 +6,9 @@ import { List, Record } from 'immutable';
 /* Internal dependencies */
 import compareRecords from 'lib/compare-records';
 
+/* Types */
+import type { RecordDiff } from 'lib/types';
+
 export default class Lead extends Record({
     id: (0: number),
     leadName: ('': string),
@@ -23,7 +26,9 @@ export default class Lead extends Record({
     changes: (new List(): List<number>),
     messages: (new List(): List<number>),
     notes: (new List(): List<number>),
+    createdBy: (new Map(): Map<string, any>),
     createdAt: (null: ?Date),
+    updatedBy: (new Map(): Map<string, any>),
     updatedAt: (null: ?Date),
     typeName: ('lead': string),
 }) {
@@ -33,7 +38,7 @@ export default class Lead extends Record({
      * @param {Lead} lead Lead to compare values with.
      * @returns {Array} Array of items that don't match.
      */
-    getDifferences(lead: Lead): boolean {
+    getDifferences(lead: Lead): Array<RecordDiff> {
         return compareRecords(this, lead);
     }
 }

@@ -9,15 +9,15 @@ import {
 
 /* Internal dependencies */
 import {
-    MESSAGES_SEND_SUCCESS, MESSAGES_SEND_FAIL,
-    LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
+    USER_GET_ALL_SUCCESS, USER_GET_ALL_FAIL,
+    USER_GET_SINGLE_SUCCESS, USER_GET_SINGLE_FAIL,
 } from '../../action-types';
-import Message from './model';
+import User from './model';
 
 /* Types */
 import type { Action } from 'lib/types';
 
-type ByIdMap = Map<number, Message>;
+type ByIdMap = Map<number, User>;
 type ErrorMap = Map<string, any>;
 type State = Map<string, ByIdMap | ErrorMap>;
 
@@ -30,29 +30,29 @@ const initialState = OrderedMap();
  * @returns {State} Updated state with new data.
  */
 const mergeEntities = (state: State, data: Object): State => {
-    const { entities: { messages } } = (data: Object);
+    const { entities: { users } } = (data: Object);
     return state.merge({
-        byId: OrderedMap([...Object.entries(messages).map(
-            ([key, value]) => ([key, new Message(fromJS(value))]))]),
+        byId: OrderedMap([...Object.entries(users).map(
+            ([key, value]) => ([key, new User(fromJS(value))]))]),
         error: new Map(),
     });
 };
 
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
-        case LEAD_GET_ALL_FAIL:
-        case MESSAGES_SEND_FAIL:
+        case USER_GET_ALL_FAIL:
+        case USER_GET_SINGLE_FAIL:
             const { error: { response } } = (action: Object);
             return state.set('error', fromJS(response));
 
-        case LEAD_GET_ALL_SUCCESS:
+        case USER_GET_ALL_SUCCESS:
             const { payload: { data: responseData } } = (action: Object);
             return mergeEntities(state, responseData);
 
-        case MESSAGES_SEND_SUCCESS:
-            const { payload: { data: newMessages } } = (action: Object);
-            return state.mergeIn(['byId'], newMessages.map(message =>
-                ([message.id, new Message(fromJS(message))])));
+        case USER_GET_SINGLE_SUCCESS:
+            const { payload: { data: existingUser } } = (action: Object);
+            return state.setIn(['byId', existingUser.id],
+                new User(fromJS(existingUser)));
 
         default:
             return state;

@@ -61,7 +61,7 @@ export default class Timeline extends React.Component {
                     linear={false}
                     orientation="vertical"
                 >
-                    {timelineEvents.map((timelineEvent, index) => (
+                    {timelineEvents.toArray().map((timelineEvent, index) => (
                         <Step key={timelineEvent.id}>
                             <StepButton
                                 icon={

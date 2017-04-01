@@ -13,3 +13,6 @@ export const leadSchema = new schema.Entity('leads', {
     notes: [noteSchema],
 });
 export const leadsSchema = [leadSchema];
+
+const userSchema = new schema.Entity('users');
+export const usersSchema = [userSchema];

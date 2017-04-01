@@ -14,8 +14,8 @@ import thunk from 'redux-thunk';
 /* Internal dependencies */
 import entities from './entities/reducer';
 import gui from './gui/reducer';
+import session from './session/reducer';
 import settings from './settings/reducer';
-import user from './user/reducer';
 
 /* Types */
 import type { AxiosRequestConfig } from 'axios';
@@ -26,8 +26,8 @@ import type { AxiosRequestConfig } from 'axios';
 const rootReducer = combineReducers({
     entities,
     gui,
+    session,
     settings,
-    user,
 });
 
 /**

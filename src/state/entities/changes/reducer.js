@@ -46,8 +46,8 @@ export default (state: State = initialState, action: Action) => {
             return state.set('error', fromJS(response));
 
         case LEAD_GET_ALL_SUCCESS:
-            const { payload: { data: entities } } = (action: Object);
-            return mergeEntities(state, entities);
+            const { payload: { data: responseData } } = (action: Object);
+            return mergeEntities(state, responseData);
 
         case CHANGES_CREATE_SUCCESS:
             const { payload: { data: newChanges } } = (action: Object);

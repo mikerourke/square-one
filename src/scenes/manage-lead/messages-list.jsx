@@ -13,6 +13,7 @@ import {
 import { List as MuiList } from 'material-ui/List';
 
 /* Internal dependencies */
+import { getDisplayDate } from 'lib/display-formats';
 import { selectMessagesInLead } from 'state/entities/messages/selectors';
 import { Lead, Message } from 'state/entities/models';
 import ActionButton from 'components/action-button';
@@ -68,8 +69,8 @@ export class MessagesList extends React.Component {
                             style={{ margin: 16 }}
                         >
                             <CardHeader
-                                subtitle={message.createdAt}
-                                title={message.createdBy}
+                                subtitle={getDisplayDate(message.createdAt)}
+                                title={message.getIn(['createdBy', 'fullName'])}
                             />
                             <CardTitle title={message.subject} />
                             <CardText>

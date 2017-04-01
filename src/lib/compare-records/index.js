@@ -2,6 +2,7 @@
 
 /* Types */
 import type { Record } from 'immutable';
+import type { RecordDiff } from 'lib/types';
 
 /**
  * Compares the property values of a Record to the property values
@@ -11,7 +12,7 @@ import type { Record } from 'immutable';
  * @returns {Array} Array of items that don't match.
  */
 export default (
-    compareFrom: Record<*>, compareTo: Record<*>): Array<Object> => {
+    compareFrom: Record<*>, compareTo: Record<*>): Array<RecordDiff> => {
     // Immutable Records have a "toJS()" function, for some reason Flow
     // isn't picking it up.
     // $FlowIgnore
@@ -23,7 +24,7 @@ export default (
 
     Object.keys(fromObject).forEach((key) => {
         const fromValue = fromObject[key];
-        if (!Array.isArray(fromValue)) {
+        if (!Array.isArray(fromValue) && typeof fromValue !== 'object') {
             const toValue = toObject[key];
             if (toValue !== fromValue) {
                 unmatchingFields.push({

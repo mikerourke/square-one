@@ -10,6 +10,12 @@ export type MapLocation = {
     lng: number,
 };
 
+export type RecordDiff = {
+    key: string,
+    fromValue: string | number,
+    toValue: string | number,
+};
+
 /**
  * Types associated with Redux.
  */

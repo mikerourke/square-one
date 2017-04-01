@@ -2,7 +2,6 @@
 
 /* External dependencies */
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import styled from 'styled-components';
@@ -12,7 +11,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
-import * as userActions from 'state/user/actions';
+import { getAllSettings } from 'state/settings/actions';
+import { getAllUsers } from 'state/entities/users/actions';
+import { login } from 'state/session/actions';
+import Session from 'state/session/model';
 import Logo from 'components/logo';
 
 /**
@@ -32,11 +34,14 @@ const HeaderContainer = styled.div`
 `;
 
 const mapStateToProps = state => ({
-    user: state.user,
+    session: state.get('session'),
 });
 
 const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(userActions, dispatch),
+    dispatch,
+    getAllSettings: () => dispatch(getAllSettings()),
+    getAllUsers: () => dispatch(getAllUsers()),
+    login: (username, password) => dispatch(login(username, password)),
 });
 
 /**
@@ -44,12 +49,44 @@ const mapDispatchToProps = dispatch => ({
  */
 export class LoginPage extends React.Component {
     props: {
-        actions: any,
+        getAllSettings: () => Promise<*>,
+        getAllUsers: () => Promise<*>,
+        login: (username: string, password: string) => Promise<*>,
+        session: Session,
     };
 
-    handleSubmit = (event: Event): void => {
+    state: {
+        password: string,
+        username: string,
+    };
+
+    constructor(): void {
+        super();
+        this.state = {
+            password: '',
+            username: '',
+        };
+    }
+
+    handleInputChange = (event: Event, newValue: string): void => {
+        const target = event.target;
+        if (target instanceof HTMLInputElement) {
+            const fieldName = target.name;
+            this.setState({ [fieldName]: newValue });
+        }
+    };
+
+    handleLoginButtonTouchTap = (event: Event): void => {
         event.preventDefault();
-        browserHistory.push('/leads');
+        const { password, username } = this.state;
+        const getAllSettingsFn: Function = this.props.getAllSettings;
+        const getAllUsersFn: Function = this.props.getAllUsers;
+        getAllSettingsFn()
+            .then(getAllUsersFn)
+            .then(() => browserHistory.push('/leads'));
+        // TODO: Finish writing login function.
+        // const loginFn: Function = this.props.login;
+        // loginFn(username, password).then(() => { });
     };
 
     render(): React.Element<*> {
@@ -70,19 +107,24 @@ export class LoginPage extends React.Component {
                             width={64}
                         />
                     </HeaderContainer>
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleLoginButtonTouchTap}>
                         <TextField
                             floatingLabelText="Login"
                             fullWidth={true}
+                            name="username"
+                            onChange={this.handleInputChange}
                         />
                         <TextField
                             floatingLabelText="Password"
                             fullWidth={true}
+                            name="password"
+                            onChange={this.handleInputChange}
                             type="password"
                         />
                         <RaisedButton
                             fullWidth={true}
                             label="Login"
+                            onTouchTap={this.handleLoginButtonTouchTap}
                             primary={true}
                             style={{ marginTop: 24 }}
                             type="submit"

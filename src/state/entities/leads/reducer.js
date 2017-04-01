@@ -90,9 +90,9 @@ export default (state: State = initialState, action: Action) => {
 
         case LEAD_GET_SINGLE_SUCCESS:
         case LEAD_UPDATE_SUCCESS:
-            const { payload: { data: updatedLead } } = (action: Object);
-            return state.setIn(['byId', updatedLead.id],
-                new Lead(fromJS(updatedLead)));
+            const { payload: { data: existingLead } } = (action: Object);
+            return state.setIn(['byId', existingLead.id],
+                new Lead(fromJS(existingLead)));
 
         case LEAD_DELETE_SUCCESS:
             const { payload: { data: { id } } } = (action: Object);

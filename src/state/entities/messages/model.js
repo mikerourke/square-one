@@ -9,8 +9,9 @@ export default class Message extends Record({
     recipient: ('': string),
     subject: ('': string),
     body: ('': string),
-    createdBy: ('': string),
+    createdBy: (new Map(): Map<string, any>),
     createdAt: (null: ?Date),
+    updatedBy: (new Map(): Map<string, any>),
     updatedAt: (null: ?Date),
     typeName: ('message': string),
 }) {}

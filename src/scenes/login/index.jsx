@@ -17,6 +17,19 @@ import { login } from 'state/session/actions';
 import Session from 'state/session/model';
 import Logo from 'components/logo';
 
+/* Types */
+type Props = {
+    getAllSettings: () => Promise<*>,
+    getAllUsers: () => Promise<*>,
+    login: (username: string, password: string) => Promise<*>,
+    session: Session,
+};
+
+type State = {
+    password: string,
+    username: string,
+};
+
 /**
  * Styled container for page content.
  */
@@ -47,18 +60,9 @@ const mapDispatchToProps = dispatch => ({
 /**
  * Login page for accessing the application.
  */
-export class LoginPage extends React.Component {
-    props: {
-        getAllSettings: () => Promise<*>,
-        getAllUsers: () => Promise<*>,
-        login: (username: string, password: string) => Promise<*>,
-        session: Session,
-    };
-
-    state: {
-        password: string,
-        username: string,
-    };
+export class LoginPage extends React.Component<*, Props, State> {
+    props: Props;
+    state: State;
 
     constructor(): void {
         super();
@@ -68,12 +72,10 @@ export class LoginPage extends React.Component {
         };
     }
 
-    handleInputChange = (event: Event, newValue: string): void => {
-        const target = event.target;
-        if (target instanceof HTMLInputElement) {
-            const fieldName = target.name;
-            this.setState({ [fieldName]: newValue });
-        }
+    handleInputChange = (event: Event & { currentTarget: HTMLInputElement },
+        newValue: string): void => {
+        const fieldName = event.currentTarget.name;
+        this.setState({ [fieldName]: newValue });
     };
 
     handleLoginButtonTouchTap = (event: Event): void => {

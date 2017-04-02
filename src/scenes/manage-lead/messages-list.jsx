@@ -19,20 +19,24 @@ import { Lead, Message } from 'state/entities/models';
 import ActionButton from 'components/action-button';
 import MessagesDialog from './messages-dialog';
 
+/* Types */
+type Props = {
+    lead: Lead,
+    messages?: List<Message>,
+    showAddButton: boolean,
+};
+
+type State = {
+    isMessageDialogOpen: boolean,
+};
+
 const mapStateToProps = (state, ownProps) => ({
     messages: selectMessagesInLead(state, ownProps),
 });
 
-export class MessagesList extends React.Component {
-    props: {
-        lead: Lead,
-        messages?: List<Message>,
-        showAddButton: boolean,
-    };
-
-    state: {
-        isMessageDialogOpen: boolean,
-    };
+export class MessagesList extends React.Component<*, Props, State> {
+    props: Props;
+    state: State;
 
     constructor(): void {
         super();
@@ -57,7 +61,7 @@ export class MessagesList extends React.Component {
 
         let messagesInLead = new List();
         if (messages) {
-            messagesInLead = messages;
+            messagesInLead = messages.sortBy(message => message.createdAt);
         }
 
         return (
@@ -72,7 +76,6 @@ export class MessagesList extends React.Component {
                                 subtitle={getDisplayDate(message.createdAt)}
                                 title={message.getIn(['createdBy', 'fullName'])}
                             />
-                            <CardTitle title={message.subject} />
                             <CardText>
                                 {message.body}
                             </CardText>

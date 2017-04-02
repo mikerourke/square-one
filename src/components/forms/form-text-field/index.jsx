@@ -4,6 +4,32 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
+/* Types */
+type DataType = 'text' | 'number' | 'any';
+type Format = 'phone' | 'email' | 'none';
+
+type DefaultProps = {
+    dataType: DataType,
+    format: Format,
+    isRequired: boolean,
+    value: string | number,
+};
+
+type Props = {
+    dataType?: 'text' | 'number' | 'any',
+    format?: 'phone' | 'email' | 'none',
+    isRequired?: boolean,
+    name: string,
+    onValidInputChange: (event: Event, newValue: string | number,
+        fieldName?: string) => void,
+    value?: string | number,
+};
+
+type State = {
+    errorText: string,
+    value: string | number,
+};
+
 /**
  * Text field on forms with validation, requirement check, and format
  *      cleanup.
@@ -16,21 +42,9 @@ import TextField from 'material-ui/TextField';
  *      is entered into the field.
  * @param {string|number} value Initial value of the field.
  */
-export default class FormTextField extends React.Component {
-    props: {
-        dataType?: 'text' | 'number' | 'any',
-        format?: 'phone' | 'email' | 'none',
-        isRequired?: boolean,
-        name: string,
-        onValidInputChange: (event: Event, newValue: string,
-                             fieldName?: string) => void,
-        value?: any,
-    };
-
-    state: {
-        errorText: string,
-        value: any,
-    };
+class FormTextField extends React.Component<DefaultProps, Props, State> {
+    props: Props;
+    state: State;
 
     static defaultProps = {
         dataType: 'any',
@@ -39,9 +53,9 @@ export default class FormTextField extends React.Component {
         value: '',
     };
 
-    constructor(props: any): void {
+    constructor(props: Props): void {
         super(props);
-        const { value } = (this.props: Object);
+        const { value = '' } = this.props;
         this.state = {
             errorText: '',
             value,
@@ -55,7 +69,7 @@ export default class FormTextField extends React.Component {
      * @param {string|number} newValue Value entered into the input.
      * @returns {string} Error text to display.
      */
-    errorTextForDataType = (newValue: any): string => {
+    errorTextForDataType = (newValue: string | number): string => {
         const { dataType } = this.props;
 
         if (!newValue) {
@@ -63,11 +77,15 @@ export default class FormTextField extends React.Component {
         }
 
         if (dataType === 'text') {
-            if (isNaN(newValue)) {
+            if (typeof newValue === 'string') {
                 const charArray = [...newValue];
-                const numberChars = charArray.filter(
-                    char => !isNaN(char) && char !== ' ');
-                if (numberChars > 0) {
+                let numberOfChars = 0;
+                charArray.forEach((char) => {
+                    if (!isNaN(char) && char !== ' ') {
+                        numberOfChars += 1;
+                    }
+                });
+                if (numberOfChars > 0) {
                     return 'Field cannot contain a number';
                 }
             } else {
@@ -90,7 +108,7 @@ export default class FormTextField extends React.Component {
      * @param {string|number} newValue Value of the input.
      * @returns {string} Error text to display.
      */
-    errorTextForRequiredField = (newValue: any): string => {
+    errorTextForRequiredField = (newValue: string | number): string => {
         const { isRequired } = this.props;
         if (newValue === '' && isRequired) {
             return 'Required';
@@ -105,7 +123,7 @@ export default class FormTextField extends React.Component {
      * @param {string|number} newValue Value of the input.
      * @returns {string} Error text to display.
      */
-    errorTextByPrecedence = (newValue: any): string => {
+    errorTextByPrecedence = (newValue: string | number): string => {
         const requiredErrorText = this.errorTextForRequiredField(newValue);
         if (requiredErrorText) {
             return requiredErrorText;
@@ -126,7 +144,8 @@ export default class FormTextField extends React.Component {
      * @param {string|number} newValue Value of the input.
      * @param {string} errorText Error text associated with the input (if any).
      */
-    updateInput = (event: Event, newValue: any, errorText: string) => {
+    updateInput = (
+        event: Event, newValue: string | number, errorText: string) => {
         const { name, onValidInputChange } = this.props;
 
         if (errorText === '') {
@@ -144,14 +163,10 @@ export default class FormTextField extends React.Component {
      *      the input loses focus.
      * @param {Event} event Event associated with the input.
      */
-    handleBlur = (event: Event) => {
+    handleBlur = (event: Event & { currentTarget: HTMLInputElement }) => {
         const { errorText } = this.state;
-
-        const target = event.target;
-        if (target instanceof HTMLInputElement) {
-            const newValue = target.value;
-            this.updateInput(event, newValue, errorText);
-        }
+        const newValue = event.currentTarget.value;
+        this.updateInput(event, newValue, errorText);
     };
 
     /**
@@ -160,7 +175,7 @@ export default class FormTextField extends React.Component {
      * @param {Event} event Event associated with the input.
      * @param {string|number} newValue New value of the input.
      */
-    handleChange = (event: Event, newValue: any): void => {
+    handleChange = (event: Event, newValue: string | number): void => {
         const errorText = this.errorTextByPrecedence(newValue);
         this.updateInput(event, newValue, errorText);
     };
@@ -190,3 +205,5 @@ export default class FormTextField extends React.Component {
         );
     }
 }
+
+export default FormTextField;

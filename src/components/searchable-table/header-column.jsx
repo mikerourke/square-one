@@ -1,3 +1,5 @@
+/* @flow */
+
 /**
  * This code was taken from the material-ui-datatables library and modified
  *      slightly to use the styled-components library.  I also stripped the
@@ -10,14 +12,40 @@
  * @see https://github.com/hyojin/material-ui-datatables
  */
 
-/* @flow */
-
 /* External dependencies */
 import React from 'react';
 import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
 import { TableHeaderColumn } from 'material-ui/Table';
 import Tooltip from 'material-ui/internal/Tooltip';
+
+/* Types */
+type Context = {
+    muiTheme: {
+        prepareStyles: (style: Object) => void,
+        tableHeaderColumn: {
+            height: number,
+            spacing: number,
+            textColor: string
+        }
+    }
+};
+
+type Props = {
+    alignRight: boolean,
+    children?: React.Element<*>,
+    className?: string,
+    columnNumber?: number,
+    hoverable?: boolean,
+    onClick?: () => void,
+    onHover?: () => void,
+    onHoverExit?: () => void,
+    order?: 'asc' | 'desc',
+    sortable?: boolean,
+    sorted?: boolean,
+    style?: Object,
+    tooltip?: string,
+};
 
 /**
  * Styled component wrapper for the header icon.
@@ -43,21 +71,8 @@ const TitleWrapper = styled.div`
  * @export
  * @class HeaderColumn
  */
-export default class HeaderColumn extends TableHeaderColumn {
-    props: {
-        children?: React.Element<*>,
-        className?: string,
-        columnNumber?: number,
-        hoverable?: boolean,
-        onClick?: () => void,
-        onHover?: () => void,
-        onHoverExit?: () => void,
-        order?: string,
-        sortable?: boolean,
-        sorted?: boolean,
-        style?: Object,
-        tooltip?: string,
-    };
+class HeaderColumn extends TableHeaderColumn {
+    props: Props;
 
     static defaultProps = {
         sortable: false,
@@ -66,7 +81,7 @@ export default class HeaderColumn extends TableHeaderColumn {
 
     static muiName = 'TableHeaderColumn';
 
-    constructor(props: any, context: any): void {
+    constructor(props: Props, context: Context): void {
         super(props, context);
         this.state = {
             sortHovered: false,
@@ -94,8 +109,8 @@ export default class HeaderColumn extends TableHeaderColumn {
     };
 
     getRootStyle = (): Object => {
-        const { alignRight, sortable, sorted } = (this.props: Object);
-        const { muiTheme: { tableHeaderColumn } } = (this.context: Object);
+        const { alignRight, sortable, sorted } = this.props;
+        const { muiTheme: { tableHeaderColumn } } = this.context;
 
         return {
             color: sorted ? '#3A3A3A' : tableHeaderColumn.textColor,
@@ -129,7 +144,7 @@ export default class HeaderColumn extends TableHeaderColumn {
             ...props
         } = this.props;
 
-        const { prepareStyles } = this.context.muiTheme;
+        const { muiTheme: { prepareStyles } } = this.context;
         const rootStyle = this.getRootStyle();
 
         const handlers = {
@@ -206,3 +221,5 @@ export default class HeaderColumn extends TableHeaderColumn {
         );
     }
 }
+
+export default HeaderColumn;

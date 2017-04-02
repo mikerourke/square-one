@@ -16,18 +16,28 @@ import { accent1Color } from 'style/mui/palette';
 /* Types */
 import type { List } from 'immutable';
 
+type TimelineEvent = {
+    id: number,
+    iconName: string,
+    title: string,
+    details: string,
+}
+
+type Props = {
+    timelineEvents: List<TimelineEvent>,
+};
+
+type State = {
+    stepIndex: number,
+};
+
 /**
  * Shows timeline of events associated with an entity.
  * @param {List} timelineEvents Events to display in the timeline.
  */
-export default class Timeline extends React.Component {
-    props: {
-        timelineEvents: List<*>,
-    };
-
-    state: {
-        stepIndex: number,
-    };
+class Timeline extends React.Component<*, Props, State> {
+    props: Props;
+    state: State;
 
     constructor(): void {
         super();
@@ -90,3 +100,5 @@ export default class Timeline extends React.Component {
         );
     }
 }
+
+export default Timeline;

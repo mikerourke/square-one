@@ -1,3 +1,5 @@
+/* @flow */
+
 /**
  * This code was taken from the material-ui-datatables library and modified
  *      slightly to use the styled-components library.  I also stripped the
@@ -10,8 +12,6 @@
  * @see https://github.com/hyojin/material-ui-datatables
  */
 
-/* @flow */
-
 /* External dependencies */
 import React from 'react';
 import styled from 'styled-components';
@@ -21,11 +21,29 @@ import FontIcon from 'material-ui/FontIcon';
 import MenuItem from 'material-ui/MenuItem';
 import { Toolbar } from 'material-ui/Toolbar';
 
+/* Internal dependencies */
 import {
     accent3Color,
     borderColor,
     canvasColor,
 } from 'style/mui/palette';
+
+/* Types */
+type Props = {
+    handleNextPageClick: () => void,
+    handlePreviousPageClick: () => void,
+    handleRowSizeChange: (event: Event, key?: number, value: number) => void,
+    page: number,
+    recordCount: number,
+    rowSize: number,
+};
+
+type Pagination = {
+    start: number,
+    end: number,
+    previousButtonDisabled: boolean,
+    nextButtonDisabled: boolean,
+};
 
 const ControlGroupContainer = styled.div`
     align-items: center;
@@ -52,23 +70,15 @@ const PaginationButtonsContainer = styled.div`
  * @export
  * @class Footer
  */
-export default class Footer extends React.Component {
-    props: {
-        handleNextPageClick: () => void,
-        handlePreviousPageClick: () => void,
-        handleRowSizeChange: (event: Event, key?: number,
-                              value: number) => void,
-        page: number,
-        recordCount: number,
-        rowSize: number,
-    };
+class Footer extends React.Component<*, Props, *> {
+    props: Props;
 
     /**
      * Returns pagination details and previous/next page button enablement
      *      to apply to the footer elements.
-     * @returns {Object} Properties to apply to the pagination elements.
+     * @returns {Pagination} Properties to apply to the pagination elements.
      */
-    getPaginationDetails = (): Object => {
+    getPaginationDetails = (): Pagination => {
         const { page, recordCount, rowSize } = this.props;
 
         let start = ((page - 1) * rowSize) + 1;
@@ -89,10 +99,10 @@ export default class Footer extends React.Component {
         }
 
         return {
-            end,
-            nextButtonDisabled,
-            previousButtonDisabled,
             start,
+            end,
+            previousButtonDisabled,
+            nextButtonDisabled,
         };
     };
 
@@ -106,10 +116,10 @@ export default class Footer extends React.Component {
         } = this.props;
 
         const {
-            end,
-            nextButtonDisabled,
-            previousButtonDisabled,
             start,
+            end,
+            previousButtonDisabled,
+            nextButtonDisabled,
         } = this.getPaginationDetails();
 
         const pageButtonStyle = {
@@ -179,3 +189,5 @@ export default class Footer extends React.Component {
         );
     }
 }
+
+export default Footer;

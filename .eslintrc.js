@@ -66,6 +66,7 @@ module.exports = {
         'react/jsx-filename-extension': 0,
         'react/jsx-indent': [1, 4],
         'react/jsx-indent-props': 0,
+        'react/no-unused-prop-types': 0,
         // This is handled by Flow with default values:
         'react/require-default-props': 0,
         'react/self-closing-comp': 1,

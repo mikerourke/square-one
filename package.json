@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/wolfspace/square1#readme",
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.16.0",
     "google-maps": "^3.2.1",
     "immutable": "^3.8.1",
     "material-ui": "^0.17.0",

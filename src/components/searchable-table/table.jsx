@@ -28,32 +28,48 @@ import HeaderColumn from './header-column';
 import Row from './row';
 import RowColumn from './row-column';
 
+/* Types */
 import type { Sort } from './index';
 
-export default class Table extends React.Component {
-    props: {
-        columns: Array<any>,
-        data: List<*>,
-        fixedFooter?: boolean,
-        fixedHeader?: boolean,
-        handleRowIconTouchTap: (event: Event, row: Object) => void,
-        handleNextPageClick: () => void,
-        handlePreviousPageClick: () => void,
-        handleRowSizeChange: (event: Event, key?: number,
-                              value: number) => void,
-        handleSortOrderChange?: (key: string, order: string) => void,
-        height?: string,
-        initialSort?: Sort,
-        page?: number,
-        recordCount: number,
-        rowSize?: number,
-        showRowHover?: boolean,
-        stripedRows?: boolean,
-    };
+type DefaultProps = {
+    columns: Array<any>,
+    data: List<*>,
+    fixedFooter: boolean,
+    fixedHeader: boolean,
+    height: string,
+    initialSort: Sort,
+    page: number,
+    showRowHover: boolean,
+    stripedRows: boolean,
+};
 
-    state: {
-        sort: Sort,
-    };
+type Props = {
+    columns: Array<any>,
+    data: List<*>,
+    fixedFooter?: boolean,
+    fixedHeader?: boolean,
+    handleRowIconTouchTap: (event: Event, row: Object) => void,
+    handleNextPageClick: () => void,
+    handlePreviousPageClick: () => void,
+    handleRowSizeChange: (event: Event, key?: number,
+        value: number) => void,
+    handleSortOrderChange?: (key: string, order: string) => void,
+    height?: string,
+    initialSort?: Sort,
+    page?: number,
+    recordCount: number,
+    rowSize?: number,
+    showRowHover?: boolean,
+    stripedRows?: boolean,
+};
+
+type State = {
+    sort: Sort,
+};
+
+class Table extends React.Component<DefaultProps, Props, State> {
+    props: Props;
+    state: State;
 
     static defaultProps = {
         columns: [],
@@ -72,19 +88,19 @@ export default class Table extends React.Component {
 
     static muiName = 'Table';
 
-    constructor(props: any, context: any): void {
-        super(props, context);
-        const { initialSort } = (this.props: Object);
+    constructor(props: Props): void {
+        super(props);
+        const { initialSort = {
+            column: '',
+            order: 'asc',
+        } } = this.props;
         this.state = {
             sort: initialSort,
         };
     }
 
     handleHeaderColumnClick = (
-        event: Event,
-        rowIndex: number,
-        columnIndex: number,
-    ): void => {
+        event: Event, rowIndex: number, columnIndex: number): void => {
         const { columns, handleSortOrderChange } = this.props;
         const adjustedColumnIndex = (columnIndex - 2);
         const column = columns[adjustedColumnIndex];
@@ -214,3 +230,5 @@ export default class Table extends React.Component {
         );
     }
 }
+
+export default Table;

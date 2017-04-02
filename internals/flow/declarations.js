@@ -14,3 +14,9 @@ declare var module : {
     };
 };
 
+declare type MenuItem = {
+    key: string,
+    value: string,
+    displayText: string,
+}
+

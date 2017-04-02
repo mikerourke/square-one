@@ -10,6 +10,15 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import { primary1Color } from 'style/mui/palette';
 import getRgbFromHex from 'lib/rgb-to-hex';
 
+/* Types */
+type Props = {
+    children?: ?React.Element<*>,
+    handleSearchBoxChange: (event: Event, newValue: string) => void,
+    // If this value is false, don't show a box shadow and remove the
+    // padding.
+    isStandalone: boolean,
+};
+
 /**
  * Sets the color and transparency of the IconButton inline.
  * @param {number} transparency Transparency value for the returned color.
@@ -31,14 +40,8 @@ const getInlineStyle = (transparency?: number = 1): Object => {
  * @param {boolean} [isStandalone=true] Indicates if the toolbar is a separate
  *      entity or integrated into a form.
  */
-export default class SearchToolbar extends React.Component {
-    props: {
-        children?: ?React.Element<*>,
-        handleSearchBoxChange: (event: Event, newValue: string) => void,
-        // If this value is false, don't show a box shadow and remove the
-        // padding.
-        isStandalone: boolean,
-    };
+class SearchToolbar extends React.Component<*, Props, *> {
+    props: Props;
 
     /**
      * Changes the padding of the Toolbar component based on whether the
@@ -98,3 +101,5 @@ export default class SearchToolbar extends React.Component {
         );
     }
 }
+
+export default SearchToolbar;

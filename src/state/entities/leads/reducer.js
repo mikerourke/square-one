@@ -82,11 +82,10 @@ export default (state: State = initialState, action: Action) => {
 
         case LEAD_CREATE_SUCCESS:
             const { payload: { data: newLead } } = (action: Object);
-            // $FlowIgnore
             return state
                 .setIn(['byId', newLead.id], new Lead(fromJS(newLead)))
-                .get('allIds')
-                .push(newLead.id);
+                // $FlowIgnore
+                .set('allIds', state.get('allIds').push(newLead.id));
 
         case LEAD_GET_SINGLE_SUCCESS:
         case LEAD_UPDATE_SUCCESS:
@@ -96,10 +95,14 @@ export default (state: State = initialState, action: Action) => {
 
         case LEAD_DELETE_SUCCESS:
             const { payload: { data: { id } } } = (action: Object);
+            let leadId = 0;
+            if (id) {
+                leadId = id;
+            }
             return state
-                .deleteIn(['byId', id.toString()])
-                .get('allIds')
-                .filter(idNumber => idNumber !== id);
+                .deleteIn(['byId', leadId.toString()])
+                .set('allIds', state.get('allIds')
+                    .filter(idNumber => idNumber !== leadId));
 
         case LEAD_GET_ALL_SUCCESS:
             const { payload: { data: responseData } } = (action: Object);

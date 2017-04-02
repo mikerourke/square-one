@@ -4,7 +4,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { Map } from 'immutable';
+import { OrderedMap } from 'immutable';
 import moment from 'moment';
 
 /* Internal dependencies */
@@ -17,7 +17,22 @@ import ProgressIndicator from 'components/progress-indicator';
 import SearchableTable from 'components/searchable-table';
 
 /* Types */
+import type { Map } from 'immutable';
 import type { Sort } from 'components/searchable-table';
+
+type DefaultProps = {
+    getAllLeads: () => Promise<*>,
+};
+
+type Props = {
+    leads: Map<number, Lead>,
+    getAllLeads: () => Promise<*>,
+};
+
+type State = {
+    isLoading: boolean,
+    leads: Map<number, Lead>,
+};
 
 const mapStateToProps = state => ({
     leads: state.getIn(['entities', 'leads', 'byId']),
@@ -28,33 +43,26 @@ const mapDispatchToProps = dispatch => ({
     getAllLeads: () => dispatch(getAllLeads()),
 });
 
-export class LeadsList extends React.Component {
-    props: {
-        leads: Map<number, Lead>,
-        getAllLeads: () => void,
-    };
-
-    state: {
-        isLoading: boolean,
-        leads: Map<number, Lead>,
-    };
+export class LeadsList extends React.Component<DefaultProps, Props, State> {
+    props: Props;
+    state: State;
 
     static defaultProps = {
-        getAllLeads: () => {},
+        getAllLeads: () => Promise.resolve(),
     };
 
     constructor(): void {
         super();
         this.state = {
             isLoading: true,
-            leads: new Map(),
+            leads: OrderedMap(),
         };
     }
 
     componentDidMount(): void {
-        const getAllLeadsPromise: Function = this.props.getAllLeads;
-        if (getAllLeadsPromise) {
-            getAllLeadsPromise().then(() => {
+        const getAllLeadsFn: Function = this.props.getAllLeads;
+        if (getAllLeadsFn) {
+            getAllLeadsFn().then(() => {
                 const leads = this.props.leads;
                 this.setState({
                     isLoading: false,

@@ -1,3 +1,5 @@
+/* @flow */
+
 /**
  * This code was taken from the material-ui-datatables library and modified
  *      slightly to use the styled-components library.  I also stripped the
@@ -10,33 +12,34 @@
  * @see https://github.com/hyojin/material-ui-datatables
  */
 
-/* @flow */
-
 /* External dependencies */
 import React from 'react';
 import { TableBody } from 'material-ui/Table';
+
+/* Types */
+type Props = {
+    allRowsSelected?: boolean,
+    children?: React.Element<*>,
+    className?: string,
+    deselectOnClickaway?: boolean,
+    displayRowCheckbox?: boolean,
+    onCellHover?: () => void,
+    onCellHoverExit?: () => void,
+    onRowHover?: () => void,
+    onRowHoverExit?: () => void,
+    preScanRows?: boolean,
+    showRowHover?: boolean,
+    stripedRows?: boolean,
+    style?: Object,
+};
 
 /**
  * Represents the body of the table that contains data rows.
  * @export
  * @class Body
  */
-export default class Body extends TableBody {
-    props: {
-        allRowsSelected?: boolean,
-        children?: React.Element<*>,
-        className?: string,
-        deselectOnClickaway?: boolean,
-        displayRowCheckbox?: boolean,
-        onCellHover?: () => void,
-        onCellHoverExit?: () => void,
-        onRowHover?: () => void,
-        onRowHoverExit?: () => void,
-        preScanRows?: boolean,
-        showRowHover?: boolean,
-        stripedRows?: boolean,
-        style?: Object,
-    };
+class Body extends TableBody {
+    props: Props;
 
     static defaultProps = {
         allRowsSelected: false,
@@ -86,3 +89,5 @@ export default class Body extends TableBody {
         });
     }
 }
+
+export default Body;

@@ -6,19 +6,7 @@ import styled from 'styled-components';
 import Paper from 'material-ui/Paper';
 import { Tab, Tabs } from 'material-ui/Tabs';
 
-/**
- * Styled container for the Tabs elements.
- */
-const Container = styled.div`
-    background: white;
-    height: 48px;
-    width: 100%;
-`;
-
-/**
- * Page in the Tabs toolbar.
- * @typedef TabPage
- */
+/* Types */
 type TabPage = {
     content: React.Element<*> | string,
     label: string,
@@ -27,6 +15,15 @@ type TabPage = {
     paperStyle?: ?Object,
     value: string,
 };
+
+/**
+ * Styled container for the Tabs elements.
+ */
+const Container = styled.div`
+    background: white;
+    height: 48px;
+    width: 100%;
+`;
 
 /**
  * Applies any custom styles specified in the props passed to the component

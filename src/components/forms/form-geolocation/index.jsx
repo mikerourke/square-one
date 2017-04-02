@@ -26,6 +26,22 @@ import type {
     Marker,
 } from 'google-maps';
 
+type DefaultProps = {
+    startingLocation: MapLocation,
+}
+
+type Props = {
+    floatingLabelText: string,
+    handleLocationChange: (newLocation: MapLocation) => void,
+    startingLocation: MapLocation,
+};
+
+type State = {
+    address: string,
+    lat: number,
+    lng: number,
+};
+
 /**
  * Wrapper for the Google Map element.
  */
@@ -40,19 +56,9 @@ const MapWrapper = styled.div`
  *      is changed.
  * @param {MapLocation} startingLocation Initial location to show.
  */
-export default class FormGeolocation extends React.Component {
-    props: {
-        floatingLabelText: string,
-        handleLocationChange: (newLocation: MapLocation) => void,
-        startingLocation: MapLocation,
-    };
-
-    state: {
-        address: string,
-        lat: number,
-        lng: number,
-    };
-
+class FormGeolocation extends React.Component<DefaultProps, Props, State> {
+    props: Props;
+    state: State;
     autocomplete: Autocomplete;
     google: Google;
     map: Map;
@@ -66,7 +72,7 @@ export default class FormGeolocation extends React.Component {
         },
     };
 
-    constructor(props: any): void {
+    constructor(props: Props): void {
         super(props);
         const { address, lat, lng } = this.props.startingLocation;
         this.state = {
@@ -229,3 +235,5 @@ export default class FormGeolocation extends React.Component {
         );
     }
 }
+
+export default FormGeolocation;

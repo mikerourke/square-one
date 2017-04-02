@@ -1,3 +1,5 @@
+/* @flow */
+
 /**
  * This code was taken from the material-ui-datatables library and modified
  *      slightly to use the styled-components library.  I also stripped the
@@ -10,39 +12,55 @@
  * @see https://github.com/hyojin/material-ui-datatables
  */
 
-/* @flow */
-
 /* External dependencies */
 import React from 'react';
 import { TableRow } from 'material-ui/Table';
+
+/* Types */
+type Context = {
+    muiTheme: {
+        prepareStyles: (style: Object) => void,
+        tableRow: {
+            borderColor: string,
+            height: number,
+            overColor: string,
+            spacing: number,
+            stripeColor: string,
+            textColor: string,
+        }
+    }
+};
+
+type Props = {
+    children?: React.Element<*>,
+    className?: string,
+    displayBorder?: boolean,
+    hoverable?: boolean,
+    hovered?: boolean,
+    onCellClick?: () => void,
+    onCellHover?: () => void,
+    onCellHoverExit?: () => void,
+    onRowClick?: () => void,
+    onRowHover?: () => void,
+    onRowHoverExit?: () => void,
+    rowNumber?: number,
+    selectable?: boolean,
+    striped?: boolean,
+    style?: Object,
+};
 
 /**
  * Represents a row of data in the table body.
  * @export
  * @class Row
  */
-export default class Row extends TableRow {
-    props: {
-        children?: React.Element<*>,
-        className?: string,
-        displayBorder?: boolean,
-        hoverable?: boolean,
-        hovered?: boolean,
-        onCellClick?: () => void,
-        onCellHover?: () => void,
-        onCellHoverExit?: () => void,
-        onRowClick?: () => void,
-        onRowHover?: () => void,
-        onRowHoverExit?: () => void,
-        rowNumber?: number,
-        selectable?: boolean,
-        striped?: boolean,
-        style?: Object,
-    };
+class Row extends TableRow {
+    context: Context;
+    props: Props;
 
     getStyles = (): Object => {
-        const { hovered, striped, displayBorder } = (this.props: Object);
-        const { muiTheme: { tableRow } } = (this.context: Object);
+        const { hovered, striped, displayBorder } = this.props;
+        const { muiTheme: { tableRow } } = this.context;
 
         let cellBgColor = 'inherit';
         if (hovered || this.state.hovered) {
@@ -83,7 +101,7 @@ export default class Row extends TableRow {
             ...props
         } = this.props;
 
-        const { muiTheme: { prepareStyles } } = (this.context: Object);
+        const { muiTheme: { prepareStyles } } = this.context;
         const styles = this.getStyles();
 
         const rowColumns = React.Children.map(this.props.children,
@@ -117,3 +135,5 @@ export default class Row extends TableRow {
         );
     }
 }
+
+export default Row;

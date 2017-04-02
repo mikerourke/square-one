@@ -19,9 +19,9 @@ const ActionButtonWrapper = styled.div`
 
 /**
  * Header toolbar for performing page-level actions.
- * @param {Node} actionButtonRight React button component to display on the
+ * @param {Node} [actionButtonRight] React button component to display on the
  *      right side of the header.
- * @param {number} height Height of the header in pixels.
+ * @param {number} [height=96] Height of the header in pixels.
  * @param {Node} titleLeft React title component to display on the left side of
  *      the header.
  */

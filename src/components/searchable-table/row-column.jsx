@@ -1,3 +1,5 @@
+/* @flow */
+
 /**
  * This code was taken from the material-ui-datatables library and modified
  *      slightly to use the styled-components library.  I also stripped the
@@ -10,34 +12,46 @@
  * @see https://github.com/hyojin/material-ui-datatables
  */
 
-/* @flow */
-
 /* External dependencies */
 import React from 'react';
 import { TableRowColumn } from 'material-ui/Table';
+
+/* Types */
+type Context = {
+    muiTheme: {
+        prepareStyles: (style: Object) => void,
+        tableRowColumn: {
+            height: number,
+            spacing: number,
+        }
+    }
+};
+
+type Props = {
+    children?: React.Element<*>,
+    className?: string,
+    columnNumber?: number,
+    hoverable?: boolean,
+    onClick?: () => void,
+    onHover?: () => void,
+    onHoverExit?: () => void,
+    style?: Object,
+};
 
 /**
  * Represents a column within a row of the table body.
  * @export
  * @class RowColumn
  */
-export default class RowColumn extends TableRowColumn {
-    props: {
-        children?: React.Element<*>,
-        className?: string,
-        columnNumber?: number,
-        hoverable?: boolean,
-        onClick?: () => void,
-        onHover?: () => void,
-        onHoverExit?: () => void,
-        style?: Object,
-    };
+class RowColumn extends TableRowColumn {
+    context: Context;
+    props: Props;
 
     static muiName = 'TableRowColumn';
 
     getRootStyle = (): Object => {
-        const { children } = (this.props: Object);
-        const { muiTheme: { tableRowColumn } } = (this.context: Object);
+        const { children } = this.props;
+        const { muiTheme: { tableRowColumn } } = this.context;
 
         const isRightAlign = (React.Children.count(children) === 1
                               && !isNaN(children));
@@ -67,7 +81,7 @@ export default class RowColumn extends TableRowColumn {
             ...props
         } = this.props;
 
-        const { prepareStyles } = this.context.muiTheme;
+        const { muiTheme: { prepareStyles } } = this.context;
         const rootStyle = this.getRootStyle();
 
         const handlers = {
@@ -88,3 +102,5 @@ export default class RowColumn extends TableRowColumn {
         );
     }
 }
+
+export default RowColumn;

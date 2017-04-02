@@ -22,6 +22,26 @@ import FormTextField from 'components/forms/form-text-field';
 /* Types */
 import type { MapLocation } from 'lib/types';
 
+type DefaultProps = {
+    leadStatusesList: [],
+    representativesList: [],
+    sourcesList: [],
+};
+
+type Props = {
+    handleDeleteTouchTap: (event: Event) => void,
+    handleFieldChange: (lead: Lead) => void,
+    handleSaveTouchTap: (event: Event, lead: Lead) => void,
+    lead: Lead,
+    leadStatusesList: Array<string>,
+    representativesList: Array<string>,
+    sourcesList: Array<string>,
+};
+
+type State = {
+    lead: Lead,
+};
+
 const mapStateToProps = (state) => {
     const settings = state.getIn(['settings', 'byName']);
     return {
@@ -40,20 +60,9 @@ const ButtonContainer = styled.div`
  * Form component for entering Lead details.
  * @param {Object} lead Lead entity associated with the form.
  */
-class LeadDetailsForm extends React.Component {
-    props: {
-        handleDeleteTouchTap: (event: Event) => void,
-        handleFieldChange: (lead: Lead) => void,
-        handleSaveTouchTap: (event: Event, lead: Lead) => void,
-        lead: Lead,
-        leadStatusesList: Array<string>,
-        representativesList: Array<string>,
-        sourcesList: Array<string>,
-    };
-
-    state: {
-        lead: Lead,
-    };
+class LeadDetailsForm extends React.Component<DefaultProps, Props, State> {
+    props: Props;
+    state: State;
 
     static defaultProps = {
         leadStatusesList: [],
@@ -61,7 +70,7 @@ class LeadDetailsForm extends React.Component {
         sourcesList: [],
     };
 
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
         this.state = {
             lead: this.props.lead,
@@ -78,18 +87,18 @@ class LeadDetailsForm extends React.Component {
      * Updates the Lead held in local state with the data from the field on the
      *      Details Form component.
      * @param {Event} event Event associated with the input.
-     * @param {string} newValue New value of the input.
+     * @param {string|number} newValue New value of the input.
      * @param {string} fieldName Name of the field associated with the input.
      */
-    handleInputChange = (
-        event: Event, newValue: string, fieldName?: string = ''): void => {
+    handleInputChange = (event: Event, newValue: string | number,
+        fieldName?: string = ''): void => {
         const { handleFieldChange } = this.props;
         let nameOfField = fieldName;
 
         // This is done to pass Flow type checking.
-        const target = event.target;
-        if (target instanceof HTMLInputElement) {
-            nameOfField = target.name;
+        const currentTarget = event.currentTarget;
+        if (currentTarget instanceof HTMLInputElement) {
+            nameOfField = currentTarget.name;
         }
 
         // Update the Lead held in local state (Immutable Record).
@@ -112,8 +121,8 @@ class LeadDetailsForm extends React.Component {
         this.setState({ lead: updatedLead });
     };
 
-    getItemsForSelectField =
-        (selections: Array<string>): Array<React.Element<*>> =>
+    getItemsForSelectField = (
+        selections: Array<string>): Array<React.Element<*>> =>
             selections.map(selection => (
                 <MenuItem
                     key={selection}

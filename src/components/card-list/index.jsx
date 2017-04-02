@@ -19,6 +19,27 @@ import SearchToolbar from 'components/search-toolbar';
 /* Types */
 import type { List } from 'immutable';
 
+export type CardEntity = {
+    id: number,
+    title: string,
+    subtitle: string,
+    contents: string,
+};
+
+type Props = {
+    cardEntities: List<CardEntity>,
+    handleAddTouchTap: (event: Event) => void,
+    handleDeleteTouchTap?: (event: Event, cardEntity: CardEntity) => void,
+    handleEditTouchTap?: (event: Event, cardEntity: CardEntity) => void,
+    hasActions: boolean,
+    searchFieldInclusions: Array<string>,
+    showAddButton: boolean,
+};
+
+type State = {
+    cardEntities: List<CardEntity>,
+};
+
 /**
  * List of card components.
  * @param {List} cardEntities List of data objects to display on card.
@@ -34,36 +55,20 @@ import type { List } from 'immutable';
  *      array that should be included in searches.
  * @param {boolean} showAddButton Indicates if the Add button should be shown.
  */
-export default class CardList extends React.Component {
-    props: {
-        cardEntities: List<*>,
-        handleAddTouchTap: (event: Event) => void,
-        handleDeleteTouchTap?: ?(event: Event, cardEntity: Object) => void,
-        handleEditTouchTap?: ?(event: Event, cardEntity: Object) => void,
-        hasActions: boolean,
-        searchFieldInclusions: Array<string>,
-        showAddButton: boolean,
-    };
+class CardList extends React.Component<*, Props, State> {
+    props: Props;
+    state: State;
 
-    state: {
-        cardEntities: List<*>,
-    };
-
-    constructor(props: any): void {
+    constructor(props: Props): void {
         super(props);
         this.state = {
-            cardEntities: this.props.cardEntities,
+            cardEntities: props.cardEntities,
         };
     }
 
-    componentWillReceiveProps(nextProps: any): void {
-        const { cardEntities } = this.state;
+    componentWillReceiveProps(nextProps: Props): void {
         const newCardContents = nextProps.cardEntities;
-        if (newCardContents.size !== cardEntities.size) {
-            this.setState({
-                cardEntities: newCardContents,
-            });
-        }
+        this.setState({ cardEntities: newCardContents });
     }
 
     /**
@@ -82,21 +87,12 @@ export default class CardList extends React.Component {
     render(): React.Element<*> {
         const {
             handleAddTouchTap,
-            handleDeleteTouchTap,
-            handleEditTouchTap,
+            handleDeleteTouchTap = () => {},
+            handleEditTouchTap = () => {},
             hasActions,
             showAddButton,
         } = this.props;
         const { cardEntities } = this.state;
-
-        let handleEditFn = () => {};
-        if (handleEditTouchTap) {
-            handleEditFn = handleEditTouchTap;
-        }
-        let handleDeleteFn = () => {};
-        if (handleDeleteTouchTap) {
-            handleDeleteFn = handleDeleteTouchTap;
-        }
 
         return (
             <div>
@@ -126,14 +122,7 @@ export default class CardList extends React.Component {
                                 subtitle={cardEntity.subtitle}
                                 title={cardEntity.title}
                             />
-                            <CardText
-                                style={{
-                                    maxHeight: 48,
-                                    overflow: 'hidden',
-                                    whiteSpace: 'nowrap',
-                                    textOverflow: 'ellipsis',
-                                }}
-                            >
+                            <CardText>
                                 {cardEntity.contents}
                             </CardText>
                             {hasActions && <CardActions>
@@ -141,14 +130,14 @@ export default class CardList extends React.Component {
                                     id="card-edit"
                                     label="Edit"
                                     onTouchTap={(event: Event) =>
-                                        handleEditFn(event, cardEntity)}
+                                        handleEditTouchTap(event, cardEntity)}
                                     style={{ minWidth: 72 }}
                                 />
                                 <FlatButton
                                     id="card-delete"
                                     label="Delete"
                                     onTouchTap={(event: Event) =>
-                                        handleDeleteFn(event, cardEntity)}
+                                        handleDeleteTouchTap(event, cardEntity)}
                                     style={{ minWidth: 72 }}
                                 />
                             </CardActions>}
@@ -165,3 +154,5 @@ export default class CardList extends React.Component {
         );
     }
 }
+
+export default CardList;

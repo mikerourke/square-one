@@ -35,8 +35,8 @@ const getMenuIconStyle = (disabled?: ?boolean): Object => {
  * @param {Object} props Other props associated with the menu.
  */
 const IconDropdown = ({
-    disabled,
-    handleAddTouchTap,
+    disabled = false,
+    handleAddTouchTap = () => {},
     handleItemTouchTap,
     hasAddButton,
     itemIconName,
@@ -44,8 +44,8 @@ const IconDropdown = ({
     selections,
     ...props
 }: {
-    disabled?: ?boolean,
-    handleAddTouchTap?: ?(event: Event) => void,
+    disabled?: boolean,
+    handleAddTouchTap?: (event: Event) => void,
     handleItemTouchTap: (event: Event, child: Object) => void,
     hasAddButton: boolean,
     itemIconName?: ?string,
@@ -69,27 +69,29 @@ const IconDropdown = ({
             <MenuItem
                 innerDivStyle={{ padding: '0 0 0 48px' }}
                 key={selection}
-                leftIcon={
-                    itemIconName && (<FontIcon className="material-icons">
+                leftIcon={itemIconName && (
+                    <FontIcon className="material-icons">
                         {itemIconName}
-                    </FontIcon>)
-                }
+                    </FontIcon>
+                )}
                 primaryText={selection}
                 value={selection}
             />
         ))}
-        {hasAddButton && <MenuItem
-            innerDivStyle={{ padding: '0 0 0 48px' }}
-            key={999}
-            leftIcon={
-                (<FontIcon className="material-icons">
-                    add_circle_outline
-                </FontIcon>)
-            }
-            onTouchTap={handleAddTouchTap}
-            primaryText="Add New"
-            value="Add New"
-        />}
+        {hasAddButton && (
+            <MenuItem
+                innerDivStyle={{ padding: '0 0 0 48px' }}
+                key={999}
+                leftIcon={(
+                    <FontIcon className="material-icons">
+                        add_circle_outline
+                    </FontIcon>
+                )}
+                onTouchTap={handleAddTouchTap}
+                primaryText="Add New"
+                value="Add New"
+            />
+        )}
     </IconMenu>
 );
 

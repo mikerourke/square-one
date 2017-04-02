@@ -4,37 +4,47 @@ module.exports = (router, server) => {
     const db = router.db;
 
     const getCurrentTime = () =>
-        moment().format('YYYY-MM-DD HH:mm:ss.SSS Z');
+        moment().format('YYYY-MM-DD HH:mm:ss');
 
     /**
      * Finds the last element of the specified type in the database and returns
      *      the corresponding ID elements associated with the item.
      * @param {string} parentName Name of the parent entity.
-     * @param {string} childName Name of the child entity.
+     * @param {string} [childName] Name of the child entity.
      * @returns {Object} ID elements of the last child entity.
      */
-    const getIdElementsOfLastChild = (parentName, childName) => {
+    const getIdElementsOfEntity = (parentName, childName) => {
+        let parentIds = [];
+        let childIds = [];
+
         const parentEntities = db
             .get(`${parentName}s`)
             .value();
-
-        let childIds = [];
         parentEntities.forEach(parent => {
-            parent[`${childName}s`].forEach(child => childIds.push(child.id));
+            parentIds.push(parent.id);
+            if (childName) {
+                const childEntities = parent[`${childName}s`];
+                childEntities.forEach(child => childIds.push(child.id));
+            }
         });
 
-        const lastChildId = Math.max(...childIds).toString();
+        let entityIds = parentIds;
+        if (childName) {
+            entityIds = childIds;
+        }
+
+        const lastId = Math.max(...entityIds).toString();
         return {
-            type: lastChildId.substring(0, 3),
-            dateCreated: lastChildId.substring(3, 9),
-            sequence: lastChildId.substring(9),
+            type: lastId.substring(0, 3),
+            dateCreated: lastId.substring(3, 9),
+            sequence: lastId.substring(9),
         };
     };
 
     /**
      * Returns the next ID number based on the entity type.
      * @param {string} parentName Name of the parent entity.
-     * @param {string} childName Name of the child entity.
+     * @param {string} [childName] Name of the child entity.
      * @returns {number} Next ID number.
      */
     const getNewId = (parentName, childName) => {
@@ -42,7 +52,7 @@ module.exports = (router, server) => {
             type,
             dateCreated,
             sequence
-        } = getIdElementsOfLastChild(parentName, childName);
+        } = getIdElementsOfEntity(parentName, childName);
 
         let dateForId = moment().format('YYMMDD');
         let sequenceForId = '0000';
@@ -87,7 +97,8 @@ module.exports = (router, server) => {
             const parentId = req.params[`${parentName}Id`];
             const childId = req.params[`${childName}Id`];
             const childRecord = Object.assign({}, req.body, {
-               updatedAt: getCurrentTime(),
+                updatedBy: modifyingUser,
+                updatedAt: getCurrentTime(),
             });
             delete childRecord.typeName;
             db.get(`${parentName}s`)
@@ -98,6 +109,12 @@ module.exports = (router, server) => {
                 .write();
             res.jsonp(childRecord);
         });
+    };
+
+    const modifyingUser = {
+        userId: 1,
+        username: 'mike',
+        fullName: 'Mike Rourke',
     };
 
     /**
@@ -113,8 +130,9 @@ module.exports = (router, server) => {
         const currentTime = getCurrentTime();
         let childRecord = Object.assign({}, entity, {
             id: getNewId(parentName, childName),
+            createdBy: modifyingUser,
             createdAt: currentTime,
-            createdBy: 'mike',
+            updatedBy: modifyingUser,
             updatedAt: currentTime,
         });
         delete childRecord.typeName;
@@ -209,10 +227,39 @@ module.exports = (router, server) => {
      * Adds any custom route(s) to the Lead entity.
      */
     const addLeadRoutes = () => {
-        const urlPath = '/leads/:leadId';
-        server.patch(urlPath, (req, res) => {
+        server.delete('/leads/:leadId', (req, res) => {
+            const leadId = parseInt(req.params['leadId'], 10);
+            const deletedLead = db
+                .get('leads')
+                .find({ id: leadId })
+                .value();
+
+            db.get('leads')
+                .remove({ id: leadId })
+                .write();
+            res.jsonp(deletedLead);
+        });
+
+        server.post('/leads', (req, res) => {
+            const currentTime = getCurrentTime();
+            const leadId = getNewId('lead');
+            const leadRecord = Object.assign({}, req.body, {
+                id: leadId,
+                createdBy: modifyingUser,
+                createdAt: currentTime,
+                updatedBy: modifyingUser,
+                updatedAt: currentTime,
+            });
+            db.get('leads')
+                .push(leadRecord)
+                .write();
+            res.jsonp(leadRecord);
+        });
+
+        server.patch('/leads/:leadId', (req, res) => {
             const leadId = req.params['leadId'];
             const leadRecord = Object.assign({}, req.body, {
+                updatedBy: modifyingUser,
                 updatedAt: getCurrentTime(),
             }, getLeadChildren(leadId));
             delete leadRecord.typeName;

@@ -11,6 +11,7 @@ import {
     deleteLead,
     updateLead,
 } from 'state/entities/leads/actions';
+import { selectLeads } from 'state/entities/leads/selectors';
 import { Lead } from 'state/entities/models';
 import ChangesTimeline from './changes-timeline';
 import ConfirmationDialog from 'components/confirmation-dialog';
@@ -21,11 +22,29 @@ import NotesList from './notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
 import TabsPage from 'components/tabs-page';
 
+/* Types */
+type Props = {
+    lead: Lead,
+    createLead: (lead: Lead) => Promise<*>,
+    deleteLead: (lead: Lead) => Promise<*>,
+    updateLead: (lead: Lead) => Promise<*>,
+};
+
+type State = {
+    activeTabName: string,
+    confirmedAction: '' | 'DELETE-LEAD' | 'GO-BACK',
+    confirmationMessage: string,
+    isConfirmationDialogOpen: boolean,
+    isMessagesDialogOpen: boolean,
+    leadOnForm: Lead,
+};
+
 const mapStateToProps = (state, ownProps) => {
     let lead = new Lead();
+    const leadsInState = selectLeads(state);
     const leadId = ownProps.params.id || '0';
     if (leadId !== '0') {
-        lead = state.getIn(['entities', 'leads', 'byId', leadId]);
+        lead = leadsInState.get(leadId);
     }
     return {
         lead,
@@ -44,24 +63,11 @@ const mapDispatchToProps = dispatch => ({
  * @export
  * @class ManageLeadPage
  */
-export class ManageLeadPage extends React.Component {
-    props: {
-        createLead: (lead: Lead) => void,
-        deleteLead: (lead: Lead) => void,
-        lead: Lead,
-        updateLead: (lead: Lead) => void,
-    };
+export class ManageLeadPage extends React.Component<*, Props, State> {
+    props: Props;
+    state: State;
 
-    state: {
-        activeTabName: string,
-        confirmedAction: string,
-        confirmationMessage: string,
-        isConfirmationDialogOpen: boolean,
-        isMessagesDialogOpen: boolean,
-        leadOnForm: Lead,
-    };
-
-    constructor(props: any): void {
+    constructor(props: Props): void {
         super(props);
         this.state = {
             activeTabName: 'details',
@@ -69,7 +75,7 @@ export class ManageLeadPage extends React.Component {
             confirmationMessage: '',
             isConfirmationDialogOpen: false,
             isMessagesDialogOpen: false,
-            leadOnForm: this.props.lead,
+            leadOnForm: props.lead,
         };
     }
 
@@ -131,8 +137,8 @@ export class ManageLeadPage extends React.Component {
         const { confirmedAction } = this.state;
 
         if (confirmedAction === 'DELETE-LEAD') {
-            const deleteLeadPromise: Function = this.props.deleteLead;
-            deleteLeadPromise(lead).then(() => {
+            const deleteLeadFn: Function = this.props.deleteLead;
+            deleteLeadFn(lead).then(() => {
                 this.closeConfirmationAndRedirectToLeads();
             });
         } else {
@@ -156,6 +162,11 @@ export class ManageLeadPage extends React.Component {
         });
     };
 
+    /**
+     * Updates the Lead in local state from the form when a change is made
+     *      on the form.
+     * @param {Lead} lead Lead on the details form.
+     */
     handleFormFieldChange = (lead: Lead): void => {
         this.setState({ leadOnForm: lead });
     };
@@ -168,16 +179,17 @@ export class ManageLeadPage extends React.Component {
      */
     handleSaveButtonTouchTap = (event: Event, lead: Lead): void => {
         event.preventDefault();
-        const createLeadPromise: Function = this.props.createLead;
-        const updateLeadPromise: Function = this.props.updateLead;
+        const createLeadFn: Function = this.props.createLead;
+        const updateLeadFn: Function = this.props.updateLead;
 
         // If the ID is 0 (the default), a new Lead needs to be created,
         // otherwise update the Lead that corresponds with the ID.
-        let performActionPromise: Function = createLeadPromise;
+        let performActionFn: Function = createLeadFn;
         if (lead.id !== 0) {
-            performActionPromise = updateLeadPromise;
+            performActionFn = updateLeadFn;
         }
-        performActionPromise(lead).then(() => {
+        performActionFn(lead).then(() => {
+            // TODO: Add function to update ID in URL.
             this.setState({ isMessagesDialogOpen: true });
         });
     };
@@ -208,6 +220,7 @@ export class ManageLeadPage extends React.Component {
             confirmationMessage,
             isConfirmationDialogOpen,
             isMessagesDialogOpen,
+            leadOnForm,
         } = this.state;
 
         let tabPagesToShow = [
@@ -258,8 +271,8 @@ export class ManageLeadPage extends React.Component {
             <div>
                 <PageHeaderToolbar
                     handleBackArrowTouchTap={this.handleBackArrowTouchTap}
-                    headerText={lead.leadName}
-                    subheaderText={lead.status}
+                    headerText={leadOnForm.leadName}
+                    subheaderText={leadOnForm.status}
                 />
                 <TabsPage
                     handleTabPageChange={this.handleTabPageChange}
@@ -268,7 +281,7 @@ export class ManageLeadPage extends React.Component {
                 />
                 <MessagesDialog
                     handleTouchTap={this.handleMessageDialogTouchTap}
-                    lead={lead}
+                    lead={leadOnForm}
                     open={isMessagesDialogOpen}
                     redirectToLeads={true}
                 />

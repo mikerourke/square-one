@@ -13,10 +13,7 @@ import IconDropdown from 'components/icon-dropdown';
 import SearchToolbar from 'components/search-toolbar';
 import Table from './table';
 
-/**
- * Column in the data table.
- * @typedef Column
- */
+/* Types */
 type Column = {
     key: string,
     label: string,
@@ -24,55 +21,63 @@ type Column = {
     style: Object,
 };
 
-/**
- * Sorting parameters for the data table.
- * @typedef Sort
- */
 export type Sort = {
     column: string,
     order: 'asc' | 'desc',
+};
+
+type DefaultProps = {
+    filterSelections: Array<string>,
+    initialSort: Sort,
+    searchFields: Array<string>,
+};
+
+type Props = {
+    columns: Array<Column>,
+    data: List<*>,
+    filterSelections: Array<string>,
+    handleAddTouchTap: (event: Event) => void,
+    handleRowIconTouchTap: (event: Event, row: Object) => void,
+    initialSort?: Sort,
+    searchFields?: Array<string>,
+};
+
+type State = {
+    count: number,
+    data: List<*>,
+    page: number,
+    rowSize: number,
 };
 
 /**
  * Table with pagination, sorting, and filtering capabilities.
  * @param {Array} columns Columns to display in the table.
  * @param {List} data Data objects to display in the table.
+  * @param {Array} filterSelections Array of items to display in the Filter
+ *      menu dropdown.
  * @param {Function} handleAddTouchTap Action to perform when the Add button
  *      is pressed.
  * @param {Function} handleRowIconTouchTap Action to perform when the icon
  *      button associated with a specific row is pressed.
- * @param {Array} filterSelections Array of items to display in the Filter
- *      menu dropdown.
  * @param {Sort} [initialSort={}] Initial sorting to apply to the table data.
  * @param {Array} [searchFields=[]] Fields to include in the search.
  */
-export default class SearchableTable extends React.Component {
-    props: {
-        columns: Array<Column>,
-        data: List<*>,
-        filterSelections: Array<string>,
-        handleAddTouchTap: (event: Event) => void,
-        handleRowIconTouchTap: (event: Event, row: Object) => void,
-        initialSort?: Sort | Object,
-        searchFields?: Array<string>,
-    };
-
-    state: {
-        count: number,
-        data: List<*>,
-        page: number,
-        rowSize: number,
-    };
+class SearchableTable extends React.Component<DefaultProps, Props, State> {
+    props: Props;
+    state: State;
 
     static defaultProps = {
         filterSelections: [],
-        initialSort: {},
+        initialSort: {
+            column: '',
+            order: 'asc',
+        },
         searchFields: [],
     };
 
-    constructor(props: any): void {
+    constructor(props: Props): void {
         super(props);
-        const { data } = (this.props: Object);
+        const { data = new List() } = this.props;
         this.state = {
             count: data.count(),
             data,
@@ -107,7 +112,7 @@ export default class SearchableTable extends React.Component {
      */
     handlePreviousPageClick = (): void => {
         const { page } = this.state;
-        const previousPage = (page === 1) ? 1 : page - 1;
+        const previousPage = (page === 1) ? 1 : (page - 1);
         this.setState({ page: previousPage });
     };
 
@@ -232,3 +237,5 @@ export default class SearchableTable extends React.Component {
         );
     }
 }
+
+export default SearchableTable;

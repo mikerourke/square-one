@@ -9,6 +9,21 @@ import IconButton from 'material-ui/IconButton';
 /* Internal dependencies */
 import { alternateTextColor } from 'style/mui/palette';
 
+/* Types */
+type DefaultProps = {
+    backArrowTooltip: string,
+    handleBackArrowTouchTap: (event: Event) => void,
+    subheaderText: string
+};
+
+type Props = {
+    backArrowTooltip?: string,
+    handleBackArrowTouchTap?: (event: Event) => void,
+    headerText: string,
+    subheaderText?: string,
+    titleIconName: string,
+};
+
 const iconColor: string = alternateTextColor;
 
 /**
@@ -60,14 +75,8 @@ const SubheaderTextRow = styled.div`
  * @param {string} titleIconName Name of the Material Icon to display in the
  *      title.
  */
-export default class PageHeaderTitle extends React.Component {
-    props: {
-        backArrowTooltip?: string,
-        handleBackArrowTouchTap?: (event: Event) => void,
-        headerText: string,
-        subheaderText?: string,
-        titleIconName: string,
-    };
+class PageHeaderTitle extends React.Component<DefaultProps, Props, *> {
+    props: Props;
 
     static defaultProps = {
         backArrowTooltip: '',
@@ -117,3 +126,5 @@ export default class PageHeaderTitle extends React.Component {
         );
     }
 }
+
+export default PageHeaderTitle;

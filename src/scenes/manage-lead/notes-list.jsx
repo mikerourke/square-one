@@ -9,6 +9,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
+import { getDisplayDate } from 'lib/display-formats';
 import {
     createNote,
     deleteNote,
@@ -18,6 +19,32 @@ import { selectNotesInLead } from 'state/entities/notes/selectors';
 import { Lead, Note } from 'state/entities/models';
 import CardList from 'components/card-list';
 import ConfirmationDialog from 'components/confirmation-dialog';
+
+/* Types */
+import type { CardEntity } from 'components/card-list';
+
+type DefaultProps = {
+    createNote: (lead: Lead, note: Note) => void,
+    deleteNote: (lead: Lead, id: number) => void,
+    updateNote: (lead: Lead, note: Note) => void,
+    notes: List<Note>,
+};
+
+type Props = {
+    createNote?: (lead: Lead, note: Note) => void,
+    deleteNote?: (lead: Lead, id: number) => void,
+    updateNote?: (lead: Lead, note: Note) => void,
+    showAddButton: boolean,
+    lead: Lead,
+    notes?: List<Note>,
+};
+
+type State = {
+    activeNote: Note,
+    isConfirmationDialogOpen: boolean,
+    isEditDialogOpen: boolean,
+    editDialogTitle: string,
+};
 
 const mapStateToProps = (state, ownProps) => ({
     notes: selectNotesInLead(state, ownProps),
@@ -36,36 +63,45 @@ const mapDispatchToProps = dispatch => ({
  *      for creating new notes.
  * @param {Lead} lead Parent Lead containing the notes.
  */
-export class NotesList extends React.Component {
-    props: {
-        createNote?: (lead: Lead, note: Note) => void,
-        deleteNote?: (lead: Lead, id: number) => void,
-        showAddButton: boolean,
-        lead: Lead,
-        notes?: List<Note>,
-        updateNote?: (lead: Lead, note: Note) => void,
-    };
+export class NotesList extends React.Component<DefaultProps, Props, State> {
+    props: Props;
+    state: State;
 
-    state: {
-        activeNote: Note,
-        editDialogTitle: string,
-        isConfirmationDialogOpen: boolean,
-        isEditDialogOpen: boolean,
+    static defaultProps = {
+        createNote: () => {},
+        deleteNote: () => {},
+        updateNote: () => {},
+        notes: new List(),
     };
 
     constructor(): void {
         super();
         this.state = {
             activeNote: new Note(),
-            editDialogTitle: '',
             isConfirmationDialogOpen: false,
             isEditDialogOpen: false,
+            editDialogTitle: '',
         };
     }
 
+    /**
+     * Returns the note associated with the specified ID from the Notes list
+     *      in props.
+     * @param {number} noteId ID of the note to find.
+     * @returns {Note} Note associated with the ID.
+     */
     getNoteById = (noteId: number): Note => {
-        const notesInLead: any = this.props.notes;
-        return notesInLead.find(note => note.id === noteId);
+        const { notes = new List() } = this.props;
+        let foundNote;
+        notes.forEach((note) => {
+            if (note.id === noteId) {
+                foundNote = note;
+            }
+        });
+        if (foundNote) {
+            return foundNote;
+        }
+        return new Note();
     };
 
     /**
@@ -88,7 +124,7 @@ export class NotesList extends React.Component {
      * @param {Event} event Event associated with the Delete button.
      * @param {Object} cardEntity Entity associated with the selected card.
      */
-    handleCardDeleteTouchTap = (event: Event, cardEntity: Object): void => {
+    handleCardDeleteTouchTap = (event: Event, cardEntity: CardEntity): void => {
         event.preventDefault();
         const activeNote = this.getNoteById(cardEntity.id);
         this.setState({
@@ -103,7 +139,7 @@ export class NotesList extends React.Component {
      * @param {Event} event Event associated with the Edit button.
      * @param {Object} cardEntity Entity associated with the selected card.
      */
-    handleCardEditTouchTap = (event: Event, cardEntity: Object): void => {
+    handleCardEditTouchTap = (event: Event, cardEntity: CardEntity): void => {
         event.preventDefault();
         const activeNote = this.getNoteById(cardEntity.id);
         this.setState({
@@ -131,8 +167,11 @@ export class NotesList extends React.Component {
         event.preventDefault();
         const { activeNote } = this.state;
         const { lead } = this.props;
-        const deleteNotePromise: any = this.props.deleteNote;
-        deleteNotePromise(lead, activeNote.id).then(() => {
+        let deleteNoteFn: Function = () => {};
+        if (this.props.deleteNote) {
+            deleteNoteFn = this.props.deleteNote;
+        }
+        deleteNoteFn(lead, activeNote.id).then(() => {
             this.setState({ isConfirmationDialogOpen: false });
         });
     };
@@ -156,11 +195,19 @@ export class NotesList extends React.Component {
         event.preventDefault();
         const { activeNote } = this.state;
         const { lead } = this.props;
-        let performActionPromise: any = this.props.createNote;
-        if (activeNote.id !== 0) {
-            performActionPromise = this.props.updateNote;
+        let createNoteFn: Function = () => {};
+        if (this.props.createNote) {
+            createNoteFn = this.props.createNote;
         }
-        performActionPromise(lead, activeNote).then(() => {
+        let updateNoteFn: Function = () => {};
+        if (this.props.updateNote) {
+            updateNoteFn = this.props.updateNote;
+        }
+        let performActionFn: Function = createNoteFn;
+        if (activeNote.id !== 0) {
+            performActionFn = updateNoteFn;
+        }
+        performActionFn(lead, activeNote).then(() => {
             this.setState({ isEditDialogOpen: false });
         });
     };
@@ -171,17 +218,13 @@ export class NotesList extends React.Component {
      * @param {Event} event Event associated with the input.
      * @param {string} newValue Value of the input.
      */
-    handleInputChange = (event: Event, newValue: string = ''): void => {
+    handleInputChange = (event: Event & {
+        currentTarget: HTMLInputElement | HTMLTextAreaElement },
+        newValue: string = ''): void => {
         const { activeNote } = this.state;
-        const target = event.target;
-
-        // The element type is checked to conform with Flow type checking.
-        if (target instanceof HTMLInputElement ||
-            target instanceof HTMLTextAreaElement) {
-            const fieldName = target.name;
-            const updatedNote = activeNote.set(fieldName, newValue);
-            this.setState({ activeNote: updatedNote });
-        }
+        const fieldName = event.currentTarget.name;
+        const updatedNote = activeNote.set(fieldName, newValue);
+        this.setState({ activeNote: updatedNote });
     };
 
     /**
@@ -194,10 +237,11 @@ export class NotesList extends React.Component {
         let cardEntities = new List();
         if (notesInLead) {
             cardEntities = notesInLead.map((note) => {
+                const displayDate = getDisplayDate(note.createdAt);
                 const newEntity = {
                     id: note.id,
                     title: note.getIn(['createdBy', 'fullName']),
-                    subtitle: note.createdAt,
+                    subtitle: displayDate,
                     contents: note.contents,
                 };
                 return newEntity;

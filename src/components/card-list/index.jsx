@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import {
     Card,
     CardActions,
@@ -55,7 +55,7 @@ type State = {
  *      array that should be included in searches.
  * @param {boolean} showAddButton Indicates if the Add button should be shown.
  */
-class CardList extends React.Component<*, Props, State> {
+class CardList extends Component<*, Props, State> {
     props: Props;
     state: State;
 
@@ -102,7 +102,7 @@ class CardList extends React.Component<*, Props, State> {
                 />
                 <MuiList
                     style={{
-                        alignItems: 'stretch',
+                        alignItems: 'flex-start',
                         display: 'flex',
                         flexFlow: 'row wrap',
                         justifyContent: 'flex-start',
@@ -113,9 +113,9 @@ class CardList extends React.Component<*, Props, State> {
                             key={cardEntity.id}
                             style={{
                                 flex: '1 0 auto',
-                                margin: 16,
+                                margin: 8,
                                 minWidth: 300,
-                                width: '30%',
+                                width: '40%',
                             }}
                         >
                             <CardHeader

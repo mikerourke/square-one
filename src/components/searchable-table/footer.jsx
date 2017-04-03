@@ -13,7 +13,7 @@
  */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import FlatButton from 'material-ui/FlatButton';
@@ -70,7 +70,7 @@ const PaginationButtonsContainer = styled.div`
  * @export
  * @class Footer
  */
-class Footer extends React.Component<*, Props, *> {
+class Footer extends Component<*, Props, *> {
     props: Props;
 
     /**

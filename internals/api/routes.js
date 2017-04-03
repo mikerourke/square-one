@@ -272,19 +272,17 @@ module.exports = (router, server) => {
     };
 
     const getUserInDb = (userFromReq) => {
-        const usersInDb = db
+        return db
             .get('users')
-            .value();
-        return usersInDb.find(userInDb =>
-            userInDb.username === userFromReq.username);
+            .find({ username: userFromReq.username })
     };
 
     const addSessionRoutes = () => {
         server.post('/login', (req, res) => {
             const userFromReq = req.body;
-            const userInDb = getUserInDb(userFromReq);
+            const userInDb = getUserInDb(userFromReq).value();
             if (userFromReq.password === userInDb.password) {
-                delete userInDb.password;
+                userInDb.isLoggedIn = true;
                 res.jsonp(userInDb);
             } else {
                 res.status(401).send('Invalid password');
@@ -292,7 +290,13 @@ module.exports = (router, server) => {
         });
 
         server.post('/logout', (req, res) => {
-            res.jsonp(getUserInDb(req));
+            const updatedUser = getUserInDb(req.body);
+            updatedUser
+                .assign({ isLoggedIn: false, password: 'mike' })
+                .write();
+            const loggedOutUser = updatedUser.value();
+            delete loggedOutUser.password;
+            res.jsonp(loggedOutUser);
         });
     };
 

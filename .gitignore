@@ -40,3 +40,4 @@ backup.json
 local.json
 stats.json
 /config.js
+db.json

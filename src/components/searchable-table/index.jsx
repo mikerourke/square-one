@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import { List } from 'immutable';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -62,7 +62,7 @@ type State = {
  * @param {Sort} [initialSort={}] Initial sorting to apply to the table data.
  * @param {Array} [searchFields=[]] Fields to include in the search.
  */
-class SearchableTable extends React.Component<DefaultProps, Props, State> {
+class SearchableTable extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
 

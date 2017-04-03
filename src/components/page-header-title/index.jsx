@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -75,7 +75,7 @@ const SubheaderTextRow = styled.div`
  * @param {string} titleIconName Name of the Material Icon to display in the
  *      title.
  */
-class PageHeaderTitle extends React.Component<DefaultProps, Props, *> {
+class PageHeaderTitle extends Component<DefaultProps, Props, *> {
     props: Props;
 
     static defaultProps = {

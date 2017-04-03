@@ -10,6 +10,7 @@ import styled from 'styled-components';
 const Container = styled.div`
     flex: 1 400px;
     margin: 0 auto;
+    padding: 0 8px 0 8px;
     min-width: 0px;
 `;
 
@@ -21,7 +22,7 @@ const FormColumn = ({
 }: {
     children?: React.Element<*>,
 }): React.Element<*> => (
-    <Container style={{ padding: '0 8px' }}>
+    <Container>
         {children}
     </Container>
 );

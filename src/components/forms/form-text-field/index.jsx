@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 
 /* Types */
@@ -42,7 +42,7 @@ type State = {
  *      is entered into the field.
  * @param {string|number} value Initial value of the field.
  */
-class FormTextField extends React.Component<DefaultProps, Props, State> {
+class FormTextField extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
 

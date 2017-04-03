@@ -1,13 +1,12 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
 import {
     Card,
     CardHeader,
-    CardTitle,
     CardText,
 } from 'material-ui/Card';
 import { List as MuiList } from 'material-ui/List';
@@ -20,6 +19,10 @@ import ActionButton from 'components/action-button';
 import MessagesDialog from './messages-dialog';
 
 /* Types */
+type DefaultProps = {
+    messages: List<Message>,
+};
+
 type Props = {
     lead: Lead,
     messages?: List<Message>,
@@ -34,9 +37,13 @@ const mapStateToProps = (state, ownProps) => ({
     messages: selectMessagesInLead(state, ownProps),
 });
 
-export class MessagesList extends React.Component<*, Props, State> {
+export class MessagesList extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
+
+    static defaultProps = {
+        messages: new List(),
+    };
 
     constructor(): void {
         super();

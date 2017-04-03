@@ -15,17 +15,16 @@ import SidebarHeader from './sidebar-header';
  * @param {boolean} open Indicates if the sidebar is visible.
  * @param {Function} handleToggle Action to perform when the hamburger menu
  *      button on the AppBar is pressed.
- * @param {string} userEmail Email address to display in the header of the
- *      sidebar.
+ * @param {string} fullNameOfUser Name to display in the header of the sidebar.
  */
 const Sidebar = ({
     open,
     handleToggle,
-    userEmail = '',
+    fullNameOfUser = '',
 }: {
-    open?: boolean,
-    handleToggle: () => void,
-    userEmail?: string,
+    open: boolean,
+    handleToggle: () => Promise<*>,
+    fullNameOfUser?: string,
 }): React.Element<*> => (
     <div>
         <Drawer
@@ -33,7 +32,7 @@ const Sidebar = ({
             docked={false}
             onRequestChange={handleToggle}
         >
-            <SidebarHeader userEmail={userEmail} />
+            <SidebarHeader fullNameOfUser={fullNameOfUser} />
             <Menu>
                 <LinkedMenuItem
                     id="home"
@@ -65,10 +64,5 @@ const Sidebar = ({
         </Drawer>
     </div>
 );
-
-Sidebar.defaultProps = {
-    open: false,
-    userEmail: '',
-};
 
 export default Sidebar;

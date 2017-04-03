@@ -42,7 +42,7 @@ const mergeEntities = (state: State, data: Object): State => {
     const { entities: { leads }, result } = (data: Object);
     return state.merge({
         byId: OrderedMap([...Object.entries(leads).map(
-            ([key, value]) => ([key, new Lead(fromJS(value))]))]),
+            ([key, value]) => ([+key, new Lead(fromJS(value))]))]),
         allIds: new List(result),
         error: new Map(),
     });
@@ -66,7 +66,7 @@ const getChildDataFromPayload = (payload: Object): Object => {
 
     return {
         data,
-        pathInState: ['byId', leadId, groupName],
+        pathInState: ['byId', +leadId, groupName],
     };
 };
 
@@ -83,14 +83,14 @@ export default (state: State = initialState, action: Action) => {
         case LEAD_CREATE_SUCCESS:
             const { payload: { data: newLead } } = (action: Object);
             return state
-                .setIn(['byId', newLead.id], new Lead(fromJS(newLead)))
+                .setIn(['byId', +newLead.id], new Lead(fromJS(newLead)))
                 // $FlowIgnore
-                .set('allIds', state.get('allIds').push(newLead.id));
+                .set('allIds', state.get('allIds').push(+newLead.id));
 
         case LEAD_GET_SINGLE_SUCCESS:
         case LEAD_UPDATE_SUCCESS:
             const { payload: { data: existingLead } } = (action: Object);
-            return state.setIn(['byId', existingLead.id],
+            return state.setIn(['byId', +existingLead.id],
                 new Lead(fromJS(existingLead)));
 
         case LEAD_DELETE_SUCCESS:
@@ -100,9 +100,9 @@ export default (state: State = initialState, action: Action) => {
                 leadId = id;
             }
             return state
-                .deleteIn(['byId', leadId.toString()])
+                .deleteIn(['byId', +leadId])
                 .set('allIds', state.get('allIds')
-                    .filter(idNumber => idNumber !== leadId));
+                    .filter(idNumber => idNumber !== +leadId));
 
         case LEAD_GET_ALL_SUCCESS:
             const { payload: { data: responseData } } = (action: Object);
@@ -111,7 +111,7 @@ export default (state: State = initialState, action: Action) => {
         case MESSAGES_SEND_SUCCESS:
             const { payload: messagesPayload } = (action: Object);
             const messages = getChildDataFromPayload(messagesPayload);
-            const messageIds = messages.data.map(message => message.id);
+            const messageIds = messages.data.map(message => +message.id);
             return state.mergeIn(messages.pathInState, messageIds);
 
         case CHANGES_CREATE_SUCCESS:
@@ -120,14 +120,14 @@ export default (state: State = initialState, action: Action) => {
             const newChild = getChildDataFromPayload(createdPayload);
             const newChildGroup: any = state.getIn(newChild.pathInState);
             return state.setIn(newChild.pathInState,
-                newChildGroup.push(newChild.data.id));
+                newChildGroup.push(+newChild.data.id));
 
         case NOTE_DELETE_SUCCESS:
             const { payload: deletedPayload } = (action: Object);
             const deleteChild = getChildDataFromPayload(deletedPayload);
             const deleteChildGroup: any = state.getIn(deleteChild.pathInState);
             const deleteChildState = deleteChildGroup
-                .filter(childId => childId !== deleteChild.data.id);
+                .filter(childId => childId !== +deleteChild.data.id);
             return state.setIn(deleteChild.pathInState, deleteChildState);
 
         default:

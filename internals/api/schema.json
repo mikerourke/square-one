@@ -21,7 +21,7 @@
         },
         "source": {
           "type": "string",
-          "pattern": "Did work in area|Facebook|Flyer|Home Advisor|Saw Sign"
+          "pattern": "Did work in area|Facebook|Flyer|HomeAdvisor|Saw Sign"
         },
         "leadFee": {
           "type": "integer",

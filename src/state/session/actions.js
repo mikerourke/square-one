@@ -25,7 +25,8 @@ export const logout = (username: string): Action => ({
     payload: {
         request: {
             method: 'post',
-            url: `/logout?username=${username}`,
+            url: '/logout',
+            data: { username },
         },
     },
 });

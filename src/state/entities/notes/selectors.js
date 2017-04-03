@@ -4,8 +4,13 @@
 import { List } from 'immutable';
 import { createSelector } from 'reselect';
 
-const getParentLead = (state, props) =>
-    state.getIn(['entities', 'leads', 'byId', props.lead.id.toString()]);
+const getParentLead = (state, props) => {
+    let leadId = 0;
+    if (props.lead) {
+        leadId = props.lead.id || 0;
+    }
+    return state.getIn(['entities', 'leads', 'byId', +leadId]);
+};
 
 const getNotes = state => state.getIn(['entities', 'notes', 'byId']);
 

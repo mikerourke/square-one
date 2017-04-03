@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
 
@@ -11,6 +11,10 @@ import { Change, Lead } from 'state/entities/models';
 import Timeline from 'components/timeline';
 
 /* Types */
+type DefaultProps = {
+    changes: List<Change>,
+};
+
 type Props = {
     lead: Lead,
     changes?: List<Change>,
@@ -20,8 +24,12 @@ const mapStateToProps = (state, ownProps) => ({
     changes: selectChangesInLead(state, ownProps),
 });
 
-export class ChangesTimeline extends React.Component<*, Props, *> {
+export class ChangesTimeline extends Component<DefaultProps, Props, *> {
     props: Props;
+
+    static defaultProps = {
+        changes: new List(),
+    };
 
     render() {
         const { changes } = this.props;

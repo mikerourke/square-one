@@ -6,8 +6,7 @@ import { Record } from 'immutable';
 export default class Session extends Record({
     id: (0: number),
     username: ('': string),
-    firstName: ('': string),
-    lastName: ('': string),
+    fullName: ('': string),
     title: ('': string),
     isLoggedIn: (false: boolean),
     accessLevel: ('': string),

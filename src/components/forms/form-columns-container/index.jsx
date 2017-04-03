@@ -1,5 +1,6 @@
 /* @flow */
 
+/* External dependencies */
 import styled from 'styled-components';
 
 /**

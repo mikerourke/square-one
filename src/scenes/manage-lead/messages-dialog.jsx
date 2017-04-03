@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import styled from 'styled-components';
@@ -12,18 +12,24 @@ import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
 import { getDedentedString } from 'lib/display-formats';
+import { selectListSettings } from 'state/settings/selectors';
 import { sendMessages } from 'state/entities/messages/actions';
 import { Lead, Message } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import IconDropdown from 'components/icon-dropdown';
 
 /* Types */
+type DefaultProps = {
+    sendMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
+    textTemplates: Array<string>,
+};
+
 type Props = {
     handleTouchTap: (event: Event) => void,
     lead: Lead,
     open: boolean,
     redirectToLeads: boolean,
-    sendMessages?: (lead: Lead, messages: Array<Message>) => void,
+    sendMessages?: (lead: Lead, messages: Array<Message>) => Promise<*>,
     textTemplates?: Array<string>,
 };
 
@@ -47,13 +53,10 @@ const LeadMessageContainer = styled.div`
     display: flex;
 `;
 
-const mapStateToProps = (state, ownProps) => {
-    const settings = state.getIn(['settings', 'byName']);
-    return {
-        lead: ownProps.lead,
-        textTemplates: settings.get('textTemplates').getData(),
-    };
-};
+const mapStateToProps = (state, ownProps) => ({
+    lead: ownProps.lead,
+    textTemplates: selectListSettings(state).textTemplates,
+});
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
@@ -69,9 +72,14 @@ const mapDispatchToProps = dispatch => ({
  * @param {boolean} redirectToLeads Indicates if browser is redirected to the
  *      Leads List page after submitting.
  */
-export class MessagesDialog extends React.Component<*, Props, State> {
+export class MessagesDialog extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
+
+    static defaultProps = {
+        sendMessages: () => Promise.resolve(),
+        textTemplates: [],
+    };
 
     constructor(): void {
         super();
@@ -152,7 +160,7 @@ export class MessagesDialog extends React.Component<*, Props, State> {
     handleSubmitTouchTap = (event: Event): void => {
         event.preventDefault();
         const { handleTouchTap, lead, redirectToLeads } = this.props;
-        let sendMessagesFn: Function = () => {};
+        let sendMessagesFn: Function = () => Promise.resolve();
         if (this.props.sendMessages) {
             sendMessagesFn = this.props.sendMessages;
         }

@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
 import Dialog from 'material-ui/Dialog';
@@ -24,16 +24,16 @@ import ConfirmationDialog from 'components/confirmation-dialog';
 import type { CardEntity } from 'components/card-list';
 
 type DefaultProps = {
-    createNote: (lead: Lead, note: Note) => void,
-    deleteNote: (lead: Lead, id: number) => void,
-    updateNote: (lead: Lead, note: Note) => void,
+    createNote: (lead: Lead, note: Note) => Promise<*>,
+    deleteNote: (lead: Lead, id: number) => Promise<*>,
+    updateNote: (lead: Lead, note: Note) => Promise<*>,
     notes: List<Note>,
 };
 
 type Props = {
-    createNote?: (lead: Lead, note: Note) => void,
-    deleteNote?: (lead: Lead, id: number) => void,
-    updateNote?: (lead: Lead, note: Note) => void,
+    createNote?: (lead: Lead, note: Note) => Promise<*>,
+    deleteNote?: (lead: Lead, id: number) => Promise<*>,
+    updateNote?: (lead: Lead, note: Note) => Promise<*>,
     showAddButton: boolean,
     lead: Lead,
     notes?: List<Note>,
@@ -63,14 +63,14 @@ const mapDispatchToProps = dispatch => ({
  *      for creating new notes.
  * @param {Lead} lead Parent Lead containing the notes.
  */
-export class NotesList extends React.Component<DefaultProps, Props, State> {
+export class NotesList extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
 
     static defaultProps = {
-        createNote: () => {},
-        deleteNote: () => {},
-        updateNote: () => {},
+        createNote: () => Promise.resolve(),
+        deleteNote: () => Promise.resolve(),
+        updateNote: () => Promise.resolve(),
         notes: new List(),
     };
 
@@ -167,7 +167,7 @@ export class NotesList extends React.Component<DefaultProps, Props, State> {
         event.preventDefault();
         const { activeNote } = this.state;
         const { lead } = this.props;
-        let deleteNoteFn: Function = () => {};
+        let deleteNoteFn: Function = () => Promise.resolve();
         if (this.props.deleteNote) {
             deleteNoteFn = this.props.deleteNote;
         }
@@ -192,14 +192,13 @@ export class NotesList extends React.Component<DefaultProps, Props, State> {
      * @param {Event} event Event associated with the Save button.
      */
     handleEditDialogSaveTouchTap = (event: Event): void => {
-        event.preventDefault();
         const { activeNote } = this.state;
         const { lead } = this.props;
-        let createNoteFn: Function = () => {};
+        let createNoteFn: Function = () => Promise.resolve();
         if (this.props.createNote) {
             createNoteFn = this.props.createNote;
         }
-        let updateNoteFn: Function = () => {};
+        let updateNoteFn: Function = () => Promise.resolve();
         if (this.props.updateNote) {
             updateNoteFn = this.props.updateNote;
         }
@@ -289,14 +288,17 @@ export class NotesList extends React.Component<DefaultProps, Props, State> {
                     open={isEditDialogOpen}
                     title={editDialogTitle}
                 >
-                    <TextField
-                        floatingLabelText="Contents"
-                        fullWidth={true}
-                        multiLine={true}
-                        name="contents"
-                        onChange={this.handleInputChange}
-                        value={activeNote.contents}
-                    />
+                    <form>
+                        <TextField
+                            floatingLabelText="Contents"
+                            fullWidth={true}
+                            multiLine={true}
+                            name="contents"
+                            onChange={this.handleInputChange}
+                            type="submit"
+                            value={activeNote.contents}
+                        />
+                    </form>
                 </Dialog>
                 <ConfirmationDialog
                     handleNoTouchTap={this.handleConfirmationNoTouchTap}

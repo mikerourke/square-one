@@ -35,7 +35,7 @@ const mergeEntities = (state: State, data: Object): State => {
     const { entities: { notes } } = (data: Object);
     return state.merge({
         byId: OrderedMap([...Object.entries(notes).map(
-            ([key, value]) => ([key, new Note(fromJS(value))]))]),
+            ([key, value]) => ([+key, new Note(fromJS(value))]))]),
         error: new Map(),
     });
 };
@@ -56,12 +56,12 @@ export default (state: State = initialState, action: Action) => {
         case NOTE_CREATE_SUCCESS:
         case NOTE_UPDATE_SUCCESS:
             const { payload: { data: newNote } } = (action: Object);
-            return state.setIn(['byId', newNote.id.toString()],
+            return state.setIn(['byId', +newNote.id],
                 new Note(fromJS(newNote)));
 
         case NOTE_DELETE_SUCCESS:
             const { payload: { data: { id } } } = (action: Object);
-            return state.deleteIn(['byId', id.toString()]);
+            return state.deleteIn(['byId', +id]);
 
         default:
             return state;

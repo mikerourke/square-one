@@ -15,7 +15,7 @@
 /* eslint-disable react/no-array-index-key */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import { List } from 'immutable';
 import { Table as MuiTable, TableHeader } from 'material-ui/Table';
 import IconButton from 'material-ui/IconButton';
@@ -67,7 +67,7 @@ type State = {
     sort: Sort,
 };
 
-class Table extends React.Component<DefaultProps, Props, State> {
+class Table extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
 

@@ -9,7 +9,7 @@ export const preventSubmissionOnEnter = (elementId: string) => {
     if (element) {
         const addEvent = element.addEventListener;
         addEvent('keypress', (event: KeyboardEvent) => {
-            if (event.keyCode === 13) {
+            if (event.key === 'Enter') {
                 event.preventDefault();
             }
         });

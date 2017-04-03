@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
@@ -40,7 +40,7 @@ const getInlineStyle = (transparency?: number = 1): Object => {
  * @param {boolean} [isStandalone=true] Indicates if the toolbar is a separate
  *      entity or integrated into a form.
  */
-class SearchToolbar extends React.Component<*, Props, *> {
+class SearchToolbar extends Component<*, Props, *> {
     props: Props;
 
     /**
@@ -57,7 +57,8 @@ class SearchToolbar extends React.Component<*, Props, *> {
         if (children) {
             return 0;
         }
-        return '0 16px 0 0';
+
+        return '0 8px 0 0';
     };
 
     render(): React.Element<*> {

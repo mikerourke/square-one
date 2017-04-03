@@ -42,9 +42,11 @@ type State = {
 const mapStateToProps = (state, ownProps) => {
     let lead = new Lead();
     const leadsInState = selectLeads(state);
-    const leadId = ownProps.params.id || '0';
-    if (leadId !== '0') {
-        lead = leadsInState.get(leadId);
+    const leadId = +ownProps.params.id || 0;
+    if (leadId !== 0) {
+        if (leadsInState.has(leadId)) {
+            lead = leadsInState.get(leadId);
+        }
     }
     return {
         lead,
@@ -179,17 +181,8 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
      */
     handleSaveButtonTouchTap = (event: Event, lead: Lead): void => {
         event.preventDefault();
-        const createLeadFn: Function = this.props.createLead;
         const updateLeadFn: Function = this.props.updateLead;
-
-        // If the ID is 0 (the default), a new Lead needs to be created,
-        // otherwise update the Lead that corresponds with the ID.
-        let performActionFn: Function = createLeadFn;
-        if (lead.id !== 0) {
-            performActionFn = updateLeadFn;
-        }
-        performActionFn(lead).then(() => {
-            // TODO: Add function to update ID in URL.
+        updateLeadFn(lead).then(() => {
             this.setState({ isMessagesDialogOpen: true });
         });
     };

@@ -6,10 +6,7 @@ import styled from 'styled-components';
 import FontIcon from 'material-ui/FontIcon';
 
 /* Internal dependencies */
-import {
-    alternateTextColor,
-    primary1Color,
-} from 'style/mui/palette';
+import { alternateTextColor, primary1Color } from 'style/mui/palette';
 
 /**
  * Styled container for the header contents.
@@ -22,21 +19,21 @@ const Container = styled.div`
 `;
 
 /**
- * Styled wrapper for the Email header.
+ * Styled wrapper for the full name header.
  */
-const EmailWrapper = styled.div`
+const FullNameWrapper = styled.div`
     font-size: 14px;
     margin-top: 12px;
 `;
 
 /**
  * Header used by the Sidebar in the application layout.
- * @param {string} userEmail Email address to show in the header.
+ * @param {string} fullNameOfUser Name to display in the header.
  */
 const SidebarHeader = ({
-    userEmail,
+    fullNameOfUser,
 }: {
-    userEmail: string,
+    fullNameOfUser: string,
 }): React.Element<*> => (
     <Container>
         <FontIcon
@@ -49,9 +46,9 @@ const SidebarHeader = ({
         >
             face
         </FontIcon>
-        <EmailWrapper>
-            {userEmail}
-        </EmailWrapper>
+        <FullNameWrapper>
+            {fullNameOfUser}
+        </FullNameWrapper>
     </Container>
 );
 

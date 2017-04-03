@@ -1,14 +1,14 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { OrderedMap } from 'immutable';
 import moment from 'moment';
 
 /* Internal dependencies */
-import { getAllLeads } from 'state/entities/leads/actions';
+import { createLead, getAllLeads } from 'state/entities/leads/actions';
 import { Lead } from 'state/entities/models';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
@@ -21,11 +21,13 @@ import type { Map } from 'immutable';
 import type { Sort } from 'components/searchable-table';
 
 type DefaultProps = {
+    createLead: (lead: Lead) => Promise<*>,
     getAllLeads: () => Promise<*>,
 };
 
 type Props = {
     leads: Map<number, Lead>,
+    createLead: (lead: Lead) => Promise<*>,
     getAllLeads: () => Promise<*>,
 };
 
@@ -40,14 +42,16 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
+    createLead: lead => dispatch(createLead(lead)),
     getAllLeads: () => dispatch(getAllLeads()),
 });
 
-export class LeadsList extends React.Component<DefaultProps, Props, State> {
+export class LeadsList extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
 
     static defaultProps = {
+        createLead: () => Promise.resolve(),
         getAllLeads: () => Promise.resolve(),
     };
 
@@ -61,15 +65,13 @@ export class LeadsList extends React.Component<DefaultProps, Props, State> {
 
     componentDidMount(): void {
         const getAllLeadsFn: Function = this.props.getAllLeads;
-        if (getAllLeadsFn) {
-            getAllLeadsFn().then(() => {
-                const leads = this.props.leads;
-                this.setState({
-                    isLoading: false,
-                    leads,
-                });
+        getAllLeadsFn().then(() => {
+            const leads = this.props.leads;
+            this.setState({
+                isLoading: false,
+                leads,
             });
-        }
+        });
     }
 
     /**
@@ -79,7 +81,13 @@ export class LeadsList extends React.Component<DefaultProps, Props, State> {
      */
     handleAddTouchTap = (event: Event): void => {
         event.preventDefault();
-        browserHistory.push('leads/new');
+        const createLeadFn: Function = this.props.createLead;
+        const newLead = new Lead();
+        createLeadFn(newLead).then(() => {
+            const newLeadFromState = this.props.leads.last();
+            const idOfNewLead = newLeadFromState.get('id');
+            browserHistory.push(`leads/${idOfNewLead}`);
+        });
     };
 
     /**

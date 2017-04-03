@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import FontIcon from 'material-ui/FontIcon';
 import {
     Step,
@@ -35,7 +35,7 @@ type State = {
  * Shows timeline of events associated with an entity.
  * @param {List} timelineEvents Events to display in the timeline.
  */
-class Timeline extends React.Component<*, Props, State> {
+class Timeline extends Component<*, Props, State> {
     props: Props;
     state: State;
 

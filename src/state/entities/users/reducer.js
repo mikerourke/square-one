@@ -33,7 +33,7 @@ const mergeEntities = (state: State, data: Object): State => {
     const { entities: { users } } = (data: Object);
     return state.merge({
         byId: OrderedMap([...Object.entries(users).map(
-            ([key, value]) => ([key, new User(fromJS(value))]))]),
+            ([key, value]) => ([+key, new User(fromJS(value))]))]),
         error: new Map(),
     });
 };
@@ -51,7 +51,7 @@ export default (state: State = initialState, action: Action) => {
 
         case USER_GET_SINGLE_SUCCESS:
             const { payload: { data: existingUser } } = (action: Object);
-            return state.setIn(['byId', existingUser.id],
+            return state.setIn(['byId', +existingUser.id],
                 new User(fromJS(existingUser)));
 
         default:

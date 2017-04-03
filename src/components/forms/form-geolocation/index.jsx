@@ -10,7 +10,7 @@
  */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import GoogleMapsLoader from 'google-maps';
 import styled from 'styled-components';
 import TextField from 'material-ui/TextField';
@@ -56,7 +56,7 @@ const MapWrapper = styled.div`
  *      is changed.
  * @param {MapLocation} startingLocation Initial location to show.
  */
-class FormGeolocation extends React.Component<DefaultProps, Props, State> {
+class FormGeolocation extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
     autocomplete: Autocomplete;

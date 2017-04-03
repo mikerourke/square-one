@@ -33,7 +33,7 @@ const mergeEntities = (state: State, data: Object): State => {
     const { entities: { changes } } = (data: Object);
     return state.merge({
         byId: OrderedMap([...Object.entries(changes).map(
-            ([key, value]) => ([key, new Change(fromJS(value))]))]),
+            ([key, value]) => ([+key, new Change(fromJS(value))]))]),
         error: new Map(),
     });
 };
@@ -52,7 +52,7 @@ export default (state: State = initialState, action: Action) => {
         case CHANGES_CREATE_SUCCESS:
             const { payload: { data: newChanges } } = (action: Object);
             return state.mergeIn(['byId'], newChanges.map(change =>
-                ([change.id, new Change(fromJS(change))])));
+                ([+change.id, new Change(fromJS(change))])));
 
         default:
             return state;

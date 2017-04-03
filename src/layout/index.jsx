@@ -9,6 +9,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 /* Internal dependencies */
 import { getMuiTheme } from 'style/mui';
 import { toggleAppSidebar } from 'state/gui/actions';
+import Session from 'state/session/model';
 import Header from './header';
 import Sidebar from './sidebar';
 
@@ -22,7 +23,7 @@ const ChildrenContainer = styled.div`
 
 const mapStateToProps = state => ({
     appSidebarOpen: state.getIn(['gui', 'appSidebarOpen']),
-    user: state.user,
+    session: state.get('session'),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -33,22 +34,21 @@ const mapDispatchToProps = dispatch => ({
 /**
  * Layout container for the application.  This is used to handle navigation
  *      within the entire application.
- * @param {React.Element} children React components to display as children.
  */
 const Layout = ({
     children,
     appSidebarOpen,
+    session,
     toggleSidebar,
 }: {
-    children?: React.Element<*>,
+    children: React.Element<*>,
     appSidebarOpen: boolean,
-    toggleSidebar: () => void,
+    session: Session,
+    toggleSidebar: () => Promise<*>,
 }): React.Element<*> => (
     <MuiThemeProvider muiTheme={getMuiTheme}>
         <div>
-            <Header
-                handleToggle={toggleSidebar}
-            />
+            {(session.id !== 0) && (<Header handleToggle={toggleSidebar} />)}
             <Sidebar
                 open={appSidebarOpen}
                 handleToggle={toggleSidebar}

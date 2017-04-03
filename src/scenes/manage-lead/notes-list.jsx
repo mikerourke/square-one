@@ -237,13 +237,12 @@ export class NotesList extends Component<DefaultProps, Props, State> {
         if (notesInLead) {
             cardEntities = notesInLead.map((note) => {
                 const displayDate = getDisplayDate(note.createdAt);
-                const newEntity = {
+                return {
                     id: note.id,
                     title: note.getIn(['createdBy', 'fullName']),
                     subtitle: displayDate,
                     contents: note.contents,
                 };
-                return newEntity;
             });
         }
         return cardEntities;
@@ -280,6 +279,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
                     handleDeleteTouchTap={this.handleCardDeleteTouchTap}
                     handleEditTouchTap={this.handleCardEditTouchTap}
                     hasActions={true}
+                    multipleCardsPerRow={true}
                     searchFieldInclusions={['contents']}
                     showAddButton={showAddButton}
                 />

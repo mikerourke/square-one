@@ -4,18 +4,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
-import {
-    Card,
-    CardHeader,
-    CardText,
-} from 'material-ui/Card';
-import { List as MuiList } from 'material-ui/List';
 
 /* Internal dependencies */
 import { getDisplayDate } from 'lib/display-formats';
 import { selectMessagesInLead } from 'state/entities/messages/selectors';
 import { Lead, Message } from 'state/entities/models';
 import ActionButton from 'components/action-button';
+import CardList from 'components/card-list';
 import MessagesDialog from './messages-dialog';
 
 /* Types */
@@ -62,39 +57,44 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
         this.setState({ isMessageDialogOpen: false });
     };
 
-    render(): React.Element<*> {
-        const { lead, messages, showAddButton } = this.props;
-        const { isMessageDialogOpen } = this.state;
-
-        let messagesInLead = new List();
-        if (messages) {
-            messagesInLead = messages.sortBy(message => message.createdAt);
+    /**
+     * Extrapolates the required properties for a card entity from the list of
+     *      messages and returns a list of card entities.
+     * @returns {Immutable.List}
+     */
+    getCardEntities = (): List<*> => {
+        const messagesInLead = this.props.messages;
+        let cardEntities = new List();
+        if (messagesInLead) {
+            cardEntities = messagesInLead
+                .map((message) => {
+                    const displayDate = getDisplayDate(message.createdAt);
+                    return {
+                        id: message.id,
+                        title: message.getIn(['createdBy', 'fullName']),
+                        subtitle: displayDate,
+                        contents: message.body,
+                    };
+                })
+                .sortBy(message => message.createdAt);
         }
+        return cardEntities;
+    };
+
+    render(): React.Element<*> {
+        const { lead, showAddButton } = this.props;
+        const { isMessageDialogOpen } = this.state;
 
         return (
             <div>
-                <MuiList>
-                    {messagesInLead.map(message => (
-                        <Card
-                            key={message.id}
-                            style={{ margin: 16 }}
-                        >
-                            <CardHeader
-                                subtitle={getDisplayDate(message.createdAt)}
-                                title={message.getIn(['createdBy', 'fullName'])}
-                            />
-                            <CardText>
-                                {message.body}
-                            </CardText>
-                        </Card>
-                    ))}
-                </MuiList>
-                {showAddButton && (
-                    <ActionButton
-                        handleTouchTap={this.handleAddButtonTouchTap}
-                        iconName="add"
-                    />
-                )}
+                <CardList
+                    cardEntities={this.getCardEntities()}
+                    handleAddTouchTap={this.handleAddButtonTouchTap}
+                    hasActions={false}
+                    multipleCardsPerRow={false}
+                    searchFieldInclusions={['body']}
+                    showAddButton={showAddButton}
+                />
                 <MessagesDialog
                     handleTouchTap={this.handleDialogTouchTap}
                     lead={lead}

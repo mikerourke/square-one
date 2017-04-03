@@ -32,6 +32,7 @@ type Props = {
     handleDeleteTouchTap?: (event: Event, cardEntity: CardEntity) => void,
     handleEditTouchTap?: (event: Event, cardEntity: CardEntity) => void,
     hasActions: boolean,
+    multipleCardsPerRow: boolean,
     searchFieldInclusions: Array<string>,
     showAddButton: boolean,
 };
@@ -51,6 +52,8 @@ type State = {
  *      is pressed.
  * @param {boolean} hasActions Indicates if the card has actions that can
  *      be performed.
+ * @param {boolean} multipleCardsPerRow Indicates if multiple cards can be on
+ *      a row or if each card should be on it's own row.
  * @param {Array} searchFieldInclusions Fields within the Card contents
  *      array that should be included in searches.
  * @param {boolean} showAddButton Indicates if the Add button should be shown.
@@ -84,15 +87,68 @@ class CardList extends Component<*, Props, State> {
         this.setState({ cardEntities: results });
     };
 
+    getStyles = (): Object => {
+        const { multipleCardsPerRow } = this.props;
+
+        let cardStyle = { margin: '0 8px 24px 8px' };
+        let listStyle = {};
+
+        if (multipleCardsPerRow) {
+            cardStyle = {
+                flex: '1 0 auto',
+                margin: 8,
+                minWidth: 300,
+                width: '40%',
+            };
+
+            listStyle = {
+                alignItems: 'flex-start',
+                display: 'flex',
+                flexFlow: 'row wrap',
+                justifyContent: 'flex-start',
+            };
+        }
+
+        return {
+            card: cardStyle,
+            list: listStyle,
+        };
+    };
+
+    getCardActions = (cardEntity): React.Element<*> => {
+        const {
+            handleDeleteTouchTap = () => {},
+            handleEditTouchTap = () => {},
+        } = this.props;
+
+        const buttonStyle = { minWidth: 72 };
+
+        return (
+            <CardActions>
+                <FlatButton
+                    label="Edit"
+                    onTouchTap={event =>
+                        handleEditTouchTap(event, cardEntity)}
+                    style={buttonStyle}
+                />
+                <FlatButton
+                    label="Delete"
+                    onTouchTap={event =>
+                        handleDeleteTouchTap(event, cardEntity)}
+                    style={buttonStyle}
+                />
+            </CardActions>
+        );
+    };
+
     render(): React.Element<*> {
         const {
             handleAddTouchTap,
-            handleDeleteTouchTap = () => {},
-            handleEditTouchTap = () => {},
             hasActions,
             showAddButton,
         } = this.props;
         const { cardEntities } = this.state;
+        const styles = this.getStyles();
 
         return (
             <div>
@@ -101,22 +157,12 @@ class CardList extends Component<*, Props, State> {
                     isStandalone={false}
                 />
                 <MuiList
-                    style={{
-                        alignItems: 'flex-start',
-                        display: 'flex',
-                        flexFlow: 'row wrap',
-                        justifyContent: 'flex-start',
-                    }}
+                    style={styles.list}
                 >
                     {cardEntities.map(cardEntity => (
                         <Card
                             key={cardEntity.id}
-                            style={{
-                                flex: '1 0 auto',
-                                margin: 8,
-                                minWidth: 300,
-                                width: '40%',
-                            }}
+                            style={styles.card}
                         >
                             <CardHeader
                                 subtitle={cardEntity.subtitle}
@@ -125,22 +171,7 @@ class CardList extends Component<*, Props, State> {
                             <CardText>
                                 {cardEntity.contents}
                             </CardText>
-                            {hasActions && <CardActions>
-                                <FlatButton
-                                    id="card-edit"
-                                    label="Edit"
-                                    onTouchTap={(event: Event) =>
-                                        handleEditTouchTap(event, cardEntity)}
-                                    style={{ minWidth: 72 }}
-                                />
-                                <FlatButton
-                                    id="card-delete"
-                                    label="Delete"
-                                    onTouchTap={(event: Event) =>
-                                        handleDeleteTouchTap(event, cardEntity)}
-                                    style={{ minWidth: 72 }}
-                                />
-                            </CardActions>}
+                            {hasActions && this.getCardActions(cardEntity)}
                         </Card>
                     ))}
                 </MuiList>

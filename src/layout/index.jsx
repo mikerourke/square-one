@@ -48,7 +48,7 @@ const Layout = ({
 }): React.Element<*> => (
     <MuiThemeProvider muiTheme={getMuiTheme}>
         <div>
-            {(session.id !== 0) && (<Header handleToggle={toggleSidebar} />)}
+            {(session.isLoggedIn) && (<Header handleToggle={toggleSidebar} />)}
             <Sidebar
                 open={appSidebarOpen}
                 handleToggle={toggleSidebar}

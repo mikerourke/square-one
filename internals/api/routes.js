@@ -281,6 +281,7 @@ module.exports = (router, server) => {
         server.post('/login', (req, res) => {
             const userFromReq = req.body;
             const userInDb = getUserInDb(userFromReq).value();
+            userInDb.password = 'mike';
             if (userFromReq.password === userInDb.password) {
                 userInDb.isLoggedIn = true;
                 res.jsonp(userInDb);

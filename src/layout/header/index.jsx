@@ -25,8 +25,8 @@ type Props = {
 };
 
 type State = {
-    popoverOpen: boolean,
     popoverAnchorEl?: EventTarget,
+    popoverOpen: boolean,
 };
 
 /**
@@ -43,10 +43,9 @@ const MenuHeaderContainer = styled.div`
  * Styled component within the menu header container.
  */
 const MenuHeaderItem = styled.div`
-    flex: 1 0 auto;
     font-size: 14px;
-    padding: 4px 16px;
-    width: 100%;
+    padding: 4px 0 4px 16px;
+    width: 144px;
 `;
 
 const mapStateToProps = state => ({
@@ -78,8 +77,8 @@ export class Header extends Component<*, Props, State> {
         currentTarget: HTMLButtonElement }): void => {
         event.preventDefault();
         this.setState({
-            popoverOpen: true,
             popoverAnchorEl: event.currentTarget,
+            popoverOpen: true,
         });
     };
 
@@ -117,7 +116,7 @@ export class Header extends Component<*, Props, State> {
 
     render() {
         const { handleToggle, session } = this.props;
-        const { popoverOpen, popoverAnchorEl } = this.state;
+        const { popoverAnchorEl, popoverOpen } = this.state;
 
         const userMenu = (
             <div>
@@ -135,7 +134,10 @@ export class Header extends Component<*, Props, State> {
                     targetOrigin={{ horizontal: 'left', vertical: 'top' }}
                     onRequestClose={this.handlePopoverRequestClose}
                 >
-                    <Menu onItemTouchTap={this.handleUserMenuItemTouchTap}>
+                    <Menu
+                        onItemTouchTap={this.handleUserMenuItemTouchTap}
+                        style={{ width: 128 }}
+                    >
                         <MenuHeaderContainer>
                             <MenuHeaderItem style={{ color: primary2Color }}>
                                 Logged in as

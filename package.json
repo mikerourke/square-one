@@ -1,7 +1,7 @@
 {
-  "name": "square1",
+  "name": "square-one",
   "version": "0.0.1",
-  "description": "Front end for the square1 lead tracking and resource management system.",
+  "description": "Front end for the Square One lead tracking and resource management system.",
   "scripts": {
     "api": "node internals/api/server.js",
     "api:watch": "nodemon internals/api/server.js",
@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wolfspace/square1-web"
+    "url": "https://github.com/mikerourke/square-one"
   },
   "author": "Mike Rourke",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/wolfspace/square1/issues"
+    "url": "https://github.com/mikerourke/square-one/issues"
   },
-  "homepage": "https://github.com/wolfspace/square1#readme",
+  "homepage": "https://github.com/mikerourke/square-one#readme",
   "dependencies": {
     "axios": "^0.16.0",
     "google-maps": "^3.2.1",

@@ -57,7 +57,7 @@ const TabsPage = ({
     paperStyle?: ?Object,
     tabPages: Array<TabPage>,
 }): React.Element<*> => (
-    <Container className="square1-toolbar">
+    <Container className="square-one-toolbar">
         <Tabs
             onChange={handleTabPageChange}
             style={{

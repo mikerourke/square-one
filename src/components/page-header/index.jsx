@@ -35,7 +35,7 @@ const PageHeader = ({
     titleLeft: React.Element<*>,
 }): React.Element<*> => (
     <Toolbar
-        className="square1-toolbar"
+        className="square-one-toolbar"
         style={{
             alignItems: 'flex-start',
             backgroundColor: primary1Color,

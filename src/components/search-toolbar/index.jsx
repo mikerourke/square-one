@@ -70,7 +70,7 @@ class SearchToolbar extends Component<*, Props, *> {
 
         return (
             <Toolbar
-                className={(isStandalone) ? 'square1-toolbar' : ''}
+                className={(isStandalone) ? 'square-one-toolbar' : ''}
                 style={{
                     display: 'block',
                     padding: this.getPaddingForToolbar(),

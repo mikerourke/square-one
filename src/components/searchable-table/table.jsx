@@ -48,11 +48,10 @@ type Props = {
     data: List<*>,
     fixedFooter?: boolean,
     fixedHeader?: boolean,
-    handleRowIconTouchTap: (event: Event, row: Object) => void,
+    handleRowIconTouchTap: (row: Object) => void,
     handleNextPageClick: () => void,
     handlePreviousPageClick: () => void,
-    handleRowSizeChange: (event: Event, key?: number,
-        value: number) => void,
+    handleRowSizeChange: (event: Event, key?: number, value: number) => void,
     handleSortOrderChange?: (key: string, order: string) => void,
     height?: string,
     initialSort?: Sort,
@@ -100,14 +99,17 @@ class Table extends Component<DefaultProps, Props, State> {
     }
 
     handleHeaderColumnClick = (
-        event: Event, rowIndex: number, columnIndex: number): void => {
+        event: Event,
+        rowIndex: number,
+        columnIndex: number,
+    ): void => {
         const { columns, handleSortOrderChange } = this.props;
         const adjustedColumnIndex = (columnIndex - 2);
         const column = columns[adjustedColumnIndex];
         if (column && column.sortable) {
             const { sort } = this.state;
             const key = column.key;
-            const order = sort.column === column.key && sort.order === 'asc'
+            const order = (sort.column === column.key && sort.order === 'asc')
                           ? 'desc'
                           : 'asc';
             this.setState({
@@ -200,8 +202,9 @@ class Table extends Component<DefaultProps, Props, State> {
                                     <IconButton
                                         iconClassName="material-icons"
                                         iconStyle={{ color: primary1Color }}
-                                        onTouchTap={(event: Event) =>
-                                            handleRowIconTouchTap(event, row)}
+                                        onTouchTap={
+                                            () => handleRowIconTouchTap(row)
+                                        }
                                     >
                                         mode_edit
                                     </IconButton>

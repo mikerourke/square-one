@@ -24,6 +24,12 @@ const mapStateToProps = (state, ownProps) => ({
     changes: selectChangesInLead(state, ownProps),
 });
 
+/**
+ * Timeline of changes associated with a Lead.
+ * @param {Lead} lead Lead entity containing changes.
+ * @export
+ * @class ChangesTimeline
+ */
 export class ChangesTimeline extends Component<DefaultProps, Props, *> {
     props: Props;
 
@@ -31,7 +37,7 @@ export class ChangesTimeline extends Component<DefaultProps, Props, *> {
         changes: new List(),
     };
 
-    render() {
+    render(): React.Element<*> {
         const { changes } = this.props;
         return (
             <Timeline

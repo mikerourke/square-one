@@ -13,7 +13,10 @@ import type { Action } from 'lib/types';
 
 type Parent = Lead;
 
-export const createNote = (parent: Parent, note: Note): Action => ({
+export const createNote = (
+    parent: Parent,
+    note: Note,
+): Action => ({
     type: NOTE_CREATE,
     payload: {
         request: {
@@ -24,7 +27,10 @@ export const createNote = (parent: Parent, note: Note): Action => ({
     },
 });
 
-export const deleteNote = (parent: Parent, id: number): Action => ({
+export const deleteNote = (
+    parent: Parent,
+    id: number,
+): Action => ({
     type: NOTE_DELETE,
     payload: {
         request: {
@@ -34,7 +40,10 @@ export const deleteNote = (parent: Parent, id: number): Action => ({
     },
 });
 
-export const updateNote = (parent: Parent, note: Note): Action => ({
+export const updateNote = (
+    parent: Parent,
+    note: Note,
+): Action => ({
     type: NOTE_UPDATE,
     payload: {
         request: {

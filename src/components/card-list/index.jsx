@@ -29,8 +29,8 @@ export type CardEntity = {
 type Props = {
     cardEntities: List<CardEntity>,
     handleAddTouchTap: (event: Event) => void,
-    handleDeleteTouchTap?: (event: Event, cardEntity: CardEntity) => void,
-    handleEditTouchTap?: (event: Event, cardEntity: CardEntity) => void,
+    handleDeleteTouchTap?: (cardEntity: CardEntity) => void,
+    handleEditTouchTap?: (cardEntity: CardEntity) => void,
     hasActions: boolean,
     multipleCardsPerRow: boolean,
     searchFieldInclusions: Array<string>,
@@ -80,10 +80,16 @@ class CardList extends Component<*, Props, State> {
      * @param {Event} event Event object associated with Search box.
      * @param {string} newValue Value to search by.
      */
-    handleSearchBoxChange = (event: Event, newValue: string): void => {
+    handleSearchBoxChange = (
+        event: Event,
+        newValue: string,
+    ): void => {
         const { cardEntities, searchFieldInclusions } = this.props;
         const results = getSearchResults(
-            cardEntities, newValue, searchFieldInclusions);
+            cardEntities,
+            newValue,
+            searchFieldInclusions,
+        );
         this.setState({ cardEntities: results });
     };
 
@@ -115,7 +121,7 @@ class CardList extends Component<*, Props, State> {
         };
     };
 
-    getCardActions = (cardEntity): React.Element<*> => {
+    getCardActions = (cardEntity: CardEntity): React.Element<*> => {
         const {
             handleDeleteTouchTap = () => {},
             handleEditTouchTap = () => {},
@@ -127,14 +133,12 @@ class CardList extends Component<*, Props, State> {
             <CardActions>
                 <FlatButton
                     label="Edit"
-                    onTouchTap={event =>
-                        handleEditTouchTap(event, cardEntity)}
+                    onTouchTap={() => handleEditTouchTap(cardEntity)}
                     style={buttonStyle}
                 />
                 <FlatButton
                     label="Delete"
-                    onTouchTap={event =>
-                        handleDeleteTouchTap(event, cardEntity)}
+                    onTouchTap={() => handleDeleteTouchTap(cardEntity)}
                     style={buttonStyle}
                 />
             </CardActions>

@@ -51,7 +51,9 @@ class RowColumn extends TableRowColumn {
 
     getRootStyle = (): Object => {
         const { children } = this.props;
-        const { muiTheme: { tableRowColumn } } = this.context;
+        const { muiTheme: {
+            tableRowColumn,
+        } } = this.context;
 
         const isRightAlign = (React.Children.count(children) === 1
                               && !isNaN(children));
@@ -81,7 +83,9 @@ class RowColumn extends TableRowColumn {
             ...props
         } = this.props;
 
-        const { muiTheme: { prepareStyles } } = this.context;
+        const { muiTheme: {
+            prepareStyles,
+        } } = this.context;
         const rootStyle = this.getRootStyle();
 
         const handlers = {

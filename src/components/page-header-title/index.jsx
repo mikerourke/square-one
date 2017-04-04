@@ -12,13 +12,13 @@ import { alternateTextColor } from 'style/mui/palette';
 /* Types */
 type DefaultProps = {
     backArrowTooltip: string,
-    handleBackArrowTouchTap: (event: Event) => void,
+    handleBackArrowTouchTap: () => void,
     subheaderText: string
 };
 
 type Props = {
     backArrowTooltip?: string,
-    handleBackArrowTouchTap?: (event: Event) => void,
+    handleBackArrowTouchTap?: () => void,
     headerText: string,
     subheaderText?: string,
     titleIconName: string,
@@ -80,7 +80,7 @@ class PageHeaderTitle extends Component<DefaultProps, Props, *> {
 
     static defaultProps = {
         backArrowTooltip: '',
-        handleBackArrowTouchTap: (event: Event) => {},
+        handleBackArrowTouchTap: () => {},
         subheaderText: '',
     };
 

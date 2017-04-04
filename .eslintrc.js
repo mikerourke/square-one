@@ -23,54 +23,58 @@ module.exports = {
         'react',
     ],
     rules: {
-        'class-methods-use-this': 0,
-        'eol-last': 0,
-        'indent': [1, 4, {
+        'class-methods-use-this': 'off',
+        'eol-last': 'off',
+        'indent': ['warn', 4, {
             SwitchCase: 1,
         }],
-        'linebreak-style': 0,
-        'max-len': [2, 80, 4, {
-            ignoreUrls: true
+        'linebreak-style': 'off',
+        'max-len': ['error', 80, 4, {
+            ignoreUrls: true,
+            ignoreComments: false,
+            ignoreRegExpLiterals: true,
+            ignoreStrings: true,
+            ignoreTemplateLiterals: true,
         }],
-        'newline-per-chained-call': 0,
-        'no-alert': 0,
-        'no-case-declarations': 0,
-        'no-confusing-arrow': 0,
-        'no-console': 0,
-        'no-debugger': 1,
-        'no-lone-blocks': 0,
-        'no-trailing-spaces': 0,
-        'no-underscore-dangle': 0,
-        'no-unused-vars': [1, {
-            ignoreRestSiblings: true
+        'newline-per-chained-call': 'off',
+        'no-alert': 'off',
+        'no-case-declarations': 'off',
+        'no-confusing-arrow': 'off',
+        'no-console': 'off',
+        'no-debugger': 'warn',
+        'no-lone-blocks': 'off',
+        'no-trailing-spaces': 'off',
+        'no-underscore-dangle': 'off',
+        'no-unused-vars': ['warn', {
+            ignoreRestSiblings: true,
         }],
-        'no-use-before-define': 0, // This causes issues with type declarations.
-        'semi': [1, 'always'],
-        'import/default': 0,
-        'import/extensions': 0,
-        'import/first': 0,
-        'import/no-duplicates': 0,
-        'import/no-extraneous-dependencies': 0,
-        'import/named': 0,
-        'import/namespace': [0, {
-            allowComputed: true
+        'no-use-before-define': 'off', // This causes issues with type declarations.
+        'semi': ['warn', 'always'],
+        'import/default': 'off',
+        'import/extensions': 'off',
+        'import/first': 'off',
+        'import/no-duplicates': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'import/named': 'off',
+        'import/namespace': ['off', {
+            allowComputed: true,
         }],
-        'import/no-named-as-default': 0,
-        'import/no-named-as-default-member': 0,
-        'import/no-unresolved': 2,
-        'import/prefer-default-export': 0,
-        'jsx-a11y/no-marquee': 0,
-        'react/display-name': 0,
-        'react/forbid-prop-types': 0,
-        'react/jsx-boolean-value': 0,
-        'react/jsx-filename-extension': 0,
-        'react/jsx-indent': [1, 4],
-        'react/jsx-indent-props': 0,
-        'react/no-unused-prop-types': 0,
+        'import/no-named-as-default': 'off',
+        'import/no-named-as-default-member': 'off',
+        'import/no-unresolved': 'error',
+        'import/prefer-default-export': 'off',
+        'jsx-a11y/no-marquee': 'off',
+        'react/display-name': 'off',
+        'react/forbid-prop-types': 'off',
+        'react/jsx-boolean-value': 'off',
+        'react/jsx-filename-extension': 'off',
+        'react/jsx-indent': ['warn', 4],
+        'react/jsx-indent-props': 'off',
+        'react/no-unused-prop-types': 'off',
         // This is handled by Flow with default values:
-        'react/require-default-props': 0,
-        'react/self-closing-comp': 1,
-        'react/sort-comp': [1, {
+        'react/require-default-props': 'off',
+        'react/self-closing-comp': 'warn',
+        'react/sort-comp': ['warn', {
             order: [
                 'type-annotations',
                 'static-methods',
@@ -80,7 +84,7 @@ module.exports = {
                 'render',
             ],
         }],
-        'import/no-webpack-loader-syntax': 0,
+        'import/no-webpack-loader-syntax': 'off',
     },
     settings: {
         'import/resolver': {

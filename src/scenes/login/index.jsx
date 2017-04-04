@@ -67,6 +67,8 @@ const mapDispatchToProps = dispatch => ({
 
 /**
  * Login page for accessing the application.
+ * @export
+ * @class LoginPage
  */
 export class LoginPage extends Component<DefaultProps, Props, State> {
     props: Props;
@@ -88,8 +90,16 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
         };
     }
 
-    handleInputChange = (event: Event & { currentTarget: HTMLInputElement },
-        newValue: string): void => {
+    /**
+     * Updates the input value in local state after the value in the text field
+     *      is changed.  The error text for the associated input is cleared.
+     * @param {Event} event Event associated with the input.
+     * @param {string} newValue New value of the input.
+     */
+    handleInputChange = (
+        event: Event & { currentTarget: HTMLInputElement },
+        newValue: string,
+    ): void => {
         const fieldName = event.currentTarget.name;
         const errorTextFieldName = `${fieldName}ErrorText`;
         this.setState({
@@ -98,8 +108,14 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
         });
     };
 
+    /**
+     * Attempts to login to the application if the user presses the Enter key
+     *      when focused on the password text field or login button.
+     * @param {Event} event Event associated with the focused control.
+     */
     handleKeyPress = (event: Event & {
-        currentTarget: HTMLInputElement | HTMLButtonElement }): void => {
+        currentTarget: HTMLInputElement | HTMLButtonElement },
+    ): void => {
         const controlName = event.currentTarget.name;
         const { key } = (event: Object);
         if (key === 'Enter') {
@@ -109,6 +125,12 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
         }
     };
 
+    /**
+     * Checks the values of the username and password text fields to ensure
+     *      values are present.  If either field is empty, error text is
+     *      displayed under the text field and return false.
+     * @returns {boolean} False is both fields aren't valid.
+     */
     validateEntries = (): boolean => {
         const { username, password } = this.state;
         let usernameErrorText = '';
@@ -129,22 +151,35 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
         return isValid;
     };
 
-    handleLoginButtonTouchTap = (event: Event): void => {
-        event.preventDefault();
+    /**
+     * Populates state with Settings and User entities and redirects to default
+     *      page.
+     */
+    hydrateStateAndLogin = (): void => {
+        const getAllSettingsFn = this.props.getAllSettings;
+        const getAllUsersFn = this.props.getAllUsers;
+        getAllSettingsFn()
+            .then(getAllUsersFn)
+            .then(() => browserHistory.push('/leads'));
+    };
+
+    /**
+     * Attempts to log the user in when the Login button is pressed.  If the
+     *      login information was valid, the state is populated with Setting and
+     *      User entities.  If invalid, the user is informed of any errors.
+     */
+    handleLoginButtonTouchTap = (): void => {
+        // Ensure the user entered values for the username and password.
         const entriesValid = this.validateEntries();
         if (entriesValid) {
             const { username, password } = this.state;
-            const getAllSettingsFn: Function = this.props.getAllSettings;
-            const getAllUsersFn: Function = this.props.getAllUsers;
-            const loginFn: Function = this.props.login;
+            const loginFn = this.props.login;
             loginFn(username, password).then(() => {
                 const currentSession = this.props.session;
                 if (currentSession.error) {
                     this.setState({ passwordErrorText: 'Incorrect password' });
                 } else {
-                    getAllSettingsFn()
-                        .then(getAllUsersFn)
-                        .then(() => browserHistory.push('/leads'));
+                    this.hydrateStateAndLogin();
                 }
             });
         }

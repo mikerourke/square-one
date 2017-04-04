@@ -8,7 +8,9 @@ import { OrderedMap } from 'immutable';
 import moment from 'moment';
 
 /* Internal dependencies */
+import { selectAllLeads } from 'state/entities/leads/selectors';
 import { createLead, getAllLeads } from 'state/entities/leads/actions';
+import { logChanges } from 'state/entities/changes/actions';
 import { Lead } from 'state/entities/models';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
@@ -20,15 +22,11 @@ import SearchableTable from 'components/searchable-table';
 import type { Map } from 'immutable';
 import type { Sort } from 'components/searchable-table';
 
-type DefaultProps = {
-    createLead: (lead: Lead) => Promise<*>,
-    getAllLeads: () => Promise<*>,
-};
-
 type Props = {
     leads: Map<number, Lead>,
     createLead: (lead: Lead) => Promise<*>,
     getAllLeads: () => Promise<*>,
+    logChanges: (lead: Lead, changes: Array<Object>) => Promise<*>,
 };
 
 type State = {
@@ -37,23 +35,24 @@ type State = {
 };
 
 const mapStateToProps = state => ({
-    leads: state.getIn(['entities', 'leads', 'byId']),
+    leads: selectAllLeads(state),
 });
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
     createLead: lead => dispatch(createLead(lead)),
     getAllLeads: () => dispatch(getAllLeads()),
+    logChanges: (lead, changes) => dispatch(logChanges(lead, changes)),
 });
 
-export class LeadsList extends Component<DefaultProps, Props, State> {
+/**
+ * Sortable and searchable list of Leads connected to global state.
+ * @export
+ * @class LeadsList
+ */
+export class LeadsList extends Component<*, Props, State> {
     props: Props;
     state: State;
-
-    static defaultProps = {
-        createLead: () => Promise.resolve(),
-        getAllLeads: () => Promise.resolve(),
-    };
 
     constructor(): void {
         super();
@@ -64,7 +63,7 @@ export class LeadsList extends Component<DefaultProps, Props, State> {
     }
 
     componentDidMount(): void {
-        const getAllLeadsFn: Function = this.props.getAllLeads;
+        const getAllLeadsFn = this.props.getAllLeads;
         getAllLeadsFn().then(() => {
             const leads = this.props.leads;
             this.setState({
@@ -77,11 +76,9 @@ export class LeadsList extends Component<DefaultProps, Props, State> {
     /**
      * Redirects the user to the Manage Lead page with empty fields for
      *      creating a new Lead.
-     * @param {Event} event Event associated with the Add button.
      */
-    handleAddTouchTap = (event: Event): void => {
-        event.preventDefault();
-        const createLeadFn: Function = this.props.createLead;
+    handleAddTouchTap = (): void => {
+        const createLeadFn = this.props.createLead;
         const newLead = new Lead();
         createLeadFn(newLead).then(() => {
             const newLeadFromState = this.props.leads.last();
@@ -93,12 +90,10 @@ export class LeadsList extends Component<DefaultProps, Props, State> {
     /**
      * Redirects the user to the Manage Lead page with the fields populated
      *      with properties from the selected Lead.
-     * @param {Event} event Event associated with the Edit button.
      * @param {Object} row Row element associated with the row on which the
      *      Edit button is located.
      */
-    handleEditTouchTap = (event: Event, row: Object): void => {
-        event.preventDefault();
+    handleEditTouchTap = (row: Object): void => {
         browserHistory.push(`leads/${row.id}`);
     };
 
@@ -121,8 +116,6 @@ export class LeadsList extends Component<DefaultProps, Props, State> {
             order: 'desc',
         };
 
-        const searchFields = ['leadName', 'description'];
-
         if (isLoading) {
             return (<ProgressIndicator />);
         }
@@ -144,7 +137,7 @@ export class LeadsList extends Component<DefaultProps, Props, State> {
                     handleAddTouchTap={this.handleAddTouchTap}
                     handleRowIconTouchTap={this.handleEditTouchTap}
                     initialSort={initialSort}
-                    searchFields={searchFields}
+                    searchFields={['leadName', 'description']}
                 />
             </div>
         );

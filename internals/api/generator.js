@@ -29,7 +29,10 @@ const getFormattedTime = (timeToFormat) =>
  * @param {string} userNameFromEntity User name to find.
  * @returns {Object} User object to populate in the database.
  */
-const getUserByUserName = (users, userNameFromEntity) => {
+const getUserByUserName = (
+    users,
+    userNameFromEntity
+) => {
     const userInDb = users.find(user => user.username === userNameFromEntity);
     const { id, username, fullName } = userInDb;
     return {
@@ -47,7 +50,11 @@ const getUserByUserName = (users, userNameFromEntity) => {
  * @param {number} nextId ID number to assign to the entity.
  * @returns {Object} Updated entity.
  */
-const getUpdatedEntity = (users, entity, nextId) => Object.assign({}, entity, {
+const getUpdatedEntity = (
+    users,
+    entity,
+    nextId
+) => Object.assign({}, entity, {
     id: nextId,
     createdBy: getUserByUserName(users, entity.createdBy),
     createdAt: getFormattedTime(entity.createdAt),
@@ -73,7 +80,10 @@ const getIdForDate = (entitySequence) => {
  * @param {Object} staticData Data from the static.json file.
  * @returns {Promise} Promise that resolves with array of updated parents.
  */
-const updateEntities = (parents, staticData) => new Promise((resolve) => {
+const updateEntities = (
+    parents,
+    staticData
+) => new Promise((resolve) => {
     const { users } = staticData;
     let parentId = getIdForDate(101);
     let changeId = getIdForDate(102);
@@ -101,7 +111,10 @@ const updateEntities = (parents, staticData) => new Promise((resolve) => {
  * @param {Object} staticData Data from existing static.json file.
  * @param {string} entityGroupName Name of the entity to get schema for.
  */
-const getFormattedSampleData = (staticData, entityGroupName) =>
+const getFormattedSampleData = (
+    staticData,
+    entityGroupName
+) =>
     new Promise((resolve, reject) => {
         const sampleEntities = jsf(schema[entityGroupName]);
         updateEntities(sampleEntities, staticData)
@@ -116,7 +129,10 @@ const getFormattedSampleData = (staticData, entityGroupName) =>
  * @param {Object} dataToWrite JSON object to write to the file.
  * @returns {Promise}
  */
-const writeDataToJsonFile = (filePath, dataToWrite) =>
+const writeDataToJsonFile = (
+    filePath,
+    dataToWrite
+) =>
     new Promise((resolve, reject) => {
         const fileName = path.basename(filePath);
         jsonFile.writeFile(filePath, dataToWrite, { spaces: 2 }, (err) => {

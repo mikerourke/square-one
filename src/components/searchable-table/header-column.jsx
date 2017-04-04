@@ -109,8 +109,14 @@ class HeaderColumn extends TableHeaderColumn {
     };
 
     getRootStyle = (): Object => {
-        const { alignRight, sortable, sorted } = this.props;
-        const { muiTheme: { tableHeaderColumn } } = this.context;
+        const {
+            alignRight,
+            sortable,
+            sorted,
+        } = this.props;
+        const { muiTheme: {
+            tableHeaderColumn,
+        } } = this.context;
 
         return {
             color: sorted ? '#3A3A3A' : tableHeaderColumn.textColor,
@@ -144,7 +150,9 @@ class HeaderColumn extends TableHeaderColumn {
             ...props
         } = this.props;
 
-        const { muiTheme: { prepareStyles } } = this.context;
+        const { muiTheme: {
+            prepareStyles,
+        } } = this.context;
         const rootStyle = this.getRootStyle();
 
         const handlers = {

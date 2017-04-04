@@ -19,7 +19,7 @@ const PageHeaderToolbar = ({
     headerText,
     subheaderText,
 }: {
-    handleBackArrowTouchTap: (event: Event) => void,
+    handleBackArrowTouchTap: () => void,
     headerText: string,
     subheaderText: string,
 }): React.Element<*> => (

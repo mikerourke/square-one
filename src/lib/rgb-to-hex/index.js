@@ -2,11 +2,17 @@
 
 /* eslint-disable no-bitwise */
 
+type Rgb = {
+    r: number,
+    g: number,
+    b: number,
+};
+
 /**
  * Given a hexidecimal string representing a color, returns the corresponding
  *      R, G, and B values as an object.
  */
-const getRgbFromHex = (hex: string) => {
+const getRgbFromHex = (hex: string): Rgb => {
     let newHex: string = hex.replace(/^#/, '');
 
     if (newHex.length === 3) {
@@ -15,13 +21,11 @@ const getRgbFromHex = (hex: string) => {
     }
 
     const bigInt: number = parseInt(newHex, 16);
-    const rgb: { r: number, g: number, b: number } =
-        {
-            r: (bigInt >> 16) & 255,
-            g: (bigInt >> 8) & 255,
-            b: bigInt & 255,
-        };
-    return rgb;
+    return {
+        r: (bigInt >> 16) & 255,
+        g: (bigInt >> 8) & 255,
+        b: bigInt & 255,
+    };
 };
 
 export default getRgbFromHex;

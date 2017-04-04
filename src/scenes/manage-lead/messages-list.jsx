@@ -9,11 +9,12 @@ import { List } from 'immutable';
 import { getDisplayDate } from 'lib/display-formats';
 import { selectMessagesInLead } from 'state/entities/messages/selectors';
 import { Lead, Message } from 'state/entities/models';
-import ActionButton from 'components/action-button';
 import CardList from 'components/card-list';
 import MessagesDialog from './messages-dialog';
 
 /* Types */
+import type { CardEntity } from 'components/card-list';
+
 type DefaultProps = {
     messages: List<Message>,
 };
@@ -32,6 +33,14 @@ const mapStateToProps = (state, ownProps) => ({
     messages: selectMessagesInLead(state, ownProps),
 });
 
+/**
+ * Searchable list of messages associated with a Lead with functionality to
+ *      allow for sending new messages.
+ * @param {Lead} lead Parent Lead entity associated with the messages.
+ * @param {boolean} showAddBoolean Indicates if the Add button should be shown.
+ * @export
+ * @class MessagesList
+ */
 export class MessagesList extends Component<DefaultProps, Props, State> {
     props: Props;
     state: State;
@@ -47,13 +56,17 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
         };
     }
 
-    handleAddButtonTouchTap = (event: Event): void => {
-        event.preventDefault();
+    /**
+     * Show the messages dialog form when the Add button is pressed.
+     */
+    handleAddButtonTouchTap = (): void => {
         this.setState({ isMessageDialogOpen: true });
     };
 
-    handleDialogTouchTap = (event: Event): void => {
-        event.preventDefault();
+    /**
+     * Hide the messages dialog when an action is performed.
+     */
+    handleDialogTouchTap = (): void => {
         this.setState({ isMessageDialogOpen: false });
     };
 
@@ -62,11 +75,13 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
      *      messages and returns a list of card entities.
      * @returns {Immutable.List}
      */
-    getCardEntities = (): List<*> => {
+    getCardEntities = (): List<CardEntity> => {
         const messagesInLead = this.props.messages;
         let cardEntities = new List();
         if (messagesInLead) {
             cardEntities = messagesInLead
+                .sortBy(message => message.createdAt)
+                .reverse()
                 .map((message) => {
                     const displayDate = getDisplayDate(message.createdAt);
                     return {
@@ -75,8 +90,7 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
                         subtitle: displayDate,
                         contents: message.body,
                     };
-                })
-                .sortBy(message => message.createdAt);
+                });
         }
         return cardEntities;
     };

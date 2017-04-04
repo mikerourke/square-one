@@ -15,7 +15,7 @@ import {
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
     LEAD_GET_SINGLE_SUCCESS, LEAD_GET_SINGLE_FAIL,
     LEAD_UPDATE_SUCCESS, LEAD_UPDATE_FAIL,
-    CHANGES_CREATE_SUCCESS,
+    CHANGES_LOG_SUCCESS,
     MESSAGES_SEND_SUCCESS,
     NOTE_CREATE_SUCCESS, NOTE_DELETE_SUCCESS,
 } from '../../action-types';
@@ -49,10 +49,7 @@ const mergeEntities = (state: State, data: Object): State => {
 };
 
 const getChildDataFromPayload = (payload: Object): Object => {
-    const {
-        config: { url },
-        data,
-    } = (payload: Object);
+    const { config: { url }, data } = (payload: Object);
 
     const urlArray = url.split('/');
     let leadId = '';
@@ -114,7 +111,7 @@ export default (state: State = initialState, action: Action) => {
             const messageIds = messages.data.map(message => +message.id);
             return state.mergeIn(messages.pathInState, messageIds);
 
-        case CHANGES_CREATE_SUCCESS:
+        case CHANGES_LOG_SUCCESS:
         case NOTE_CREATE_SUCCESS:
             const { payload: createdPayload } = (action: Object);
             const newChild = getChildDataFromPayload(createdPayload);

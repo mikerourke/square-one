@@ -28,9 +28,9 @@ type DefaultProps = {
 };
 
 type Props = {
-    handleDeleteTouchTap: (event: Event) => void,
+    handleDeleteTouchTap: () => void,
     handleFieldChange: (lead: Lead) => void,
-    handleSaveTouchTap: (event: Event, lead: Lead) => void,
+    handleSaveTouchTap: (lead: Lead) => void,
     lead: Lead,
     listSettings: Object,
 };
@@ -39,19 +39,21 @@ type State = {
     lead: Lead,
 };
 
-const mapStateToProps = state => ({
-    listSettings: selectListSettings(state),
-});
-
 const ButtonContainer = styled.div`
     margin-top: 28px;
     margin-left: 8px;
     width: 100%;
 `;
 
+const mapStateToProps = state => ({
+    listSettings: selectListSettings(state),
+});
+
 /**
  * Form component for entering Lead details.
- * @param {Object} lead Lead entity associated with the form.
+ * @param {Lead} lead Lead entity associated with the form.
+ * @export
+ * @class LeadDetailsForm
  */
 export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
     props: Props;
@@ -65,7 +67,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
         },
     };
 
-    constructor(props: Props) {
+    constructor(props: Props): void {
         super(props);
         this.state = {
             lead: props.lead,
@@ -79,28 +81,48 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
     }
 
     /**
+     * Changes the value of the specified field name to the specified value.
+     * @param {string} fieldName Name of the field to update.
+     * @param {string|number} newValue Value of the field.
+     */
+    updateLeadInState = (
+        fieldName: string,
+        newValue: string | number,
+    ): void => {
+        const { handleFieldChange } = this.props;
+        const { lead } = this.state;
+        const updatedLead = lead.set(fieldName, newValue);
+        this.setState({ lead: updatedLead });
+        handleFieldChange(updatedLead);
+    };
+
+    /**
      * Updates the Lead held in local state with the data from the field on the
      *      Details Form component.
      * @param {Event} event Event associated with the input.
      * @param {string|number} newValue New value of the input.
-     * @param {string} fieldName Name of the field associated with the input.
      */
-    // $FlowFixMe
-    handleInputChange = (event: Event & { currentTarget: HTMLInputElement },
-        newValue: string | number, fieldName?: string = ''): void => {
-        const { handleFieldChange } = this.props;
-        let nameOfField;
-        if (fieldName) {
-            nameOfField = fieldName;
-        } else {
-            nameOfField = event.currentTarget.name;
-        }
+    handleInputChange = (
+        // $FlowFixMe
+        event: Event & { currentTarget: HTMLInputElement },
+        newValue: string | number,
+    ): void => {
+        const fieldName = event.currentTarget.name;
+        this.updateLeadInState(fieldName, newValue);
+    };
 
-        // Update the Lead held in local state (Immutable Record).
-        const { lead } = this.state;
-        const updatedLead = lead.set(nameOfField, newValue);
-        this.setState({ lead: updatedLead });
-        handleFieldChange(updatedLead);
+    /**
+     * Update the value of the corresponding Lead field in local state when
+     *      the value of a select field is selected.
+     * @param {string} fieldName Name of the field associated with the select
+     *      field.
+     * @param {string} newValue Value of the selected item.
+     */
+    handleSelectionChange = (
+        fieldName: string,
+        newValue: string,
+    ): void => {
+        this.updateLeadInState(fieldName, newValue);
     };
 
     /**
@@ -116,8 +138,18 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
         this.setState({ lead: updatedLead });
     };
 
-    getSelections = (settingName: string,
-        allowEmpty?: boolean = false): Array<React.Element<*>> => {
+    /**
+     * Returns a list of MenuItem elements to populate a select field with the
+     *      specified name.
+     * @param {string} settingName Name of the corresponding setting to get
+     *      MenuItems for.
+     * @param {boolean} allowEmpty Create an empty value for the top item.
+     * @return {Array} Array of MenuItem elements.
+     */
+    getSelections = (
+        settingName: string,
+        allowEmpty?: boolean = false,
+    ): Array<React.Element<*>> => {
         const { listSettings } = this.props;
         const menuItems = listSettings[settingName].map(selection => (
             <MenuItem
@@ -148,7 +180,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                             floatingLabelText="Status"
                             fullWidth={true}
                             onChange={(event, key, value) => {
-                                this.handleInputChange(event, value, 'status');
+                                this.handleSelectionChange('status', value);
                             }}
                             value={lead.status}
                         >
@@ -175,7 +207,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                             floatingLabelText="Source"
                             fullWidth={true}
                             onChange={(event, key, value) => {
-                                this.handleInputChange(event, value, 'source');
+                                this.handleSelectionChange('source', value);
                             }}
                             value={lead.source}
                         >
@@ -213,8 +245,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                             floatingLabelText="Assign To"
                             fullWidth={true}
                             onChange={(event, key, value) => {
-                                this.handleInputChange(
-                                    event, value, 'assignTo');
+                                this.handleSelectionChange('assignTo', value);
                             }}
                             value={lead.assignTo}
                         >
@@ -244,7 +275,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                 <ButtonContainer>
                     <RaisedButton
                         label="Save"
-                        onTouchTap={event => handleSaveTouchTap(event, lead)}
+                        onTouchTap={() => handleSaveTouchTap(lead)}
                         primary={true}
                     />
                     <RaisedButton

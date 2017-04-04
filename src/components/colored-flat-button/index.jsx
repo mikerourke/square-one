@@ -21,7 +21,10 @@ import {
  *      secondary action.
  * @returns {string} Color to display on the button background.
  */
-const getBackgroundColor = (primary: boolean, secondary: boolean): string => {
+const getBackgroundColor = (
+    primary: boolean,
+    secondary: boolean,
+): string => {
     if (primary) {
         return primary1Color;
     }
@@ -43,7 +46,10 @@ const getBackgroundColor = (primary: boolean, secondary: boolean): string => {
  *      secondary action.
  * @returns {string} Color (with transparency) to display on hover.
  */
-const getHoverColor = (primary: boolean, secondary: boolean): string => {
+const getHoverColor = (
+    primary: boolean,
+    secondary: boolean,
+): string => {
     const backgroundColor = getBackgroundColor(primary, secondary);
     const { r, g, b } = getRgbFromHex(backgroundColor);
     return `rgba(${r},${g},${b},0.75)`;

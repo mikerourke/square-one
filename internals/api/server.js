@@ -8,7 +8,6 @@
 const { blue } = require('chalk');
 const path = require('path');
 const jsonServer = require('json-server');
-const moment = require('moment');
 
 /* Internal dependencies */
 const assignCustomRoutes = require('./routes');

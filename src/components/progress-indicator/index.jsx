@@ -36,6 +36,10 @@ const LoadingLabel = styled.div`
     width: 100%;
 `;
 
+/**
+ * Circular progress indicator that displays loading progress.
+ * @constructor
+ */
 const ProgressIndicator = (): React.Element<*> => (
     <Container>
         <ProgressWrapper>

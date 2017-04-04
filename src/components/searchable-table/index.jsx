@@ -37,7 +37,7 @@ type Props = {
     data: List<*>,
     filterSelections: Array<string>,
     handleAddTouchTap: (event: Event) => void,
-    handleRowIconTouchTap: (event: Event, row: Object) => void,
+    handleRowIconTouchTap: (row: Object) => void,
     initialSort?: Sort,
     searchFields?: Array<string>,
 };
@@ -123,7 +123,11 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
      * @param {number} key Key of the selected menu item.
      * @param {number} value Value of the selected menu item.
      */
-    handleRowSizeChange = (event: Event, key?: number, value: number): void => {
+    handleRowSizeChange = (
+        event: Event,
+        key?: number,
+        value: number,
+    ): void => {
         this.setState({ rowSize: value });
     };
 
@@ -133,7 +137,10 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
      * @param {Event} event Event associated with the Search Box.
      * @param {string} newValue Value of the Search Box.
      */
-    handleSearchBoxChange = (event: Event, newValue: string): void => {
+    handleSearchBoxChange = (
+        event: Event,
+        newValue: string,
+    ): void => {
         const { data, searchFields } = this.props;
         const results = getSearchResults(data, newValue, searchFields);
         this.setState({
@@ -147,7 +154,10 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
      * @param {string} key Name of the column to sort by.
      * @param {string} order Order to sort by (<tt>asc</tt> or <tt>desc</tt>).
      */
-    handleSortOrderChange = (key: string, order: string): void => {
+    handleSortOrderChange = (
+        key: string,
+        order: string,
+    ): void => {
         const { data } = this.props;
         const results = getSortedData(data, key, order);
         this.setState({

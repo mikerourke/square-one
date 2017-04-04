@@ -9,7 +9,10 @@ import {
 /* Types */
 import type { Action } from 'lib/types';
 
-export const login = (username: string, password: string): Action => ({
+export const login = (
+    username: string,
+    password: string,
+): Action => ({
     type: SESSION_LOGIN,
     payload: {
         request: {

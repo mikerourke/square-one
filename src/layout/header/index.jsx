@@ -66,15 +66,21 @@ export class Header extends Component<*, Props, State> {
     props: Props;
     state: State;
 
-    constructor(props: Props) {
+    constructor(props: Props): void {
         super(props);
         this.state = {
             popoverOpen: false,
         };
     }
 
+    /**
+     * Show the popover when the user account button is pressed.
+     * @param {Event} event Event associated with the account button.
+     */
     handleUserMenuButtonTouchTap = (event: Event & {
-        currentTarget: HTMLButtonElement }): void => {
+        currentTarget: HTMLButtonElement },
+    ): void => {
+        // Used to prevent ghost click.
         event.preventDefault();
         this.setState({
             popoverAnchorEl: event.currentTarget,
@@ -82,10 +88,20 @@ export class Header extends Component<*, Props, State> {
         });
     };
 
-    handleUserMenuItemTouchTap = (event: Event, menuItem: Object): void => {
+    /**
+     * Perform an action based on the selected menu item.
+     * @param {Event} event Event associated with the menu.
+     * @param {Object} menuItem Menu item selected from the popover.
+     */
+    handleUserMenuItemTouchTap = (
+        event: Event,
+        menuItem: Object,
+    ): void => {
         const { session } = this.props;
         const logoutFn = this.props.logout;
-        const { props: { value } } = menuItem;
+        const { props: {
+            value,
+        } } = menuItem;
         switch (value) {
             case 'refresh':
                 // TODO: Add code to handle Refresh.
@@ -110,11 +126,14 @@ export class Header extends Component<*, Props, State> {
         }
     };
 
+    /**
+     * Hide the popover menu.
+     */
     handlePopoverRequestClose = (): void => {
         this.setState({ popoverOpen: false });
     };
 
-    render() {
+    render(): React.Element<*> {
         const { handleToggle, session } = this.props;
         const { popoverAnchorEl, popoverOpen } = this.state;
 

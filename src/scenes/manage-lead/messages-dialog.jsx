@@ -94,10 +94,8 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * Closes the confirmation dialog if the user presses cancel.
-     * @param {Event} event Event associated with the Cancel button.
      */
-    handleCancelTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleCancelTouchTap = (): void => {
         this.setState({ isConfirmationDialogOpen: true });
     };
 
@@ -155,17 +153,23 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
     /**
      * Sends the messages specified by the user, closes any dialogs, and
      *      redirects the user to the Leads List (if applicable).
-     * @param {Event} event Event associated with the Submit button.
      */
-    handleSubmitTouchTap = (event: Event): void => {
-        event.preventDefault();
-        const { handleTouchTap, lead, redirectToLeads } = this.props;
-        let sendMessagesFn: Function = () => Promise.resolve();
+    handleSubmitTouchTap = (): void => {
+        const {
+            handleTouchTap,
+            lead,
+            redirectToLeads,
+        } = this.props;
+
+        // Hide the messages dialog form.
+        handleTouchTap(event);
+
+        // Get messages to send based on selections and send messages.
+        let sendMessagesFn = () => Promise.resolve();
         if (this.props.sendMessages) {
             sendMessagesFn = this.props.sendMessages;
         }
         const messagesToSend = this.getMessagesToSend();
-        handleTouchTap(event);
         sendMessagesFn(lead, messagesToSend).then(() => {
             this.closeConfirmationDialogAndResetInputs();
             if (redirectToLeads) {
@@ -176,20 +180,16 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * If the user does not wish to lose their changes, hide the dialog.
-     * @param {Event} event Event associated with the No button.
      */
-    handleConfirmationNoTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleConfirmationNoTouchTap = (): void => {
         this.setState({ isConfirmationDialogOpen: false });
     };
 
     /**
      * If the user confirms that they want to exit the page, redirect to the
      *      Leads List.
-     * @param {Event} event Event associated with the Yes button.
      */
-    handleConfirmationYesTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleConfirmationYesTouchTap = (): void => {
         const { handleTouchTap } = this.props;
         this.closeConfirmationDialogAndResetInputs();
         handleTouchTap(event);
@@ -210,8 +210,8 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
         // Multi-line template string include any tab characters, this
         // removes them:
-        const messageToRepresentative =
-            getDedentedString(messageTemplate).replace(/%~%/g, '\n');
+        const dedentedMessage = getDedentedString(messageTemplate);
+        const messageToRepresentative = dedentedMessage.replace(/%~%/g, '\n');
         this.setState({
             sendRepresentativeMessage: true,
             messageToRepresentative,
@@ -223,9 +223,12 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
      * @param {Event} event Event associated with the input.
      * @param {string} newValue New value of the input.
      */
-    handleInputChange = (event: Event & {
-        currentTarget: HTMLInputElement | HTMLTextAreaElement },
-        newValue: string = ''): void => {
+    handleInputChange = (
+        event: Event & {
+            currentTarget: HTMLInputElement | HTMLTextAreaElement
+        },
+        newValue: string = '',
+    ): void => {
         const fieldName = event.currentTarget.name;
         if (fieldName === 'sendRepresentativeMessage' && newValue === true) {
             this.handleToggleForRepresentativeMessage();
@@ -240,8 +243,10 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
      * @param {Event} event Event associated with the template dropdown menu.
      * @param {Object} child Menu item selected from the dropdown menu.
      */
-    handlePredefinedMessageChange = (event: Event, child: Object): void => {
-        event.preventDefault();
+    handlePredefinedMessageChange = (
+        event: Event,
+        child: Object,
+    ): void => {
         this.setState({ messageToLead: child.key });
     };
 

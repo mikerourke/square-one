@@ -80,14 +80,12 @@ const generateBundles = () => {
 /**
  * Deletes any ".map" files in the client directory.
  */
-const deleteUnneededFiles = () => {
-    return new Promise((resolve, reject) => {
-        const clientDir = path.join(process.cwd(), 'client');
-        shell.cd(clientDir);
-        shell.rm(shell.find('.').filter(file => file.match(/\.map$/)));
-        resolve();
-    });
-};
+const deleteUnneededFiles = () => new Promise((resolve) => {
+    const clientDir = path.join(process.cwd(), 'client');
+    shell.cd(clientDir);
+    shell.rm(shell.find('.').filter(file => file.match(/\.map$/)));
+    resolve();
+});
 
 copyFavicon()
     .then(generateBundles)

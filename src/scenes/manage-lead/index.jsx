@@ -11,7 +11,7 @@ import {
     deleteLead,
     updateLead,
 } from 'state/entities/leads/actions';
-import { selectLeads } from 'state/entities/leads/selectors';
+import { selectAllLeads } from 'state/entities/leads/selectors';
 import { Lead } from 'state/entities/models';
 import ChangesTimeline from './changes-timeline';
 import ConfirmationDialog from 'components/confirmation-dialog';
@@ -41,7 +41,7 @@ type State = {
 
 const mapStateToProps = (state, ownProps) => {
     let lead = new Lead();
-    const leadsInState = selectLeads(state);
+    const leadsInState = selectAllLeads(state);
     const leadId = +ownProps.params.id || 0;
     if (leadId !== 0) {
         if (leadsInState.has(leadId)) {
@@ -81,6 +81,11 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
         };
     }
 
+    /**
+     * Returns an array of differences between the lead in local state and the
+     *      the lead from props.
+     * @returns {Array} Array of differences between leads.
+     */
     getLeadDifferences = (): Array<Object> => {
         const { lead } = this.props;
         const { leadOnForm } = this.state;
@@ -90,10 +95,8 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
     /**
      * If the back button in the page header toolbar is pressed, confirm the
      *      user wants to exit the page if changes were made.
-     * @param {Event} event Event associated with the Back arrow button.
      */
-    handleBackArrowTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleBackArrowTouchTap = (): void => {
         const leadDifferences = this.getLeadDifferences();
         if (leadDifferences.length > 0) {
             const confirmationMessage =
@@ -111,10 +114,8 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
 
     /**
      * If the user does not wish to lose their changes, hide the dialog.
-     * @param {Event} event Event associated with the No button.
      */
-    handleConfirmationNoTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleConfirmationNoTouchTap = (): void => {
         this.setState({ isConfirmationDialogOpen: false });
     };
 
@@ -131,15 +132,13 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
      * If the user confirms that they want to exit the page or delete the Lead,
      *      the Lead is deleted (if applicable) and the user is redirected to
      *      the Leads List.
-     * @param {Event} event Event associated with the Yes button.
      */
-    handleConfirmationYesTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleConfirmationYesTouchTap = (): void => {
         const { lead } = this.props;
         const { confirmedAction } = this.state;
 
         if (confirmedAction === 'DELETE-LEAD') {
-            const deleteLeadFn: Function = this.props.deleteLead;
+            const deleteLeadFn = this.props.deleteLead;
             deleteLeadFn(lead).then(() => {
                 this.closeConfirmationAndRedirectToLeads();
             });
@@ -151,10 +150,8 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
     /**
      * Prompts the user with a confirmation if they want to delete the active
      *      Lead when the Delete button on the details form is pressed.
-     * @param {Event} event Event associated with the Delete button.
      */
-    handleDeleteButtonTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleDeleteButtonTouchTap = (): void => {
         const confirmationMessage =
             'Deleting a lead cannot be undone, do you wish to continue?';
         this.setState({
@@ -176,12 +173,10 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
     /**
      * Updates the Lead entity opens the Messages dialog when the Save button
      *      on the details form is pressed.
-     * @param {Event} event Event associated with the Save button.
      * @param {Lead} lead Lead being edited on the page.
      */
-    handleSaveButtonTouchTap = (event: Event, lead: Lead): void => {
-        event.preventDefault();
-        const updateLeadFn: Function = this.props.updateLead;
+    handleSaveButtonTouchTap = (lead: Lead): void => {
+        const updateLeadFn = this.props.updateLead;
         updateLeadFn(lead).then(() => {
             this.setState({ isMessagesDialogOpen: true });
         });
@@ -190,10 +185,8 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
     /**
      * Hides the Message creation dialog box regardless of the action that was
      *      performed.
-     * @param {Event} event Event associated with the button pressed.
      */
-    handleMessageDialogTouchTap = (event: Event) => {
-        event.preventDefault();
+    handleMessageDialogTouchTap = () => {
         this.setState({ isMessagesDialogOpen: false });
     };
 

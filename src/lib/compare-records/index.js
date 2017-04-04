@@ -11,8 +11,10 @@ import type { RecordDiff } from 'lib/types';
  * @param {Record} compareTo Record to compare to.
  * @returns {Array} Array of items that don't match.
  */
-export default (
-    compareFrom: Record<*>, compareTo: Record<*>): Array<RecordDiff> => {
+const compareRecords = (
+    compareFrom: Record<*>,
+    compareTo: Record<*>,
+): Array<RecordDiff> => {
     // Immutable Records have a "toJS()" function, for some reason Flow
     // isn't picking it up.
     // $FlowIgnore
@@ -37,3 +39,5 @@ export default (
     });
     return unmatchingFields;
 };
+
+export default compareRecords;

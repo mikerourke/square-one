@@ -59,8 +59,14 @@ class Row extends TableRow {
     props: Props;
 
     getStyles = (): Object => {
-        const { hovered, striped, displayBorder } = this.props;
-        const { muiTheme: { tableRow } } = this.context;
+        const {
+            hovered,
+            striped,
+            displayBorder,
+        } = this.props;
+        const { muiTheme: {
+            tableRow,
+        } } = this.context;
 
         let cellBgColor = 'inherit';
         if (hovered || this.state.hovered) {
@@ -101,7 +107,9 @@ class Row extends TableRow {
             ...props
         } = this.props;
 
-        const { muiTheme: { prepareStyles } } = this.context;
+        const { muiTheme: {
+            prepareStyles,
+        } } = this.context;
         const styles = this.getStyles();
 
         const rowColumns = React.Children.map(this.props.children,

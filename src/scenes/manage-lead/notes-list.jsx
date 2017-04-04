@@ -107,10 +107,8 @@ export class NotesList extends Component<DefaultProps, Props, State> {
     /**
      * Creates a new Note in local state and show the Add/Edit Dialog when the
      *      Add button is pressed.
-     * @param {Event} event Event associated with the Add button.
      */
-    handleAddButtonTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleAddButtonTouchTap = (): void => {
         this.setState({
             activeNote: new Note(),
             editDialogTitle: 'Add Note',
@@ -121,11 +119,9 @@ export class NotesList extends Component<DefaultProps, Props, State> {
     /**
      * Stores the selected Note in local state and shows the Confirmation
      *      Dialog when the Delete button is pressed on a Note card.
-     * @param {Event} event Event associated with the Delete button.
      * @param {Object} cardEntity Entity associated with the selected card.
      */
-    handleCardDeleteTouchTap = (event: Event, cardEntity: CardEntity): void => {
-        event.preventDefault();
+    handleCardDeleteTouchTap = (cardEntity: CardEntity): void => {
         const activeNote = this.getNoteById(cardEntity.id);
         this.setState({
             activeNote,
@@ -136,11 +132,9 @@ export class NotesList extends Component<DefaultProps, Props, State> {
     /**
      * Stores the selected Note in local state and shows the Add/Edit Dialog
      *      when the Edit button is pressed on a Note card.
-     * @param {Event} event Event associated with the Edit button.
      * @param {Object} cardEntity Entity associated with the selected card.
      */
-    handleCardEditTouchTap = (event: Event, cardEntity: CardEntity): void => {
-        event.preventDefault();
+    handleCardEditTouchTap = (cardEntity: CardEntity): void => {
         const activeNote = this.getNoteById(cardEntity.id);
         this.setState({
             activeNote,
@@ -151,23 +145,19 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Hides the Confirmation Dialog if the No button is pressed.
-     * @param {Event} event Event associated with the Cancel button.
      */
-    handleConfirmationNoTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleConfirmationNoTouchTap = (): void => {
         this.setState({ isConfirmationDialogOpen: false });
     };
 
     /**
      * Dispatches a delete note action when the Yes button is pressed in the
      *      Confirmation Dialog and closes.
-     * @param {Event} event Event associated with the Yes button.
      */
-    handleConfirmationYesTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleConfirmationYesTouchTap = (): void => {
         const { activeNote } = this.state;
         const { lead } = this.props;
-        let deleteNoteFn: Function = () => Promise.resolve();
+        let deleteNoteFn = () => Promise.resolve();
         if (this.props.deleteNote) {
             deleteNoteFn = this.props.deleteNote;
         }
@@ -178,10 +168,8 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Closes the Add/Edit Dialog if the Cancel button is pressed.
-     * @param {Event} event Event associated with the Cancel button.
      */
-    handleEditDialogCancelTouchTap = (event: Event): void => {
-        event.preventDefault();
+    handleEditDialogCancelTouchTap = (): void => {
         this.setState({ isEditDialogOpen: false });
     };
 
@@ -189,20 +177,19 @@ export class NotesList extends Component<DefaultProps, Props, State> {
      * Dispatches either a create note or update note action depending on if
      *      the Note is new or existing when the Save button is pressed in the
      *      Add/Edit Dialog.
-     * @param {Event} event Event associated with the Save button.
      */
-    handleEditDialogSaveTouchTap = (event: Event): void => {
+    handleEditDialogSaveTouchTap = (): void => {
         const { activeNote } = this.state;
         const { lead } = this.props;
-        let createNoteFn: Function = () => Promise.resolve();
+        let createNoteFn = () => Promise.resolve();
         if (this.props.createNote) {
             createNoteFn = this.props.createNote;
         }
-        let updateNoteFn: Function = () => Promise.resolve();
+        let updateNoteFn = () => Promise.resolve();
         if (this.props.updateNote) {
             updateNoteFn = this.props.updateNote;
         }
-        let performActionFn: Function = createNoteFn;
+        let performActionFn = createNoteFn;
         if (activeNote.id !== 0) {
             performActionFn = updateNoteFn;
         }
@@ -217,9 +204,12 @@ export class NotesList extends Component<DefaultProps, Props, State> {
      * @param {Event} event Event associated with the input.
      * @param {string} newValue Value of the input.
      */
-    handleInputChange = (event: Event & {
-        currentTarget: HTMLInputElement | HTMLTextAreaElement },
-        newValue: string = ''): void => {
+    handleInputChange = (
+        event: Event & {
+            currentTarget: HTMLInputElement | HTMLTextAreaElement
+        },
+        newValue: string = '',
+    ): void => {
         const { activeNote } = this.state;
         const fieldName = event.currentTarget.name;
         const updatedNote = activeNote.set(fieldName, newValue);
@@ -235,15 +225,18 @@ export class NotesList extends Component<DefaultProps, Props, State> {
         const notesInLead = this.props.notes;
         let cardEntities = new List();
         if (notesInLead) {
-            cardEntities = notesInLead.map((note) => {
-                const displayDate = getDisplayDate(note.createdAt);
-                return {
-                    id: note.id,
-                    title: note.getIn(['createdBy', 'fullName']),
-                    subtitle: displayDate,
-                    contents: note.contents,
-                };
-            });
+            cardEntities = notesInLead
+                .sortBy(note => note.createdAt)
+                .reverse()
+                .map((note) => {
+                    const displayDate = getDisplayDate(note.createdAt);
+                    return {
+                        id: note.id,
+                        title: note.getIn(['createdBy', 'fullName']),
+                        subtitle: displayDate,
+                        contents: note.contents,
+                    };
+                });
         }
         return cardEntities;
     };

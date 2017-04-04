@@ -9,7 +9,7 @@ import {
 
 /* Internal dependencies */
 import {
-    CHANGES_CREATE_SUCCESS, CHANGES_CREATE_FAIL,
+    CHANGES_LOG_SUCCESS, CHANGES_LOG_FAIL,
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Change from './model';
@@ -41,7 +41,7 @@ const mergeEntities = (state: State, data: Object): State => {
 export default (state: State = initialState, action: Action) => {
     switch (action.type) {
         case LEAD_GET_ALL_FAIL:
-        case CHANGES_CREATE_FAIL:
+        case CHANGES_LOG_FAIL:
             const { error: { response } } = (action: Object);
             return state.set('error', fromJS(response));
 
@@ -49,7 +49,7 @@ export default (state: State = initialState, action: Action) => {
             const { payload: { data: responseData } } = (action: Object);
             return mergeEntities(state, responseData);
 
-        case CHANGES_CREATE_SUCCESS:
+        case CHANGES_LOG_SUCCESS:
             const { payload: { data: newChanges } } = (action: Object);
             return state.mergeIn(['byId'], newChanges.map(change =>
                 ([+change.id, new Change(fromJS(change))])));

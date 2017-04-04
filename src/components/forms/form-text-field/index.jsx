@@ -145,7 +145,10 @@ class FormTextField extends Component<DefaultProps, Props, State> {
      * @param {string} errorText Error text associated with the input (if any).
      */
     updateInput = (
-        event: Event, newValue: string | number, errorText: string) => {
+        event: Event,
+        newValue: string | number,
+        errorText: string,
+    ) => {
         const { name, onValidInputChange } = this.props;
 
         if (errorText === '') {
@@ -163,7 +166,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
      *      the input loses focus.
      * @param {Event} event Event associated with the input.
      */
-    handleBlur = (event: Event & { currentTarget: HTMLInputElement }) => {
+    handleBlur = (event: Event & { currentTarget: HTMLInputElement }): void => {
         const { errorText } = this.state;
         const newValue = event.currentTarget.value;
         this.updateInput(event, newValue, errorText);
@@ -175,7 +178,10 @@ class FormTextField extends Component<DefaultProps, Props, State> {
      * @param {Event} event Event associated with the input.
      * @param {string|number} newValue New value of the input.
      */
-    handleChange = (event: Event, newValue: string | number): void => {
+    handleChange = (
+        event: Event,
+        newValue: string | number,
+    ): void => {
         const errorText = this.errorTextByPrecedence(newValue);
         this.updateInput(event, newValue, errorText);
     };

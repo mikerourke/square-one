@@ -74,7 +74,7 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
 
     constructor(props: Props): void {
         super(props);
-        const { address, lat, lng } = this.props.startingLocation;
+        const { address, lat, lng } = props.startingLocation;
         this.state = {
             address,
             lat,
@@ -207,7 +207,10 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
         });
     }
 
-    handleChange = (event: Event, newValue: string = ''): void => {
+    handleChange = (
+        event: Event,
+        newValue: string = '',
+    ): void => {
         this.setState({ address: newValue });
     };
 

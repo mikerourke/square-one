@@ -109,6 +109,7 @@ export default (state: State = initialState, action: Action) => {
             const { payload: messagesPayload } = (action: Object);
             const messages = getChildDataFromPayload(messagesPayload);
             const messageIds = messages.data.map(message => +message.id);
+            // TODO: Need to fix this for messages.
             return state.mergeIn(messages.pathInState, messageIds);
 
         case CHANGES_LOG_SUCCESS:

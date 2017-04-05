@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { OrderedMap } from 'immutable';
-import moment from 'moment';
 
 /* Internal dependencies */
 import { selectAllLeads } from 'state/entities/leads/selectors';
@@ -106,10 +105,7 @@ export class LeadsList extends Component<*, Props, State> {
         const leadData = leads
             .toList()
             .sortBy(lead => lead.createdAt)
-            .reverse()
-            .map(lead => lead.set('createdAt', moment(lead.createdAt,
-                'YYYY-MM-DD HH:mm:ss.SSS Z').format('MM/DD/YY')),
-            );
+            .reverse();
 
         const initialSort: Sort = {
             column: 'createdAt',

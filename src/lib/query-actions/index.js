@@ -42,18 +42,13 @@ export const getSearchResults = (
  * @returns {Array | List} Sorted items from data.
  */
 export const getSortedData = (
-    data: QueryData | List<*>,
+    data: List<*>,
     key: string,
     order?: string = 'asc',
-): QueryData => data
-    .slice()
-    .sort((leftHandItem, rightHandItem) => {
-        const sortValue = (leftHandItem[key] > rightHandItem[key]) ? 1 : -1;
-
-        // Multiplying the value by -1 ensures the array is sorted
-        // descending.
-        if (order === 'desc') {
-            return (sortValue * -1);
-        }
-        return sortValue;
-    });
+): List<*> => {
+    const sortedData = data.sortBy(item => item[key]);
+    if (order === 'desc') {
+        return sortedData.reverse();
+    }
+    return sortedData;
+};

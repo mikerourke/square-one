@@ -3,6 +3,7 @@
 /* External dependencies */
 import React, { Component } from 'react';
 import { List } from 'immutable';
+import moment from 'moment';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
@@ -78,13 +79,19 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
     constructor(props: Props): void {
         super(props);
         const { data = new List() } = this.props;
+        const formattedData = this.getDataWithFormattedDate(data);
         this.state = {
             count: data.count(),
-            data,
+            data: formattedData,
             page: 1,
             rowSize: 10,
         };
     }
+
+    getDataWithFormattedDate = (data: List<*>): List<*> => data.map(item =>
+        item.set('createdAt', moment(item.createdAt, 'YYYY-MM-DD HH:mm:ss')
+            .format('MM/DD/YY')));
+
 
     /**
      * Filters the data in the table based on the specified custom filter from
@@ -143,9 +150,10 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
     ): void => {
         const { data, searchFields } = this.props;
         const results = getSearchResults(data, newValue, searchFields);
+        const formattedData = this.getDataWithFormattedDate(results);
         this.setState({
             count: results.count(),
-            data: results,
+            data: formattedData,
         });
     };
 
@@ -160,9 +168,10 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
     ): void => {
         const { data } = this.props;
         const results = getSortedData(data, key, order);
+        const formattedData = this.getDataWithFormattedDate(results);
         this.setState({
             count: results.count(),
-            data: results,
+            data: formattedData,
         });
     };
 

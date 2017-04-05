@@ -24,6 +24,12 @@ export default [
         style: { width: 96 },
     },
     {
+        key: 'assignTo',
+        label: 'Representative',
+        sortable: true,
+        style: { width: 128 },
+    },
+    {
         key: 'createdAt',
         label: 'Created On',
         sortable: true,

@@ -12,15 +12,16 @@ import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
 import { getDedentedString } from 'lib/display-formats';
+// import { sendTextMessage } from 'lib/twilio-client';
 import { selectListSettings } from 'state/settings/selectors';
-import { sendMessages } from 'state/entities/messages/actions';
+import { createMessages } from 'state/entities/messages/actions';
 import { Lead, Message } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import IconDropdown from 'components/icon-dropdown';
 
 /* Types */
 type DefaultProps = {
-    sendMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
+    createMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
     textTemplates: Array<string>,
 };
 
@@ -29,7 +30,7 @@ type Props = {
     lead: Lead,
     open: boolean,
     redirectToLeads: boolean,
-    sendMessages?: (lead: Lead, messages: Array<Message>) => Promise<*>,
+    createMessages?: (lead: Lead, messages: Array<Message>) => Promise<*>,
     textTemplates?: Array<string>,
 };
 
@@ -60,7 +61,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
-    sendMessages: (lead, messages) => dispatch(sendMessages(lead, messages)),
+    createMessages: (lead, messages) => dispatch(
+        createMessages(lead, messages)),
 });
 
 /**
@@ -77,7 +79,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
     state: State;
 
     static defaultProps = {
-        sendMessages: () => Promise.resolve(),
+        createMessages: () => Promise.resolve(),
         textTemplates: [],
     };
 
@@ -118,7 +120,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
             messagesToSend.push(new Message({
                 body: messageToLead,
                 messageType: 'text',
-                recipient: '',
+                recipient: process.env.MY_PHONE_NUMBER,
                 subject: 'Message to Lead',
             }));
         }
@@ -127,7 +129,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
             messagesToSend.push(new Message({
                 body: messageToRepresentative,
                 messageType: 'text',
-                recipient: '',
+                recipient: process.env.MY_PHONE_NUMBER,
                 subject: 'Message to Representative',
             }));
         }
@@ -150,6 +152,17 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
         });
     };
 
+    // TODO: Fix Twilio client issue for Webpack HMRE.
+    // sendTextMessages = (messagesToSend: Array<Message>): Promise<*> =>
+    //     new Promise((resolve, reject) => {
+    //         const sendPromises = messagesToSend.map(message =>
+    //             sendTextMessage(message.recipient, message.contents));
+    //
+    //         Promise.all(sendPromises)
+    //             .then(() => resolve())
+    //             .catch(error => reject(error));
+    //     });
+
     /**
      * Sends the messages specified by the user, closes any dialogs, and
      *      redirects the user to the Leads List (if applicable).
@@ -165,16 +178,18 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
         handleTouchTap(event);
 
         // Get messages to send based on selections and send messages.
-        let sendMessagesFn = () => Promise.resolve();
-        if (this.props.sendMessages) {
-            sendMessagesFn = this.props.sendMessages;
+        let createMessagesFn = () => Promise.resolve();
+        if (this.props.createMessages) {
+            createMessagesFn = this.props.createMessages;
         }
         const messagesToSend = this.getMessagesToSend();
-        sendMessagesFn(lead, messagesToSend).then(() => {
+        createMessagesFn(lead, messagesToSend).then(() => {
             this.closeConfirmationDialogAndResetInputs();
+            // this.sendTextMessages(messagesToSend).then(() => {
             if (redirectToLeads) {
                 browserHistory.push('/leads');
             }
+            // });
         });
     };
 

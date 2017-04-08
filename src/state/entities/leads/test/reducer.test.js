@@ -1,5 +1,5 @@
 /* External dependencies */
-import { OrderedMap, fromJS } from 'immutable';
+import { OrderedMap } from 'immutable';
 import { normalize } from 'normalizr';
 
 /* Internal dependencies */
@@ -27,7 +27,6 @@ describe('Lead Reducer', () => {
     it('hydrates the state with Leads', () => {
         const normalizedData = getNormalizedData();
         const reducerValue = getStateForAllLeads();
-        console.log(reducerValue);
         const countOfLeads = reducerValue.get('byId').size;
         expect(countOfLeads).toEqual(3);
     });
@@ -60,7 +59,6 @@ describe('Lead Reducer', () => {
                 }
             }
         });
-
-        // TODO: Finish this test.
+        expect(reducerValue.hasIn(['byId', 1])).toBeFalsy();
     })
 });

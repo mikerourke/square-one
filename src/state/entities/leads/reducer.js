@@ -108,25 +108,47 @@ export default (state: State = initialState, action: Action) => {
         case MESSAGES_SEND_SUCCESS:
             const { payload: messagesPayload } = (action: Object);
             const messages = getChildDataFromPayload(messagesPayload);
-            const messageIds = messages.data.map(message => +message.id);
-            // TODO: Need to fix this for messages.
-            return state.mergeIn(messages.pathInState, messageIds);
+
+            // Create an array of the IDs from the messages data pulled from the
+            // response payload.
+            const idsOfNewMessages = messages.data.map(message => +message.id);
+
+            // Concatentate the array of newly created message IDs to the
+            // messages list in state.
+            const messagesInState = state.getIn(messages.pathInState);
+            if (messagesInState) {
+                return state.setIn(messages.pathInState,
+                    messagesInState.concat(idsOfNewMessages));
+            }
+            return state;
 
         case CHANGES_LOG_SUCCESS:
         case NOTE_CREATE_SUCCESS:
             const { payload: createdPayload } = (action: Object);
             const newChild = getChildDataFromPayload(createdPayload);
-            const newChildGroup: any = state.getIn(newChild.pathInState);
-            return state.setIn(newChild.pathInState,
-                newChildGroup.push(+newChild.data.id));
+
+            // Add the ID of the newly created entity to the array of the
+            // corresponding group in state.
+            const groupInStateForNew = state.getIn(newChild.pathInState);
+            if (groupInStateForNew) {
+                return state.setIn(newChild.pathInState,
+                    groupInStateForNew.push(+newChild.data.id));
+            }
+            return state;
 
         case NOTE_DELETE_SUCCESS:
             const { payload: deletedPayload } = (action: Object);
             const deleteChild = getChildDataFromPayload(deletedPayload);
-            const deleteChildGroup: any = state.getIn(deleteChild.pathInState);
-            const deleteChildState = deleteChildGroup
-                .filter(childId => childId !== +deleteChild.data.id);
-            return state.setIn(deleteChild.pathInState, deleteChildState);
+
+            // Removes the ID of the deleted entity from the array by returning
+            // an updated array with the deleted ID filtered out.
+            const groupInStateForDelete = state.getIn(deleteChild.pathInState);
+            if (groupInStateForDelete) {
+                return state.setIn(deleteChild.pathInState,
+                    groupInStateForDelete.filter(
+                        childId => childId !== +deleteChild.data.id));
+            }
+            return state;
 
         default:
             return state;

@@ -19,16 +19,34 @@
           "id": 1031703210001,
           "contents": "Note details",
           "isPrivate": false,
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         },
         {
           "id": 1031703210002,
           "contents": "Note details 2",
           "isPrivate": true,
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
@@ -39,8 +57,17 @@
           "iconName": "add_circle_outline",
           "title": "Example Change",
           "details": "Change details",
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         },
         {
@@ -49,8 +76,17 @@
           "iconName": "contact_mail",
           "title": "Example Change 2",
           "details": "Change details 2",
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
@@ -61,8 +97,17 @@
           "recipient": "(640) 357-9814",
           "subject": "Test Message 1",
           "body": "This is a test message.",
-          "createdBy": "lis",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }, {
           "id": 1041703210002,
@@ -70,13 +115,31 @@
           "recipient": "(640) 357-9814",
           "subject": "Test Message 2",
           "body": "This is a test message.",
-          "createdBy": "lis",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
-      "createdBy": "mike",
+      "createdBy": {
+        "id": 1,
+        "username": "mike",
+        "fullName": "Mike Rourke"
+      },
       "createdAt": "2017-02-02 14:00:00.000 -05:00",
+      "updatedBy": {
+        "id": 1,
+        "username": "mike",
+        "fullName": "Mike Rourke"
+      },
       "updatedAt": "2017-02-02 14:00:00.000 -05:00"
     },
     {
@@ -99,8 +162,17 @@
           "title": "Example Note",
           "details": "Note details",
           "isPrivate": false,
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         },
         {
@@ -108,8 +180,17 @@
           "title": "Example Note 2",
           "details": "Note details 2",
           "isPrivate": true,
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
@@ -120,8 +201,17 @@
           "iconName": "add_circle_outline",
           "title": "Example Change",
           "details": "Change details",
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         },
         {
@@ -130,8 +220,17 @@
           "iconName": "contact_mail",
           "title": "Example Change 2",
           "details": "Change details 2",
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
@@ -142,8 +241,17 @@
           "recipient": "(640) 357-9814",
           "subject": "Test Message 3",
           "body": "This is a test message.",
-          "createdBy": "lis",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }, {
           "id": 1041703210004,
@@ -151,13 +259,31 @@
           "recipient": "(640) 357-9814",
           "subject": "Test Message 4",
           "body": "This is a test message.",
-          "createdBy": "lis",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
-      "createdBy": "mike",
+      "createdBy": {
+        "id": 1,
+        "username": "mike",
+        "fullName": "Mike Rourke"
+      },
       "createdAt": "2017-02-02 14:00:00.000 -05:00",
+      "updatedBy": {
+        "id": 1,
+        "username": "mike",
+        "fullName": "Mike Rourke"
+      },
       "updatedAt": "2017-02-02 14:00:00.000 -05:00"
     },
     {
@@ -180,8 +306,17 @@
           "title": "Example Note",
           "details": "Note details",
           "isPrivate": false,
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         },
         {
@@ -189,8 +324,17 @@
           "title": "Example Note 2",
           "details": "Note details 2",
           "isPrivate": true,
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
@@ -201,8 +345,17 @@
           "iconName": "add_circle_outline",
           "title": "Example Change",
           "details": "Change details",
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         },
         {
@@ -211,8 +364,17 @@
           "iconName": "contact_mail",
           "title": "Example Change 2",
           "details": "Change details 2",
-          "createdBy": "mike",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
@@ -223,8 +385,17 @@
           "recipient": "(640) 357-9814",
           "subject": "Test Message 5",
           "body": "This is a test message.",
-          "createdBy": "lis",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }, {
           "id": 1041703210006,
@@ -232,13 +403,31 @@
           "recipient": "(640) 357-9814",
           "subject": "Test Message 6",
           "body": "This is a test message.",
-          "createdBy": "lis",
+          "createdBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "createdAt": "2017-02-02 14:00:00.000 -05:00",
+          "updatedBy": {
+            "id": 1,
+            "username": "mike",
+            "fullName": "Mike Rourke"
+          },
           "updatedAt": "2017-02-02 14:00:00.000 -05:00"
         }
       ],
-      "createdBy": "mike",
+      "createdBy": {
+        "id": 1,
+        "username": "mike",
+        "fullName": "Mike Rourke"
+      },
       "createdAt": "2017-02-02 14:00:00.000 -05:00",
+      "updatedBy": {
+        "id": 1,
+        "username": "mike",
+        "fullName": "Mike Rourke"
+      },
       "updatedAt": "2017-02-02 14:00:00.000 -05:00"
     }
   ]

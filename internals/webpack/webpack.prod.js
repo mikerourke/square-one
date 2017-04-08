@@ -23,8 +23,7 @@ module.exports = Object.assign(baseConfig, {
         path.join(process.cwd(), 'src/index.js'),
     ],
     output: Object.assign({}, baseConfig.output, {
-        filename: '[name].[chunkhash].js',
-        chunkFilename: '[name].[chunkhash].chunk.js',
+        filename: 'main.js',
     }),
     plugins: [
         new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),

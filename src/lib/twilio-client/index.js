@@ -1,3 +1,5 @@
+/* @flow */
+
 /* External dependencies */
 import twilio from 'twilio';
 
@@ -10,17 +12,33 @@ const sendingNumber = process.env.TWILIO_NUMBER;
  * @param {string} to Phone number to send the message to (+11235551234).
  * @param {string} message Message to send to the user.
  */
-export default (to, message) => new Promise((resolve, reject) => {
-    const client = twilio(accountSid, authToken);
-    const messageToSend = {
-        body: message,
-        to,
-        from: sendingNumber,
-    };
-    client.messages.create(messageToSend, (err, data) => {
-        if (err) {
-            reject(err);
-        }
-        resolve(data);
+export const sendTextMessage = (to: string, message: string): Promise<*> =>
+    new Promise((resolve, reject) => {
+        const client = twilio(accountSid, authToken);
+        const messageToSend = {
+            body: message,
+            to,
+            from: sendingNumber,
+        };
+        client.messages.create(messageToSend, (error, data) => {
+            if (error) {
+                reject(error);
+            }
+            resolve();
+        });
     });
-});
+
+export const getCarrierType = (phoneNumber: string): Promise<*> =>
+    new Promise((resolve, reject) => {
+        const { LookupsClient } = twilio;
+        const client = new LookupsClient(accountSid, authToken);
+        client.phoneNumbers(phoneNumber).get(
+            { type: 'carrier' },
+            (error, number) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(number.carrier.type);
+            });
+    });
+

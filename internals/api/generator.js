@@ -119,7 +119,7 @@ const getFormattedSampleData = (
         const sampleEntities = jsf(schema[entityGroupName]);
         updateEntities(sampleEntities, staticData)
             .then(updatedEntities => resolve(updatedEntities))
-            .catch(err => reject(err));
+            .catch(error => reject(error));
     });
 
 /**
@@ -161,7 +161,7 @@ const writeGeneratedDataToFile = (staticData) =>
             console.log(cyan('Writing data to file...'));
             writeDataToJsonFile(dbFilePath, dataToWrite)
                 .then(() => resolve())
-                .catch(err => reject(err));
+                .catch(error => reject(error));
         });
     });
 

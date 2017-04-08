@@ -9,7 +9,7 @@ import type { Action } from 'lib/types';
 
 type Parent = Lead;
 
-export const sendMessages = (
+export const createMessages = (
     parent: Parent,
     messages: Array<Message>,
 ): Action => ({

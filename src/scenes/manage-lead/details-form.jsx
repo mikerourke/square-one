@@ -196,7 +196,6 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                             value={lead.leadName}
                         />
                         <TextField
-                            floatingLabelFixed={true}
                             floatingLabelText="Contact Name (Optional)"
                             fullWidth={true}
                             name="contactName"
@@ -214,7 +213,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                             {this.getSelections('sources')}
                         </SelectField>
                         <FormTextField
-                            floatingLabelText="Lead Fee"
+                            floatingLabelText="Lead Fee (Optional)"
                             dataType="number"
                             fullWidth={true}
                             name="leadFee"
@@ -228,8 +227,6 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                             isRequired={true}
                             name="phone"
                             onValidInputChange={this.handleInputChange}
-                            type="tel"
-                            pattern="^\d{3}-\d{3}-\d{4}$"
                             value={lead.phone}
                         />
                         <TextField

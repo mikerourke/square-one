@@ -2,6 +2,7 @@
 
 /* External dependencies */
 import React, { Component } from 'react';
+import phones from 'phones';
 import TextField from 'material-ui/TextField';
 
 /* Types */
@@ -61,6 +62,17 @@ class FormTextField extends Component<DefaultProps, Props, State> {
             value,
         };
     }
+
+    errorTextForFormat = (newValue: string | number): string => {
+        const { format } = this.props;
+        if (format === 'phone') {
+            const parsedPhone = phones.parse(newValue);
+            if (!phones.validate(parsedPhone)) {
+                return 'Invalid phone number';
+            }
+        }
+        return '';
+    };
 
     /**
      * If the value entered into the field was specified as text and a number
@@ -134,6 +146,11 @@ class FormTextField extends Component<DefaultProps, Props, State> {
             return dataTypeErrorText;
         }
 
+        const formatErrorText = this.errorTextForFormat(newValue);
+        if (formatErrorText) {
+            return formatErrorText;
+        }
+
         return '';
     };
 
@@ -148,7 +165,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
         event: Event,
         newValue: string | number,
         errorText: string,
-    ) => {
+    ): void => {
         const { name, onValidInputChange } = this.props;
 
         if (errorText === '') {
@@ -161,14 +178,25 @@ class FormTextField extends Component<DefaultProps, Props, State> {
         });
     };
 
+    // TODO: Comment and finalize phone validation/formatting.
+    formatValueAfterBlur = (newValue: string | number): string | number => {
+        const { format } = this.props;
+        if (format === 'phone') {
+            if (phones.validate(newValue)) {
+                return phones.format(newValue);
+            }
+        }
+        return newValue;
+    };
+
     /**
      * Updates the input value and applicable error text in local state after
      *      the input loses focus.
      * @param {Event} event Event associated with the input.
      */
     handleBlur = (event: Event & { currentTarget: HTMLInputElement }): void => {
-        const { errorText } = this.state;
-        const newValue = event.currentTarget.value;
+        const newValue = this.formatValueAfterBlur(event.currentTarget.value);
+        const errorText = this.errorTextByPrecedence(newValue);
         this.updateInput(event, newValue, errorText);
     };
 

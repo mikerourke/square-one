@@ -206,7 +206,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
      */
     handleInputChange = (
         event: Event & {
-            currentTarget: HTMLInputElement | HTMLTextAreaElement
+            currentTarget: HTMLInputElement | HTMLTextAreaElement,
         },
         newValue: string = '',
     ): void => {
@@ -281,17 +281,15 @@ export class NotesList extends Component<DefaultProps, Props, State> {
                     open={isEditDialogOpen}
                     title={editDialogTitle}
                 >
-                    <form>
-                        <TextField
-                            floatingLabelText="Contents"
-                            fullWidth={true}
-                            multiLine={true}
-                            name="contents"
-                            onChange={this.handleInputChange}
-                            type="submit"
-                            value={activeNote.contents}
-                        />
-                    </form>
+                    <TextField
+                        floatingLabelText="Contents"
+                        fullWidth={true}
+                        multiLine={true}
+                        rowsMax={4}
+                        name="contents"
+                        onChange={this.handleInputChange}
+                        value={activeNote.contents}
+                    />
                 </Dialog>
                 <ConfirmationDialog
                     handleNoTouchTap={this.handleConfirmationNoTouchTap}

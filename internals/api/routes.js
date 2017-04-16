@@ -1,4 +1,8 @@
+/* External dependencies */
 const moment = require('moment');
+
+/* Internal dependencies */
+const twilio = require('./twilio');
 
 module.exports = (router, server) => {
     const db = router.db;
@@ -139,6 +143,21 @@ module.exports = (router, server) => {
         return childRecord;
     };
 
+    const sendTextMessages = messagesToSend =>
+        new Promise((resolve, reject) => {
+            const firstMessageSent = twilio.sendTextMessage(
+                messagesToSend[0].recipient, messagesToSend[0].body);
+            if (messagesToSend.length === 1) {
+                Promise.resolve(firstMessageSent).then(() => resolve());
+            } else {
+                const secondMessageSent = twilio.sendTextMessage(
+                    messagesToSend[1].recipient, messagesToSend[1].body);
+                Promise.all(firstMessageSent, secondMessageSent).then(values => {
+                    resolve();
+                })
+            }
+        });
+
     /**
      * Adds a route to the entity for handling POST requests, which creates
      *      the entity in the database and returns the created entity in the
@@ -166,6 +185,11 @@ module.exports = (router, server) => {
                         .write();
                     childrenForResponse.push(childItem);
                 });
+                if (childName === 'message') {
+                    sendTextMessages(bodyData).then(() => {
+                        console.log('Messages sent!');
+                    })
+                }
                 res.jsonp(childrenForResponse);
             } else {
                 const singleItem =

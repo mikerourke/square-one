@@ -12,7 +12,6 @@ import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
 import { getDedentedString } from 'lib/display-formats';
-// import { sendTextMessage } from 'lib/twilio-client';
 import { selectListSettings } from 'state/settings/selectors';
 import { createMessages } from 'state/entities/messages/actions';
 import { Lead, Message } from 'state/entities/models';
@@ -152,17 +151,6 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
         });
     };
 
-    // TODO: Fix Twilio client issue for Webpack HMRE.
-    // sendTextMessages = (messagesToSend: Array<Message>): Promise<*> =>
-    //     new Promise((resolve, reject) => {
-    //         const sendPromises = messagesToSend.map(message =>
-    //             sendTextMessage(message.recipient, message.contents));
-    //
-    //         Promise.all(sendPromises)
-    //             .then(() => resolve())
-    //             .catch(error => reject(error));
-    //     });
-
     /**
      * Sends the messages specified by the user, closes any dialogs, and
      *      redirects the user to the Leads List (if applicable).
@@ -185,11 +173,9 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
         const messagesToSend = this.getMessagesToSend();
         createMessagesFn(lead, messagesToSend).then(() => {
             this.closeConfirmationDialogAndResetInputs();
-            // this.sendTextMessages(messagesToSend).then(() => {
             if (redirectToLeads) {
                 browserHistory.push('/leads');
             }
-            // });
         });
     };
 

@@ -100,7 +100,7 @@ export class LeadsList extends Component<*, Props, State> {
         const { isLoading, leads } = this.state;
 
         // TODO: Add filter selection handling and saving.
-        const filterSelections = [];
+        const filterSelections = ['Test 1', 'Test 2'];
 
         const leadData = leads
             .toList()

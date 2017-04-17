@@ -26,7 +26,7 @@ module.exports = Object.assign(baseConfig, {
         filename: 'main.js',
     }),
     plugins: [
-        new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: false,

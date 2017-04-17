@@ -204,7 +204,6 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
                     <IconDropdown
                         handleItemTouchTap={this.handleFilterMenuChange}
                         hasAddButton={true}
-                        itemIconName="check_box"
                         menuIconName="filter_list"
                         selections={filterSelections}
                     />

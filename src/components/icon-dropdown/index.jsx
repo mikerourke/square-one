@@ -1,11 +1,14 @@
 /* @flow */
 
+// TODO: Finish tweaking the icon dropdown menu to accommodate for add/edit items.
+
 /* External dependencies */
 import React from 'react';
-import FontIcon from 'material-ui/FontIcon';
+import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import Subheader from 'material-ui/Subheader';
 
 /* Internal dependencies */
 import { primary1Color } from 'style/mui/palette';
@@ -28,8 +31,6 @@ const getMenuIconStyle = (disabled?: ?boolean): Object => {
  *      selected from the dropdown menu.
  * @param {boolean} hasAddButton Indicates if an add button should be present
  *      at the bottom of the list of menu items.
- * @param {string} [itemIconName] Name of the icon to show next to each menu
- *      item.
  * @param {string} menuIconName Name of the icon to use for the menu button.
  * @param {Array} selections Array of items for the dropdown.
  * @param {Object} props Other props associated with the menu.
@@ -39,7 +40,6 @@ const IconDropdown = ({
     handleAddTouchTap = () => {},
     handleItemTouchTap,
     hasAddButton,
-    itemIconName,
     menuIconName,
     selections,
     ...props
@@ -48,12 +48,11 @@ const IconDropdown = ({
     handleAddTouchTap?: (event: Event) => void,
     handleItemTouchTap: (event: Event, child: Object) => void,
     hasAddButton: boolean,
-    itemIconName?: ?string,
     menuIconName: string,
     selections: Array<string>,
 }): React.Element<*> => (
     <IconMenu
-        iconButtonElement={
+        iconButtonElement={(
             <IconButton
                 disabled={disabled}
                 iconClassName="material-icons"
@@ -61,36 +60,30 @@ const IconDropdown = ({
             >
                 {menuIconName}
             </IconButton>
-        }
+        )}
         onItemTouchTap={handleItemTouchTap}
+        menuStyle={{ width: 128 }}
         {...props}
     >
+        <Subheader>Existing Filters</Subheader>
         {selections.map(selection => (
             <MenuItem
-                innerDivStyle={{ padding: '0 0 0 48px' }}
                 key={selection}
-                leftIcon={itemIconName && (
-                    <FontIcon className="material-icons">
-                        {itemIconName}
-                    </FontIcon>
-                )}
                 primaryText={selection}
                 value={selection}
             />
         ))}
         {hasAddButton && (
-            <MenuItem
-                innerDivStyle={{ padding: '0 0 0 48px' }}
-                key={999}
-                leftIcon={(
-                    <FontIcon className="material-icons">
-                        add_circle_outline
-                    </FontIcon>
-                )}
-                onTouchTap={handleAddTouchTap}
-                primaryText="Add New"
-                value="Add New"
-            />
+            <div>
+                <Divider />
+                <Subheader>Actions</Subheader>
+                <MenuItem
+                    key={999}
+                    onTouchTap={handleAddTouchTap}
+                    primaryText="Add New"
+                    value="Add New"
+                />
+            </div>
         )}
     </IconMenu>
 );

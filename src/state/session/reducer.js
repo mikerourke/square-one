@@ -1,7 +1,5 @@
 /* @flow */
 
-// TODO: Add authorization and password handling.
-
 /* External dependencies */
 import { fromJS } from 'immutable';
 
@@ -19,7 +17,10 @@ type State = Session;
 
 const initialState = new Session();
 
-export default (state: State = initialState, action: Action) => {
+const session = (
+    state: State = initialState,
+    action: Action,
+) => {
     switch (action.type) {
         case SESSION_LOGIN_FAIL:
         case SESSION_LOGOUT_FAIL:
@@ -27,11 +28,17 @@ export default (state: State = initialState, action: Action) => {
             return state.set('error', fromJS(response));
 
         case SESSION_LOGIN_SUCCESS:
+            const { payload: { data: loginSession } } = (action: Object);
+            // TODO: Finish this for authentication.
+            return state;
+
         case SESSION_LOGOUT_SUCCESS:
-            const { payload: { data: session } } = (action: Object);
-            return state.merge(new Session(fromJS(session)));
+            const { payload: { data: logoutSession } } = (action: Object);
+            return state.merge(new Session(fromJS(logoutSession)));
 
         default:
             return state;
     }
 };
+
+export default session;

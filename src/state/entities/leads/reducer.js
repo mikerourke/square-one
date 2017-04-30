@@ -20,6 +20,7 @@ import {
     NOTE_CREATE_SUCCESS, NOTE_DELETE_SUCCESS,
 } from '../../action-types';
 import Lead from './model';
+import { getIdFromPayload, getChildDataFromPayload } from 'lib/api-data';
 
 /* Types */
 import type { Action } from 'lib/types';
@@ -48,26 +49,10 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
-const getChildDataFromPayload = (payload: Object): Object => {
-    const { config: { url }, data } = (payload: Object);
-
-    const urlArray = url.split('/');
-    let leadId = '';
-    let groupName = '';
-    urlArray.forEach((value, index) => {
-        if (value.includes('lead')) {
-            leadId = urlArray[index + 1];
-            groupName = urlArray[index + 2];
-        }
-    });
-
-    return {
-        data,
-        pathInState: ['byId', +leadId, groupName],
-    };
-};
-
-export default (state: State = initialState, action: Action) => {
+const leads = (
+    state: State = initialState,
+    action: Action,
+) => {
     switch (action.type) {
         case LEAD_CREATE_FAIL:
         case LEAD_DELETE_FAIL:
@@ -91,11 +76,8 @@ export default (state: State = initialState, action: Action) => {
                 new Lead(fromJS(existingLead)));
 
         case LEAD_DELETE_SUCCESS:
-            const { payload: { data: { id } } } = (action: Object);
-            let leadId = 0;
-            if (id) {
-                leadId = id;
-            }
+            const { payload: deletionPayload } = (action: Object);
+            const leadId = getIdFromPayload(deletionPayload, 'lead');
             return state
                 .deleteIn(['byId', +leadId])
                 .set('allIds', state.get('allIds')
@@ -107,7 +89,7 @@ export default (state: State = initialState, action: Action) => {
 
         case MESSAGES_SEND_SUCCESS:
             const { payload: messagesPayload } = (action: Object);
-            const messages = getChildDataFromPayload(messagesPayload);
+            const messages = getChildDataFromPayload(messagesPayload, 'lead');
 
             // Create an array of the IDs from the messages data pulled from the
             // response payload.
@@ -125,7 +107,7 @@ export default (state: State = initialState, action: Action) => {
         case CHANGES_LOG_SUCCESS:
         case NOTE_CREATE_SUCCESS:
             const { payload: createdPayload } = (action: Object);
-            const newChild = getChildDataFromPayload(createdPayload);
+            const newChild = getChildDataFromPayload(createdPayload, 'lead');
 
             // Add the ID of the newly created entity to the array of the
             // corresponding group in state.
@@ -138,7 +120,7 @@ export default (state: State = initialState, action: Action) => {
 
         case NOTE_DELETE_SUCCESS:
             const { payload: deletedPayload } = (action: Object);
-            const deleteChild = getChildDataFromPayload(deletedPayload);
+            const deleteChild = getChildDataFromPayload(deletedPayload, 'lead');
 
             // Removes the ID of the deleted entity from the array by returning
             // an updated array with the deleted ID filtered out.
@@ -154,3 +136,5 @@ export default (state: State = initialState, action: Action) => {
             return state;
     }
 };
+
+export default leads;

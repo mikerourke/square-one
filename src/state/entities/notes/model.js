@@ -3,9 +3,6 @@
 /* External dependencies */
 import { Record } from 'immutable';
 
-/* Types */
-import type { RecordDiff } from 'lib/types';
-
 export default class Note extends Record({
     id: (0: number),
     contents: ('': string),

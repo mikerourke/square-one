@@ -9,12 +9,15 @@ export const selectListSettings = createSelector(
     getSettingsByName,
     (settings) => {
         const listSettings = {};
-        settings.forEach((setting) => {
-            const { category, settingName, data } = setting;
-            if (category === 'lists') {
-                listSettings[settingName] = data.toArray();
-            }
-        });
-        return listSettings;
+        if (settings) {
+            settings.forEach((setting) => {
+                const { category, settingName, data } = setting;
+                if (category === 'lists') {
+                    listSettings[settingName] = data.toArray();
+                }
+            });
+            return listSettings;
+        }
+        return [];
     },
 );

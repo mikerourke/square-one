@@ -15,7 +15,10 @@ const initialState = fromJS({
     appSidebarOpen: false,
 });
 
-export default (state: State = initialState, action: Action) => {
+const gui = (
+    state: State = initialState,
+    action: Action,
+) => {
     switch (action.type) {
         case GUI_TOGGLE_APP_SIDEBAR:
             const currentStatus = state.get('appSidebarOpen');
@@ -25,3 +28,5 @@ export default (state: State = initialState, action: Action) => {
             return state;
     }
 };
+
+export default gui;

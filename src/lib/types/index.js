@@ -20,7 +20,9 @@ export type RecordDiff = {
  * Types associated with Redux.
  */
 export type Action =
-    { type: string, payload: { data: any } | Promise<any> }
+    { type: string, payload: Object }
+  | { type: string, payload: string }
+  | { type: string, payload: { data: any } | Promise<any> }
   | { type: string, payload: { id: number, data: any } }
   | { type: string, payload: { leadId: number, group: string, data: any } }
   | { type: string }

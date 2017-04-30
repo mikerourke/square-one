@@ -46,14 +46,12 @@ export const createLead = (lead: Lead): Action => ({
     },
 });
 
-export const deleteLead = (lead: Lead): Action => ({
+export const deleteLead = (id: number): Action => ({
     type: LEAD_DELETE,
     payload: {
         request: {
             method: 'delete',
-            url: `${BASE_URL}/${lead.id}`,
-            data: lead.toJS(),
-            transformResponse: transformForSingle,
+            url: `${BASE_URL}/${id}`,
         },
     },
 });

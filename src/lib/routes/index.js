@@ -3,12 +3,14 @@
 /* External dependencies */
 import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
-import type { Store } from 'redux';
 
 /* Internal dependencies */
 import Layout from '../../layout';
 import { LoginPage, LeadsListPage, ManageLeadPage } from '../../scenes';
 import { toggleAppSidebar } from 'state/gui/actions';
+
+/* Types */
+import type { Store } from 'redux';
 
 /**
  * Configures the routes for the application.

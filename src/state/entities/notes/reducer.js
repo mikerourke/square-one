@@ -40,7 +40,10 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
-export default (state: State = initialState, action: Action) => {
+const notes = (
+    state: State = initialState,
+    action: Action,
+) => {
     switch (action.type) {
         case LEAD_GET_ALL_FAIL:
         case NOTE_CREATE_FAIL:
@@ -67,3 +70,5 @@ export default (state: State = initialState, action: Action) => {
             return state;
     }
 };
+
+export default notes;

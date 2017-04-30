@@ -26,7 +26,7 @@ import TabsPage from 'components/tabs-page';
 type Props = {
     lead: Lead,
     createLead: (lead: Lead) => Promise<*>,
-    deleteLead: (lead: Lead) => Promise<*>,
+    deleteLead: (id: number) => Promise<*>,
     updateLead: (lead: Lead) => Promise<*>,
 };
 
@@ -56,7 +56,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
     dispatch,
     createLead: lead => dispatch(createLead(lead)),
-    deleteLead: lead => dispatch(deleteLead(lead)),
+    deleteLead: id => dispatch(deleteLead(id)),
     updateLead: lead => dispatch(updateLead(lead)),
 });
 
@@ -139,7 +139,7 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
 
         if (confirmedAction === 'DELETE-LEAD') {
             const deleteLeadFn = this.props.deleteLead;
-            deleteLeadFn(lead).then(() => {
+            deleteLeadFn(lead.id).then(() => {
                 this.closeConfirmationAndRedirectToLeads();
             });
         } else {

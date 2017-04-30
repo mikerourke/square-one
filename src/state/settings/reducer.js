@@ -36,7 +36,10 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
-export default (state: State = initialState, action: Action) => {
+const settings = (
+    state: State = initialState,
+    action: Action,
+) => {
     switch (action.type) {
         case SETTING_GET_ALL_FAIL:
         case SETTING_GET_SINGLE_FAIL:
@@ -58,3 +61,5 @@ export default (state: State = initialState, action: Action) => {
             return state;
     }
 };
+
+export default settings;

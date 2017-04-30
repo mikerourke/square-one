@@ -10,10 +10,12 @@ import messages from './messages/reducer';
 import notes from './notes/reducer';
 import users from './users/reducer';
 
-export default combineReducers({
+const entities = combineReducers({
     changes,
     leads,
     messages,
     notes,
     users,
 });
+
+export default entities;

@@ -17,7 +17,7 @@ export const login = (
     payload: {
         request: {
             method: 'post',
-            url: '/login',
+            url: '/auth/login',
             data: { username, password },
         },
     },
@@ -28,7 +28,7 @@ export const logout = (username: string): Action => ({
     payload: {
         request: {
             method: 'post',
-            url: '/logout',
+            url: '/auth/logout',
             data: { username },
         },
     },

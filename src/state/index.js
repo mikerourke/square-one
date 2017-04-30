@@ -7,6 +7,7 @@ import {
     createStore,
 } from 'redux';
 import { combineReducers } from 'redux-immutable';
+import { routerReducer } from 'react-router-redux';
 import { Map } from 'immutable';
 import axiosMiddleware from 'redux-axios-middleware';
 import thunk from 'redux-thunk';
@@ -28,12 +29,13 @@ const rootReducer = combineReducers({
     gui,
     session,
     settings,
+    routing: routerReducer,
 });
 
 /**
  * Creates the global Redux store.
  */
-export default (client: AxiosRequestConfig) => {
+const configureStore = (client: AxiosRequestConfig) => {
     // Setup the Redux Dev Tools in Chrome:
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
                              compose;
@@ -48,3 +50,5 @@ export default (client: AxiosRequestConfig) => {
         composeEnhancers(applyMiddleware(...middleware)),
     );
 };
+
+export default configureStore;

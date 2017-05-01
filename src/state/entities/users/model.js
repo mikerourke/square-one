@@ -8,4 +8,5 @@ export default class User extends Record({
     username: ('': string),
     fullName: ('': string),
     title: ('': string),
+    role: ('': string),
 }) {}

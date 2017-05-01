@@ -99,9 +99,7 @@ export class Header extends Component<*, Props, State> {
     ): void => {
         const { session } = this.props;
         const logoutFn = this.props.logout;
-        const { props: {
-            value,
-        } } = menuItem;
+        const { props: { value } } = menuItem;
         switch (value) {
             case 'refresh':
                 // TODO: Add code to handle Refresh.

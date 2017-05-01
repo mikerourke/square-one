@@ -219,24 +219,21 @@ export class NotesList extends Component<DefaultProps, Props, State> {
     /**
      * Extrapolates the required properties for a card entity from the list of
      *      notes and returns a list of card entities.
-     * @returns {Immutable.List}
+     * @returns {List} List of card entities to display.
      */
     getCardEntities = (): List<*> => {
-        const notesInLead = this.props.notes;
         let cardEntities = new List();
+        const notesInLead = this.props.notes;
         if (notesInLead) {
             cardEntities = notesInLead
                 .sortBy(note => note.createdAt)
                 .reverse()
-                .map((note) => {
-                    const displayDate = getDisplayDate(note.createdAt);
-                    return {
-                        id: note.id,
-                        title: note.getIn(['createdBy', 'fullName']),
-                        subtitle: displayDate,
-                        contents: note.contents,
-                    };
-                });
+                .map(note => ({
+                    id: note.id,
+                    title: note.getIn(['createdBy', 'fullName']),
+                    subtitle: getDisplayDate(note.createdAt),
+                    contents: note.contents,
+                }));
         }
         return cardEntities;
     };
@@ -264,10 +261,13 @@ export class NotesList extends Component<DefaultProps, Props, State> {
             />,
         ];
 
+        // TODO: Fix this so it renders new notes.
+        const cardEntities = this.getCardEntities();
+
         return (
             <div>
                 <CardList
-                    cardEntities={this.getCardEntities()}
+                    cardEntities={cardEntities}
                     handleAddTouchTap={this.handleAddButtonTouchTap}
                     handleDeleteTouchTap={this.handleCardDeleteTouchTap}
                     handleEditTouchTap={this.handleCardEditTouchTap}

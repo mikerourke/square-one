@@ -7,7 +7,6 @@ import {
     createStore,
 } from 'redux';
 import { combineReducers } from 'redux-immutable';
-import { routerReducer } from 'react-router-redux';
 import { Map } from 'immutable';
 import axiosMiddleware from 'redux-axios-middleware';
 import thunk from 'redux-thunk';
@@ -29,7 +28,6 @@ const rootReducer = combineReducers({
     gui,
     session,
     settings,
-    routing: routerReducer,
 });
 
 /**

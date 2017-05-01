@@ -7,15 +7,8 @@ export default class Session extends Record({
     id: (0: number),
     username: ('': string),
     fullName: ('': string),
-    phone: ('': string),
-    email: ('': string),
     title: ('': string),
-    isLoggedIn: (false: boolean),
     role: ('': string),
+    isAuthenticated: (false: boolean),
     error: (null: ?any),
-    token: (null: ?any),
-}) {
-    authenticate() {
-        // TODO: Write authentication procedure.
-    }
-}
+}) {}

@@ -25,14 +25,17 @@ export const getChildDataFromPayload = (
     const urlArray = url.split('/');
     let parentId = '';
     let groupName = '';
+    let childId = '';
     urlArray.forEach((value, index) => {
         if (value.includes(parentName)) {
             parentId = urlArray[index + 1];
             groupName = urlArray[index + 2];
+            childId = urlArray[index + 3];
         }
     });
 
     return {
+        childId,
         data,
         pathInState: ['byId', +parentId, groupName],
     };

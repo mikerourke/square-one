@@ -22,7 +22,7 @@ export const createNote = (
         request: {
             method: 'post',
             url: `/${parent.typeName}s/${parent.id}/notes`,
-            data: note.toJS(),
+            data: note.getEntityForApiCall(),
         },
     },
 });
@@ -49,7 +49,7 @@ export const updateNote = (
         request: {
             method: 'patch',
             url: `/${parent.typeName}s/${parent.id}/notes/${note.id}`,
-            data: note.toJS(),
+            data: note.getEntityForApiCall(),
         },
     },
 });

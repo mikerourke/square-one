@@ -15,6 +15,7 @@ import {
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Note from './model';
+import { getIdFromPayload } from 'lib/api-data';
 
 /* Types */
 import type { Action } from 'lib/types';
@@ -33,9 +34,14 @@ const initialState = OrderedMap();
  */
 const mergeEntities = (state: State, data: Object): State => {
     const { entities: { notes } } = (data: Object);
+    let byIdOrderedMap = OrderedMap();
+    if (notes) {
+        const noteEntries = Object.entries(notes);
+        byIdOrderedMap = OrderedMap([...noteEntries.map(
+            ([key, value]) => ([+key, new Note(fromJS(value))]))]);
+    }
     return state.merge({
-        byId: OrderedMap([...Object.entries(notes).map(
-            ([key, value]) => ([+key, new Note(fromJS(value))]))]),
+        byId: byIdOrderedMap,
         error: new Map(),
     });
 };
@@ -63,8 +69,9 @@ const notes = (
                 new Note(fromJS(newNote)));
 
         case NOTE_DELETE_SUCCESS:
-            const { payload: { data: { id } } } = (action: Object);
-            return state.deleteIn(['byId', +id]);
+            const { payload } = (action: Object);
+            const noteId = getIdFromPayload(payload, 'note');
+            return state.deleteIn(['byId', +noteId]);
 
         default:
             return state;

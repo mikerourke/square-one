@@ -174,14 +174,13 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
         if (entriesValid) {
             const { username, password } = this.state;
             const loginFn = this.props.login;
-            loginFn(username, password).then(() => {
-                const currentSession = this.props.session;
-                if (currentSession.error) {
-                    this.setState({ passwordErrorText: 'Incorrect password' });
-                } else {
+            loginFn(username, password)
+                .then(() => {
                     this.hydrateStateAndLogin();
-                }
-            });
+                })
+                .catch(() => {
+                    this.setState({ passwordErrorText: 'Incorrect password' });
+                });
         }
     };
 

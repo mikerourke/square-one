@@ -6,7 +6,13 @@ import { Router, Route, IndexRoute } from 'react-router';
 
 /* Internal dependencies */
 import Layout from '../../layout';
-import { LoginPage, LeadsListPage, ManageLeadPage } from '../../scenes';
+import {
+    Dashboard,
+    LeadsListPage,
+    LoginPage,
+    ManageLeadPage,
+} from '../../scenes';
+import Auth from 'components/authentication';
 import { toggleAppSidebar } from 'state/gui/actions';
 
 /* Types */
@@ -31,11 +37,12 @@ const configureRoutes = (history: Object, store: Store<*>) => {
     return (
         <Router history={history}>
             <Route path="/" component={Layout} >
-                <IndexRoute component={LoginPage} />
+                <IndexRoute component={Auth(LeadsListPage)} />
                 <Route path="login" component={LoginPage} />
-                <Route path="leads" component={LeadsListPage} />
-                <Route path="leads/new" component={ManageLeadPage} />
-                <Route path="leads/:id" component={ManageLeadPage} />
+                <Route path="dashboard" component={Auth(Dashboard)} />
+                <Route path="leads" component={Auth(LeadsListPage)} />
+                <Route path="leads/new" component={Auth(ManageLeadPage)} />
+                <Route path="leads/:id" component={Auth(ManageLeadPage)} />
             </Route>
         </Router>
     );

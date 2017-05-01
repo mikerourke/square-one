@@ -11,7 +11,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
 import axios, { AxiosRequestConfig } from 'axios';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -22,26 +21,21 @@ import renderRoutes from './lib/routes';
 // Import web assets.
 import './style/global.css'; // eslint-disable-line
 
-// Configure the Axios client for API access.
-const apiHost: Host = process.env.IP || 'localhost';
-const apiPort: Port = process.env.API_PORT || 8080;
-
+// Configure Axios client for Redux actions.
 const client: AxiosRequestConfig = axios.create({
-    baseURL: `http://${apiHost}:${apiPort}/api`,
+    baseURL: process.env.API_URL || 'http://localhost:8080/api',
+    headers: { Authorization: sessionStorage.getItem('jwt') },
     responseType: 'json',
 });
 
 const store = configureStore(client);
-const history = syncHistoryWithStore(browserHistory, store, {
-    selectLocationState: state => state.get('routing'),
-});
 
 // This is required by Material UI library for mobile tap actions.
 injectTapEventPlugin();
 
 render(
     <Provider store={store}>
-        {renderRoutes(history, store)}
+        {renderRoutes(browserHistory, store)}
     </Provider>,
     document.getElementById('app'),
 );

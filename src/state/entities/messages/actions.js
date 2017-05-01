@@ -18,6 +18,7 @@ export const createMessages = (
         request: {
             method: 'post',
             url: `/${parent.typeName}s/${parent.id}/messages`,
+            // TODO: Change this to send individual messages.
             data: messages.map(message => message.toJS()),
         },
     },

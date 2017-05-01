@@ -84,7 +84,7 @@ export const updateLead = (lead: Lead): Action => ({
         request: {
             method: 'patch',
             url: `${BASE_URL}/${lead.id}`,
-            data: lead.toJS(),
+            data: lead.getEntityForApiCall(),
             transformResponse: transformForSingle,
         },
     },

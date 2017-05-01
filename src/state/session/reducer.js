@@ -24,16 +24,18 @@ const session = (
     switch (action.type) {
         case SESSION_LOGIN_FAIL:
         case SESSION_LOGOUT_FAIL:
-            const { error: { response } } = (action: Object);
-            return state.set('error', fromJS(response));
+            const { payload: error } = (action: Object);
+            return state.set('error', fromJS(error));
 
         case SESSION_LOGIN_SUCCESS:
-            const { payload: { data: loginSession } } = (action: Object);
-            // TODO: Finish this for authentication.
-            return state;
+            const { payload: loginSession } = (action: Object);
+            const validSession = Object.assign({}, loginSession, {
+                isAuthenticated: true,
+            });
+            return state.merge(new Session(fromJS(validSession)));
 
         case SESSION_LOGOUT_SUCCESS:
-            const { payload: { data: logoutSession } } = (action: Object);
+            const { payload: logoutSession } = (action: Object);
             return state.merge(new Session(fromJS(logoutSession)));
 
         default:

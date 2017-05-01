@@ -12,7 +12,7 @@ const jsonServer = require('json-server');
 /* Internal dependencies */
 const assignCustomRoutes = require('./routes');
 
-const port = process.env.API_PORT || 8082;
+const port = process.env.API_PORT || 8080;
 
 const server = jsonServer.create();
 const middlewares = jsonServer.defaults();

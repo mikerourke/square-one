@@ -128,7 +128,7 @@ const leads = (
             if (groupInStateForDelete) {
                 return state.setIn(deleteChild.pathInState,
                     groupInStateForDelete.filter(
-                        childId => childId !== +deleteChild.data.id));
+                        childId => +childId !== +deleteChild.childId));
             }
             return state;
 

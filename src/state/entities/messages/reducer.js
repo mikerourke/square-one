@@ -31,9 +31,14 @@ const initialState = OrderedMap();
  */
 const mergeEntities = (state: State, data: Object): State => {
     const { entities: { messages } } = (data: Object);
+    let byIdOrderedMap = OrderedMap();
+    if (messages) {
+        const messageEntries = Object.entries(messages);
+        byIdOrderedMap = OrderedMap([...messageEntries.map(
+            ([key, value]) => ([+key, new Message(fromJS(value))]))]);
+    }
     return state.merge({
-        byId: OrderedMap([...Object.entries(messages).map(
-            ([key, value]) => ([+key, new Message(fromJS(value))]))]),
+        byId: byIdOrderedMap,
         error: new Map(),
     });
 };

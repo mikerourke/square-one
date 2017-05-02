@@ -18,7 +18,6 @@ export default class Message extends Record({
     getEntityForApiCall() {
         const message = this.toJS();
         return {
-            id: +message.id,
             messageType: message.messageType,
             recipient: message.recipient,
             subject: message.subject,

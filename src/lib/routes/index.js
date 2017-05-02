@@ -37,7 +37,7 @@ const configureRoutes = (history: Object, store: Store<*>) => {
     return (
         <Router history={history}>
             <Route path="/" component={Layout} >
-                <IndexRoute component={Auth(LeadsListPage)} />
+                <IndexRoute component={LoginPage} />
                 <Route path="login" component={LoginPage} />
                 <Route path="dashboard" component={Auth(Dashboard)} />
                 <Route path="leads" component={Auth(LeadsListPage)} />

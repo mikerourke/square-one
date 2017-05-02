@@ -46,6 +46,7 @@ type State = {
 
 const mapStateToProps = (state, ownProps) => ({
     notes: selectNotesInLead(state, ownProps),
+    allNotes: state.getIn(['entities', 'notes', 'byId']),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -194,13 +195,11 @@ export class NotesList extends Component<DefaultProps, Props, State> {
         if (note.id !== 0) {
             performActionFn = updateNoteFn;
         }
-        console.log(this.props.notes);
         performActionFn(lead, note).then(() => {
             this.setState({
                 note: new Note(),
                 isEditDialogOpen: false,
             });
-            console.log(this.props.notes);
         });
     };
 

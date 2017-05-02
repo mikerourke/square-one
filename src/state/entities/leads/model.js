@@ -45,7 +45,6 @@ export default class Lead extends Record({
     getEntityForApiCall() {
         const lead = this.toJS();
         return {
-            id: +lead.id,
             leadName: lead.leadName,
             contactName: lead.contactName,
             source: lead.source,

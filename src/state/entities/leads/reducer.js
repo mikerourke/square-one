@@ -93,7 +93,7 @@ const leads = (
 
             // Create an array of the IDs from the messages data pulled from the
             // response payload.
-            const idsOfNewMessages = messages.data.map(message => +message.id);
+            const idsOfNewMessages = messages.data.map(message => message.id);
 
             // Concatentate the array of newly created message IDs to the
             // messages list in state.
@@ -114,7 +114,7 @@ const leads = (
             const groupInStateForNew = state.getIn(newChild.pathInState);
             if (groupInStateForNew) {
                 return state.setIn(newChild.pathInState,
-                    groupInStateForNew.push(+newChild.data.id));
+                    groupInStateForNew.push(newChild.data.id));
             }
             return state;
 

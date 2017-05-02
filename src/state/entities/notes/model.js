@@ -16,7 +16,6 @@ export default class Note extends Record({
     getEntityForApiCall() {
         const note = this.toJS();
         return {
-            id: +note.id,
             contents: note.contents,
             isPrivate: note.isPrivate,
             createdBy: +localStorage.getItem('userId'),

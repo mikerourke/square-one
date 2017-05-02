@@ -53,8 +53,8 @@ export class LeadsList extends Component<*, Props, State> {
     props: Props;
     state: State;
 
-    constructor(): void {
-        super();
+    constructor(props: Props): void {
+        super(props);
         this.state = {
             isLoading: true,
             leads: OrderedMap(),

@@ -14,4 +14,17 @@ export default class Message extends Record({
     updatedBy: (new Map(): Map<string, any>),
     updatedAt: (null: ?Date),
     typeName: ('message': string),
-}) {}
+}) {
+    getEntityForApiCall() {
+        const message = this.toJS();
+        return {
+            id: +message.id,
+            messageType: message.messageType,
+            recipient: message.recipient,
+            subject: message.subject,
+            body: message.body,
+            createdBy: +localStorage.getItem('userId'),
+            updatedBy: +localStorage.getItem('userId'),
+        };
+    }
+}

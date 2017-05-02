@@ -6,7 +6,7 @@ describe('GUI Reducer', () => {
         const reducerValue = reducer(undefined, {});
         const expectedValue = {
             appSidebarOpen: false,
-        }
+        };
         expect(reducerValue.toJS()).toEqual(expectedValue);
     });
 });

@@ -41,4 +41,25 @@ export default class Lead extends Record({
     getDifferences(lead: Lead): Array<RecordDiff> {
         return compareRecords(this, lead);
     }
+
+    getEntityForApiCall() {
+        const lead = this.toJS();
+        return {
+            id: +lead.id,
+            leadName: lead.leadName,
+            contactName: lead.contactName,
+            source: lead.source,
+            leadFee: +lead.leadFee,
+            phone: lead.phone,
+            email: lead.email,
+            address: lead.address,
+            lat: +lead.lat,
+            lng: +lead.lng,
+            description: lead.description,
+            status: lead.status,
+            assignTo: lead.assignTo,
+            createdBy: +localStorage.getItem('userId'),
+            updatedBy: +localStorage.getItem('userId'),
+        };
+    }
 }

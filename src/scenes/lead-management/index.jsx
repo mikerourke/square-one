@@ -12,14 +12,13 @@ import {
     updateLead,
 } from 'state/entities/leads/actions';
 import { selectAllLeads } from 'state/entities/leads/selectors';
-import { selectNotesInLead } from 'state/entities/notes/selectors';
 import { Lead } from 'state/entities/models';
-import ChangesTimeline from '../changes-timeline';
+import ChangesTimeline from '../../containers/changes-timeline';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import LeadDetailsForm from './details-form';
-import MessagesDialog from '../messages-dialog';
-import MessagesList from '../messages-list';
-import NotesList from '../notes-list';
+import MessagesDialog from '../../containers/messages-dialog';
+import MessagesList from '../../containers/messages-list';
+import NotesList from '../../containers/notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
 import TabsPage from 'components/tabs-page';
 

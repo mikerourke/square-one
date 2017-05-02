@@ -9,7 +9,7 @@ import type { Action } from 'lib/types';
 
 type Parent = Lead;
 
-export const createMessages = (
+export const sendMessages = (
     parent: Parent,
     messages: Array<Message>,
 ): Action => ({
@@ -18,8 +18,7 @@ export const createMessages = (
         request: {
             method: 'post',
             url: `/${parent.typeName}s/${parent.id}/messages`,
-            // TODO: Change this to send individual messages.
-            data: messages.map(message => message.toJS()),
+            data: messages.map(message => message.getEntityForApiCall()),
         },
     },
 });

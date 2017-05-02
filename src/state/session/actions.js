@@ -21,8 +21,8 @@ export const login = (
     new Promise((resolve, reject) => {
         axios.post(`${apiUrl}/auth/login`, { username, password })
             .then((response) => {
-                sessionStorage.setItem('jwt', response.data.token);
-                sessionStorage.setItem('userId', response.data.user.id);
+                localStorage.setItem('jwt', response.data.token);
+                localStorage.setItem('userId', response.data.user.id);
                 dispatch({
                     type: SESSION_LOGIN_SUCCESS,
                     payload: response.data.user,
@@ -43,8 +43,8 @@ export const logout = (username: string) =>
         new Promise((resolve, reject) => {
             axios.post(`${apiUrl}/auth/logout`, { username })
                 .then((response) => {
-                    sessionStorage.removeItem('jwt');
-                    sessionStorage.removeItem('userId');
+                    localStorage.removeItem('jwt');
+                    localStorage.removeItem('userId');
                     dispatch({
                         type: SESSION_LOGOUT_SUCCESS,
                         payload: response.data.user,

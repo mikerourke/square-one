@@ -13,14 +13,14 @@ export default class Note extends Record({
     updatedAt: (null: ?Date),
     typeName: ('note': string),
 }) {
-    // TODO: Fix the created by and updated by fields.
     getEntityForApiCall() {
-        const noteObject = this.toJS();
+        const note = this.toJS();
         return {
-            id: noteObject.id,
-            contents: noteObject.contents,
-            createdBy: 1,
-            updatedBy: 1,
+            id: +note.id,
+            contents: note.contents,
+            isPrivate: note.isPrivate,
+            createdBy: +localStorage.getItem('userId'),
+            updatedBy: +localStorage.getItem('userId'),
         };
     }
 }

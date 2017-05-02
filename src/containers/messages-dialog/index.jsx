@@ -13,14 +13,14 @@ import Toggle from 'material-ui/Toggle';
 /* Internal dependencies */
 import { getDedentedString } from 'lib/display-formats';
 import { selectListSettings } from 'state/settings/selectors';
-import { createMessages } from 'state/entities/messages/actions';
+import { sendMessages } from 'state/entities/messages/actions';
 import { Lead, Message } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import IconDropdown from 'components/icon-dropdown';
 
 /* Types */
 type DefaultProps = {
-    createMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
+    sendMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
     textTemplates: Array<string>,
 };
 
@@ -29,7 +29,7 @@ type Props = {
     lead: Lead,
     open: boolean,
     redirectToLeads: boolean,
-    createMessages?: (lead: Lead, messages: Array<Message>) => Promise<*>,
+    sendMessages?: (lead: Lead, messages: Array<Message>) => Promise<*>,
     textTemplates?: Array<string>,
 };
 
@@ -60,8 +60,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
-    createMessages: (lead, messages) => dispatch(
-        createMessages(lead, messages)),
+    sendMessages: (lead, messages) => dispatch(
+        sendMessages(lead, messages)),
 });
 
 /**
@@ -78,7 +78,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
     state: State;
 
     static defaultProps = {
-        createMessages: () => Promise.resolve(),
+        sendMessages: () => Promise.resolve(),
         textTemplates: [],
     };
 
@@ -166,12 +166,12 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
         handleTouchTap(event);
 
         // Get messages to send based on selections and send messages.
-        let createMessagesFn = () => Promise.resolve();
-        if (this.props.createMessages) {
-            createMessagesFn = this.props.createMessages;
+        let sendMessagesFn = () => Promise.resolve();
+        if (this.props.sendMessages) {
+            sendMessagesFn = this.props.sendMessages;
         }
         const messagesToSend = this.getMessagesToSend();
-        createMessagesFn(lead, messagesToSend).then(() => {
+        sendMessagesFn(lead, messagesToSend).then(() => {
             this.closeConfirmationDialogAndResetInputs();
             if (redirectToLeads) {
                 browserHistory.push('/leads');

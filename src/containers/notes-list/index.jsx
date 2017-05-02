@@ -38,7 +38,7 @@ type Props = {
 };
 
 type State = {
-    activeNote: Note,
+    note: Note,
     isConfirmationDialogOpen: boolean,
     isEditDialogOpen: boolean,
     editDialogTitle: string,
@@ -75,7 +75,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
     constructor(): void {
         super();
         this.state = {
-            activeNote: new Note(),
+            note: new Note(),
             isConfirmationDialogOpen: false,
             isEditDialogOpen: false,
             editDialogTitle: '',
@@ -108,7 +108,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
      */
     handleAddButtonTouchTap = (): void => {
         this.setState({
-            activeNote: new Note(),
+            note: new Note(),
             editDialogTitle: 'Add Note',
             isEditDialogOpen: true,
         });
@@ -120,9 +120,9 @@ export class NotesList extends Component<DefaultProps, Props, State> {
      * @param {Object} cardEntity Entity associated with the selected card.
      */
     handleCardDeleteTouchTap = (cardEntity: CardEntity): void => {
-        const activeNote = this.getNoteById(cardEntity.id);
+        const note = this.getNoteById(cardEntity.id);
         this.setState({
-            activeNote,
+            note,
             isConfirmationDialogOpen: true,
         });
     };
@@ -133,9 +133,9 @@ export class NotesList extends Component<DefaultProps, Props, State> {
      * @param {Object} cardEntity Entity associated with the selected card.
      */
     handleCardEditTouchTap = (cardEntity: CardEntity): void => {
-        const activeNote = this.getNoteById(cardEntity.id);
+        const note = this.getNoteById(cardEntity.id);
         this.setState({
-            activeNote,
+            note,
             editDialogTitle: 'Edit Note',
             isEditDialogOpen: true,
         });
@@ -153,14 +153,17 @@ export class NotesList extends Component<DefaultProps, Props, State> {
      *      Confirmation Dialog and closes.
      */
     handleConfirmationYesTouchTap = (): void => {
-        const { activeNote } = this.state;
+        const { note } = this.state;
         const { lead } = this.props;
         let deleteNoteFn = () => Promise.resolve();
         if (this.props.deleteNote) {
             deleteNoteFn = this.props.deleteNote;
         }
-        deleteNoteFn(lead, activeNote.id).then(() => {
-            this.setState({ isConfirmationDialogOpen: false });
+        deleteNoteFn(lead, note.id).then(() => {
+            this.setState({
+                note: new Note(),
+                isConfirmationDialogOpen: false,
+            });
         });
     };
 
@@ -177,7 +180,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
      *      Add/Edit Dialog.
      */
     handleEditDialogSaveTouchTap = (): void => {
-        const { activeNote } = this.state;
+        const { note } = this.state;
         const { lead } = this.props;
         let createNoteFn = () => Promise.resolve();
         if (this.props.createNote) {
@@ -188,12 +191,15 @@ export class NotesList extends Component<DefaultProps, Props, State> {
             updateNoteFn = this.props.updateNote;
         }
         let performActionFn = createNoteFn;
-        if (activeNote.id !== 0) {
+        if (note.id !== 0) {
             performActionFn = updateNoteFn;
         }
         console.log(this.props.notes);
-        performActionFn(lead, activeNote).then(() => {
-            this.setState({ isEditDialogOpen: false });
+        performActionFn(lead, note).then(() => {
+            this.setState({
+                note: new Note(),
+                isEditDialogOpen: false,
+            });
             console.log(this.props.notes);
         });
     };
@@ -210,10 +216,10 @@ export class NotesList extends Component<DefaultProps, Props, State> {
         },
         newValue: string = '',
     ): void => {
-        const { activeNote } = this.state;
+        const { note } = this.state;
         const fieldName = event.currentTarget.name;
-        const updatedNote = activeNote.set(fieldName, newValue);
-        this.setState({ activeNote: updatedNote });
+        const updatedNote = note.set(fieldName, newValue);
+        this.setState({ note: updatedNote });
     };
 
     /**
@@ -241,13 +247,13 @@ export class NotesList extends Component<DefaultProps, Props, State> {
     render(): React.Element<*> {
         const { showAddButton } = this.props;
         const {
-            activeNote,
+            note,
             editDialogTitle,
             isConfirmationDialogOpen,
             isEditDialogOpen,
         } = this.state;
 
-        // TODO: Fix this so it renders new notes.
+        // FIXME: Fix this so it renders new notes.
         const cardEntities = this.getCardEntities();
 
         return (
@@ -267,7 +273,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
                     handleCancelTouchTap={this.handleEditDialogCancelTouchTap}
                     handleInputChange={this.handleInputChange}
                     title={editDialogTitle}
-                    contents={activeNote.contents}
+                    contents={note.contents}
                     open={isEditDialogOpen}
                 />
                 <ConfirmationDialog

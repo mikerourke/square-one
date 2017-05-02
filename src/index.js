@@ -24,7 +24,7 @@ import './style/global.css'; // eslint-disable-line
 // Configure Axios client for Redux actions.
 const client: AxiosRequestConfig = axios.create({
     baseURL: process.env.API_URL || 'http://localhost:8080/api',
-    headers: { Authorization: sessionStorage.getItem('jwt') },
+    headers: { Authorization: localStorage.getItem('jwt') },
     responseType: 'json',
 });
 

@@ -302,7 +302,7 @@ module.exports = (router, server) => {
     };
 
     const addSessionRoutes = () => {
-        server.post('/login', (req, res) => {
+        server.post('/auth/login', (req, res) => {
             const userFromReq = req.body;
             const userInDb = getUserInDb(userFromReq).value();
             userInDb.password = 'mike';
@@ -314,7 +314,7 @@ module.exports = (router, server) => {
             }
         });
 
-        server.post('/logout', (req, res) => {
+        server.post('/auth/logout', (req, res) => {
             const updatedUser = getUserInDb(req.body);
             updatedUser
                 .assign({ isLoggedIn: false, password: 'mike' })

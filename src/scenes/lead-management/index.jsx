@@ -12,13 +12,14 @@ import {
     updateLead,
 } from 'state/entities/leads/actions';
 import { selectAllLeads } from 'state/entities/leads/selectors';
+import { selectNotesInLead } from 'state/entities/notes/selectors';
 import { Lead } from 'state/entities/models';
-import ChangesTimeline from './changes-timeline';
+import ChangesTimeline from '../changes-timeline';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import LeadDetailsForm from './details-form';
-import MessagesDialog from './messages-dialog';
-import MessagesList from './messages-list';
-import NotesList from './notes-list';
+import MessagesDialog from '../messages-dialog';
+import MessagesList from '../messages-list';
+import NotesList from '../notes-list';
 import PageHeaderToolbar from './page-header-toolbar';
 import TabsPage from 'components/tabs-page';
 
@@ -63,9 +64,9 @@ const mapDispatchToProps = dispatch => ({
 /**
  * Top level container for managing single Lead entities.
  * @export
- * @class ManageLeadPage
+ * @class LeadManagementPage
  */
-export class ManageLeadPage extends React.Component<*, Props, State> {
+export class LeadManagementPage extends React.Component<*, Props, State> {
     props: Props;
     state: State;
 
@@ -282,4 +283,4 @@ export class ManageLeadPage extends React.Component<*, Props, State> {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageLeadPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LeadManagementPage);

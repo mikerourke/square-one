@@ -4,9 +4,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List } from 'immutable';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
 import { getDisplayDate } from 'lib/display-formats';
@@ -19,6 +16,7 @@ import { selectNotesInLead } from 'state/entities/notes/selectors';
 import { Lead, Note } from 'state/entities/models';
 import CardList from 'components/card-list';
 import ConfirmationDialog from 'components/confirmation-dialog';
+import EditNoteDialog from './edit-dialog';
 
 /* Types */
 import type { CardEntity } from 'components/card-list';
@@ -193,8 +191,10 @@ export class NotesList extends Component<DefaultProps, Props, State> {
         if (activeNote.id !== 0) {
             performActionFn = updateNoteFn;
         }
+        console.log(this.props.notes);
         performActionFn(lead, activeNote).then(() => {
             this.setState({ isEditDialogOpen: false });
+            console.log(this.props.notes);
         });
     };
 
@@ -247,20 +247,6 @@ export class NotesList extends Component<DefaultProps, Props, State> {
             isEditDialogOpen,
         } = this.state;
 
-        const editDialogActions = [
-            <FlatButton
-                label="Save"
-                onTouchTap={this.handleEditDialogSaveTouchTap}
-                primary={true}
-            />,
-            <FlatButton
-                label="Cancel"
-                name="cancel"
-                onTouchTap={this.handleEditDialogCancelTouchTap}
-                secondary={true}
-            />,
-        ];
-
         // TODO: Fix this so it renders new notes.
         const cardEntities = this.getCardEntities();
 
@@ -276,21 +262,14 @@ export class NotesList extends Component<DefaultProps, Props, State> {
                     searchFieldInclusions={['contents']}
                     showAddButton={showAddButton}
                 />
-                <Dialog
-                    actions={editDialogActions}
-                    open={isEditDialogOpen}
+                <EditNoteDialog
+                    handleSaveTouchTap={this.handleEditDialogSaveTouchTap}
+                    handleCancelTouchTap={this.handleEditDialogCancelTouchTap}
+                    handleInputChange={this.handleInputChange}
                     title={editDialogTitle}
-                >
-                    <TextField
-                        floatingLabelText="Contents"
-                        fullWidth={true}
-                        multiLine={true}
-                        rowsMax={4}
-                        name="contents"
-                        onChange={this.handleInputChange}
-                        value={activeNote.contents}
-                    />
-                </Dialog>
+                    contents={activeNote.contents}
+                    open={isEditDialogOpen}
+                />
                 <ConfirmationDialog
                     handleNoTouchTap={this.handleConfirmationNoTouchTap}
                     handleYesTouchTap={this.handleConfirmationYesTouchTap}

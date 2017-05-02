@@ -10,7 +10,7 @@ import { getDisplayDate } from 'lib/display-formats';
 import { selectMessagesInLead } from 'state/entities/messages/selectors';
 import { Lead, Message } from 'state/entities/models';
 import CardList from 'components/card-list';
-import MessagesDialog from './messages-dialog';
+import MessagesDialog from '../messages-dialog';
 
 /* Types */
 import type { CardEntity } from 'components/card-list';

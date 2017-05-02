@@ -9,8 +9,8 @@ import Layout from '../../layout';
 import {
     Dashboard,
     LeadsListPage,
+    LeadManagementPage,
     LoginPage,
-    ManageLeadPage,
 } from '../../scenes';
 import Auth from 'components/authentication';
 import { toggleAppSidebar } from 'state/gui/actions';
@@ -41,8 +41,8 @@ const configureRoutes = (history: Object, store: Store<*>) => {
                 <Route path="login" component={LoginPage} />
                 <Route path="dashboard" component={Auth(Dashboard)} />
                 <Route path="leads" component={Auth(LeadsListPage)} />
-                <Route path="leads/new" component={Auth(ManageLeadPage)} />
-                <Route path="leads/:id" component={Auth(ManageLeadPage)} />
+                <Route path="leads/new" component={Auth(LeadManagementPage)} />
+                <Route path="leads/:id" component={Auth(LeadManagementPage)} />
             </Route>
         </Router>
     );

@@ -135,7 +135,7 @@ class Row extends TableRow {
         return (
             <tr
                 className={className}
-                style={prepareStyles(Object.assign(styles.root, style))}
+                style={prepareStyles({ ...styles.root, ...style })}
                 {...props}
             >
                 {rowColumns}

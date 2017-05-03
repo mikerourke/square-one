@@ -21,8 +21,8 @@ type Props = {
     format?: 'phone' | 'email' | 'none',
     isRequired?: boolean,
     name: string,
-    onValidInputChange: (event: Event, newValue: string | number,
-        fieldName?: string) => void,
+    onValidInputChange: (event: Event & { currentTarget: HTMLInputElement },
+        newValue: string | number, fieldName: string) => void,
     value?: string | number,
 };
 
@@ -63,6 +63,13 @@ class FormTextField extends Component<DefaultProps, Props, State> {
         };
     }
 
+    /**
+     * If the value entered in the field doesn't fall within the requirements
+     *      of the specified format, the error text indicating that the
+     *      format is incorrect is displayed.
+     * @param {string|number} newValue Value entered into the input.
+     * @returns {string} Error text to display.
+     */
     errorTextForFormat = (newValue: string | number): string => {
         const { format } = this.props;
         if (format === 'phone') {
@@ -125,7 +132,6 @@ class FormTextField extends Component<DefaultProps, Props, State> {
         if (newValue === '' && isRequired) {
             return 'Required';
         }
-
         return '';
     };
 
@@ -162,7 +168,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
      * @param {string} errorText Error text associated with the input (if any).
      */
     updateInput = (
-        event: Event,
+        event: Event & { currentTarget: HTMLInputElement },
         newValue: string | number,
         errorText: string,
     ): void => {
@@ -207,7 +213,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
      * @param {string|number} newValue New value of the input.
      */
     handleChange = (
-        event: Event,
+        event: Event & { currentTarget: HTMLInputElement },
         newValue: string | number,
     ): void => {
         const errorText = this.errorTextByPrecedence(newValue);

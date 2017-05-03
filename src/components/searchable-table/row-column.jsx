@@ -97,7 +97,7 @@ class RowColumn extends TableRowColumn {
         return (
             <td
                 className={className}
-                style={prepareStyles(Object.assign(rootStyle, style))}
+                style={prepareStyles({ ...rootStyle, ...style })}
                 {...handlers}
                 {...props}
             >

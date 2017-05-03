@@ -14,7 +14,7 @@
 
 /* External dependencies */
 import React from 'react';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import FontIcon from 'material-ui/FontIcon';
 import { TableHeaderColumn } from 'material-ui/Table';
 import Tooltip from 'material-ui/internal/Tooltip';
@@ -46,25 +46,6 @@ type Props = {
     style?: Object,
     tooltip?: string,
 };
-
-/**
- * Styled component wrapper for the header icon.
- */
-const IconWrapper = styled.div`
-    display: inline-block;
-    height: 16px;
-    margin: 0 8px;
-    vertical-align: middle;
-    width: 16px;
-`;
-
-/**
- * Styled component wrapper for the title.
- */
-const TitleWrapper = styled.div`
-    display: inline-block;
-    vertical-align: middle;
-`;
 
 /**
  * Represents a column in the table header.
@@ -184,6 +165,19 @@ class HeaderColumn extends TableHeaderColumn {
             sortIconName = 'arrow_upward';
         }
 
+        const { div } = glamorous;
+        const sharedStyle = {
+            display: 'inline-block',
+            verticalAlign: 'middle',
+        };
+        const IconWrapper = div({
+            ...sharedStyle,
+            height: 16,
+            margin: '0 8px',
+            width: 16,
+        });
+        const TitleWrapper = div(sharedStyle);
+
         let sortIcon;
         if (sortIconName !== '') {
             sortIcon = (
@@ -215,7 +209,7 @@ class HeaderColumn extends TableHeaderColumn {
         return (
             <th
                 className={className}
-                style={prepareStyles(Object.assign(rootStyle, style))}
+                style={prepareStyles({ ...rootStyle, ...style })}
                 {...handlers}
                 {...props}
             >

@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
@@ -28,25 +28,6 @@ type State = {
     popoverAnchorEl?: EventTarget,
     popoverOpen: boolean,
 };
-
-/**
- * Styled container for the menu header items.
- */
-const MenuHeaderContainer = styled.div`
-    align-items: center;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-`;
-
-/**
- * Styled component within the menu header container.
- */
-const MenuHeaderItem = styled.div`
-    font-size: 14px;
-    padding: 4px 0 4px 16px;
-    width: 144px;
-`;
 
 const mapStateToProps = state => ({
     session: state.get('session'),
@@ -135,6 +116,12 @@ export class Header extends Component<*, Props, State> {
         const { handleToggle, session } = this.props;
         const { popoverAnchorEl, popoverOpen } = this.state;
 
+        const MenuHeaderItem = glamorous.div({
+            fontSize: 14,
+            padding: '4px 0 4px 16px',
+            width: 144,
+        });
+
         const userMenu = (
             <div>
                 <IconButton
@@ -155,7 +142,12 @@ export class Header extends Component<*, Props, State> {
                         onItemTouchTap={this.handleUserMenuItemTouchTap}
                         style={{ width: 128 }}
                     >
-                        <MenuHeaderContainer>
+                        <glamorous.Div
+                            alignItems="center"
+                            display="flex"
+                            flexFlow="row wrap"
+                            justifyContent="flex-start"
+                        >
                             <MenuHeaderItem style={{ color: primary2Color }}>
                                 Logged in as
                             </MenuHeaderItem>
@@ -167,7 +159,7 @@ export class Header extends Component<*, Props, State> {
                             >
                                 {session.fullName}
                             </MenuHeaderItem>
-                        </MenuHeaderContainer>
+                        </glamorous.Div>
                         <Divider />
                         <MenuItem value="refresh" primaryText="Refresh" />
                         <MenuItem value="bug" primaryText="Report a bug" />

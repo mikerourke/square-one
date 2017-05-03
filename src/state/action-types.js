@@ -1,9 +1,9 @@
 /* @flow */
 
 /* eslint-disable max-len */
-export const CHANGES_LOG: string = 'changes/CHANGES_LOG';
-export const CHANGES_LOG_FAIL: string = 'changes/CHANGES_LOG_FAIL';
-export const CHANGES_LOG_SUCCESS: string = 'changes/CHANGES_LOG_SUCCESS';
+export const CHANGES_GET_FOR_PARENT: string = 'changes/CHANGES_GET_FOR_PARENT';
+export const CHANGES_GET_FOR_PARENT_FAIL: string = 'changes/CHANGES_GET_FOR_PARENT_FAIL';
+export const CHANGES_GET_FOR_PARENT_SUCCESS: string = 'changes/CHANGES_GET_FOR_PARENT_SUCCESS';
 export const GUI_TOGGLE_APP_SIDEBAR: string = 'gui/GUI_TOGGLE_APP_SIDEBAR';
 export const LEAD_CREATE: string = 'leads/LEAD_CREATE';
 export const LEAD_CREATE_FAIL: string = 'leads/LEAD_CREATE_FAIL';

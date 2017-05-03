@@ -1,7 +1,7 @@
 /* @flow */
 
 /* Internal dependencies */
-import { CHANGES_LOG } from '../../action-types';
+import { CHANGES_GET_FOR_PARENT } from '../../action-types';
 import { Lead } from '../models';
 
 /* Types */
@@ -9,16 +9,14 @@ import type { Action } from 'lib/types';
 
 type Parent = Lead;
 
-export const logChanges = (
+export const getChanges = (
     parent: Parent,
-    changes: Array<Object>,
 ): Action => ({
-    type: CHANGES_LOG,
+    type: CHANGES_GET_FOR_PARENT,
     payload: {
         request: {
-            method: 'post',
+            method: 'get',
             url: `/${parent.typeName}s/${parent.id}/changes`,
-            data: changes,
         },
     },
 });

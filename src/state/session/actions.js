@@ -19,7 +19,6 @@ export const login = (
     password: string,
 ) => (dispatch: Function) =>
     new Promise((resolve, reject) => {
-        localStorage.removeItem('jwt');
         axios.post(`${apiUrl}/auth/login`, { username, password })
             .then((response) => {
                 localStorage.setItem('jwt', response.data.token);

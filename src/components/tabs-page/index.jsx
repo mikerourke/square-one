@@ -2,7 +2,7 @@
 
 /* External dependencies */
 import React from 'react';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import Paper from 'material-ui/Paper';
 import { Tab, Tabs } from 'material-ui/Tabs';
 
@@ -17,15 +17,6 @@ type TabPage = {
 };
 
 /**
- * Styled container for the Tabs elements.
- */
-const Container = styled.div`
-    background: white;
-    height: 48px;
-    width: 100%;
-`;
-
-/**
  * Applies any custom styles specified in the props passed to the component
  *      which applies to all the pages, or the props for each individual tab.
  *      Applies a default style that can be overridden by either parameter.
@@ -34,11 +25,12 @@ const Container = styled.div`
  * @param {Object} [styleFromTabPage={}] Style object passed to each individual
  *      TabPage component.
  */
-const getPaperStyle = (styleFromProps = {}, styleFromTabPage = {}): Object =>
-    Object.assign({}, {
-        margin: '24px 0',
-        padding: 24,
-    }, styleFromProps, styleFromTabPage);
+const getPaperStyle = (styleFromProps = {}, styleFromTabPage = {}): Object => ({
+    margin: '24px 0',
+    padding: 24,
+    ...styleFromProps,
+    ...styleFromTabPage,
+});
 
 /**
  * Page containing a tab control and corresponding pages.
@@ -57,7 +49,12 @@ const TabsPage = ({
     paperStyle?: ?Object,
     tabPages: Array<TabPage>,
 }): React.Element<*> => (
-    <Container className="square-one-toolbar">
+    <glamorous.Div
+        background="white"
+        height={48}
+        width="100%"
+        className="square-one-toolbar"
+    >
         <Tabs
             onChange={handleTabPageChange}
             style={{
@@ -82,7 +79,7 @@ const TabsPage = ({
                 </Tab>
             ))}
         </Tabs>
-    </Container>
+    </glamorous.Div>
 );
 
 export default TabsPage;

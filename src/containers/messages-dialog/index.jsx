@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
@@ -40,18 +40,6 @@ type State = {
     sendLeadMessage: boolean,
     sendRepresentativeMessage: boolean,
 };
-
-/**
- * Styled container for the message block.
- */
-const MessageBlock = styled.div`
-    margin: 24px 0;
-`;
-
-const LeadMessageContainer = styled.div`
-    align-items: flex-end;
-    display: flex;
-`;
 
 const mapStateToProps = (state, ownProps) => ({
     lead: ownProps.lead,
@@ -152,26 +140,44 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
     };
 
     /**
+     * If messages were specified, dispatch the sendMessages action and return
+     *      the resolved Promise.  If no messages were specified return a
+     *      resolved Promise to continue processing.
+     * @returns {Promise}
+     */
+    sendMessagesIfRequired = (): Promise<*> =>
+        new Promise((resolve, reject) => {
+            const { lead } = this.props;
+            let sendMessagesFn = () => Promise.resolve();
+            if (this.props.sendMessages) {
+                sendMessagesFn = this.props.sendMessages;
+            }
+            const messagesToSend = this.getMessagesToSend();
+            if (messagesToSend.length === 0) {
+                resolve();
+            } else {
+                sendMessagesFn(lead, messagesToSend)
+                    .then(() => resolve())
+                    .catch(error => reject(error));
+            }
+        });
+
+    /**
      * Sends the messages specified by the user, closes any dialogs, and
      *      redirects the user to the Leads List (if applicable).
      */
     handleSubmitTouchTap = (): void => {
         const {
             handleTouchTap,
-            lead,
             redirectToLeads,
         } = this.props;
 
         // Hide the messages dialog form.
         handleTouchTap(event);
 
-        // Get messages to send based on selections and send messages.
-        let sendMessagesFn = () => Promise.resolve();
-        if (this.props.sendMessages) {
-            sendMessagesFn = this.props.sendMessages;
-        }
-        const messagesToSend = this.getMessagesToSend();
-        sendMessagesFn(lead, messagesToSend).then(() => {
+        // Since messages are optional, the same actions need to be performed
+        // regardless of whether messages are sent.
+        this.sendMessagesIfRequired().then(() => {
             this.closeConfirmationDialogAndResetInputs();
             if (redirectToLeads) {
                 browserHistory.push('/leads');
@@ -209,8 +215,8 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
             Description: ${lead.description}
             Source: ${lead.source}`;
 
-        // Multi-line template string include any tab characters, this
-        // removes them:
+        // Multi-line template string includes tab characters, this
+        // removes them.
         const dedentedMessage = getDedentedString(messageTemplate);
         const messageToRepresentative = dedentedMessage.replace(/%~%/g, '\n');
         this.setState({
@@ -295,6 +301,8 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
             />,
         ];
 
+        const MessageBlock = glamorous.div({ margin: '24px 0' });
+
         return (
             <div>
                 <Dialog
@@ -319,7 +327,10 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
                             onToggle={this.handleInputChange}
                             style={{ width: 300 }}
                         />
-                        <LeadMessageContainer>
+                        <glamorous.Div
+                            alignItems="flex-end"
+                            display="flex"
+                        >
                             <IconDropdown
                                 disabled={!sendLeadMessage}
                                 handleItemTouchTap={
@@ -337,7 +348,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
                                 onChange={this.handleInputChange}
                                 value={messageToLead}
                             />
-                        </LeadMessageContainer>
+                        </glamorous.Div>
                     </MessageBlock>
                     <MessageBlock>
                         <Toggle

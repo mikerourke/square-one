@@ -12,7 +12,7 @@
 /* External dependencies */
 import React, { Component } from 'react';
 import GoogleMapsLoader from 'google-maps';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import TextField from 'material-ui/TextField';
 
 /* Types */
@@ -41,13 +41,6 @@ type State = {
     lat: number,
     lng: number,
 };
-
-/**
- * Wrapper for the Google Map element.
- */
-const MapWrapper = styled.div`
-    height: 352px;
-`;
 
 /**
  * Address input and Google Map component.
@@ -233,7 +226,10 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
                     placeholder=""
                     value={address}
                 />
-                <MapWrapper id="geo-map" />
+                <glamorous.Div
+                    height={352}
+                    id="geo-map"
+                />
             </div>
         );
     }

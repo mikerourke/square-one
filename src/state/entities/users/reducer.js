@@ -38,7 +38,7 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
-const users = (
+const usersReducer = (
     state: State = initialState,
     action: Action,
 ) => {
@@ -62,4 +62,4 @@ const users = (
     }
 };
 
-export default users;
+export default usersReducer;

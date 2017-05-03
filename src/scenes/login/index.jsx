@@ -4,27 +4,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
+import { getAllLeads } from 'state/entities/leads/actions';
 import { getAllSettings } from 'state/settings/actions';
 import { getAllUsers } from 'state/entities/users/actions';
 import { login } from 'state/session/actions';
 import Session from 'state/session/model';
 import Logo from 'components/logo';
+import ProgressIndicator from 'components/progress-indicator';
 
 /* Types */
 type DefaultProps = {
+    getAllLeads: () => Promise<*>,
     getAllSettings: () => Promise<*>,
     getAllUsers: () => Promise<*>,
     login: (username: string, password: string) => Promise<*>,
 };
 
 type Props = {
+    getAllLeads: () => Promise<*>,
     getAllSettings: () => Promise<*>,
     getAllUsers: () => Promise<*>,
     login: (username: string, password: string) => Promise<*>,
@@ -32,27 +36,12 @@ type Props = {
 };
 
 type State = {
+    isLoading: boolean,
     username: string,
     password: string,
     usernameErrorText: string,
     passwordErrorText: string,
 };
-
-/**
- * Styled container for page content.
- */
-const PageContainer = styled.div`
-    display: flex;
-    flex-flow: none;
-    justify-content: center;
-`;
-
-/**
- * Styled container for header content.
- */
-const HeaderContainer = styled.div`
-    text-align: center;
-`;
 
 const mapStateToProps = state => ({
     session: state.get('session'),
@@ -60,6 +49,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     dispatch,
+    getAllLeads: () => dispatch(getAllLeads()),
     getAllSettings: () => dispatch(getAllSettings()),
     getAllUsers: () => dispatch(getAllUsers()),
     login: (username, password) => dispatch(login(username, password)),
@@ -75,6 +65,7 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
     state: State;
 
     static defaultProps = {
+        getAllLeads: () => Promise.resolve(),
         getAllSettings: () => Promise.resolve(),
         getAllUsers: () => Promise.resolve(),
         login: () => Promise.resolve(),
@@ -83,6 +74,7 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
     constructor(): void {
         super();
         this.state = {
+            isLoading: false,
             username: '',
             password: '',
             usernameErrorText: '',
@@ -152,15 +144,21 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
     };
 
     /**
-     * Populates state with Settings and User entities and redirects to default
-     *      page.
+     * Populates state with Settings, Leads, and User entities and redirects to
+     *      default page.
      */
     hydrateStateAndLogin = (): void => {
+        const getAllLeadsFn = this.props.getAllLeads;
         const getAllSettingsFn = this.props.getAllSettings;
         const getAllUsersFn = this.props.getAllUsers;
+        this.setState({ isLoading: true });
         getAllSettingsFn()
             .then(getAllUsersFn)
-            .then(() => browserHistory.push('/leads'));
+            .then(getAllLeadsFn)
+            .then(() => {
+                this.setState({ isLoading: false });
+                browserHistory.push('/leads');
+            });
     };
 
     /**
@@ -185,10 +183,22 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
     };
 
     render(): React.Element<*> {
-        const { usernameErrorText, passwordErrorText } = this.state;
+        const {
+            isLoading,
+            usernameErrorText,
+            passwordErrorText,
+        } = this.state;
+
+        if (isLoading) {
+            return (<ProgressIndicator />);
+        }
 
         return (
-            <PageContainer>
+            <glamorous.Div
+                display="flex"
+                flexFlow="none"
+                justifyContent="center"
+            >
                 <Paper
                     style={{
                         display: 'block',
@@ -198,12 +208,12 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
                         width: 350,
                     }}
                 >
-                    <HeaderContainer>
+                    <glamorous.Div textAlign="center">
                         <Logo
                             height={64}
                             width={64}
                         />
-                    </HeaderContainer>
+                    </glamorous.Div>
                     <form>
                         <TextField
                             errorText={usernameErrorText}
@@ -241,7 +251,7 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
                         />
                     </form>
                 </Paper>
-            </PageContainer>
+            </glamorous.Div>
         );
     }
 }

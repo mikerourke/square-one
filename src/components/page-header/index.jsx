@@ -2,20 +2,11 @@
 
 /* External dependencies */
 import React from 'react';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
 /* Internal dependencies */
 import { primary1Color } from 'style/mui/palette';
-
-/**
- * Styled wrapper for the action button on the right side of the toolbar.  This
- *      is used to ensure the button is in the same location regardless of
- *      whether or not it is wrapped in "Link" element.
- */
-const ActionButtonWrapper = styled.div`
-    margin: 6px 24px;
-`;
 
 /**
  * Header toolbar for performing page-level actions.
@@ -49,9 +40,13 @@ const PageHeader = ({
             {titleLeft}
         </ToolbarGroup>
         <ToolbarGroup>
-            <ActionButtonWrapper>
+            {/*
+              * Ensure the button is in the same location regardless of
+              * whether or not it is wrapped in a "Link" element.
+            */}
+            <glamorous.Div margin="6px 24px">
                 {actionButtonRight}
-            </ActionButtonWrapper>
+            </glamorous.Div>
         </ToolbarGroup>
     </Toolbar>
 );

@@ -17,7 +17,7 @@ type State = Session;
 
 const initialState = new Session();
 
-const session = (
+const sessionReducer = (
     state: State = initialState,
     action: Action,
 ) => {
@@ -29,9 +29,7 @@ const session = (
 
         case SESSION_LOGIN_SUCCESS:
             const { payload: loginSession } = (action: Object);
-            const validSession = Object.assign({}, loginSession, {
-                isAuthenticated: true,
-            });
+            const validSession = { ...loginSession, isAuthenticated: true };
             return state.merge(new Session(fromJS(validSession)));
 
         case SESSION_LOGOUT_SUCCESS:
@@ -43,4 +41,4 @@ const session = (
     }
 };
 
-export default session;
+export default sessionReducer;

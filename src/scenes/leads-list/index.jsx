@@ -9,7 +9,6 @@ import { OrderedMap } from 'immutable';
 /* Internal dependencies */
 import { selectAllLeads } from 'state/entities/leads/selectors';
 import { createLead, getAllLeads } from 'state/entities/leads/actions';
-import { logChanges } from 'state/entities/changes/actions';
 import { Lead } from 'state/entities/models';
 import tableColumns from './table-columns';
 import PageHeader from 'components/page-header';
@@ -25,12 +24,10 @@ type Props = {
     leads: Map<number, Lead>,
     createLead: (lead: Lead) => Promise<*>,
     getAllLeads: () => Promise<*>,
-    logChanges: (lead: Lead, changes: Array<Object>) => Promise<*>,
 };
 
 type State = {
     isLoading: boolean,
-    leads: Map<number, Lead>,
 };
 
 const mapStateToProps = state => ({
@@ -41,7 +38,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch,
     createLead: lead => dispatch(createLead(lead)),
     getAllLeads: () => dispatch(getAllLeads()),
-    logChanges: (lead, changes) => dispatch(logChanges(lead, changes)),
 });
 
 /**
@@ -59,17 +55,6 @@ export class LeadsList extends Component<*, Props, State> {
             isLoading: true,
             leads: OrderedMap(),
         };
-    }
-
-    componentDidMount(): void {
-        const getAllLeadsFn = this.props.getAllLeads;
-        getAllLeadsFn().then(() => {
-            const leads = this.props.leads;
-            this.setState({
-                isLoading: false,
-                leads,
-            });
-        });
     }
 
     /**
@@ -97,7 +82,12 @@ export class LeadsList extends Component<*, Props, State> {
     };
 
     render(): React.Element<*> {
-        const { isLoading, leads } = this.state;
+        const { leads } = this.props;
+        const { isLoading } = this.state;
+
+        if (isLoading) {
+            return (<ProgressIndicator />);
+        }
 
         // TODO: Add filter selection handling and saving.
         const filterSelections = ['Test 1', 'Test 2'];
@@ -111,10 +101,6 @@ export class LeadsList extends Component<*, Props, State> {
             column: 'createdAt',
             order: 'desc',
         };
-
-        if (isLoading) {
-            return (<ProgressIndicator />);
-        }
 
         return (
             <div>

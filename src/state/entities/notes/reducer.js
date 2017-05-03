@@ -22,7 +22,7 @@ import type { Action } from 'lib/types';
 
 type ByIdMap = Map<number, Note>;
 type ErrorMap = Map<string, any>;
-type State = Map<string, ByIdMap | ErrorMap>;
+type State = Map<string, ByIdMap, ErrorMap>;
 
 const initialState = OrderedMap();
 
@@ -46,7 +46,7 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
-const notes = (
+const notesReducer = (
     state: State = initialState,
     action: Action,
 ) => {
@@ -78,4 +78,4 @@ const notes = (
     }
 };
 
-export default notes;
+export default notesReducer;

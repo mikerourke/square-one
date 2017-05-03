@@ -9,7 +9,7 @@ import {
 
 /* Internal dependencies */
 import {
-    CHANGES_LOG_SUCCESS, CHANGES_LOG_FAIL,
+    CHANGES_GET_FOR_PARENT_SUCCESS, CHANGES_GET_FOR_PARENT_FAIL,
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Change from './model';
@@ -19,7 +19,7 @@ import type { Action } from 'lib/types';
 
 type ByIdMap = Map<number, Change>;
 type ErrorMap = Map<string, any>;
-type State = Map<string, ByIdMap | ErrorMap>;
+type State = Map<string, ByIdMap, ErrorMap>;
 
 const initialState = OrderedMap();
 
@@ -43,13 +43,13 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
-const changes = (
+const changesReducer = (
     state: State = initialState,
     action: Action,
 ) => {
     switch (action.type) {
         case LEAD_GET_ALL_FAIL:
-        case CHANGES_LOG_FAIL:
+        case CHANGES_GET_FOR_PARENT_FAIL:
             const { error: { response } } = (action: Object);
             return state.set('error', fromJS(response));
 
@@ -57,14 +57,14 @@ const changes = (
             const { payload: { data: responseData } } = (action: Object);
             return mergeEntities(state, responseData);
 
-        case CHANGES_LOG_SUCCESS:
-            const { payload: { data: newChanges } } = (action: Object);
-            return state.mergeIn(['byId'], newChanges.map(change =>
-                ([+change.id, new Change(fromJS(change))])));
+        // TODO: Finish this for getting changes.
+        case CHANGES_GET_FOR_PARENT_SUCCESS:
+            const { payload: { data: changesInParent } } = (action: Object);
+            return state;
 
         default:
             return state;
     }
 };
 
-export default changes;
+export default changesReducer;

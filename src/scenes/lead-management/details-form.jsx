@@ -5,7 +5,7 @@
 /* External dependencies */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
@@ -38,12 +38,6 @@ type Props = {
 type State = {
     lead: Lead,
 };
-
-const ButtonContainer = styled.div`
-    margin-top: 28px;
-    margin-left: 8px;
-    width: 100%;
-`;
 
 const mapStateToProps = state => ({
     listSettings: selectListSettings(state),
@@ -103,7 +97,6 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
      * @param {string|number} newValue New value of the input.
      */
     handleInputChange = (
-        // $FlowFixMe
         event: Event & { currentTarget: HTMLInputElement },
         newValue: string | number,
     ): void => {
@@ -269,7 +262,11 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                         value={lead.description}
                     />
                 </FormColumnsContainer>
-                <ButtonContainer>
+                <glamorous.Div
+                    marginTop={28}
+                    marginLeft={8}
+                    width="100%"
+                >
                     <RaisedButton
                         label="Save"
                         onTouchTap={() => handleSaveTouchTap(lead)}
@@ -281,7 +278,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                         secondary={true}
                         style={{ marginLeft: 16 }}
                     />
-                </ButtonContainer>
+                </glamorous.Div>
             </form>
         );
     }

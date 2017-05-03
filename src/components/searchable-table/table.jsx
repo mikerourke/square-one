@@ -1,3 +1,5 @@
+/* @flow */
+
 /**
  * This code was taken from the material-ui-datatables library and modified
  *      slightly to use the styled-components library.  I also stripped the
@@ -9,8 +11,6 @@
  *      adding more than 500kb to the bundle size.
  * @see https://github.com/hyojin/material-ui-datatables
  */
-
-/* @flow */
 
 /* eslint-disable react/no-array-index-key */
 
@@ -51,7 +51,7 @@ type Props = {
     handleRowIconTouchTap: (row: Object) => void,
     handleNextPageClick: () => void,
     handlePreviousPageClick: () => void,
-    handleRowSizeChange: (event: Event, key?: number, value: number) => void,
+    handleRowSizeChange: (event: Event, key: number, value: number) => void,
     handleSortOrderChange?: (key: string, order: string) => void,
     height?: string,
     initialSort?: Sort,

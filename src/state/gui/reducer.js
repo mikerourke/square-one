@@ -15,7 +15,7 @@ const initialState = fromJS({
     appSidebarOpen: false,
 });
 
-const gui = (
+const guiReducer = (
     state: State = initialState,
     action: Action,
 ) => {
@@ -29,4 +29,4 @@ const gui = (
     }
 };
 
-export default gui;
+export default guiReducer;

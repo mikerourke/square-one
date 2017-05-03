@@ -25,11 +25,10 @@ import { getIdFromPayload, getChildDataFromPayload } from 'lib/api-data';
 /* Types */
 import type { Action } from 'lib/types';
 
-// $FlowFixMe
 type ByIdMap = Map<number, Lead>;
 type AllIdsList = List<number>;
 type ErrorMap = Map<string, any>;
-type State = Map<string, ByIdMap | AllIdsList | ErrorMap>;
+type State = Map<string, ByIdMap, AllIdsList, ErrorMap>;
 
 const initialState = OrderedMap();
 
@@ -41,15 +40,20 @@ const initialState = OrderedMap();
  */
 const mergeEntities = (state: State, data: Object): State => {
     const { entities: { leads }, result } = (data: Object);
+    let byIdOrderedMap = OrderedMap();
+    if (leads) {
+        const leadEntries = Object.entries(leads);
+        byIdOrderedMap = OrderedMap([...leadEntries.map(
+            ([key, value]) => ([+key, new Lead(fromJS(value))]))]);
+    }
     return state.merge({
-        byId: OrderedMap([...Object.entries(leads).map(
-            ([key, value]) => ([+key, new Lead(fromJS(value))]))]),
+        byId: byIdOrderedMap,
         allIds: new List(result),
         error: new Map(),
     });
 };
 
-const leads = (
+const leadsReducer = (
     state: State = initialState,
     action: Action,
 ) => {
@@ -66,7 +70,6 @@ const leads = (
             const { payload: { data: newLead } } = (action: Object);
             return state
                 .setIn(['byId', +newLead.id], new Lead(fromJS(newLead)))
-                // $FlowIgnore
                 .set('allIds', state.get('allIds').push(+newLead.id));
 
         case LEAD_GET_SINGLE_SUCCESS:
@@ -137,4 +140,4 @@ const leads = (
     }
 };
 
-export default leads;
+export default leadsReducer;

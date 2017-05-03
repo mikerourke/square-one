@@ -27,12 +27,13 @@ const ActionButton = ({
     <FloatingActionButton
         onTouchTap={handleTouchTap}
         secondary={true}
-        style={Object.assign({}, {
+        style={{
             bottom: 24,
             position: 'fixed',
             right: 24,
             zIndex: 999,
-        }, style)}
+            ...style,
+        }}
         {...props}
     >
         <FontIcon

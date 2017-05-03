@@ -22,21 +22,26 @@ import type { Action } from 'lib/types';
 type ByNameMap = Map<string, Setting>;
 type AllNamesList = List<string>;
 type ErrorMap = Map<string, any>;
-type State = Map<string, ByNameMap | AllNamesList | ErrorMap>;
+type State = Map<string, ByNameMap, AllNamesList, ErrorMap>;
 
 const initialState = OrderedMap();
 
 const mergeEntities = (state: State, data: Object): State => {
     const { entities: { settings }, result } = (data: Object);
+    let byNameOrderedMap = OrderedMap();
+    if (settings) {
+        const settingEntries = Object.entries(settings);
+        byNameOrderedMap = OrderedMap([...settingEntries.map(
+            ([key, value]) => ([key, new Setting(fromJS(value))]))]);
+    }
     return state.merge({
-        byName: OrderedMap([...Object.entries(settings).map(
-            ([key, value]) => ([key, new Setting(fromJS(value))]))]),
+        byName: byNameOrderedMap,
         allNames: new List(result),
         error: new Map(),
     });
 };
 
-const settings = (
+const settingsReducer = (
     state: State = initialState,
     action: Action,
 ) => {
@@ -62,4 +67,4 @@ const settings = (
     }
 };
 
-export default settings;
+export default settingsReducer;

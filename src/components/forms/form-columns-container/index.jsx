@@ -1,13 +1,10 @@
 /* @flow */
 
 /* External dependencies */
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 
-/**
- * Container for form columns.
- */
-export default styled.div`
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-`;
+export default glamorous.div({
+    display: 'flex',
+    flexFlow: 'row wrap',
+    justifyContent: 'center',
+});

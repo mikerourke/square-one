@@ -2,46 +2,55 @@
 
 /* External dependencies */
 import React from 'react';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import CircularProgress from 'material-ui/CircularProgress';
 
 /* Internal dependencies */
 import { primary1Color } from 'style/mui/palette';
 
-const Container = styled.div`
-    align-items: center;
-    display: flex;
-    flex-flow: row wrap;
-    height: 150px;
-    justify-content: center;
-    margin-top: 128px;
-    width: 100%;
-`;
+const width = '100%';
 
-const ProgressWrapper = styled.div`
-    align-self: flex-end;
-    flex: 1 0 100%;
-    text-align: center;
-    width: 100%;
-`;
+const Container = glamorous.div({
+    width,
+    alignItems: 'center',
+    display: 'flex',
+    flexFlow: 'row wrap',
+    height: 150,
+    justifyContent: 'center',
+    marginTop: 128,
+});
 
-const LoadingLabel = styled.div`
-    align-self: flex-start;
-    color: ${primary1Color};
-    font-size: 14px;
-    flex: 0 0 100%;
-    margin-top: 24px;
-    text-align: center;
-    text-transform: uppercase;
-    width: 100%;
-`;
+const ProgressWrapper = glamorous.div({
+    width,
+    alignSelf: 'flex-end',
+    flex: '1 0 100%',
+    textAlign: 'center',
+});
+
+const LoadingLabel = glamorous.div({
+    width,
+    alignSelf: 'flex-start',
+    color: primary1Color,
+    fontSize: 14,
+    flex: '0 0 100%',
+    marginTop: 24,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+});
 
 /**
  * Circular progress indicator that displays loading progress.
  * @constructor
  */
 const ProgressIndicator = (): React.Element<*> => (
-    <Container>
+    <glamorous.Div
+        alignItems="center"
+        display="flex"
+        flexFlow="row wrap"
+        height={150}
+        justifyContent="center"
+        marginTop={128}
+    >
         <ProgressWrapper>
             <CircularProgress
                 thickness={8}
@@ -51,7 +60,7 @@ const ProgressIndicator = (): React.Element<*> => (
         <LoadingLabel>
             Loading, please wait...
         </LoadingLabel>
-    </Container>
+    </glamorous.Div>
 );
 
 export default ProgressIndicator;

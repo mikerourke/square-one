@@ -14,7 +14,7 @@
 
 /* External dependencies */
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -32,7 +32,7 @@ import {
 type Props = {
     handleNextPageClick: () => void,
     handlePreviousPageClick: () => void,
-    handleRowSizeChange: (event: Event, key?: number, value: number) => void,
+    handleRowSizeChange: (event: Event, key: number, value: number) => void,
     page: number,
     recordCount: number,
     rowSize: number,
@@ -44,26 +44,6 @@ type Pagination = {
     previousButtonDisabled: boolean,
     nextButtonDisabled: boolean,
 };
-
-const ControlGroupContainer = styled.div`
-    align-items: center;
-    color: ${accent3Color};
-    display: flex;
-    font-size: 12px;
-    margin-left: auto;
-`;
-
-const ControlWrapper = styled.div`
-    align-items: center;
-    display: flex;
-    margin: 0 8px;
-`;
-
-const PaginationButtonsContainer = styled.div`
-    align-items: center;
-    display: flex;
-    margin-left: 24px;
-`;
 
 /**
  * Represents the footer toolbar that handles pagination.
@@ -130,6 +110,17 @@ class Footer extends Component<*, Props, *> {
             width: 24,
         };
 
+        const { div } = glamorous;
+        const sharedStyle = { alignItems: 'center', display: 'flex' };
+        const ControlGroupContainer = div({
+            ...sharedStyle,
+            color: accent3Color,
+            fontSize: 12,
+            marginLeft: 'auto',
+        });
+        const ControlWrapper = div({ ...sharedStyle, margin: '0 8px' });
+        const ButtonsContainer = div({ ...sharedStyle, marginLeft: 24 });
+
         return (
             <Toolbar
                 style={{
@@ -166,7 +157,7 @@ class Footer extends Component<*, Props, *> {
                     <ControlWrapper>
                         <div>{`${start} - ${end} of ${recordCount}`}</div>
                     </ControlWrapper>
-                    <PaginationButtonsContainer>
+                    <ButtonsContainer>
                         <FlatButton
                             icon={(<FontIcon className="material-icons">
                                        chevron_left
@@ -183,7 +174,7 @@ class Footer extends Component<*, Props, *> {
                             onClick={handleNextPageClick}
                             disabled={nextButtonDisabled}
                         />
-                    </PaginationButtonsContainer>
+                    </ButtonsContainer>
                 </ControlGroupContainer>
             </Toolbar>
         );

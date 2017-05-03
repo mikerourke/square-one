@@ -2,29 +2,11 @@
 
 /* External dependencies */
 import React from 'react';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import FontIcon from 'material-ui/FontIcon';
 
 /* Internal dependencies */
 import { alternateTextColor, primary1Color } from 'style/mui/palette';
-
-/**
- * Styled container for the header contents.
- */
-const Container = styled.div`
-    background-color: ${primary1Color};
-    color: ${alternateTextColor};
-    height: 144px;
-    padding-left: 24px;
-`;
-
-/**
- * Styled wrapper for the full name header.
- */
-const FullNameWrapper = styled.div`
-    font-size: 14px;
-    margin-top: 12px;
-`;
 
 /**
  * Header used by the Sidebar in the application layout.
@@ -35,7 +17,12 @@ const SidebarHeader = ({
 }: {
     fullNameOfUser: string,
 }): React.Element<*> => (
-    <Container>
+    <glamorous.Div
+        backgroundColor={primary1Color}
+        color={alternateTextColor}
+        height={144}
+        paddingLeft={24}
+    >
         <FontIcon
             className="material-icons"
             style={{
@@ -46,10 +33,13 @@ const SidebarHeader = ({
         >
             face
         </FontIcon>
-        <FullNameWrapper>
+        <glamorous.Div
+            fontSize={14}
+            marginTop={12}
+        >
             {fullNameOfUser}
-        </FullNameWrapper>
-    </Container>
+        </glamorous.Div>
+    </glamorous.Div>
 );
 
 export default SidebarHeader;

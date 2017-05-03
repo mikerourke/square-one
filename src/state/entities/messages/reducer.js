@@ -19,7 +19,7 @@ import type { Action } from 'lib/types';
 
 type ByIdMap = Map<number, Message>;
 type ErrorMap = Map<string, any>;
-type State = Map<string, ByIdMap | ErrorMap>;
+type State = Map<string, ByIdMap, ErrorMap>;
 
 const initialState = OrderedMap();
 
@@ -43,7 +43,7 @@ const mergeEntities = (state: State, data: Object): State => {
     });
 };
 
-const messages = (
+const messagesReducer = (
     state: State = initialState,
     action: Action,
 ) => {
@@ -67,4 +67,4 @@ const messages = (
     }
 };
 
-export default messages;
+export default messagesReducer;

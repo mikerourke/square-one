@@ -1,17 +1,11 @@
 [ignore]
   .*/__tests__/.*
   .*/test/.*
-  .*/styled-components/src/.*
-  .*/styled-components/dangerfile.js
-  .*/styled-components/lib/models/StyledNativeComponent.js.flow
-  .*/styled-components/lib/utils/flatten.js.flow
+  .*\sha1-browser\.js
 
 [libs]
   # These are custom global declarations:
   internals/flow
-
-  # Required to fix issue with "react-native" error when type checking:
-  node_modules/styled-components/flow-typed/react-native.js
 
 [options]
   suppress_comment=.*\\$FlowFixMe
@@ -24,6 +18,8 @@
 
   module.system=node
   module.name_mapper='^components\/\(.*\)$' -> '<PROJECT_ROOT>/src/components/\1'
+  module.name_mapper='^containers\/\(.*\)$' -> '<PROJECT_ROOT>/src/containers/\1'
+  module.name_mapper='^scenes\/\(.*\)$' -> '<PROJECT_ROOT>/src/scenes/\1'
   module.name_mapper='^lib\/\(.*\)$' -> '<PROJECT_ROOT>/src/lib/\1'
   module.name_mapper='^state\/\(.*\)$' -> '<PROJECT_ROOT>/src/state/\1'
   module.name_mapper='^style\/\(.*\)$' -> '<PROJECT_ROOT>/src/style/\1'

@@ -41,7 +41,7 @@ export const createLead = (lead: Lead): Action => ({
         request: {
             method: 'post',
             url: BASE_URL,
-            data: lead.toJS(),
+            data: lead.getEntityForApiCall(),
         },
     },
 });

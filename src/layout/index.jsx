@@ -3,7 +3,7 @@
 /* External dependencies */
 import React from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
+import glamorous from 'glamorous';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 /* Internal dependencies */
@@ -12,14 +12,6 @@ import { toggleAppSidebar } from 'state/gui/actions';
 import Session from 'state/session/model';
 import Header from './header';
 import Sidebar from './sidebar';
-
-/**
- * Styled container for the application elements.
- */
-const ChildrenContainer = styled.div`
-    position: relative;
-    top: 64px;
-`;
 
 const mapStateToProps = state => ({
     appSidebarOpen: state.getIn(['gui', 'appSidebarOpen']),
@@ -55,9 +47,12 @@ const Layout = ({
                 open={appSidebarOpen}
                 handleToggle={toggleSidebar}
             />
-            <ChildrenContainer>
+            <glamorous.Div
+                position="relative"
+                top={64}
+            >
                 {children}
-            </ChildrenContainer>
+            </glamorous.Div>
         </div>
     </MuiThemeProvider>
 );

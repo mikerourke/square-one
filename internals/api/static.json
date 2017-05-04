@@ -5,36 +5,32 @@
       "username": "mike",
       "fullName": "Mike Rourke",
       "title": "Warlock",
-      "isLoggedIn": "false",
       "password": "mike",
-      "accessLevel": "admin"
+      "role": "admin"
     },
     {
       "id": 2,
       "username": "lis",
       "fullName": "Elisabeth Rourke",
       "title": "Bookeeper",
-      "isLoggedIn": "false",
       "password": "lis",
-      "accessLevel": "office"
+      "role": "office"
     },
     {
       "id": 3,
       "username": "joe",
       "fullName": "Joe Legend",
       "title": "President",
-      "isLoggedIn": "false",
       "password": "joe",
-      "accessLevel": "office"
+      "role": "manager"
     },
     {
       "id": 4,
       "username": "josh",
-      "fullName": "Josh Burton",
+      "fullName": "Josh Legend",
       "title": "President",
-      "isLoggedIn": "false",
       "password": "josh",
-      "accessLevel": "office"
+      "role": "manager"
     }
   ],
   "settings": [

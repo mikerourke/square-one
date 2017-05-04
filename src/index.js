@@ -11,23 +11,20 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 /* Internal dependencies */
 import configureStore from './state';
+import setAxiosDefaults from './lib/api';
 import renderRoutes from './lib/routes';
 
 // Import web assets.
 import './style/global.css'; // eslint-disable-line
 
-// Configure Axios client for Redux actions.
-const client: AxiosRequestConfig = axios.create({
-    baseURL: process.env.API_URL || 'http://localhost:8080/api',
-    headers: { Authorization: localStorage.getItem('jwt') },
-    responseType: 'json',
-});
-
+// Setup default Axios instance.
+setAxiosDefaults();
+const client = axios.create();
 const store = configureStore(client);
 
 // This is required by Material UI library for mobile tap actions.

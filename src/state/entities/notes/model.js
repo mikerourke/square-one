@@ -13,9 +13,11 @@ export default class Note extends Record({
     updatedAt: (null: ?Date),
     typeName: ('note': string),
 }) {
+    // TODO: Fix response for this issue.
     getEntityForApiCall() {
         const note = this.toJS();
         return {
+            id: +note.id,
             contents: note.contents,
             isPrivate: note.isPrivate,
             createdBy: +localStorage.getItem('userId'),

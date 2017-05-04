@@ -1,5 +1,15 @@
 /* @flow */
 
+/* External dependencies */
+import axios, { AxiosRequestConfig } from 'axios';
+
+/**
+ * Parses the payload from the Axios middleware request to get the ID of the
+ *      entity corresponding with the parent name.
+ * @param {Object} payload Payload returned from the request.
+ * @param {string} parentName Name of the group to find the ID for.
+ * @returns {number} ID number of the entity.
+ */
 export const getIdFromPayload = (
     payload: Object,
     parentName: string,
@@ -16,6 +26,13 @@ export const getIdFromPayload = (
     return +entityId;
 };
 
+/**
+ * Exrapolates the parent ID, child ID, and path to the group of child entities
+ *      in state from the request payload.
+ * @param {Object} payload Payload data from the HTTP request.
+ * @param {string} parentName Name of the parent entity.
+ * @returns {Object}
+ */
 export const getChildDataFromPayload = (
     payload: Object,
     parentName: string,
@@ -40,3 +57,14 @@ export const getChildDataFromPayload = (
         pathInState: ['byId', +parentId, groupName],
     };
 };
+
+/**
+ * Set default configuration for Axios client.
+ */
+const setAxiosDefaults = () => {
+    axios.defaults.baseURL = process.env.API_URL || 'http://localhost:8080/api';
+    axios.defaults.headers = { Authorization: localStorage.getItem('jwt') };
+    axios.defaults.responseType = 'json';
+};
+
+export default setAxiosDefaults;

@@ -15,7 +15,7 @@ import {
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Note from './model';
-import { getIdFromPayload } from 'lib/api-data';
+import { getIdFromPayload } from 'lib/api';
 
 /* Types */
 import type { Action } from 'lib/types';

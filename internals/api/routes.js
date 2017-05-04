@@ -111,6 +111,7 @@ module.exports = (router, server) => {
                 .getById(childId)
                 .assign(childRecord)
                 .write();
+            console.log(childRecord);
             res.jsonp(childRecord);
         });
     };
@@ -305,13 +306,11 @@ module.exports = (router, server) => {
         server.post('/auth/login', (req, res) => {
             const userFromReq = req.body;
             const userInDb = getUserInDb(userFromReq).value();
-            userInDb.password = 'mike';
-            if (userFromReq.password === userInDb.password) {
-                userInDb.isLoggedIn = true;
-                res.jsonp(userInDb);
-            } else {
-                res.status(401).send('Invalid password');
-            }
+            const response = {
+                jwt: '',
+                user: userInDb,
+            };
+            res.jsonp(response);
         });
 
         server.post('/auth/logout', (req, res) => {

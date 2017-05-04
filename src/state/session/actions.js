@@ -2,7 +2,6 @@
 
 /* External dependencies */
 import axios from 'axios';
-import { browserHistory } from 'react-router';
 
 /* Internal dependencies */
 import {
@@ -12,17 +11,34 @@ import {
     SESSION_RESET_PWD, SESSION_RESET_PWD_FAIL, SESSION_RESET_PWD_SUCCESS,
 } from '../action-types';
 
-const apiUrl = process.env.API_URL || 'http://localhost:8080/api';
-
+/**
+ * Sends POST request to the API to get a JWT for authentication. If the
+ *      specified username and password is valid, the response of the POST
+ *      request contains the JWT and user information, which is stored in
+ *      localStorage.
+ * @param {string} username Username to get JWT for.
+ * @param {string} password Password of the user.
+ */
 export const login = (
     username: string,
     password: string,
-) => (dispatch: Function) =>
-    new Promise((resolve, reject) => {
-        axios.post(`${apiUrl}/auth/login`, { username, password })
+) => (dispatch: Function) => {
+    dispatch({ type: SESSION_LOGIN });
+    return new Promise((resolve, reject) => {
+        axios.post('/auth/login', { username, password })
             .then((response) => {
-                localStorage.setItem('jwt', response.data.token);
-                localStorage.setItem('userId', response.data.user.id);
+                console.log(response);
+                const { data = {} } = response;
+                let jwt = '';
+                if (data.token) {
+                    jwt = data.token;
+                }
+                let userId = 0;
+                if (data.user.id) {
+                    userId = data.user.id;
+                }
+                localStorage.setItem('jwt', jwt);
+                localStorage.setItem('userId', userId.toString());
                 dispatch({
                     type: SESSION_LOGIN_SUCCESS,
                     payload: response.data.user,
@@ -37,11 +53,18 @@ export const login = (
                 reject();
             });
     });
+};
 
+/**
+ * Sends a POST request to the logout endpoint.  If the request was successful,
+ *      the user's authentication details in localStorage are deleted.
+ * @param {string} username Username of the user to log out.
+ */
 export const logout = (username: string) =>
-    (dispatch: Function) =>
-        new Promise((resolve, reject) => {
-            axios.post(`${apiUrl}/auth/logout`, { username })
+    (dispatch: Function) => {
+        dispatch({ type: SESSION_LOGOUT });
+        return new Promise((resolve, reject) => {
+            axios.post('/auth/logout', { username })
                 .then((response) => {
                     localStorage.removeItem('jwt');
                     localStorage.removeItem('userId');
@@ -49,6 +72,7 @@ export const logout = (username: string) =>
                         type: SESSION_LOGOUT_SUCCESS,
                         payload: response.data.user,
                     });
+                    resolve();
                 })
                 .catch((error) => {
                     dispatch({
@@ -58,36 +82,52 @@ export const logout = (username: string) =>
                     reject();
                 });
         });
-
-export const getForgotPasswordToken = (username: string) =>
-    (dispatch: Function) => {
-        axios.post(`${apiUrl}/auth/forgot-password`, { username })
-            .then((response) => {
-                dispatch({
-                    type: SESSION_FORGOT_PWD_SUCCESS,
-                    payload: response.data.message,
-                });
-                browserHistory.push('/login');
-            })
-            .catch(error => dispatch({
-                type: SESSION_FORGOT_PWD_FAIL,
-                payload: error,
-            }));
     };
 
+// TODO: Setup get forgotten password functionality.
+export const getForgotPasswordToken = (username: string) =>
+    (dispatch: Function) => {
+        dispatch({ type: SESSION_FORGOT_PWD });
+        return new Promise((resolve, reject) => {
+            axios.post('/auth/forgot-password', { username })
+                .then((response) => {
+                    dispatch({
+                        type: SESSION_FORGOT_PWD_SUCCESS,
+                        payload: response.data.message,
+                    });
+                    resolve();
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: SESSION_FORGOT_PWD_FAIL,
+                        payload: error,
+                    });
+                    reject();
+                });
+        });
+    };
+
+// TODO: Setup password reset functionality.
 export const resetPassword = (
     token: string,
     password: string,
 ) => (dispatch: Function) => {
-    axios.post(`${apiUrl}/auth/reset-password/${token}`, { password })
-        .then((response) => {
-            dispatch({
-                type: SESSION_RESET_PWD_SUCCESS,
-                payload: response.data.message,
+    dispatch({ type: SESSION_RESET_PWD });
+    return new Promise((resolve, reject) => {
+        axios.post(`/auth/reset-password/${token}`, { password })
+            .then((response) => {
+                dispatch({
+                    type: SESSION_RESET_PWD_SUCCESS,
+                    payload: response.data.message,
+                });
+                resolve();
+            })
+            .catch((error) => {
+                dispatch({
+                    type: SESSION_RESET_PWD_FAIL,
+                    payload: error,
+                });
+                reject();
             });
-        })
-        .catch(error => dispatch({
-            type: SESSION_RESET_PWD_FAIL,
-            payload: error,
-        }));
+    });
 };

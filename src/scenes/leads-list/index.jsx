@@ -52,7 +52,7 @@ export class LeadsList extends Component<*, Props, State> {
     constructor(props: Props): void {
         super(props);
         this.state = {
-            isLoading: true,
+            isLoading: false,
             leads: OrderedMap(),
         };
     }

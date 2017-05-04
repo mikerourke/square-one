@@ -15,12 +15,11 @@ import {
     LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
     LEAD_GET_SINGLE_SUCCESS, LEAD_GET_SINGLE_FAIL,
     LEAD_UPDATE_SUCCESS, LEAD_UPDATE_FAIL,
-    CHANGES_LOG_SUCCESS,
     MESSAGES_SEND_SUCCESS,
     NOTE_CREATE_SUCCESS, NOTE_DELETE_SUCCESS,
 } from '../../action-types';
 import Lead from './model';
-import { getIdFromPayload, getChildDataFromPayload } from 'lib/api-data';
+import { getIdFromPayload, getChildDataFromPayload } from 'lib/api';
 
 /* Types */
 import type { Action } from 'lib/types';
@@ -107,7 +106,6 @@ const leadsReducer = (
             }
             return state;
 
-        case CHANGES_LOG_SUCCESS:
         case NOTE_CREATE_SUCCESS:
             const { payload: createdPayload } = (action: Object);
             const newChild = getChildDataFromPayload(createdPayload, 'lead');

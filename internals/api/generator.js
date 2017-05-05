@@ -182,5 +182,6 @@ const getStaticDbContent = () =>
 
 getStaticDbContent()
     .then(writeGeneratedDataToFile)
-    .then(() => console.log(green('Data generation complete.')));
+    .then(() => console.log(green('Data generation complete.')))
+    .catch(error => console.log(red('Error generating data: ' + error)));
 

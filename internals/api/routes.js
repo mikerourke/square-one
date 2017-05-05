@@ -103,6 +103,11 @@ module.exports = (router, server) => {
             const childRecord = Object.assign({}, req.body, {
                 updatedBy: modifyingUser,
                 updatedAt: getCurrentTime(),
+                // These fields are just added for development purposes,
+                // the actual API doesn't change this value for an updated
+                // record:
+                createdBy: modifyingUser,
+                createdAt: getCurrentTime(),
             });
             delete childRecord.typeName;
             db.get(`${parentName}s`)
@@ -111,7 +116,6 @@ module.exports = (router, server) => {
                 .getById(childId)
                 .assign(childRecord)
                 .write();
-            console.log(childRecord);
             res.jsonp(childRecord);
         });
     };

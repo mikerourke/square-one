@@ -27,7 +27,6 @@ export const login = (
     return new Promise((resolve, reject) => {
         axios.post('/auth/login', { username, password })
             .then((response) => {
-                console.log(response);
                 const { data = {} } = response;
                 let jwt = '';
                 if (data.token) {

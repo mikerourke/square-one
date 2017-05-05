@@ -64,6 +64,7 @@ module.exports = {
         'import/no-unresolved': 'error',
         'import/prefer-default-export': 'off',
         'jsx-a11y/no-marquee': 'off',
+        'jsx-a11y/img-has-alt': 'off',
         'react/display-name': 'off',
         'react/forbid-prop-types': 'off',
         'react/jsx-boolean-value': 'off',

@@ -25,9 +25,8 @@ import { getIdFromPayload, getChildDataFromPayload } from 'lib/api';
 import type { Action } from 'lib/types';
 
 type ByIdMap = Map<number, Lead>;
-type AllIdsList = List<number>;
 type ErrorMap = Map<string, any>;
-type State = Map<string, ByIdMap, AllIdsList, ErrorMap>;
+type State = Map<string, ByIdMap, ErrorMap>;
 
 const initialState = OrderedMap();
 
@@ -38,7 +37,7 @@ const initialState = OrderedMap();
  * @returns {State} Updated state with new data.
  */
 const mergeEntities = (state: State, data: Object): State => {
-    const { entities: { leads }, result } = (data: Object);
+    const { entities: { leads } } = (data: Object);
     let byIdOrderedMap = OrderedMap();
     if (leads) {
         const leadEntries = Object.entries(leads);
@@ -47,7 +46,6 @@ const mergeEntities = (state: State, data: Object): State => {
     }
     return state.merge({
         byId: byIdOrderedMap,
-        allIds: new List(result),
         error: new Map(),
     });
 };
@@ -67,9 +65,8 @@ const leadsReducer = (
 
         case LEAD_CREATE_SUCCESS:
             const { payload: { data: newLead } } = (action: Object);
-            return state
-                .setIn(['byId', +newLead.id], new Lead(fromJS(newLead)))
-                .set('allIds', state.get('allIds').push(+newLead.id));
+            return state.setIn(['byId', +newLead.id],
+                new Lead(fromJS(newLead)));
 
         case LEAD_GET_SINGLE_SUCCESS:
         case LEAD_UPDATE_SUCCESS:
@@ -80,10 +77,7 @@ const leadsReducer = (
         case LEAD_DELETE_SUCCESS:
             const { payload: deletionPayload } = (action: Object);
             const leadId = getIdFromPayload(deletionPayload, 'lead');
-            return state
-                .deleteIn(['byId', +leadId])
-                .set('allIds', state.get('allIds')
-                    .filter(idNumber => idNumber !== +leadId));
+            return state.deleteIn(['byId', +leadId]);
 
         case LEAD_GET_ALL_SUCCESS:
             const { payload: { data: responseData } } = (action: Object);

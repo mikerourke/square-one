@@ -31,11 +31,11 @@ Here's the environment variables you'll need to get up and running.  The default
     - This is the number that texts are sent from.
 
 ### Initial Setup
-Run `yarn run setup` after cloning repository to generate mock data and install dependencies.
+Run `yarn run initialize` after cloning repository to generate mock data and install dependencies.
 
 ### API Details
 
-> TL;DR If you want to get the app up and running quickly, run `yarn run start:mock` after running `yarn run setup`.
+> TL;DR If you want to get the app up and running quickly, run `yarn run start:mock` after running `yarn run initialize`.
 
 There is a separate repository for the API located at [github.com/mikerourke/square-one-api](https://github.com/mikerourke/square-one-api).  If you cloned that repository and want to test it with this application, run `yarn run start:prod` for this project and `yarn start` for the API. 
 

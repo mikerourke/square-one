@@ -65,6 +65,7 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'jsx-a11y/no-marquee': 'off',
         'jsx-a11y/img-has-alt': 'off',
+        'jsx-a11y/tabindex-no-positive': 'off',
         'react/display-name': 'off',
         'react/forbid-prop-types': 'off',
         'react/jsx-boolean-value': 'off',

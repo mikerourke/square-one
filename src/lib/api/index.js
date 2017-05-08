@@ -57,14 +57,3 @@ export const getChildDataFromPayload = (
         pathInState: ['byId', +parentId, groupName],
     };
 };
-
-/**
- * Set default configuration for Axios client.
- */
-const setAxiosDefaults = () => {
-    axios.defaults.baseURL = process.env.API_URL || 'http://localhost:8080/api';
-    axios.defaults.headers = { Authorization: localStorage.getItem('jwt') };
-    axios.defaults.responseType = 'json';
-};
-
-export default setAxiosDefaults;

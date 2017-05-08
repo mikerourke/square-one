@@ -12,7 +12,9 @@ import type { Action } from 'lib/types';
 type State = Map<string, any>;
 
 const initialState = fromJS({
-    appSidebarOpen: false,
+    layout: {
+        sidebarOpen: false,
+    },
 });
 
 const guiReducer = (
@@ -21,8 +23,8 @@ const guiReducer = (
 ) => {
     switch (action.type) {
         case GUI_TOGGLE_APP_SIDEBAR:
-            const currentStatus = state.get('appSidebarOpen');
-            return state.set('appSidebarOpen', !currentStatus);
+            const sidebarStatus = state.getIn(['layout', 'sidebarOpen']);
+            return state.setIn(['layout', 'sidebarOpen'], !sidebarStatus);
 
         default:
             return state;

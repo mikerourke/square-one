@@ -16,15 +16,18 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 /* Internal dependencies */
 import configureStore from './state';
-import setAxiosDefaults from './lib/api';
 import renderRoutes from './lib/routes';
 
 // Import web assets.
 import './style/global.css'; // eslint-disable-line
 
 // Setup default Axios instance.
-setAxiosDefaults();
-const client = axios.create();
+axios.defaults.baseURL = process.env.API_URL || 'http://localhost:8080/api';
+axios.defaults.responseType = 'json';
+
+const client = axios.create({
+    headers: { Authorization: localStorage.getItem('jwt') },
+});
 const store = configureStore(client);
 
 // This is required by Material UI library for mobile tap actions.

@@ -216,8 +216,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
         event: Event & { currentTarget: HTMLInputElement },
         newValue: string | number,
     ): void => {
-        const errorText = this.errorTextByPrecedence(newValue);
-        this.updateInput(event, newValue, errorText);
+        this.setState({ value: newValue });
     };
 
     render(): React.Element<*> {

@@ -11,6 +11,8 @@ import {
     SESSION_RESET_PWD, SESSION_RESET_PWD_FAIL, SESSION_RESET_PWD_SUCCESS,
 } from '../action-types';
 
+const axiosInstance = axios.create();
+
 /**
  * Sends POST request to the API to get a JWT for authentication. If the
  *      specified username and password is valid, the response of the POST
@@ -25,7 +27,7 @@ export const login = (
 ) => (dispatch: Function) => {
     dispatch({ type: SESSION_LOGIN });
     return new Promise((resolve, reject) => {
-        axios.post('/auth/login', { username, password })
+        axiosInstance.post('/auth/login', { username, password })
             .then((response) => {
                 const { data = {} } = response;
                 let jwt = '';
@@ -63,10 +65,10 @@ export const logout = (username: string) =>
     (dispatch: Function) => {
         dispatch({ type: SESSION_LOGOUT });
         return new Promise((resolve, reject) => {
-            axios.post('/auth/logout', { username })
+            axiosInstance.post('/auth/logout', { username })
                 .then((response) => {
-                    localStorage.removeItem('jwt');
-                    localStorage.removeItem('userId');
+                    localStorage.setItem('jwt', '');
+                    localStorage.setItem('userId', '');
                     dispatch({
                         type: SESSION_LOGOUT_SUCCESS,
                         payload: response.data.user,
@@ -88,7 +90,7 @@ export const getForgotPasswordToken = (username: string) =>
     (dispatch: Function) => {
         dispatch({ type: SESSION_FORGOT_PWD });
         return new Promise((resolve, reject) => {
-            axios.post('/auth/forgot-password', { username })
+            axiosInstance.post('/auth/forgot-password', { username })
                 .then((response) => {
                     dispatch({
                         type: SESSION_FORGOT_PWD_SUCCESS,
@@ -113,7 +115,7 @@ export const resetPassword = (
 ) => (dispatch: Function) => {
     dispatch({ type: SESSION_RESET_PWD });
     return new Promise((resolve, reject) => {
-        axios.post(`/auth/reset-password/${token}`, { password })
+        axiosInstance.post(`/auth/reset-password/${token}`, { password })
             .then((response) => {
                 dispatch({
                     type: SESSION_RESET_PWD_SUCCESS,

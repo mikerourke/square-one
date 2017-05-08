@@ -13,8 +13,11 @@ import Session from 'state/session/model';
 import Header from './header';
 import Sidebar from './sidebar';
 
+/* Types */
+import type { Map } from 'immutable';
+
 const mapStateToProps = state => ({
-    appSidebarOpen: state.getIn(['gui', 'appSidebarOpen']),
+    appLayout: state.getIn(['gui', 'layout']),
     session: state.get('session'),
 });
 
@@ -29,12 +32,12 @@ const mapDispatchToProps = dispatch => ({
  */
 const Layout = ({
     children,
-    appSidebarOpen,
+    appLayout,
     session,
     toggleSidebar,
 }: {
     children: React.Element<*>,
-    appSidebarOpen: boolean,
+    appLayout: Map<string, any>,
     session: Session,
     toggleSidebar: () => Promise<*>,
 }): React.Element<*> => (
@@ -44,7 +47,7 @@ const Layout = ({
                 (<Header handleToggle={toggleSidebar} />)
             }
             <Sidebar
-                open={appSidebarOpen}
+                open={appLayout.get('sidebarOpen')}
                 handleToggle={toggleSidebar}
             />
             <glamorous.Div

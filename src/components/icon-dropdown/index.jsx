@@ -26,11 +26,11 @@ const getMenuIconStyle = (disabled?: ?boolean): Object => {
  * Dropdown menu with icon button.
  * @param {boolean} [disabled] Indicates if the menu button is disabled.
  * @param {Function} [handleAddTouchTap] Action to perform when the Add
- *      button is pressed at the bottom of the list (if present).
+ *    button is pressed at the bottom of the list (if present).
  * @param {Function} handleItemTouchTap Action to perform when an item is
- *      selected from the dropdown menu.
+ *    selected from the dropdown menu.
  * @param {boolean} hasAddButton Indicates if an add button should be present
- *      at the bottom of the list of menu items.
+ *    at the bottom of the list of menu items.
  * @param {string} menuIconName Name of the icon to use for the menu button.
  * @param {Array} selections Array of items for the dropdown.
  * @param {Object} props Other props associated with the menu.

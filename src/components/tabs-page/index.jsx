@@ -18,12 +18,12 @@ type TabPage = {
 
 /**
  * Applies any custom styles specified in the props passed to the component
- *      which applies to all the pages, or the props for each individual tab.
- *      Applies a default style that can be overridden by either parameter.
+ *    which applies to all the pages, or the props for each individual tab.
+ *    Applies a default style that can be overridden by either parameter.
  * @param {Object} [styleFromProps={}] Style object passed to the TabsPage
- *      component.
+ *    component.
  * @param {Object} [styleFromTabPage={}] Style object passed to each individual
- *      TabPage component.
+ *    TabPage component.
  */
 const getPaperStyle = (styleFromProps = {}, styleFromTabPage = {}): Object => ({
     margin: '24px 0',
@@ -35,9 +35,9 @@ const getPaperStyle = (styleFromProps = {}, styleFromTabPage = {}): Object => ({
 /**
  * Page containing a tab control and corresponding pages.
  * @param {Function} [handleTabPageChange] Action to perform when the tab page
- *      is changed.
+ *    is changed.
  * @param {Object} [paperStyle] Style to assign to the paper of the tab page.
- *      This is overridden by the setting for each TabPage element.
+ *    This is overridden by the setting for each TabPage element.
  * @param {Array} tabPages Array of TabPage components.
  */
 const TabsPage = ({

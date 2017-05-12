@@ -54,7 +54,7 @@ export const mockData = [{
 
 /**
  * Helper method that finds the specified setting in the mock database and
- *      converts it to an Immutable Record representing a Setting entity.
+ *    converts it to an Immutable Record representing a Setting entity.
  */
 const getSettingFromName = (settingName) => {
     const settingFromDb = mockData.find(setting =>

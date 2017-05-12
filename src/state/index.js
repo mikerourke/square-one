@@ -2,9 +2,9 @@
 
 /* External dependencies */
 import {
-    applyMiddleware,
-    compose,
-    createStore,
+  applyMiddleware,
+  compose,
+  createStore,
 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import { Map } from 'immutable';
@@ -24,29 +24,29 @@ import type { AxiosRequestConfig } from 'axios';
  * Combined Redux reducers for the application.
  */
 const rootReducer = combineReducers({
-    entities,
-    gui,
-    session,
-    settings,
+  entities,
+  gui,
+  session,
+  settings,
 });
 
 /**
  * Creates the global Redux store.
  */
 const configureStore = (client: AxiosRequestConfig) => {
-    // Setup the Redux Dev Tools in Chrome:
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
-                             compose;
-    const middleware = [
-        axiosMiddleware(client),
-        thunk,
-    ];
+  // Setup the Redux Dev Tools in Chrome:
+  const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
+                           compose;
+  const middleware = [
+    axiosMiddleware(client),
+    thunk,
+  ];
 
-    return createStore(
-        rootReducer,
-        Map(),
-        composeEnhancers(applyMiddleware(...middleware)),
-    );
+  return createStore(
+    rootReducer,
+    Map(),
+    composeEnhancers(applyMiddleware(...middleware)),
+  );
 };
 
 export default configureStore;

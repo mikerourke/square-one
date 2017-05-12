@@ -13,33 +13,33 @@ import { alternateTextColor, primary1Color } from 'style/mui/palette';
  * @param {string} fullNameOfUser Name to display in the header.
  */
 const SidebarHeader = ({
-    fullNameOfUser,
+  fullNameOfUser,
 }: {
-    fullNameOfUser: string,
+  fullNameOfUser: string,
 }): React.Element<*> => (
-    <glamorous.Div
-        backgroundColor={primary1Color}
-        color={alternateTextColor}
-        height={144}
-        paddingLeft={24}
+  <glamorous.Div
+    backgroundColor={primary1Color}
+    color={alternateTextColor}
+    height={144}
+    paddingLeft={24}
+  >
+    <FontIcon
+      className="material-icons"
+      style={{
+        color: alternateTextColor,
+        fontSize: 56,
+        marginTop: 24,
+      }}
     >
-        <FontIcon
-            className="material-icons"
-            style={{
-                color: alternateTextColor,
-                fontSize: 56,
-                marginTop: 24,
-            }}
-        >
-            face
-        </FontIcon>
-        <glamorous.Div
-            fontSize={14}
-            marginTop={12}
-        >
-            {fullNameOfUser}
-        </glamorous.Div>
+      face
+    </FontIcon>
+    <glamorous.Div
+      fontSize={14}
+      marginTop={12}
+    >
+      {fullNameOfUser}
     </glamorous.Div>
+  </glamorous.Div>
 );
 
 export default SidebarHeader;

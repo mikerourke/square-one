@@ -10,7 +10,7 @@ type Rgb = {
 
 /**
  * Given a hexidecimal string representing a color, returns the corresponding
- *      R, G, and B values as an object.
+ *    R, G, and B values as an object.
  */
 const getRgbFromHex = (hex: string): Rgb => {
     let newHex: string = hex.replace(/^#/, '');

@@ -83,7 +83,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * Returns an array of differences between the lead in local state and the
-     *      the lead from props.
+     *    the lead from props.
      * @returns {Array} Array of differences between leads.
      */
     getLeadDifferences = (): Array<Object> => {
@@ -94,7 +94,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * If the back button in the page header toolbar is pressed, confirm the
-     *      user wants to exit the page if changes were made.
+     *    user wants to exit the page if changes were made.
      */
     handleBackArrowTouchTap = (): void => {
         const leadDifferences = this.getLeadDifferences();
@@ -121,7 +121,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * Closes the Confirmation Dialog and redirects the user to the Leads List
-     *      page.
+     *    page.
      */
     closeConfirmationAndRedirectToLeads = (): void => {
         this.setState({ isConfirmationDialogOpen: false });
@@ -130,8 +130,8 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * If the user confirms that they want to exit the page or delete the Lead,
-     *      the Lead is deleted (if applicable) and the user is redirected to
-     *      the Leads List.
+     *    the Lead is deleted (if applicable) and the user is redirected to
+     *    the Leads List.
      */
     handleConfirmationYesTouchTap = (): void => {
         const { lead } = this.props;
@@ -149,7 +149,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * Prompts the user with a confirmation if they want to delete the active
-     *      Lead when the Delete button on the details form is pressed.
+     *    Lead when the Delete button on the details form is pressed.
      */
     handleDeleteButtonTouchTap = (): void => {
         const confirmationMessage =
@@ -163,7 +163,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * Updates the Lead in local state from the form when a change is made
-     *      on the form.
+     *    on the form.
      * @param {Lead} lead Lead on the details form.
      */
     handleFormFieldChange = (lead: Lead): void => {
@@ -172,7 +172,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * Updates the Lead entity opens the Messages dialog when the Save button
-     *      on the details form is pressed.
+     *    on the details form is pressed.
      * @param {Lead} lead Lead being edited on the page.
      */
     handleSaveButtonTouchTap = (lead: Lead): void => {
@@ -184,7 +184,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * Hides the Message creation dialog box regardless of the action that was
-     *      performed.
+     *    performed.
      */
     handleMessageDialogTouchTap = () => {
         this.setState({ isMessagesDialogOpen: false });
@@ -192,7 +192,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
 
     /**
      * Updates the local state to ensure the Add button for new notes is
-     *      hidden if the active tab isn't on the Notes page.
+     *    hidden if the active tab isn't on the Notes page.
      * @param {string} value Value (name) of the active tab.
      */
     handleTabPageChange = (value: string): void => {

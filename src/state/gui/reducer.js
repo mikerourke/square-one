@@ -4,7 +4,10 @@
 import { fromJS, Map } from 'immutable';
 
 /* Internal dependencies */
-import { GUI_TOGGLE_APP_SIDEBAR } from '../action-types';
+import {
+  GUI_TOGGLE_APP_SIDEBAR,
+  GUI_TOGGLE_PROMPT_DIALOG,
+} from '../action-types';
 
 /* Types */
 import type { Action } from 'lib/types';
@@ -12,23 +15,35 @@ import type { Action } from 'lib/types';
 type State = Map<string, any>;
 
 const initialState = fromJS({
-    layout: {
-        sidebarOpen: false,
-    },
+  layout: {
+    sidebarOpen: false,
+  },
+  promptDialog: {
+    open: false,
+    title: '',
+    message: '',
+  },
 });
 
-const guiReducer = (
-    state: State = initialState,
-    action: Action,
-) => {
-    switch (action.type) {
-        case GUI_TOGGLE_APP_SIDEBAR:
-            const sidebarStatus = state.getIn(['layout', 'sidebarOpen']);
-            return state.setIn(['layout', 'sidebarOpen'], !sidebarStatus);
+export default function reducer(
+  state: State = initialState,
+  action: Action,
+) {
+  switch (action.type) {
+    case GUI_TOGGLE_APP_SIDEBAR:
+      const sidebarStatus = state.getIn(['layout', 'sidebarOpen']);
+      return state.setIn(['layout', 'sidebarOpen'], !sidebarStatus);
 
-        default:
-            return state;
-    }
-};
+    case GUI_TOGGLE_PROMPT_DIALOG:
+      const { payload: { title, message } } = (action: Object);
+      const isOpen = state.getIn(['promptDialog', 'open']);
+      return state.set('promptDialog', fromJS({
+        open: !isOpen,
+        title,
+        message,
+      }));
 
-export default guiReducer;
+    default:
+      return state;
+  }
+}

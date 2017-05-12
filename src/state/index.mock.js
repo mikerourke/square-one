@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 
 const client = axios.create({
-    responseType: 'json',
+  responseType: 'json',
 });
 export const mockClient = new MockAdapter(client);
 
@@ -14,7 +14,7 @@ export const mockClient = new MockAdapter(client);
  * Mock Redux store with middleware.
  */
 const middleware = [
-    axiosMiddleware(client),
-    thunk,
+  axiosMiddleware(client),
+  thunk,
 ];
 export const createMockStore = configureStore(middleware);

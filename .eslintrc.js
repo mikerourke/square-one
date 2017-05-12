@@ -25,13 +25,13 @@ module.exports = {
     rules: {
         'class-methods-use-this': 'off',
         'eol-last': 'off',
-        'indent': ['warn', 4, {
+        'indent': ['warn', 2, {
             SwitchCase: 1,
         }],
         'linebreak-style': 'off',
         'max-len': ['error', 80, 4, {
             ignoreUrls: true,
-            ignoreComments: false,
+            ignoreComments: true,
             ignoreRegExpLiterals: true,
             ignoreStrings: true,
             ignoreTemplateLiterals: true,
@@ -70,7 +70,7 @@ module.exports = {
         'react/forbid-prop-types': 'off',
         'react/jsx-boolean-value': 'off',
         'react/jsx-filename-extension': 'off',
-        'react/jsx-indent': ['warn', 4],
+        'react/jsx-indent': ['warn', 2],
         'react/jsx-indent-props': 'off',
         'react/no-unused-prop-types': 'off',
         // This is handled by Flow with default values:

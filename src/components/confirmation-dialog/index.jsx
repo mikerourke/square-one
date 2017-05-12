@@ -7,11 +7,11 @@ import FlatButton from 'material-ui/FlatButton';
 
 /**
  * Displays a confirmation dialog to ensure the user wishes to proceed with
- *      a specified action.
+ *    a specified action.
  * @param {Function} handleNoTouchTap Action to perform when the No button is
- *      pressed.
+ *    pressed.
  * @param {Function} handleYesTouchTap Action to perform when the Yes button
- *      is pressed.
+ *    is pressed.
  * @param {string} message Message contents of the dialog.
  * @param {boolean} open Indicates if the dialog is visible.
  */

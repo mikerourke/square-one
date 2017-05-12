@@ -11,10 +11,10 @@ import { primary1Color } from 'style/mui/palette';
 /**
  * Header toolbar for performing page-level actions.
  * @param {Node} [actionButtonRight] React button component to display on the
- *      right side of the header.
+ *    right side of the header.
  * @param {number} [height=96] Height of the header in pixels.
  * @param {Node} titleLeft React title component to display on the left side of
- *      the header.
+ *    the header.
  */
 const PageHeader = ({
     actionButtonRight,

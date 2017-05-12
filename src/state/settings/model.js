@@ -11,7 +11,7 @@ export default class Setting extends Record({
 }) {
     /**
      * Converts the data associated with the specified Setting to an Array (for
-     *      a list) or an Object.
+     *    a list) or an Object.
      * @returns {Array | Object} Data in JavaScript format.
      */
     getData(): Object | Array<*> {

@@ -6,7 +6,7 @@ import type { RecordDiff } from 'lib/types';
 
 /**
  * Compares the property values of a Record to the property values
- *      of another Record and returns true if the values don't match.
+ *    of another Record and returns true if the values don't match.
  * @param {Record} compareFrom Record to compare from.
  * @param {Record} compareTo Record to compare to.
  * @returns {Array} Array of items that don't match.

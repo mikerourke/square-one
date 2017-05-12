@@ -15,9 +15,9 @@ const axiosInstance = axios.create();
 
 /**
  * Sends POST request to the API to get a JWT for authentication. If the
- *      specified username and password is valid, the response of the POST
- *      request contains the JWT and user information, which is stored in
- *      localStorage.
+ *    specified username and password is valid, the response of the POST
+ *    request contains the JWT and user information, which is stored in
+ *    localStorage.
  * @param {string} username Username to get JWT for.
  * @param {string} password Password of the user.
  */
@@ -58,7 +58,7 @@ export const login = (
 
 /**
  * Sends a POST request to the logout endpoint.  If the request was successful,
- *      the user's authentication details in localStorage are deleted.
+ *    the user's authentication details in localStorage are deleted.
  * @param {string} username Username of the user to log out.
  */
 export const logout = (username: string) =>

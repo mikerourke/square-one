@@ -9,11 +9,11 @@ import TextField from 'material-ui/TextField';
 /**
  * Dialog used to edit the contents of the specified note.
  * @param {Function} handleSaveTouchTap Action to perform when the Save button
- *      is pressed.
+ *    is pressed.
  * @param {Function} handleCancelTouchTap Action to perform when the Cancel
- *      button is pressed.
+ *    button is pressed.
  * @param {Function} handleInputChange Action to perform when contents are
- *      changed.
+ *    changed.
  * @param {string} title Title to display in the dialog.
  * @param {string} contents Contents of the note.
  * @param {boolean} open Indicates if the dialog is visible.

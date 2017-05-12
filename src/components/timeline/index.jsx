@@ -48,7 +48,7 @@ class Timeline extends Component<*, Props, State> {
 
     /**
      * Changes the step index in local state to show the details of the
-     *      selected step when the Header is pressed.
+     *    selected step when the Header is pressed.
      * @param {number} stepIndex Index of the step to set in local state.
      */
     handleTouchTap = (stepIndex: number): void => {

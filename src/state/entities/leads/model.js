@@ -34,7 +34,7 @@ export default class Lead extends Record({
 }) {
     /**
      * Compares the property values of this instance to the property values
-     *      of the specified Lead and returns any items that don't match.
+     *    of the specified Lead and returns any items that don't match.
      * @param {Lead} lead Lead to compare values with.
      * @returns {Array} Array of items that don't match.
      */

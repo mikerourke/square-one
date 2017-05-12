@@ -10,7 +10,7 @@ import PageHeaderTitle from 'components/page-header-title';
 /**
  * Header toolbar on the Manage Leads page.
  * @param {Function} handleBackArrowTouchTap Action to perform when the back
- *      arrow button is pressed.
+ *    arrow button is pressed.
  * @param {string} headerText Text to display in the header.
  * @param {string} subheaderText Text to display in the subheader.
  */

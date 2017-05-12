@@ -35,7 +35,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 /**
  * Searchable list of messages associated with a Lead with functionality to
- *      allow for sending new messages.
+ *    allow for sending new messages.
  * @param {Lead} lead Parent Lead entity associated with the messages.
  * @param {boolean} showAddBoolean Indicates if the Add button should be shown.
  * @export
@@ -72,7 +72,7 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Extrapolates the required properties for a card entity from the list of
-     *      messages and returns a list of card entities.
+     *    messages and returns a list of card entities.
      * @returns {Immutable.List}
      */
     getCardEntities = (): List<CardEntity> => {

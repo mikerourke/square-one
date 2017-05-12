@@ -59,7 +59,7 @@ const mapDispatchToProps = dispatch => ({
 /**
  * List of notes associated with a Lead entity.
  * @param {boolean} showAddButton Indicates if the add button should be shown
- *      for creating new notes.
+ *    for creating new notes.
  * @param {Lead} lead Parent Lead containing the notes.
  */
 export class NotesList extends Component<DefaultProps, Props, State> {
@@ -85,7 +85,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Returns the note associated with the specified ID from the Notes list
-     *      in props.
+     *    in props.
      * @param {number} noteId ID of the note to find.
      * @returns {Note} Note associated with the ID.
      */
@@ -105,7 +105,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Creates a new Note in local state and show the Add/Edit Dialog when the
-     *      Add button is pressed.
+     *    Add button is pressed.
      */
     handleAddButtonTouchTap = (): void => {
         this.setState({
@@ -117,7 +117,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Stores the selected Note in local state and shows the Confirmation
-     *      Dialog when the Delete button is pressed on a Note card.
+     *    Dialog when the Delete button is pressed on a Note card.
      * @param {Object} cardEntity Entity associated with the selected card.
      */
     handleCardDeleteTouchTap = (cardEntity: CardEntity): void => {
@@ -130,7 +130,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Stores the selected Note in local state and shows the Add/Edit Dialog
-     *      when the Edit button is pressed on a Note card.
+     *    when the Edit button is pressed on a Note card.
      * @param {Object} cardEntity Entity associated with the selected card.
      */
     handleCardEditTouchTap = (cardEntity: CardEntity): void => {
@@ -151,7 +151,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Dispatches a delete note action when the Yes button is pressed in the
-     *      Confirmation Dialog and closes.
+     *    Confirmation Dialog and closes.
      */
     handleConfirmationYesTouchTap = (): void => {
         const { note } = this.state;
@@ -177,8 +177,8 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Dispatches either a create note or update note action depending on if
-     *      the Note is new or existing when the Save button is pressed in the
-     *      Add/Edit Dialog.
+     *    the Note is new or existing when the Save button is pressed in the
+     *    Add/Edit Dialog.
      */
     handleEditDialogSaveTouchTap = (): void => {
         const { note } = this.state;
@@ -205,7 +205,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Updates the value of the corresponding field in local state for the
-     *      active Note entity when the field value is changed.
+     *    active Note entity when the field value is changed.
      * @param {Event} event Event associated with the input.
      * @param {string} newValue Value of the input.
      */
@@ -223,7 +223,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
 
     /**
      * Extrapolates the required properties for a card entity from the list of
-     *      notes and returns a list of card entities.
+     *    notes and returns a list of card entities.
      * @returns {List} List of card entities to display.
      */
     getCardEntities = (): List<*> => {

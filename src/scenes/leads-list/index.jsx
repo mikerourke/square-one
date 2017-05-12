@@ -59,7 +59,7 @@ export class LeadsList extends Component<*, Props, State> {
 
     /**
      * Redirects the user to the Manage Lead page with empty fields for
-     *      creating a new Lead.
+     *    creating a new Lead.
      */
     handleAddTouchTap = (): void => {
         const createLeadFn = this.props.createLead;
@@ -73,9 +73,9 @@ export class LeadsList extends Component<*, Props, State> {
 
     /**
      * Redirects the user to the Manage Lead page with the fields populated
-     *      with properties from the selected Lead.
+     *    with properties from the selected Lead.
      * @param {Object} row Row element associated with the row on which the
-     *      Edit button is located.
+     *    Edit button is located.
      */
     handleEditTouchTap = (row: Object): void => {
         browserHistory.push(`leads/${row.id}`);

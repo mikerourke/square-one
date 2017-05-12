@@ -55,11 +55,11 @@ type State = {
  * @param {Array} columns Columns to display in the table.
  * @param {List} data Data objects to display in the table.
   * @param {Array} filterSelections Array of items to display in the Filter
- *      menu dropdown.
+ *    menu dropdown.
  * @param {Function} handleAddTouchTap Action to perform when the Add button
- *      is pressed.
+ *    is pressed.
  * @param {Function} handleRowIconTouchTap Action to perform when the icon
- *      button associated with a specific row is pressed.
+ *    button associated with a specific row is pressed.
  * @param {Sort} [initialSort={}] Initial sorting to apply to the table data.
  * @param {Array} [searchFields=[]] Fields to include in the search.
  */
@@ -95,7 +95,7 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
 
     /**
      * Filters the data in the table based on the specified custom filter from
-     *      the Filter Menu select field in the Search Toolbar.
+     *    the Filter Menu select field in the Search Toolbar.
      * @param {Event} event Event associated with the Filter Menu.
      * @param {Object} child Item selected from the menu.
      */
@@ -105,7 +105,7 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
 
     /**
      * Updates the table to display the next rows of data based on the page
-     *      number and row size in state.
+     *    number and row size in state.
      */
     handleNextPageClick = (): void => {
         const { page } = this.state;
@@ -115,7 +115,7 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
 
     /**
      * Updates the table to display the previous rows of data based on the page
-     *      number and row size in state.
+     *    number and row size in state.
      */
     handlePreviousPageClick = (): void => {
         const { page } = this.state;
@@ -125,7 +125,7 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
 
     /**
      * Updates the table to display the specified amount of rows selected from
-     *      the dropdown menu in the table footer.
+     *    the dropdown menu in the table footer.
      * @param {Event} event Event associated with the dropdown menu.
      * @param {number} key Key of the selected menu item.
      * @param {number} value Value of the selected menu item.
@@ -140,7 +140,7 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
 
     /**
      * Updates the table to only display rows with field values that include the
-     *      text specified.
+     *    text specified.
      * @param {Event} event Event associated with the Search Box.
      * @param {string} newValue Value of the Search Box.
      */

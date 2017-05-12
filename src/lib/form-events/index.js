@@ -2,7 +2,7 @@
 
 /**
  * Prevents the Enter key from submitting a form if the element with the
- *      specified ID has focus.
+ *    specified ID has focus.
  */
 export const preventSubmissionOnEnter = (elementId: string) => {
     const element: ?HTMLElement = document.getElementById(elementId);

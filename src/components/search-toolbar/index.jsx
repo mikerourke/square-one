@@ -34,19 +34,19 @@ const getInlineStyle = (transparency?: number = 1): Object => {
 /**
  * Toolbar for performing searching and filtering functions.
  * @param {Function} handleSearchBoxChange Action to perform when a value is
- *      entered in the Search box.
+ *    entered in the Search box.
  * @param {Node} [children] Optional element to display at the end of
- *      the search bar.
+ *    the search bar.
  * @param {boolean} [isStandalone=true] Indicates if the toolbar is a separate
- *      entity or integrated into a form.
+ *    entity or integrated into a form.
  */
 class SearchToolbar extends Component<*, Props, *> {
     props: Props;
 
     /**
      * Changes the padding of the Toolbar component based on whether the
-     *      rendered component has a Filter dropdown and if it is standalone
-     *      or integrated into a form.
+     *    rendered component has a Filter dropdown and if it is standalone
+     *    or integrated into a form.
      */
     getPaddingForToolbar = (): string | number => {
         const { children, isStandalone } = this.props;

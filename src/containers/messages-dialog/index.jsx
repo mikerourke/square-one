@@ -54,12 +54,12 @@ const mapDispatchToProps = dispatch => ({
 
 /**
  * Modal dialog for specifying messages that get sent to Leads and
- *      Representatives.
+ *    Representatives.
  * @param {Function} handleTouchTap Action to perform when any button on the
- *      dialog is pressed.
+ *    dialog is pressed.
  * @param {boolean} open Indicates if the dialog is open.
  * @param {boolean} redirectToLeads Indicates if browser is redirected to the
- *      Leads List page after submitting.
+ *    Leads List page after submitting.
  */
 export class MessagesDialog extends Component<DefaultProps, Props, State> {
     props: Props;
@@ -90,7 +90,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * Returns an array of text messages that need to get sent based on the
-     *      user's selections.
+     *    user's selections.
      * @returns {Array} Array of messages to send.
      */
     getMessagesToSend = (): Array<Message> => {
@@ -126,8 +126,8 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * Closes the Confirmation dialog form (if it's open), and resets all of
-     *      the inputs to ensure they're not populated the next time the form
-     *      is opened.
+     *    the inputs to ensure they're not populated the next time the form
+     *    is opened.
      */
     closeConfirmationDialogAndResetInputs = (): void => {
         this.setState({
@@ -141,8 +141,8 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * If messages were specified, dispatch the sendMessages action and return
-     *      the resolved Promise.  If no messages were specified return a
-     *      resolved Promise to continue processing.
+     *    the resolved Promise.  If no messages were specified return a
+     *    resolved Promise to continue processing.
      * @returns {Promise}
      */
     sendMessagesIfRequired = (): Promise<*> =>
@@ -164,7 +164,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * Sends the messages specified by the user, closes any dialogs, and
-     *      redirects the user to the Leads List (if applicable).
+     *    redirects the user to the Leads List (if applicable).
      */
     handleSubmitTouchTap = (): void => {
         const {
@@ -194,7 +194,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * If the user confirms that they want to exit the page, redirect to the
-     *      Leads List.
+     *    Leads List.
      */
     handleConfirmationYesTouchTap = (): void => {
         const { handleTouchTap } = this.props;
@@ -204,8 +204,8 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * If the user toggles the "Send message to representative" to indicate that
-     *      they want to send a message, this updates the message to send
-     *      based on a predefined template.
+     *    they want to send a message, this updates the message to send
+     *    based on a predefined template.
      */
     handleToggleForRepresentativeMessage = (): void => {
         const { lead } = this.props;
@@ -246,7 +246,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * This updates the contents of the message text field for the Lead entity
-     *      if a selection is picked from the text template dropdown menu.
+     *    if a selection is picked from the text template dropdown menu.
      * @param {Event} event Event associated with the template dropdown menu.
      * @param {Object} child Menu item selected from the dropdown menu.
      */
@@ -259,7 +259,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     /**
      * Pulls the text templates from global state and replaces any placeholders
-     *      with actual values (i.e. name of lead).
+     *    with actual values (i.e. name of lead).
      * @returns {Array} Array of text templates with custom data.
      */
     getPopulatedTextTemplates = (): Array<string> => {

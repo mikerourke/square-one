@@ -2,7 +2,7 @@
 
 /**
  * Entry point for the application.  The assets associated with the client
- *      bundle are located in the "www" folder.
+ *    bundle are located in the "www" folder.
  */
 import 'babel-polyfill';
 
@@ -26,7 +26,7 @@ axios.defaults.baseURL = process.env.API_URL || 'http://localhost:8080/api';
 axios.defaults.responseType = 'json';
 
 const client = axios.create({
-    headers: { Authorization: localStorage.getItem('jwt') },
+  headers: { Authorization: localStorage.getItem('jwt') },
 });
 const store = configureStore(client);
 
@@ -34,13 +34,13 @@ const store = configureStore(client);
 injectTapEventPlugin();
 
 render(
-    <Provider store={store}>
-        {renderRoutes(browserHistory, store)}
-    </Provider>,
-    document.getElementById('app'),
+  <Provider store={store}>
+    {renderRoutes(browserHistory, store)}
+  </Provider>,
+  document.getElementById('app'),
 );
 
 // This is for development purposes.  It is used for hot module reloading.
 if (module.hot) {
-    module.hot.accept();
+  module.hot.accept();
 }

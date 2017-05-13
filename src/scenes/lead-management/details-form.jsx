@@ -82,6 +82,10 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
     // Ensure the form submission event isn't fired if the user presses
     // "Enter" after changinging the address.
     preventSubmissionOnEnter('geo-address');
+    const leadNameInput = document.getElementById('leadName');
+    if (leadNameInput) {
+      leadNameInput.focus();
+    }
   }
 
   /**
@@ -190,19 +194,22 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               {this.getSelections('leadStatuses')}
             </SelectField>
             <FormTextField
-              floatingLabelText="Lead Name"
+              id="leadName"
               dataType="text"
+              floatingLabelText="Lead Name"
               fullWidth={true}
               isRequired={true}
               name="leadName"
               onInputChange={this.handleInputChange}
               value={lead.leadName}
             />
-            <TextField
+            <FormTextField
+              dataType="text"
               floatingLabelText="Contact Name (Optional)"
               fullWidth={true}
+              isRequired={false}
               name="contactName"
-              onChange={this.handleInputChange}
+              onInputChange={this.handleInputChange}
               value={lead.contactName}
             />
             <SelectField
@@ -217,9 +224,10 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               {this.getSelections('sources')}
             </SelectField>
             <FormTextField
-              floatingLabelText="Lead Fee (Optional)"
               dataType="number"
+              floatingLabelText="Lead Fee (Optional)"
               fullWidth={true}
+              isRequired={false}
               name="leadFee"
               onInputChange={this.handleInputChange}
               value={lead.leadFee === 0 ? '' : lead.leadFee}
@@ -233,11 +241,13 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               onInputChange={this.handleInputChange}
               value={lead.phone}
             />
-            <TextField
+            <FormTextField
               floatingLabelText="Email"
+              format="email"
               fullWidth={true}
+              isRequired={false}
               name="email"
-              onChange={this.handleInputChange}
+              onInputChange={this.handleInputChange}
               value={lead.email}
             />
           </FormColumn>
@@ -266,7 +276,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
             />
           </FormColumn>
           <TextField
-            floatingLabelText="Description"
+            floatingLabelText="Description (Optional)"
             fullWidth={true}
             multiLine={true}
             name="description"

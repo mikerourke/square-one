@@ -3,6 +3,9 @@
 /* External dependencies */
 import React, { Component } from 'react';
 import phones from 'phones';
+import isAlpha from 'validator/lib/isAlpha';
+import isEmail from 'validator/lib/isEmail';
+import normalizeEmail from 'validator/lib/normalizeEmail';
 import TextField from 'material-ui/TextField';
 
 /* Types */
@@ -56,10 +59,14 @@ class FormTextField extends Component<DefaultProps, Props, State> {
 
   constructor(props: Props): void {
     super(props);
-    const { value = '' } = this.props;
+    const { value } = this.props;
+    let inputValue = '';
+    if (value) {
+      inputValue = value;
+    }
     this.state = {
       errorText: '',
-      value,
+      value: inputValue,
     };
   }
 
@@ -74,8 +81,14 @@ class FormTextField extends Component<DefaultProps, Props, State> {
     const { format } = this.props;
     if (format === 'phone') {
       const parsedPhone = phones.parse(newValue);
+
       if (!phones.validate(parsedPhone)) {
         return 'Invalid phone number';
+      }
+    }
+    if (format === 'email') {
+      if (!isEmail(newValue)) {
+        return 'Invalid email address';
       }
     }
     return '';
@@ -95,19 +108,17 @@ class FormTextField extends Component<DefaultProps, Props, State> {
       return '';
     }
 
-    // If the specified dataType prop is "text", loop through the characters
-    // in the value and check for numbers.  If any numbers are present, return
-    // the error text indicating it's an invalid value.
+    // If the specified dataType prop is "text", ensure the value only contains
+    // uppercase and lowercase letters. If not, return error text.
     if (dataType === 'text') {
       if (typeof newValue === 'string') {
-        const charArray = [...newValue];
-        let numberOfChars = 0;
-        charArray.forEach((char) => {
-          if (!isNaN(char) && char !== ' ') {
-            numberOfChars += 1;
+        let invalidCount = 0;
+        newValue.split(' ').forEach((word) => {
+          if (!isAlpha(word)) {
+            invalidCount += 1;
           }
         });
-        if (numberOfChars > 0) {
+        if (invalidCount > 0) {
           return 'Field cannot contain a number';
         }
       } else {
@@ -196,6 +207,11 @@ class FormTextField extends Component<DefaultProps, Props, State> {
     if (format === 'phone') {
       if (phones.validate(newValue)) {
         return phones.format(newValue);
+      }
+    }
+    if (format === 'email') {
+      if (isEmail(newValue)) {
+        return normalizeEmail(newValue);
       }
     }
     return newValue;

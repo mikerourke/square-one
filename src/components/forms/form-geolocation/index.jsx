@@ -208,16 +208,12 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
   /**
    * If the isRequired prop was set to true, this sets the error text of
    *    the address input if no value was entered.
-   * @param {Event} event Event associated with the input.
-   * @param {string} newValue Value of the input.
    */
-  handleBlur = (
-    event: Event,
-    newValue: string = '',
-  ): void => {
+  handleBlur = (): void => {
     const { isRequired } = this.props;
+    const { address } = this.state;
     if (isRequired) {
-      if (newValue === '') {
+      if (address === '') {
         this.setState({ errorText: 'Field is required' });
       }
     }
@@ -238,6 +234,7 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
   render(): React.Element<*> {
     const {
       handleLocationChange,
+      isRequired,
       startingLocation,
       ...props
     } = this.props;

@@ -11,11 +11,11 @@ import notes from './notes/reducer';
 import users from './users/reducer';
 
 const entities = combineReducers({
-    changes,
-    leads,
-    messages,
-    notes,
-    users,
+  changes,
+  leads,
+  messages,
+  notes,
+  users,
 });
 
 export default entities;

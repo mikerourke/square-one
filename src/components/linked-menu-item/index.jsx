@@ -13,29 +13,29 @@ import { MenuItem } from 'material-ui/Menu';
  * @param {...Object} props Additional props associated with the component.
  */
 const LinkedMenuItem = ({
-    iconName,
-    linkTo,
-    ...props
+  iconName,
+  linkTo,
+  ...props
 }: {
-    iconName: string,
-    linkTo: string,
+  iconName: string,
+  linkTo: string,
 }): React.Element<*> => (
-    <Link
-        style={{ textDecoration: 'none' }}
-        to={linkTo}
-    >
-        <MenuItem
-            leftIcon={
-                <FontIcon
-                    className="material-icons"
-                    style={{ marginRight: 24 }}
-                >
-                    {iconName}
-                </FontIcon>
-            }
-            {...props}
-        />
-    </Link>
+  <Link
+    style={{ textDecoration: 'none' }}
+    to={linkTo}
+  >
+    <MenuItem
+      leftIcon={
+        <FontIcon
+          className="material-icons"
+          style={{ marginRight: 24 }}
+        >
+          {iconName}
+        </FontIcon>
+      }
+      {...props}
+    />
+  </Link>
 );
 
 export default LinkedMenuItem;

@@ -16,35 +16,35 @@ import FlatButton from 'material-ui/FlatButton';
  * @param {boolean} open Indicates if the dialog is visible.
  */
 const ConfirmationDialog = ({
-    handleNoTouchTap,
-    handleYesTouchTap,
-    message,
-    open,
+  handleNoTouchTap,
+  handleYesTouchTap,
+  message,
+  open,
 }: {
-    handleNoTouchTap: () => void,
-    handleYesTouchTap: () => void,
-    message: string,
-    open: boolean,
+  handleNoTouchTap: () => void,
+  handleYesTouchTap: () => void,
+  message: string,
+  open: boolean,
 }): React.Element<*> => (
-    <Dialog
-        actions={[
-            <FlatButton
-                label="Yes"
-                onTouchTap={handleYesTouchTap}
-                primary={true}
-            />,
-            <FlatButton
-                label="No"
-                onTouchTap={handleNoTouchTap}
-                secondary={true}
-            />,
-        ]}
-        open={open}
-        contentStyle={{ maxWidth: 496 }}
-        title="Confirmation"
-    >
-        {message}
-    </Dialog>
+  <Dialog
+    actions={[
+      <FlatButton
+        label="Yes"
+        onTouchTap={handleYesTouchTap}
+        primary={true}
+      />,
+      <FlatButton
+        label="No"
+        onTouchTap={handleNoTouchTap}
+        secondary={true}
+      />,
+    ]}
+    open={open}
+    contentStyle={{ maxWidth: 496 }}
+    title="Confirmation"
+  >
+    {message}
+  </Dialog>
 );
 
 export default ConfirmationDialog;

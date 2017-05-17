@@ -6,7 +6,7 @@ import getMuiTheme from './theme';
 import * as palette from './palette';
 
 export {
-    muiColors,
-    getMuiTheme,
-    palette,
+  muiColors,
+  getMuiTheme,
+  palette,
 };

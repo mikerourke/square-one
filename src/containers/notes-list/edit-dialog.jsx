@@ -19,49 +19,49 @@ import TextField from 'material-ui/TextField';
  * @param {boolean} open Indicates if the dialog is visible.
  */
 const EditNoteDialog = ({
-    handleSaveTouchTap,
-    handleCancelTouchTap,
-    handleInputChange,
-    title,
-    contents,
-    open,
+  handleSaveTouchTap,
+  handleCancelTouchTap,
+  handleInputChange,
+  title,
+  contents,
+  open,
 }: {
-    handleSaveTouchTap: () => void,
-    handleCancelTouchTap: () => void,
-    handleInputChange: (event: Event & {
-        currentTarget: HTMLInputElement | HTMLTextAreaElement,
-    }, newValue: string) => void,
-    title: string,
-    contents: string,
-    open: boolean,
+  handleSaveTouchTap: () => void,
+  handleCancelTouchTap: () => void,
+  handleInputChange: (event: Event & {
+    currentTarget: HTMLInputElement | HTMLTextAreaElement,
+  }, newValue: string) => void,
+  title: string,
+  contents: string,
+  open: boolean,
 }): React.Element<*> => (
-    <Dialog
-        actions={[
-            <FlatButton
-                label="Save"
-                onTouchTap={handleSaveTouchTap}
-                primary={true}
-            />,
-            <FlatButton
-                label="Cancel"
-                name="cancel"
-                onTouchTap={handleCancelTouchTap}
-                secondary={true}
-            />,
-        ]}
-        open={open}
-        title={title}
-    >
-        <TextField
-            floatingLabelText="Contents"
-            fullWidth={true}
-            multiLine={true}
-            rowsMax={4}
-            name="contents"
-            onChange={handleInputChange}
-            value={contents}
-        />
-    </Dialog>
+  <Dialog
+    actions={[
+      <FlatButton
+        label="Save"
+        onTouchTap={handleSaveTouchTap}
+        primary={true}
+      />,
+      <FlatButton
+        label="Cancel"
+        name="cancel"
+        onTouchTap={handleCancelTouchTap}
+        secondary={true}
+      />,
+    ]}
+    open={open}
+    title={title}
+  >
+    <TextField
+      floatingLabelText="Contents"
+      fullWidth={true}
+      multiLine={true}
+      rowsMax={4}
+      name="contents"
+      onChange={handleInputChange}
+      value={contents}
+    />
+  </Dialog>
 );
 
 export default EditNoteDialog;

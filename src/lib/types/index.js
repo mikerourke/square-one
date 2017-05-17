@@ -1,5 +1,8 @@
 /* @flow */
 
+/* Types */
+import type { Map, Record } from 'immutable';
+
 /**
  * Geographical location on a map.
  * @typedef MapLocation
@@ -31,3 +34,7 @@ export type GetState = () => Object;
 export type Dispatch = (action: Action | ThunkAction | PromiseAction) => any;
 export type PromiseAction = Promise<Action>;
 export type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
+
+type ByIdMap = Map<number, Record<*>>;
+type ErrorMap = Map<string, any>;
+export type EntityState = Map<string, ByIdMap, ErrorMap>;

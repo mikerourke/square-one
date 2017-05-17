@@ -4,6 +4,6 @@
 import { schema } from 'normalizr';
 
 const settingSchema = new schema.Entity('settings', {}, {
-    idAttribute: 'settingName',
+  idAttribute: 'settingName',
 });
 export default [settingSchema];

@@ -21,23 +21,23 @@ import type { Map } from 'immutable';
 import type { Sort } from 'components/searchable-table';
 
 type Props = {
-    leads: Map<number, Lead>,
-    createLead: (lead: Lead) => Promise<*>,
-    getAllLeads: () => Promise<*>,
+  leads: Map<number, Lead>,
+  createLead: (lead: Lead) => Promise<*>,
+  getAllLeads: () => Promise<*>,
 };
 
 type State = {
-    isLoading: boolean,
+  isLoading: boolean,
 };
 
 const mapStateToProps = state => ({
-    leads: selectAllLeads(state),
+  leads: selectAllLeads(state),
 });
 
 const mapDispatchToProps = dispatch => ({
-    dispatch,
-    createLead: lead => dispatch(createLead(lead)),
-    getAllLeads: () => dispatch(getAllLeads()),
+  dispatch,
+  createLead: lead => dispatch(createLead(lead)),
+  getAllLeads: () => dispatch(getAllLeads()),
 });
 
 /**
@@ -46,84 +46,84 @@ const mapDispatchToProps = dispatch => ({
  * @class LeadsList
  */
 export class LeadsList extends Component<*, Props, State> {
-    props: Props;
-    state: State;
+  props: Props;
+  state: State;
 
-    constructor(props: Props): void {
-        super(props);
-        this.state = {
-            isLoading: false,
-            leads: OrderedMap(),
-        };
+  constructor(props: Props): void {
+    super(props);
+    this.state = {
+      isLoading: false,
+      leads: OrderedMap(),
+    };
+  }
+
+  /**
+   * Redirects the user to the Manage Lead page with empty fields for
+   *    creating a new Lead.
+   */
+  handleAddTouchTap = (): void => {
+    const createLeadFn = this.props.createLead;
+    const newLead = new Lead();
+    createLeadFn(newLead).then(() => {
+      const newLeadFromState = this.props.leads.last();
+      const idOfNewLead = newLeadFromState.get('id');
+      browserHistory.push(`leads/${idOfNewLead}`);
+    });
+  };
+
+  /**
+   * Redirects the user to the Manage Lead page with the fields populated
+   *    with properties from the selected Lead.
+   * @param {Object} row Row element associated with the row on which the
+   *    Edit button is located.
+   */
+  handleEditTouchTap = (row: Object): void => {
+    browserHistory.push(`leads/${row.id}`);
+  };
+
+  render(): React.Element<*> {
+    const { leads } = this.props;
+    const { isLoading } = this.state;
+
+    if (isLoading) {
+      return (<ProgressIndicator />);
     }
 
-    /**
-     * Redirects the user to the Manage Lead page with empty fields for
-     *    creating a new Lead.
-     */
-    handleAddTouchTap = (): void => {
-        const createLeadFn = this.props.createLead;
-        const newLead = new Lead();
-        createLeadFn(newLead).then(() => {
-            const newLeadFromState = this.props.leads.last();
-            const idOfNewLead = newLeadFromState.get('id');
-            browserHistory.push(`leads/${idOfNewLead}`);
-        });
+    // TODO: Add filter selection handling and saving.
+    const filterSelections = ['Test 1', 'Test 2'];
+
+    const leadData = leads
+      .toList()
+      .sortBy(lead => lead.createdAt)
+      .reverse();
+
+    const initialSort: Sort = {
+      column: 'createdAt',
+      order: 'desc',
     };
 
-    /**
-     * Redirects the user to the Manage Lead page with the fields populated
-     *    with properties from the selected Lead.
-     * @param {Object} row Row element associated with the row on which the
-     *    Edit button is located.
-     */
-    handleEditTouchTap = (row: Object): void => {
-        browserHistory.push(`leads/${row.id}`);
-    };
-
-    render(): React.Element<*> {
-        const { leads } = this.props;
-        const { isLoading } = this.state;
-
-        if (isLoading) {
-            return (<ProgressIndicator />);
-        }
-
-        // TODO: Add filter selection handling and saving.
-        const filterSelections = ['Test 1', 'Test 2'];
-
-        const leadData = leads
-            .toList()
-            .sortBy(lead => lead.createdAt)
-            .reverse();
-
-        const initialSort: Sort = {
-            column: 'createdAt',
-            order: 'desc',
-        };
-
-        return (
-            <div>
-                <PageHeader
-                    titleLeft={(
-                        <PageHeaderTitle
-                            headerText="Leads"
-                            titleIconName="people_outline"
-                        />
-                    )}
-                />
-                <SearchableTable
-                    columns={tableColumns}
-                    data={leadData}
-                    filterSelections={filterSelections}
-                    handleAddTouchTap={this.handleAddTouchTap}
-                    handleRowIconTouchTap={this.handleEditTouchTap}
-                    initialSort={initialSort}
-                    searchFields={['leadName', 'description']}
-                />
-            </div>
-        );
-    }
+    return (
+      <div>
+        <PageHeader
+          titleLeft={(
+            <PageHeaderTitle
+              headerText="Leads"
+              titleIconName="people_outline"
+            />
+          )}
+        />
+        <SearchableTable
+          columns={tableColumns}
+          data={leadData}
+          filterSelections={filterSelections}
+          handleAddTouchTap={this.handleAddTouchTap}
+          handleRowIconTouchTap={this.handleEditTouchTap}
+          initialSort={initialSort}
+          searchFields={['leadName', 'description']}
+        />
+      </div>
+    );
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeadsList);

@@ -1,5 +1,7 @@
 /* @flow */
 
+// TODO: Add comments header and catch Promise errors.
+
 /* External dependencies */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -12,70 +14,70 @@ import Session from 'state/session/model';
 
 /* Types */
 type DefaultProps = {
-    getAllSettings: () => Promise<*>,
-    getAllUsers: () => Promise<*>,
+  getAllSettings: () => Promise<*>,
+  getAllUsers: () => Promise<*>,
 };
 
 type Props = {
-    getAllSettings: () => Promise<*>,
-    getAllUsers: () => Promise<*>,
-    session: Session,
+  getAllSettings: () => Promise<*>,
+  getAllUsers: () => Promise<*>,
+  session: Session,
 };
 
 type State = {
-    entitiesLoaded: boolean,
+  entitiesLoaded: boolean,
 };
 
 const mapStateToProps = state => ({
-    session: state.get('session'),
+  session: state.get('session'),
 });
 
 const mapDispatchToProps = dispatch => ({
-    dispatch,
-    getAllSettings: () => dispatch(getAllSettings()),
-    getAllUsers: () => dispatch(getAllUsers()),
+  dispatch,
+  getAllSettings: () => dispatch(getAllSettings()),
+  getAllUsers: () => dispatch(getAllUsers()),
 });
 
 export class Dashboard extends Component<DefaultProps, Props, State> {
-    props: Props;
-    state: State;
+  props: Props;
+  state: State;
 
-    static defaultProps = {
-        getAllSettings: () => Promise.resolve(),
-        getAllUsers: () => Promise.resolve(),
+  static defaultProps = {
+    getAllSettings: () => Promise.resolve(),
+    getAllUsers: () => Promise.resolve(),
+  };
+
+  constructor(): void {
+    super();
+    this.state = {
+      entitiesLoaded: false,
     };
+  }
 
-    constructor() {
-        super();
-        this.state = {
-            entitiesLoaded: false,
-        };
-    }
+  componentDidMount(): void {
+    this.hydrateState();
+  }
 
-    componentDidMount(): void {
-        this.hydrateState();
-    }
+  /**
+   * Populates state with Settings and User entities.
+   */
+  hydrateState = (): void => {
+    const getAllSettingsFn = this.props.getAllSettings;
+    const getAllUsersFn = this.props.getAllUsers;
+    getAllSettingsFn()
+      .then(getAllUsersFn)
+      .then(() => {
+        this.setState({ entitiesLoaded: true });
+      });
+  };
 
-    /**
-     * Populates state with Settings and User entities.
-     */
-    hydrateState = (): void => {
-        const getAllSettingsFn = this.props.getAllSettings;
-        const getAllUsersFn = this.props.getAllUsers;
-        getAllSettingsFn()
-            .then(getAllUsersFn)
-            .then(() => {
-                this.setState({ entitiesLoaded: true });
-            });
-    };
-
-    render() {
-        return (
-            <Paper>
-                <div>Dashboard</div>
-            </Paper>
-        );
-    }
+  render(): React.Element<*> {
+    return (
+      <Paper>
+        <div>Dashboard</div>
+      </Paper>
+    );
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

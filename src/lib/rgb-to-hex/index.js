@@ -11,21 +11,22 @@ type Rgb = {
 /**
  * Given a hexidecimal string representing a color, returns the corresponding
  *    R, G, and B values as an object.
+ * @returns {Object} Object with R, G, and B values.
  */
 const getRgbFromHex = (hex: string): Rgb => {
-    let newHex: string = hex.replace(/^#/, '');
+  let newHex: string = hex.replace(/^#/, '');
 
-    if (newHex.length === 3) {
-        newHex = newHex[0] + newHex[0] + newHex[1] +
-                 newHex[1] + newHex[2] + newHex[2];
-    }
+  if (newHex.length === 3) {
+    newHex = newHex[0] + newHex[0] + newHex[1] +
+             newHex[1] + newHex[2] + newHex[2];
+  }
 
-    const bigInt: number = parseInt(newHex, 16);
-    return {
-        r: (bigInt >> 16) & 255,
-        g: (bigInt >> 8) & 255,
-        b: bigInt & 255,
-    };
+  const bigInt: number = parseInt(newHex, 16);
+  return {
+    r: (bigInt >> 16) & 255,
+    g: (bigInt >> 8) & 255,
+    b: bigInt & 255,
+  };
 };
 
 export default getRgbFromHex;

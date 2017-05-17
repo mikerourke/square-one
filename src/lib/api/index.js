@@ -1,8 +1,5 @@
 /* @flow */
 
-/* External dependencies */
-import axios, { AxiosRequestConfig } from 'axios';
-
 /**
  * Parses the payload from the Axios middleware request to get the ID of the
  *    entity corresponding with the parent name.
@@ -11,19 +8,19 @@ import axios, { AxiosRequestConfig } from 'axios';
  * @returns {number} ID number of the entity.
  */
 export const getIdFromPayload = (
-    payload: Object,
-    parentName: string,
+  payload: Object,
+  parentName: string,
 ): number => {
-    const { config: { url } } = (payload: Object);
+  const { config: { url } } = (payload: Object);
 
-    const urlArray = url.split('/');
-    let entityId = '0';
-    urlArray.forEach((value, index) => {
-        if (value.includes(parentName)) {
-            entityId = urlArray[index + 1];
-        }
-    });
-    return +entityId;
+  const urlArray = url.split('/');
+  let entityId = '0';
+  urlArray.forEach((value, index) => {
+    if (value.includes(parentName)) {
+      entityId = urlArray[index + 1];
+    }
+  });
+  return +entityId;
 };
 
 /**
@@ -34,26 +31,26 @@ export const getIdFromPayload = (
  * @returns {Object}
  */
 export const getChildDataFromPayload = (
-    payload: Object,
-    parentName: string,
+  payload: Object,
+  parentName: string,
 ): Object => {
-    const { config: { url }, data } = (payload: Object);
+  const { config: { url }, data } = (payload: Object);
 
-    const urlArray = url.split('/');
-    let parentId = '';
-    let groupName = '';
-    let childId = '';
-    urlArray.forEach((value, index) => {
-        if (value.includes(parentName)) {
-            parentId = urlArray[index + 1];
-            groupName = urlArray[index + 2];
-            childId = urlArray[index + 3];
-        }
-    });
+  const urlArray = url.split('/');
+  let parentId = '';
+  let groupName = '';
+  let childId = '';
+  urlArray.forEach((value, index) => {
+    if (value.includes(parentName)) {
+      parentId = urlArray[index + 1];
+      groupName = urlArray[index + 2];
+      childId = urlArray[index + 3];
+    }
+  });
 
-    return {
-        childId,
-        data,
-        pathInState: ['byId', +parentId, groupName],
-    };
+  return {
+    childId,
+    data,
+    pathInState: ['byId', +parentId, groupName],
+  };
 };

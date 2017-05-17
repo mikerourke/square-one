@@ -12,32 +12,32 @@ import type { RecordDiff } from 'lib/types';
  * @returns {Array} Array of items that don't match.
  */
 const compareRecords = (
-    compareFrom: Record<*>,
-    compareTo: Record<*>,
+  compareFrom: Record<*>,
+  compareTo: Record<*>,
 ): Array<RecordDiff> => {
-    // Immutable Records have a "toJS()" function, for some reason Flow
-    // isn't picking it up.
-    // $FlowIgnore
-    const fromObject = compareFrom.toJS();
-    // $FlowIgnore
-    const toObject = compareTo.toJS();
+  // Immutable Records have a "toJS()" function, for some reason Flow
+  // isn't picking it up.
+  // $FlowIgnore
+  const fromObject = compareFrom.toJS();
+  // $FlowIgnore
+  const toObject = compareTo.toJS();
 
-    const unmatchingFields = [];
+  const unmatchingFields = [];
 
-    Object.keys(fromObject).forEach((key) => {
-        const fromValue = fromObject[key];
-        if (!Array.isArray(fromValue) && typeof fromValue !== 'object') {
-            const toValue = toObject[key];
-            if (toValue !== fromValue) {
-                unmatchingFields.push({
-                    key,
-                    fromValue,
-                    toValue,
-                });
-            }
-        }
-    });
-    return unmatchingFields;
+  Object.keys(fromObject).forEach((key) => {
+    const fromValue = fromObject[key];
+    if (!Array.isArray(fromValue) && typeof fromValue !== 'object') {
+      const toValue = toObject[key];
+      if (toValue !== fromValue) {
+        unmatchingFields.push({
+          key,
+          fromValue,
+          toValue,
+        });
+      }
+    }
+  });
+  return unmatchingFields;
 };
 
 export default compareRecords;

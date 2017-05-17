@@ -16,21 +16,21 @@ import MessagesDialog from '../messages-dialog/index';
 import type { CardEntity } from 'components/card-list';
 
 type DefaultProps = {
-    messages: List<Message>,
+  messages: List<Message>,
 };
 
 type Props = {
-    lead: Lead,
-    messages?: List<Message>,
-    showAddButton: boolean,
+  lead: Lead,
+  messages?: List<Message>,
+  showAddButton: boolean,
 };
 
 type State = {
-    isMessageDialogOpen: boolean,
+  isMessageDialogOpen: boolean,
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    messages: selectMessagesInLead(state, ownProps),
+  messages: selectMessagesInLead(state, ownProps),
 });
 
 /**
@@ -42,82 +42,82 @@ const mapStateToProps = (state, ownProps) => ({
  * @class MessagesList
  */
 export class MessagesList extends Component<DefaultProps, Props, State> {
-    props: Props;
-    state: State;
+  props: Props;
+  state: State;
 
-    static defaultProps = {
-        messages: new List(),
+  static defaultProps = {
+    messages: new List(),
+  };
+
+  constructor(): void {
+    super();
+    this.state = {
+      isMessageDialogOpen: false,
     };
+  }
 
-    constructor(): void {
-        super();
-        this.state = {
-            isMessageDialogOpen: false,
-        };
+  /**
+   * Show the messages dialog form when the Add button is pressed.
+   */
+  handleAddButtonTouchTap = (): void => {
+    this.setState({ isMessageDialogOpen: true });
+  };
+
+  /**
+   * Hide the messages dialog when an action is performed.
+   */
+  handleDialogTouchTap = (): void => {
+    this.setState({ isMessageDialogOpen: false });
+  };
+
+  /**
+   * Extrapolates the required properties for a card entity from the list of
+   *    messages and returns a list of card entities.
+   * @returns {Immutable.List}
+   */
+  getCardEntities = (): List<CardEntity> => {
+    const messagesInLead = this.props.messages;
+    let cardEntities = new List();
+    if (messagesInLead) {
+      cardEntities = messagesInLead
+        .sortBy(message => message.createdAt)
+        .reverse()
+        .map((message) => {
+          const displayDate = getDisplayDate(message.createdAt);
+          return {
+            id: message.id,
+            title: message.getIn(['createdBy', 'fullName']),
+            subtitle: displayDate,
+            contents: message.body,
+          };
+        });
     }
+    return cardEntities;
+  };
 
-    /**
-     * Show the messages dialog form when the Add button is pressed.
-     */
-    handleAddButtonTouchTap = (): void => {
-        this.setState({ isMessageDialogOpen: true });
-    };
+  render(): React.Element<*> {
+    const { lead, showAddButton } = this.props;
+    const { isMessageDialogOpen } = this.state;
 
-    /**
-     * Hide the messages dialog when an action is performed.
-     */
-    handleDialogTouchTap = (): void => {
-        this.setState({ isMessageDialogOpen: false });
-    };
-
-    /**
-     * Extrapolates the required properties for a card entity from the list of
-     *    messages and returns a list of card entities.
-     * @returns {Immutable.List}
-     */
-    getCardEntities = (): List<CardEntity> => {
-        const messagesInLead = this.props.messages;
-        let cardEntities = new List();
-        if (messagesInLead) {
-            cardEntities = messagesInLead
-                .sortBy(message => message.createdAt)
-                .reverse()
-                .map((message) => {
-                    const displayDate = getDisplayDate(message.createdAt);
-                    return {
-                        id: message.id,
-                        title: message.getIn(['createdBy', 'fullName']),
-                        subtitle: displayDate,
-                        contents: message.body,
-                    };
-                });
-        }
-        return cardEntities;
-    };
-
-    render(): React.Element<*> {
-        const { lead, showAddButton } = this.props;
-        const { isMessageDialogOpen } = this.state;
-
-        return (
-            <div>
-                <CardList
-                    cardEntities={this.getCardEntities()}
-                    handleAddTouchTap={this.handleAddButtonTouchTap}
-                    hasActions={false}
-                    multipleCardsPerRow={false}
-                    searchFieldInclusions={['body']}
-                    showAddButton={showAddButton}
-                />
-                <MessagesDialog
-                    handleTouchTap={this.handleDialogTouchTap}
-                    lead={lead}
-                    open={isMessageDialogOpen}
-                    redirectToLeads={false}
-                />
-            </div>
-        );
-    }
+    return (
+      <div>
+        <CardList
+          cardEntities={this.getCardEntities()}
+          handleAddTouchTap={this.handleAddButtonTouchTap}
+          hasActions={false}
+          multipleCardsPerRow={false}
+          searchFieldInclusions={['body']}
+          showAddButton={showAddButton}
+        />
+        <MessagesDialog
+          handleTouchTap={this.handleDialogTouchTap}
+          lead={lead}
+          open={isMessageDialogOpen}
+          redirectToLeads={false}
+        />
+      </div>
+    );
+  }
 }
 
 export default connect(mapStateToProps)(MessagesList);

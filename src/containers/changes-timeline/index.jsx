@@ -12,16 +12,16 @@ import Timeline from 'components/timeline';
 
 /* Types */
 type DefaultProps = {
-    changes: List<Change>,
+  changes: List<Change>,
 };
 
 type Props = {
-    lead: Lead,
-    changes?: List<Change>,
+  lead: Lead,
+  changes?: List<Change>,
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    changes: selectChangesInLead(state, ownProps),
+  changes: selectChangesInLead(state, ownProps),
 });
 
 /**
@@ -31,20 +31,20 @@ const mapStateToProps = (state, ownProps) => ({
  * @class ChangesTimeline
  */
 export class ChangesTimeline extends Component<DefaultProps, Props, *> {
-    props: Props;
+  props: Props;
 
-    static defaultProps = {
-        changes: new List(),
-    };
+  static defaultProps = {
+    changes: new List(),
+  };
 
-    render(): React.Element<*> {
-        const { changes } = this.props;
-        return (
-            <Timeline
-                timelineEvents={changes}
-            />
-        );
-    }
+  render(): React.Element<*> {
+    const { changes } = this.props;
+    return (
+      <Timeline
+        timelineEvents={changes}
+      />
+    );
+  }
 }
 
 export default connect(mapStateToProps)(ChangesTimeline);

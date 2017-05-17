@@ -15,25 +15,25 @@ import PageHeaderTitle from 'components/page-header-title';
  * @param {string} subheaderText Text to display in the subheader.
  */
 const PageHeaderToolbar = ({
-    handleBackArrowTouchTap,
-    headerText,
-    subheaderText,
+  handleBackArrowTouchTap,
+  headerText,
+  subheaderText,
 }: {
-    handleBackArrowTouchTap: () => void,
-    headerText: string,
-    subheaderText: string,
+  handleBackArrowTouchTap: () => void,
+  headerText: string,
+  subheaderText: string,
 }): React.Element<*> => (
-    <PageHeader
-        titleLeft={
-            (<PageHeaderTitle
-                backArrowTooltip="Return to Leads"
-                handleBackArrowTouchTap={handleBackArrowTouchTap}
-                headerText={headerText}
-                subheaderText={subheaderText}
-                titleIconName="person_outline"
-            />)
-        }
-    />
+  <PageHeader
+    titleLeft={
+      (<PageHeaderTitle
+        backArrowTooltip="Return to Leads"
+        handleBackArrowTouchTap={handleBackArrowTouchTap}
+        headerText={headerText}
+        subheaderText={subheaderText}
+        titleIconName="person_outline"
+      />)
+    }
+  />
 );
 
 export default PageHeaderToolbar;

@@ -18,24 +18,24 @@ import { TableRowColumn } from 'material-ui/Table';
 
 /* Types */
 type Context = {
-    muiTheme: {
-        prepareStyles: (style: Object) => void,
-        tableRowColumn: {
-            height: number,
-            spacing: number,
-        }
+  muiTheme: {
+    prepareStyles: (style: Object) => void,
+    tableRowColumn: {
+      height: number,
+      spacing: number,
     }
+  }
 };
 
 type Props = {
-    children?: React.Element<*>,
-    className?: string,
-    columnNumber?: number,
-    hoverable?: boolean,
-    onClick?: () => void,
-    onHover?: () => void,
-    onHoverExit?: () => void,
-    style?: Object,
+  children?: React.Element<*>,
+  className?: string,
+  columnNumber?: number,
+  hoverable?: boolean,
+  onClick?: () => void,
+  onHover?: () => void,
+  onHoverExit?: () => void,
+  style?: Object,
 };
 
 /**
@@ -43,68 +43,76 @@ type Props = {
  * @export
  * @class RowColumn
  */
-class RowColumn extends TableRowColumn {
-    context: Context;
-    props: Props;
+class RowColumn extends TableRowColumn<*, Props, *> {
+  context: Context;
 
-    static muiName = 'TableRowColumn';
+  static muiName = 'TableRowColumn';
 
-    getRootStyle = (): Object => {
-        const { children } = this.props;
-        const { muiTheme: {
-            tableRowColumn,
-        } } = this.context;
+  /**
+   * Extrapolates the material-ui theme elements from the context and creates
+   *    an object with the corresponding styles.
+   * @returns {Object} Object with styles based on theme.
+   */
+  getRootStyle = (): Object => {
+    const { children } = this.props;
+    const {
+      muiTheme: {
+        tableRowColumn,
+      },
+    } = this.context;
 
-        const isRightAlign = (React.Children.count(children) === 1
-                              && !isNaN(children));
+    const isRightAlign = (React.Children.count(children) === 1
+                          && !isNaN(children));
 
-        return {
-            fontSize: 13,
-            height: tableRowColumn.height,
-            overflow: 'hidden',
-            paddingLeft: tableRowColumn.spacing,
-            paddingRight: tableRowColumn.spacing,
-            textAlign: isRightAlign ? 'right' : 'left',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-        };
+    return {
+      fontSize: 13,
+      height: tableRowColumn.height,
+      overflow: 'hidden',
+      paddingLeft: tableRowColumn.spacing,
+      paddingRight: tableRowColumn.spacing,
+      textAlign: isRightAlign ? 'right' : 'left',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    };
+  };
+
+  render(): React.Element<*> {
+    const {
+      children,
+      className,
+      columnNumber,
+      hoverable,
+      onClick,
+      onHover,
+      onHoverExit,
+      style,
+      ...props
+    } = this.props;
+
+    const {
+      muiTheme: {
+        prepareStyles,
+      },
+    } = this.context;
+    const rootStyle = this.getRootStyle();
+
+    const handlers = {
+      onClick: this.onClick,
+      onMouseEnter: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
     };
 
-    render(): React.Element<*> {
-        const {
-            children,
-            className,
-            columnNumber,
-            hoverable,
-            onClick,
-            onHover,
-            onHoverExit,
-            style,
-            ...props
-        } = this.props;
-
-        const { muiTheme: {
-            prepareStyles,
-        } } = this.context;
-        const rootStyle = this.getRootStyle();
-
-        const handlers = {
-            onClick: this.onClick,
-            onMouseEnter: this.onMouseEnter,
-            onMouseLeave: this.onMouseLeave,
-        };
-
-        return (
-            <td
-                className={className}
-                style={prepareStyles({ ...rootStyle, ...style })}
-                {...handlers}
-                {...props}
-            >
-                {children}
-            </td>
-        );
-    }
+    return (
+      <td
+        className={className}
+        style={prepareStyles({ ...rootStyle, ...style })}
+        {...handlers}
+        {...props}
+      >
+        {children}
+      </td>
+    );
+  }
 }
 
 export default RowColumn;

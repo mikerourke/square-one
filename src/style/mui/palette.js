@@ -19,15 +19,15 @@ export const pickerHeaderColor: string = muiColors.grey500;
 export const canvasColor: string = muiColors.white;
 
 export default {
-    primary1Color,
-    primary2Color,
-    primary3Color,
-    accent1Color,
-    accent2Color,
-    accent3Color,
-    textColor,
-    alternateTextColor,
-    borderColor,
-    pickerHeaderColor,
-    canvasColor,
+  primary1Color,
+  primary2Color,
+  primary3Color,
+  accent1Color,
+  accent2Color,
+  accent3Color,
+  textColor,
+  alternateTextColor,
+  borderColor,
+  pickerHeaderColor,
+  canvasColor,
 };

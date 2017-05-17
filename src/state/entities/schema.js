@@ -8,9 +8,9 @@ const messageSchema = new schema.Entity('messages');
 const noteSchema = new schema.Entity('notes');
 
 export const leadSchema = new schema.Entity('leads', {
-    changes: [changeSchema],
-    messages: [messageSchema],
-    notes: [noteSchema],
+  changes: [changeSchema],
+  messages: [messageSchema],
+  notes: [noteSchema],
 });
 export const leadsSchema = [leadSchema];
 

@@ -14,24 +14,24 @@ type QueryData = any;
  * @returns {Array | List} Items from data that meet conditions.
  */
 export const getSearchResults = (
-    data: QueryData,
-    searchFor?: string = '',
-    fieldsToInclude?: Array<string> = [],
+  data: QueryData,
+  searchFor?: string = '',
+  fieldsToInclude?: Array<string> = [],
 ): QueryData => {
-    const items = data;
-    // Return the original dataset if the field is search for value is falsy.
-    if (!searchFor || searchFor === '') {
-        return data;
-    }
+  const items = data;
+  // Return the original dataset if the field is search for value is falsy.
+  if (!searchFor || searchFor === '') {
+    return data;
+  }
 
-    return items.filter((item) => {
-        const fieldsSearch = fieldsToInclude.map((fieldName) => {
-            const itemValue = item.get(fieldName).toLowerCase();
-            const searchValue = searchFor.toLowerCase();
-            return (itemValue.includes(searchValue));
-        });
-        return (fieldsSearch.includes(true));
+  return items.filter((item) => {
+    const fieldsSearch = fieldsToInclude.map((fieldName) => {
+      const itemValue = item.get(fieldName).toLowerCase();
+      const searchValue = searchFor.toLowerCase();
+      return (itemValue.includes(searchValue));
     });
+    return (fieldsSearch.includes(true));
+  });
 };
 
 /**
@@ -42,13 +42,13 @@ export const getSearchResults = (
  * @returns {Array | List} Sorted items from data.
  */
 export const getSortedData = (
-    data: List<*>,
-    key: string,
-    order?: string = 'asc',
+  data: List<*>,
+  key: string,
+  order?: string = 'asc',
 ): List<*> => {
-    const sortedData = data.sortBy(item => item[key]);
-    if (order === 'desc') {
-        return sortedData.reverse();
-    }
-    return sortedData;
+  const sortedData = data.sortBy(item => item[key]);
+  if (order === 'desc') {
+    return sortedData.reverse();
+  }
+  return sortedData;
 };

@@ -17,20 +17,27 @@ import React from 'react';
 import { TableBody } from 'material-ui/Table';
 
 /* Types */
+type DefaultProps = {
+  allRowsSelected: boolean,
+  deselectOnClickaway: boolean,
+  displayRowCheckbox: boolean,
+  selectable: boolean,
+}
+
 type Props = {
-    allRowsSelected?: boolean,
-    children?: React.Element<*>,
-    className?: string,
-    deselectOnClickaway?: boolean,
-    displayRowCheckbox?: boolean,
-    onCellHover?: () => void,
-    onCellHoverExit?: () => void,
-    onRowHover?: () => void,
-    onRowHoverExit?: () => void,
-    preScanRows?: boolean,
-    showRowHover?: boolean,
-    stripedRows?: boolean,
-    style?: Object,
+  allRowsSelected?: boolean,
+  children?: React.Element<*>,
+  className?: string,
+  deselectOnClickaway?: boolean,
+  displayRowCheckbox?: boolean,
+  onCellHover?: () => void,
+  onCellHoverExit?: () => void,
+  onRowHover?: () => void,
+  onRowHoverExit?: () => void,
+  preScanRows?: boolean,
+  showRowHover?: boolean,
+  stripedRows?: boolean,
+  style?: Object,
 };
 
 /**
@@ -38,56 +45,56 @@ type Props = {
  * @export
  * @class Body
  */
-class Body extends TableBody {
-    props: Props;
+class Body extends TableBody<DefaultProps, Props, *> {
+  props: Props;
 
-    static defaultProps = {
-        allRowsSelected: false,
-        deselectOnClickaway: false,
-        displayRowCheckbox: false,
-        selectable: false,
+  static defaultProps = {
+    allRowsSelected: false,
+    deselectOnClickaway: false,
+    displayRowCheckbox: false,
+    selectable: false,
+  };
+
+  static muiName = 'TableBody';
+
+  createRows(): React.Element<*> {
+    const numChildren = React.Children.count(this.props.children);
+    let rowNumber = 0;
+    const handlers = {
+      onCellHover: this.onCellHover,
+      onCellHoverExit: this.onCellHoverExit,
+      onRowClick: this.onRowClick,
+      onRowHover: this.onRowHover,
+      onRowHoverExit: this.onRowHoverExit,
     };
 
-    static muiName = 'TableBody';
-
-    createRows(): React.Element<*> {
-        const numChildren = React.Children.count(this.props.children);
-        let rowNumber = 0;
-        const handlers = {
-            onCellHover: this.onCellHover,
-            onCellHoverExit: this.onCellHoverExit,
-            onRowClick: this.onRowClick,
-            onRowHover: this.onRowHover,
-            onRowHoverExit: this.onRowHoverExit,
+    return React.Children.map(this.props.children, (child) => {
+      if (React.isValidElement(child)) {
+        const props = {
+          displayBorder: true,
+          hoverable: this.props.showRowHover,
+          rowNumber: rowNumber += 1,
+          striped: this.props.stripedRows && (rowNumber % 2 === 0),
         };
 
-        return React.Children.map(this.props.children, (child) => {
-            if (React.isValidElement(child)) {
-                const props = {
-                    displayBorder: true,
-                    hoverable: this.props.showRowHover,
-                    rowNumber: rowNumber += 1,
-                    striped: this.props.stripedRows && (rowNumber % 2 === 0),
-                };
+        if (rowNumber === numChildren) {
+          props.displayBorder = false;
+        }
 
-                if (rowNumber === numChildren) {
-                    props.displayBorder = false;
-                }
+        const children = [
+          this.createRowCheckboxColumn(props),
+        ];
 
-                const children = [
-                    this.createRowCheckboxColumn(props),
-                ];
-
-                React.Children.forEach(child.props.children, (grandChild) => {
-                    children.push(grandChild);
-                });
-
-                return React.cloneElement(child, { ...props, ...handlers },
-                    children);
-            }
-            return undefined;
+        React.Children.forEach(child.props.children, (grandChild) => {
+          children.push(grandChild);
         });
-    }
+
+        return React.cloneElement(child, { ...props, ...handlers },
+          children);
+      }
+      return undefined;
+    });
+  }
 }
 
 export default Body;

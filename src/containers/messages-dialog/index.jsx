@@ -232,11 +232,11 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
   /**
    * Updates the state with the contents of the updated input.
    * @param {Event} event Event associated with the input.
-   * @param {string} newValue New value of the input.
+   * @param {string|boolean} newValue New value of the input.
    */
   handleInputChange = (
     event: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement },
-    newValue: string = '',
+    newValue: string | boolean,
   ): void => {
     const fieldName = event.currentTarget.name;
     if (fieldName === 'sendRepresentativeMessage' && newValue === true) {
@@ -328,6 +328,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
               name="sendLeadMessage"
               onToggle={this.handleInputChange}
               style={{ width: 300 }}
+              toggled={sendLeadMessage}
             />
             <glamorous.Div
               alignItems="flex-end"
@@ -357,6 +358,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
               name="sendRepresentativeMessage"
               onToggle={this.handleInputChange}
               style={{ width: 300 }}
+              toggled={sendRepresentativeMessage}
             />
             <TextField
               disabled={!sendRepresentativeMessage}

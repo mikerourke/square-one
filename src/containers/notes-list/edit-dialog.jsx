@@ -56,6 +56,7 @@ const EditNoteDialog = ({
       floatingLabelText="Contents"
       fullWidth={true}
       multiLine={true}
+      rows={4}
       rowsMax={4}
       name="contents"
       onChange={handleInputChange}

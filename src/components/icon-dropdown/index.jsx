@@ -14,6 +14,12 @@ import Subheader from 'material-ui/Subheader';
 import { primary1Color } from 'style/mui/palette';
 import getRgbFromHex from 'lib/rgb-to-hex';
 
+/**
+ * Returns a style object with the color for the IconMenu's icon based on
+ *    whether it is currently disabled.
+ * @param {boolean} disabled Indicates if the control is disabled.
+ * @returns {Object}
+ */
 const getMenuIconStyle = (disabled?: ?boolean): Object => {
   const { r, g, b } = getRgbFromHex(primary1Color);
   const transparency = disabled ? 0.5 : 1;
@@ -24,35 +30,35 @@ const getMenuIconStyle = (disabled?: ?boolean): Object => {
 
 /**
  * Dropdown menu with icon button.
- * @param {Function} [handleAddTouchTap] Action to perform when the Add
- *    button is pressed at the bottom of the list (if present).
  * @param {Function} handleItemTouchTap Action to perform when an item is
  *    selected from the dropdown menu.
  * @param {boolean} hasAddButton Indicates if an add button should be present
  *    at the bottom of the list of menu items.
  * @param {string} menuIconName Name of the icon to use for the menu button.
  * @param {Array} selections Array of items for the dropdown.
+ * @param {Function} [handleAddTouchTap] Action to perform when the Add
+ *    button is pressed at the bottom of the list (if present).
  * @param {boolean} [disabled=false] Indicates if the menu button is disabled.
- * @param {number} [menuWidth=128] Optional width for the menu.
+ * @param {string} [subheaderText=null] Optional text for subheader.
  * @param {Object} props Other props associated with the menu.
  */
 const IconDropdown = ({
-  handleAddTouchTap = () => {},
   handleItemTouchTap,
   hasAddButton,
   menuIconName,
   selections,
+  handleAddTouchTap = () => {},
   disabled = false,
-  menuWidth = 128,
+  subheaderText = null,
   ...props
 }: {
-  handleAddTouchTap?: (event: Event) => void,
   handleItemTouchTap: (event: Event, child: Object) => void,
   hasAddButton: boolean,
   menuIconName: string,
   selections: Array<string>,
+  handleAddTouchTap?: (event: Event) => void,
   disabled?: boolean,
-  menuWidth?: number,
+  subheaderText?: ?string,
 }): React.Element<*> => (
   <IconMenu
     iconButtonElement={(
@@ -65,10 +71,9 @@ const IconDropdown = ({
       </IconButton>
     )}
     onItemTouchTap={handleItemTouchTap}
-    menuStyle={{ width: menuWidth }}
     {...props}
   >
-    <Subheader>Existing Filters</Subheader>
+    {subheaderText && <Subheader>{subheaderText}</Subheader>}
     {selections.map(selection => (
       <MenuItem
         key={selection}

@@ -115,11 +115,13 @@ class FormTextField extends Component<DefaultProps, Props, State> {
         let invalidCount = 0;
         newValue.split(' ').forEach((word) => {
           if (!isAlpha(word)) {
-            invalidCount += 1;
+            if (!word.match(/[.,-]/g)) {
+              invalidCount += 1;
+            }
           }
         });
         if (invalidCount > 0) {
-          return 'Field cannot contain a number';
+          return 'Field can only contain letters, commas, periods, or dashes';
         }
       } else {
         return 'Field cannot be a number';
@@ -148,6 +150,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
     if (newValue === '' && isRequired) {
       return 'Required';
     }
+
     return '';
   };
 
@@ -161,6 +164,10 @@ class FormTextField extends Component<DefaultProps, Props, State> {
     const requiredErrorText = this.errorTextForRequiredField(newValue);
     if (requiredErrorText) {
       return requiredErrorText;
+    }
+
+    if (!requiredErrorText && newValue === '') {
+      return '';
     }
 
     const dataTypeErrorText = this.errorTextForDataType(newValue);
@@ -188,8 +195,8 @@ class FormTextField extends Component<DefaultProps, Props, State> {
     newValue: string | number,
     errorText: string,
   ): void => {
-    const { name, onInputChange } = this.props;
-    onInputChange(event, newValue, name);
+    const { onInputChange } = this.props;
+    onInputChange(event, newValue, errorText);
     this.setState({
       errorText,
       value: newValue,

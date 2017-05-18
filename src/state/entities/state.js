@@ -50,7 +50,6 @@ export const mergeEntitiesIntoState = (
     byIdOrderedMap = OrderedMap([...instanceEntries.map(
       ([key, value]) => ([+key, new models[entityName](fromJS(value))]))]);
   }
-  console.log(byIdOrderedMap);
   return state.merge({
     byId: byIdOrderedMap,
     error: new Map(),

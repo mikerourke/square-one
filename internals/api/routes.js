@@ -273,7 +273,7 @@ module.exports = (router, server) => {
       const currentTime = getCurrentTime();
       const leadId = getNewId('lead');
       const leadRecord = Object.assign({}, req.body, {
-        id: leadId,
+        id: +leadId,
         createdBy: modifyingUser,
         createdAt: currentTime,
         updatedBy: modifyingUser,
@@ -288,6 +288,9 @@ module.exports = (router, server) => {
     server.patch('/leads/:leadId', (req, res) => {
       const leadId = req.params['leadId'];
       const leadRecord = Object.assign({}, req.body, {
+        id: +leadId,
+        createdBy: modifyingUser,
+        createdAt: getCurrentTime(),
         updatedBy: modifyingUser,
         updatedAt: getCurrentTime(),
       }, getLeadChildren(leadId));

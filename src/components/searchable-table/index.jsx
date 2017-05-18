@@ -209,6 +209,8 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
             hasAddButton={true}
             menuIconName="filter_list"
             selections={filterSelections}
+            subheaderText="Existing Filters"
+            menuStyle={{ width: 128 }}
           />
         </SearchToolbar>
         <Paper

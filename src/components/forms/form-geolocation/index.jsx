@@ -11,8 +11,8 @@
 
 /* External dependencies */
 import React, { Component } from 'react';
-import GoogleMapsLoader from 'google-maps';
 import glamorous from 'glamorous';
+import GoogleMapsLoader from 'google-maps';
 import TextField from 'material-ui/TextField';
 
 /* Types */
@@ -231,6 +231,17 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
     this.setState({ address: newValue });
   };
 
+  /**
+   * Prevents the default action from firing when the user presses the "Enter"
+   *    key in the location autocomplete.
+   * @param {Event} event Event associated with the control.
+   */
+  handleKeyPress = (event: Event & { key: string }) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   render(): React.Element<*> {
     const {
       handleLocationChange,
@@ -249,6 +260,7 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
           id="geo-address"
           onBlur={this.handleBlur}
           onChange={this.handleChange}
+          onKeyPress={this.handleKeyPress}
           placeholder=""
           value={address}
           errorText={errorText}

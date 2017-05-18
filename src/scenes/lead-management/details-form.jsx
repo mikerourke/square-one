@@ -6,13 +6,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import glamorous from 'glamorous';
+import { Map } from 'immutable';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
-import { preventSubmissionOnEnter } from 'lib/form-events';
 import { togglePromptDialog } from 'state/gui/actions';
 import { selectListSettings } from 'state/settings/selectors';
 import { Lead } from 'state/entities/models';
@@ -40,6 +40,7 @@ type Props = {
 
 type State = {
   lead: Lead,
+  fieldErrors: Map<string, string>
 };
 
 const mapStateToProps = state => ({
@@ -75,13 +76,13 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
     super(props);
     this.state = {
       lead: props.lead,
+      fieldErrors: new Map(),
     };
   }
 
   componentDidMount(): void {
     // Ensure the form submission event isn't fired if the user presses
     // "Enter" after changinging the address.
-    preventSubmissionOnEnter('geo-address');
     const leadNameInput = document.getElementById('leadName');
     if (leadNameInput) {
       leadNameInput.focus();
@@ -92,15 +93,21 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
    * Changes the value of the specified field name to the specified value.
    * @param {string} fieldName Name of the field to update.
    * @param {string|number} newValue Value of the field.
+   * @param {string} [errorText=''] Error text associated with the input.
    */
   updateLeadInState = (
     fieldName: string,
     newValue: string | number,
+    errorText?: string = '',
   ): void => {
     const { handleFieldChange } = this.props;
-    const { lead } = this.state;
+    const { lead, fieldErrors } = this.state;
     const updatedLead = lead.set(fieldName, newValue);
-    this.setState({ lead: updatedLead });
+    const updatedFieldErrors = fieldErrors.set(fieldName, errorText);
+    this.setState({
+      lead: updatedLead,
+      fieldErrors: updatedFieldErrors,
+    });
     handleFieldChange(updatedLead);
   };
 
@@ -109,13 +116,15 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
    *    Details Form component.
    * @param {Event} event Event associated with the input.
    * @param {string|number} newValue New value of the input.
+   * @param {string} [errorText=''] Error text associated with the input.
    */
   handleInputChange = (
     event: Event & { currentTarget: HTMLInputElement },
     newValue: string | number,
+    errorText?: string = '',
   ): void => {
     const fieldName = event.currentTarget.name;
-    this.updateLeadInState(fieldName, newValue);
+    this.updateLeadInState(fieldName, newValue, errorText);
   };
 
   /**
@@ -176,7 +185,9 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
       handleDeleteTouchTap,
       handleSaveTouchTap,
     } = this.props;
-    const { lead } = this.state;
+    const { lead, fieldErrors } = this.state;
+
+    const phoneInputStyle = { flex: '1 0', minWidth: 192 };
 
     return (
       <form id="lead-details-form">
@@ -232,15 +243,32 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               onInputChange={this.handleInputChange}
               value={lead.leadFee === 0 ? '' : lead.leadFee}
             />
-            <FormTextField
-              floatingLabelText="Phone"
-              format="phone"
-              fullWidth={true}
-              isRequired={true}
-              name="phone"
-              onInputChange={this.handleInputChange}
-              value={lead.phone}
-            />
+            <glamorous.Div
+              alignItems="center"
+              display="flex"
+              flexFlow="row wrap"
+              justifyContent="space-between"
+            >
+              <FormTextField
+                floatingLabelText="Phone"
+                format="phone"
+                isRequired={true}
+                name="phone"
+                onInputChange={this.handleInputChange}
+                style={phoneInputStyle}
+                value={lead.phone}
+              />
+              <glamorous.Div width={8} />
+              <FormTextField
+                floatingLabelText="Alt. Phone (Optional)"
+                format="phone"
+                isRequired={false}
+                name="phone"
+                onInputChange={this.handleInputChange}
+                style={phoneInputStyle}
+                value={lead.altPhone}
+              />
+            </glamorous.Div>
             <FormTextField
               floatingLabelText="Email"
               format="email"
@@ -278,10 +306,8 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
           <TextField
             floatingLabelText="Description (Optional)"
             fullWidth={true}
-            multiLine={true}
             name="description"
             onChange={this.handleInputChange}
-            rowsMax={2}
             style={{ margin: '0 8px 0 8px' }}
             value={lead.description}
           />
@@ -293,7 +319,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
         >
           <RaisedButton
             label="Save"
-            onTouchTap={() => handleSaveTouchTap(lead)}
+            onTouchTap={() => handleSaveTouchTap(lead, fieldErrors)}
             primary={true}
           />
           <RaisedButton

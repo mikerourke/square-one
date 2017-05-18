@@ -23,6 +23,8 @@ import PageHeaderToolbar from './page-header-toolbar';
 import TabsPage from 'components/tabs-page';
 
 /* Types */
+import type { Map } from 'immutable';
+
 type Props = {
   lead: Lead,
   createLead: (lead: Lead) => Promise<*>,
@@ -174,12 +176,17 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
    * Updates the Lead entity opens the Messages dialog when the Save button
    *    on the details form is pressed.
    * @param {Lead} lead Lead being edited on the page.
+   * @param {Map} fieldErrors Any field errors on the form.
    */
-  handleSaveButtonTouchTap = (lead: Lead): void => {
-    const updateLeadFn = this.props.updateLead;
-    updateLeadFn(lead).then(() => {
-      this.setState({ isMessagesDialogOpen: true });
-    });
+  handleSaveButtonTouchTap = (
+    lead: Lead,
+    fieldErrors: Map<string, string>,
+  ): void => {
+    fieldErrors.forEach((errorText, fieldName) => console.log(errorText));
+    //const updateLeadFn = this.props.updateLead;
+    //updateLeadFn(lead).then(() => {
+    //  this.setState({ isMessagesDialogOpen: true });
+    //});
   };
 
   /**

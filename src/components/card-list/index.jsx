@@ -172,7 +172,7 @@ class CardList extends Component<*, Props, State> {
                 subtitle={cardEntity.subtitle}
                 title={cardEntity.title}
               />
-              <CardText>
+              <CardText className="display-linebreak">
                 {cardEntity.contents}
               </CardText>
               {hasActions && this.getCardActions(cardEntity)}

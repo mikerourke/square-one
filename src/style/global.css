@@ -12,24 +12,28 @@
 }
 
 * {
-    font-family: "Roboto", Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
 }
 
 body {
-    background-color: var(--grey100);
-    margin: 0;
+  background-color: var(--grey100);
+  margin: 0;
 }
 
 /* Hide the "Powered by Google" under places autocomplete */
 .pac-container:after {
-    background-image: none !important;
-    content: none !important;
-    display: none !important;
-    font-size: 10px;
-    height: 0;
+  background-image: none !important;
+  content: none !important;
+  display: none !important;
+  font-size: 10px;
+  height: 0;
 }
 
 .square-one-toolbar {
-    box-shadow: rgba(0, 0, 0, 0.117647) 0 1px 6px,
-                rgba(0, 0, 0, 0.117647) 0 1px 4px;
+  box-shadow: rgba(0, 0, 0, 0.117647) 0 1px 6px,
+              rgba(0, 0, 0, 0.117647) 0 1px 4px;
+}
+
+.display-linebreak {
+  white-space: pre-line;
 }

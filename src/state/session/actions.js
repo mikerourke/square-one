@@ -85,7 +85,7 @@ export const logout = (username: string) =>
     });
   };
 
-// TODO: Setup get forgotten password functionality.
+// FUTURE: Setup get forgotten password functionality.
 export const getForgotPasswordToken = (username: string) =>
   (dispatch: Function) => {
     dispatch({ type: SESSION_FORGOT_PWD });
@@ -108,7 +108,7 @@ export const getForgotPasswordToken = (username: string) =>
     });
   };
 
-// TODO: Setup password reset functionality.
+// FUTURE: Setup password reset functionality.
 export const resetPassword = (
   token: string,
   password: string,

@@ -14,5 +14,4 @@ export default class Change extends Record({
   updatedBy: (new Map(): Map<string, any>),
   updatedAt: (null: ?Date),
   typeName: ('change': string),
-}) {
-}
+}) {}

@@ -13,38 +13,15 @@ import {
   LEAD_GET_ALL_SUCCESS, LEAD_GET_ALL_FAIL,
 } from '../../action-types';
 import Change from './model';
+import { mergeEntitiesIntoState } from '../state';
 
 /* Types */
-import type { Action } from 'lib/types';
-
-type ByIdMap = Map<number, Change>;
-type ErrorMap = Map<string, any>;
-type State = Map<string, ByIdMap, ErrorMap>;
+import type { Action, EntityState } from 'lib/types';
 
 const initialState = OrderedMap();
 
-/**
- * Returns the new state with updated entity data and any error details.
- * @param {State} state Existing Redux state.
- * @param {Object} data Data from the API return call.
- * @returns {State} Updated state with new data.
- */
-const mergeEntities = (state: State, data: Object): State => {
-  const { entities: { changes } } = (data: Object);
-  let byIdOrderedMap = OrderedMap();
-  if (changes) {
-    const changeEntries = Object.entries(changes);
-    byIdOrderedMap = OrderedMap([...changeEntries.map(
-      ([key, value]) => ([+key, new Change(fromJS(value))]))]);
-  }
-  return state.merge({
-    byId: byIdOrderedMap,
-    error: new Map(),
-  });
-};
-
 export default function reducer(
-  state: State = initialState,
+  state: EntityState = initialState,
   action: Action,
 ) {
   switch (action.type) {
@@ -54,13 +31,9 @@ export default function reducer(
       return state.set('error', fromJS(response));
 
     case LEAD_GET_ALL_SUCCESS:
-      const { payload: { data: responseData } } = (action: Object);
-      return mergeEntities(state, responseData);
-
-    // TODO: Finish this for getting changes.
     case CHANGES_GET_FOR_PARENT_SUCCESS:
-      const { payload: { data: changesInParent } } = (action: Object);
-      return state;
+      const { payload: { data: responseData } } = (action: Object);
+      return mergeEntitiesIntoState(state, responseData, 'Change');
 
     default:
       return state;

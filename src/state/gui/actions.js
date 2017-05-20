@@ -16,10 +16,12 @@ export const toggleAppSidebar = (): Action => ({
 export const togglePromptDialog = (
   title?: string = '',
   message?: string = '',
+  actionType?: string = '',
 ): Action => ({
   type: GUI_TOGGLE_PROMPT_DIALOG,
   payload: {
     title,
     message,
+    actionType,
   },
 });

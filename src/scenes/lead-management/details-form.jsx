@@ -1,7 +1,5 @@
 /* @flow */
 
-// TODO: Add functionality to prompt user if there are invalid or missing values prior to saving.
-
 /* External dependencies */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -181,6 +179,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
   };
 
   render(): React.Element<*> {
+    // FUTURE: Add insurance company dropdown.
     const {
       handleDeleteTouchTap,
       handleSaveTouchTap,
@@ -224,6 +223,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               value={lead.contactName}
             />
             <SelectField
+              errorText={lead.source === '' ? 'Required' : ''}
               floatingLabelText="Source"
               fullWidth={true}
               name="source"
@@ -263,7 +263,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                 floatingLabelText="Alt. Phone (Optional)"
                 format="phone"
                 isRequired={false}
-                name="phone"
+                name="altPhone"
                 onInputChange={this.handleInputChange}
                 style={phoneInputStyle}
                 value={lead.altPhone}

@@ -1,16 +1,13 @@
 /* @flow */
 
 /* External dependencies */
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 /* Internal dependencies */
-import {
-  createLead,
-  deleteLead,
-  updateLead,
-} from 'state/entities/leads/actions';
+import { togglePromptDialog } from 'state/gui/actions';
+import { deleteLead, updateLead } from 'state/entities/leads/actions';
 import { selectAllLeads } from 'state/entities/leads/selectors';
 import { Lead } from 'state/entities/models';
 import ChangesTimeline from '../../containers/changes-timeline';
@@ -25,11 +22,19 @@ import TabsPage from 'components/tabs-page';
 /* Types */
 import type { Map } from 'immutable';
 
-type Props = {
-  lead: Lead,
-  createLead: (lead: Lead) => Promise<*>,
+type DefaultProps = {
   deleteLead: (id: number) => Promise<*>,
   updateLead: (lead: Lead) => Promise<*>,
+  togglePromptDialog: (title: string, message: string,
+    actionType: string) => void;
+}
+
+type Props = {
+  lead: Lead,
+  deleteLead: (id: number) => Promise<*>,
+  updateLead: (lead: Lead) => Promise<*>,
+  togglePromptDialog: (title: string, message: string,
+    actionType: string) => void;
 };
 
 type State = {
@@ -57,9 +62,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
-  createLead: lead => dispatch(createLead(lead)),
   deleteLead: id => dispatch(deleteLead(id)),
   updateLead: lead => dispatch(updateLead(lead)),
+  togglePromptDialog: (title, message, actionType) =>
+    dispatch(togglePromptDialog(title, message, actionType)),
 });
 
 /**
@@ -67,9 +73,15 @@ const mapDispatchToProps = dispatch => ({
  * @export
  * @class LeadManagementPage
  */
-export class LeadManagementPage extends React.Component<*, Props, State> {
+export class LeadManagementPage extends Component<DefaultProps, Props, State> {
   props: Props;
   state: State;
+
+  static defaultProps = {
+    deleteLead: () => Promise.resolve(),
+    updateLead: () => Promise.resolve(),
+    togglePromptDialog: () => {},
+  };
 
   constructor(props: Props): void {
     super(props);
@@ -140,8 +152,7 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
     const { confirmedAction } = this.state;
 
     if (confirmedAction === 'DELETE-LEAD') {
-      const deleteLeadFn = this.props.deleteLead;
-      deleteLeadFn(lead.id).then(() => {
+      this.props.deleteLead(lead.id).then(() => {
         this.closeConfirmationAndRedirectToLeads();
       });
     } else {
@@ -173,6 +184,25 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
   };
 
   /**
+   * If any errors were found on the fields, prompt the user with the global
+   *    Prompt Dialog informing them of the errors.
+   * @param {Map} fieldErrors Any errors associated with form fields.
+   * @returns {boolean}
+   */
+  togglePromptForErrors = (fieldErrors: Map<string, string>): boolean => {
+    let errorCount = 0;
+    fieldErrors.forEach((errorText) => {
+      errorCount = errorText !== '' ? errorCount += 1 : errorCount;
+    });
+    if (errorCount > 0) {
+      this.props.togglePromptDialog('Errors Found',
+        'Please fix any invalid inputs and ensure all required fields are populated.',
+        'error');
+    }
+    return (errorCount > 0);
+  };
+
+  /**
    * Updates the Lead entity opens the Messages dialog when the Save button
    *    on the details form is pressed.
    * @param {Lead} lead Lead being edited on the page.
@@ -182,18 +212,19 @@ export class LeadManagementPage extends React.Component<*, Props, State> {
     lead: Lead,
     fieldErrors: Map<string, string>,
   ): void => {
-    fieldErrors.forEach((errorText, fieldName) => console.log(errorText));
-    //const updateLeadFn = this.props.updateLead;
-    //updateLeadFn(lead).then(() => {
-    //  this.setState({ isMessagesDialogOpen: true });
-    //});
+    if (!this.togglePromptForErrors(fieldErrors)) {
+      const updateLeadFn = this.props.updateLead;
+      updateLeadFn(lead).then(() => {
+        this.setState({ isMessagesDialogOpen: true });
+      });
+    }
   };
 
   /**
    * Hides the Message creation dialog box regardless of the action that was
    *    performed.
    */
-  handleMessageDialogTouchTap = () => {
+  handleMessageDialogTouchTap = (): void => {
     this.setState({ isMessagesDialogOpen: false });
   };
 

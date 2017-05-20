@@ -29,7 +29,7 @@ type Props = {
   lead: Lead,
   open: boolean,
   redirectToLeads: boolean,
-  sendMessages?: (lead: Lead, messages: Array<Message>) => Promise<*>,
+  sendMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
   textTemplates?: Array<string>,
 };
 
@@ -94,6 +94,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
    * @returns {Array} Array of messages to send.
    */
   getMessagesToSend = (): Array<Message> => {
+    const { lead } = this.props;
     const {
       messageToLead,
       messageToRepresentative,
@@ -109,11 +110,12 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
       messagesToSend.push(new Message({
         body: messageToLead,
         messageType: 'text',
-        recipient: process.env.MY_PHONE_NUMBER,
+        recipient: lead.phone,
         subject: 'Message to Lead',
       }));
     }
 
+    // TODO: Add phone number for representative.
     if (sendRepresentativeMessage) {
       messagesToSend.push(new Message({
         body: messageToRepresentative,
@@ -122,7 +124,6 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
         subject: 'Message to Representative',
       }));
     }
-
     return messagesToSend;
   };
 
@@ -150,15 +151,11 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
   sendMessagesIfRequired = (): Promise<*> =>
     new Promise((resolve, reject) => {
       const { lead } = this.props;
-      let sendMessagesFn = () => Promise.resolve();
-      if (this.props.sendMessages) {
-        sendMessagesFn = this.props.sendMessages;
-      }
       const messagesToSend = this.getMessagesToSend();
       if (messagesToSend.length === 0) {
         resolve();
       } else {
-        sendMessagesFn(lead, messagesToSend)
+        this.props.sendMessages(lead, messagesToSend)
           .then(() => resolve())
           .catch(error => reject(error));
       }
@@ -305,6 +302,61 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     const MessageBlock = glamorous.div({ margin: '24px 0' });
 
+    // FUTURE: Enable this for messaging once initial release is successful.
+    const leadMessageBlock = (
+      <MessageBlock>
+        <Toggle
+          label="Send message to lead"
+          name="sendLeadMessage"
+          onToggle={this.handleInputChange}
+          style={{ width: 300 }}
+          toggled={sendLeadMessage}
+        />
+        <glamorous.Div
+          alignItems="flex-end"
+          display="flex"
+        >
+          <IconDropdown
+            disabled={!sendLeadMessage}
+            handleItemTouchTap={this.handlePredefinedMessageChange}
+            hasAddButton={false}
+            menuIconName="message"
+            selections={textTemplates}
+          />
+          <TextField
+            disabled={!sendLeadMessage}
+            floatingLabelText="Message to Lead"
+            fullWidth={true}
+            multiLine={true}
+            name="messageToLead"
+            onChange={this.handleInputChange}
+            value={messageToLead}
+          />
+        </glamorous.Div>
+      </MessageBlock>
+    );
+
+    const representativeMessageBlock = (
+      <MessageBlock>
+        <Toggle
+          label="Send message to representative"
+          name="sendRepresentativeMessage"
+          onToggle={this.handleInputChange}
+          style={{ width: 300 }}
+          toggled={sendRepresentativeMessage}
+        />
+        <TextField
+          disabled={!sendRepresentativeMessage}
+          floatingLabelText="Message to Representative"
+          fullWidth={true}
+          multiLine={true}
+          name="messageToRepresentative"
+          onChange={this.handleInputChange}
+          value={messageToRepresentative}
+        />
+      </MessageBlock>
+    );
+
     return (
       <div>
         <Dialog
@@ -322,54 +374,8 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
           open={open}
           title="Messages"
         >
-          <MessageBlock>
-            <Toggle
-              label="Send message to lead"
-              name="sendLeadMessage"
-              onToggle={this.handleInputChange}
-              style={{ width: 300 }}
-              toggled={sendLeadMessage}
-            />
-            <glamorous.Div
-              alignItems="flex-end"
-              display="flex"
-            >
-              <IconDropdown
-                disabled={!sendLeadMessage}
-                handleItemTouchTap={this.handlePredefinedMessageChange}
-                hasAddButton={false}
-                menuIconName="message"
-                selections={textTemplates}
-              />
-              <TextField
-                disabled={!sendLeadMessage}
-                floatingLabelText="Message to Lead"
-                fullWidth={true}
-                multiLine={true}
-                name="messageToLead"
-                onChange={this.handleInputChange}
-                value={messageToLead}
-              />
-            </glamorous.Div>
-          </MessageBlock>
-          <MessageBlock>
-            <Toggle
-              label="Send message to representative"
-              name="sendRepresentativeMessage"
-              onToggle={this.handleInputChange}
-              style={{ width: 300 }}
-              toggled={sendRepresentativeMessage}
-            />
-            <TextField
-              disabled={!sendRepresentativeMessage}
-              floatingLabelText="Message to Representative"
-              fullWidth={true}
-              multiLine={true}
-              name="messageToRepresentative"
-              onChange={this.handleInputChange}
-              value={messageToRepresentative}
-            />
-          </MessageBlock>
+          {/* leadMessageBlock */}
+          {representativeMessageBlock}
         </Dialog>
         <ConfirmationDialog
           handleNoTouchTap={this.handleConfirmationNoTouchTap}

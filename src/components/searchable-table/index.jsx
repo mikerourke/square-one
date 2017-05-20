@@ -103,7 +103,7 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
     event: Event,
     child: Object,
   ): void => {
-    // TODO: Write code to handle filter menu.
+    // FUTURE: Write code to handle filter menu.
   };
 
   /**

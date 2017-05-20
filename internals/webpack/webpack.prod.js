@@ -7,15 +7,10 @@ const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
 /* Internal dependencies */
 const baseConfig = require('./webpack.base.js');
-
-const extractBundles = (bundles) => ({
-  plugins: bundles.map((bundle) => (
-    new webpack.optimize.CommonsChunkPlugin(bundle)
-  )),
-});
 
 module.exports = Object.assign(baseConfig, {
   entry: [
@@ -69,6 +64,11 @@ module.exports = Object.assign(baseConfig, {
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
       minRatio: 0.8,
+    }),
+    new WebpackCleanupPlugin({
+      exclude: [
+        'index.html',
+      ],
     })
   ].concat(baseConfig.plugins),
 });

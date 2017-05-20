@@ -10,9 +10,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   output: {
-    filename: 'bundle.js',
     path: path.resolve(process.cwd(), 'client'),
     publicPath: '/',
+    filename: '[name].[hash].js'
   },
   module: {
     rules: [{
@@ -47,9 +47,12 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      children: true,
-      minChunks: 2,
-      async: true,
+      minChunks: (module) => module.context &&
+                             module.context.indexOf('node_modules') !== -1
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "manifest",
+      minChunks: Infinity
     }),
   ],
   resolve: {

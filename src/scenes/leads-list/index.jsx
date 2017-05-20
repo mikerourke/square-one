@@ -102,6 +102,7 @@ export class LeadsList extends Component<*, Props, State> {
       order: 'desc',
     };
 
+    // FUTURE: Fix column formatting for small devices.
     return (
       <div>
         <PageHeader

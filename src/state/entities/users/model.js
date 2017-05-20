@@ -9,5 +9,4 @@ export default class User extends Record({
   fullName: ('': string),
   title: ('': string),
   role: ('': string),
-}) {
-}
+}) {}

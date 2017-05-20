@@ -59,13 +59,17 @@ class FormTextField extends Component<DefaultProps, Props, State> {
 
   constructor(props: Props): void {
     super(props);
-    const { value } = this.props;
+    const { isRequired, value } = this.props;
+    let errorText = '';
     let inputValue = '';
     if (value) {
       inputValue = value;
     }
+    if (value === '' && isRequired) {
+      errorText = 'Required';
+    }
     this.state = {
-      errorText: '',
+      errorText,
       value: inputValue,
     };
   }

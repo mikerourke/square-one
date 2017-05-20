@@ -27,8 +27,8 @@ type TabPage = {
  * @returns {Object} Styles to apply to Paper component.
  */
 const getPaperStyle = (
-  styleFromProps: Object = {},
-  styleFromTabPage: Object = {},
+  styleFromProps?: ?Object = {},
+  styleFromTabPage?: ?Object = {},
   ): Object => ({
     margin: '24px 0',
     padding: 24,

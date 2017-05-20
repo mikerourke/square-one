@@ -51,6 +51,7 @@ export default class Lead extends Record({
       source: lead.source,
       leadFee: +lead.leadFee,
       phone: lead.phone,
+      altPhone: lead.altPhone,
       email: lead.email,
       address: lead.address,
       lat: +lead.lat,

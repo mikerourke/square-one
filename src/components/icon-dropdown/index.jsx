@@ -1,7 +1,5 @@
 /* @flow */
 
-// TODO: Finish tweaking the icon dropdown menu to accommodate for add/edit items.
-
 /* External dependencies */
 import React from 'react';
 import Divider from 'material-ui/Divider';
@@ -39,7 +37,7 @@ const getMenuIconStyle = (disabled?: ?boolean): Object => {
  * @param {Function} [handleAddTouchTap] Action to perform when the Add
  *    button is pressed at the bottom of the list (if present).
  * @param {boolean} [disabled=false] Indicates if the menu button is disabled.
- * @param {string} [subheaderText=null] Optional text for subheader.
+ * @param {string} [subheaderText] Optional text for subheader.
  * @param {Object} props Other props associated with the menu.
  */
 const IconDropdown = ({
@@ -49,7 +47,7 @@ const IconDropdown = ({
   selections,
   handleAddTouchTap = () => {},
   disabled = false,
-  subheaderText = null,
+  subheaderText,
   ...props
 }: {
   handleItemTouchTap: (event: Event, child: Object) => void,

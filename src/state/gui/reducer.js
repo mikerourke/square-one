@@ -22,6 +22,7 @@ const initialState = fromJS({
     open: false,
     title: '',
     message: '',
+    actionType: '',
   },
 });
 
@@ -35,12 +36,13 @@ export default function reducer(
       return state.setIn(['layout', 'sidebarOpen'], !sidebarStatus);
 
     case GUI_TOGGLE_PROMPT_DIALOG:
-      const { payload: { title, message } } = (action: Object);
+      const { payload: { title, message, actionType } } = (action: Object);
       const isOpen = state.getIn(['promptDialog', 'open']);
       return state.set('promptDialog', fromJS({
         open: !isOpen,
         title,
         message,
+        actionType,
       }));
 
     default:

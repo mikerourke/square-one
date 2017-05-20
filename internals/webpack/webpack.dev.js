@@ -21,10 +21,6 @@ module.exports = Object.assign(baseConfig, {
     'webpack/hot/dev-server',
     path.join(process.cwd(), 'src/index.js'),
   ],
-  output: Object.assign({}, baseConfig.output, {
-    filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
-  }),
   plugins: baseConfig.plugins.concat([
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({

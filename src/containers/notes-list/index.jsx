@@ -7,6 +7,7 @@ import { List } from 'immutable';
 
 /* Internal dependencies */
 import { getDisplayDate } from 'lib/display-formats';
+import { togglePromptDialog } from 'state/gui/actions';
 import {
   createNote,
   deleteNote,
@@ -22,19 +23,18 @@ import EditNoteDialog from './edit-dialog';
 import type { CardEntity } from 'components/card-list';
 
 type DefaultProps = {
-  createNote: (lead: Lead, note: Note) => Promise<*>,
-  deleteNote: (lead: Lead, id: number) => Promise<*>,
-  updateNote: (lead: Lead, note: Note) => Promise<*>,
   notes: List<Note>,
 };
 
 type Props = {
-  createNote?: (lead: Lead, note: Note) => Promise<*>,
-  deleteNote?: (lead: Lead, id: number) => Promise<*>,
-  updateNote?: (lead: Lead, note: Note) => Promise<*>,
+  createNote: (lead: Lead, note: Note) => Promise<*>,
+  deleteNote: (lead: Lead, id: number) => Promise<*>,
+  updateNote: (lead: Lead, note: Note) => Promise<*>,
+  togglePromptDialog: (title: string, message: string,
+    actionType: string) => void;
   showAddButton: boolean,
   lead: Lead,
-  notes?: List<Note>,
+  notes: List<Note>,
 };
 
 type State = {
@@ -54,6 +54,8 @@ const mapDispatchToProps = dispatch => ({
   createNote: (lead, note) => dispatch(createNote(lead, note)),
   deleteNote: (lead, id) => dispatch(deleteNote(lead, id)),
   updateNote: (lead, note) => dispatch(updateNote(lead, note)),
+  togglePromptDialog: (title, message, actionType) =>
+    dispatch(togglePromptDialog(title, message, actionType)),
 });
 
 /**
@@ -67,9 +69,6 @@ export class NotesList extends Component<DefaultProps, Props, State> {
   state: State;
 
   static defaultProps = {
-    createNote: () => Promise.resolve(),
-    deleteNote: () => Promise.resolve(),
-    updateNote: () => Promise.resolve(),
     notes: new List(),
   };
 
@@ -156,11 +155,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
   handleConfirmationYesTouchTap = (): void => {
     const { note } = this.state;
     const { lead } = this.props;
-    let deleteNoteFn = () => Promise.resolve();
-    if (this.props.deleteNote) {
-      deleteNoteFn = this.props.deleteNote;
-    }
-    deleteNoteFn(lead, note.id).then(() => {
+    this.props.deleteNote(lead, note.id).then(() => {
       this.setState({
         note: new Note(),
         isConfirmationDialogOpen: false,
@@ -183,17 +178,14 @@ export class NotesList extends Component<DefaultProps, Props, State> {
   handleEditDialogSaveTouchTap = (): void => {
     const { note } = this.state;
     const { lead } = this.props;
-    let createNoteFn = () => Promise.resolve();
-    if (this.props.createNote) {
-      createNoteFn = this.props.createNote;
+    if (note.contents === '') {
+      this.props.togglePromptDialog('Error',
+        'The Contents field cannot be blank.', 'error');
+      return;
     }
-    let updateNoteFn = () => Promise.resolve();
-    if (this.props.updateNote) {
-      updateNoteFn = this.props.updateNote;
-    }
-    let performActionFn = createNoteFn;
+    let performActionFn = this.props.createNote;
     if (note.id !== 0) {
-      performActionFn = updateNoteFn;
+      performActionFn = this.props.updateNote;
     }
     performActionFn(lead, note).then(() => {
       this.setState({
@@ -209,9 +201,9 @@ export class NotesList extends Component<DefaultProps, Props, State> {
    * @param {Event} event Event associated with the input.
    * @param {string} newValue Value of the input.
    */
-  handleInputChange = (
+  handleEditDialogContentsChange = (
     event: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement },
-    newValue: string = '',
+    newValue: string | number,
   ): void => {
     const { note } = this.state;
     const fieldName = event.currentTarget.name;
@@ -266,7 +258,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
         <EditNoteDialog
           handleSaveTouchTap={this.handleEditDialogSaveTouchTap}
           handleCancelTouchTap={this.handleEditDialogCancelTouchTap}
-          handleInputChange={this.handleInputChange}
+          handleContentsChange={this.handleEditDialogContentsChange}
           title={editDialogTitle}
           contents={note.contents}
           open={isEditDialogOpen}

@@ -22,13 +22,6 @@ import TabsPage from 'components/tabs-page';
 /* Types */
 import type { Map } from 'immutable';
 
-type DefaultProps = {
-  deleteLead: (id: number) => Promise<*>,
-  updateLead: (lead: Lead) => Promise<*>,
-  togglePromptDialog: (title: string, message: string,
-    actionType: string) => void;
-}
-
 type Props = {
   lead: Lead,
   deleteLead: (id: number) => Promise<*>,
@@ -73,15 +66,9 @@ const mapDispatchToProps = dispatch => ({
  * @export
  * @class LeadManagementPage
  */
-export class LeadManagementPage extends Component<DefaultProps, Props, State> {
+export class LeadManagementPage extends Component<*, Props, State> {
   props: Props;
   state: State;
-
-  static defaultProps = {
-    deleteLead: () => Promise.resolve(),
-    updateLead: () => Promise.resolve(),
-    togglePromptDialog: () => {},
-  };
 
   constructor(props: Props): void {
     super(props);
@@ -213,8 +200,7 @@ export class LeadManagementPage extends Component<DefaultProps, Props, State> {
     fieldErrors: Map<string, string>,
   ): void => {
     if (!this.togglePromptForErrors(fieldErrors)) {
-      const updateLeadFn = this.props.updateLead;
-      updateLeadFn(lead).then(() => {
+      this.props.updateLead(lead).then(() => {
         this.setState({ isMessagesDialogOpen: true });
       });
     }

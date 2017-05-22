@@ -12,44 +12,49 @@ import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
 import { getDedentedString } from 'lib/display-formats';
+import { togglePromptDialog } from 'state/gui/actions';
 import { selectListSettings } from 'state/settings/selectors';
+import { selectAssignToUserForLead } from 'state/entities/users/selectors';
 import { sendMessages } from 'state/entities/messages/actions';
-import { Lead, Message } from 'state/entities/models';
+import { Lead, Message, User } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
 import IconDropdown from 'components/icon-dropdown';
 
 /* Types */
 type DefaultProps = {
-  sendMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
+  assignToUser: User,
   textTemplates: Array<string>,
 };
 
 type Props = {
   handleTouchTap: () => void,
-  lead: Lead,
   open: boolean,
   redirectToLeads: boolean,
+  assignToUser: User,
+  lead: Lead,
   sendMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
   textTemplates?: Array<string>,
 };
 
 type State = {
   isConfirmationDialogOpen: boolean,
-  messageToLead: string,
-  messageToRepresentative: string,
   sendLeadMessage: boolean,
+  leadMessageContents: string,
   sendRepresentativeMessage: boolean,
+  representativeMessageContents: string,
 };
 
 const mapStateToProps = (state, ownProps) => ({
+  assignToUser: selectAssignToUserForLead(state, ownProps),
   lead: ownProps.lead,
   textTemplates: selectListSettings(state).textTemplates,
 });
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
-  sendMessages: (lead, messages) => dispatch(
-    sendMessages(lead, messages)),
+  sendMessages: (lead, messages) => dispatch(sendMessages(lead, messages)),
+  togglePromptDialog: (title, message, actionType) =>
+    dispatch(togglePromptDialog(title, message, actionType)),
 });
 
 /**
@@ -66,7 +71,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
   state: State;
 
   static defaultProps = {
-    sendMessages: () => Promise.resolve(),
+    assignToUser: new User(),
     textTemplates: [],
   };
 
@@ -74,10 +79,10 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
     super();
     this.state = {
       isConfirmationDialogOpen: false,
-      messageToLead: '',
-      messageToRepresentative: '',
       sendLeadMessage: false,
+      leadMessageContents: '',
       sendRepresentativeMessage: false,
+      representativeMessageContents: '',
     };
   }
 
@@ -94,33 +99,30 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
    * @returns {Array} Array of messages to send.
    */
   getMessagesToSend = (): Array<Message> => {
-    const { lead } = this.props;
+    const { lead, assignToUser } = this.props;
     const {
-      messageToLead,
-      messageToRepresentative,
       sendLeadMessage,
+      leadMessageContents,
       sendRepresentativeMessage,
+      representativeMessageContents,
     } = this.state;
 
     const messagesToSend = [];
 
-    // TODO: Update recipient for messages.
-
     if (sendLeadMessage) {
       messagesToSend.push(new Message({
-        body: messageToLead,
+        body: leadMessageContents,
         messageType: 'text',
         recipient: lead.phone,
         subject: 'Message to Lead',
       }));
     }
 
-    // TODO: Add phone number for representative.
     if (sendRepresentativeMessage) {
       messagesToSend.push(new Message({
-        body: messageToRepresentative,
+        body: representativeMessageContents,
         messageType: 'text',
-        recipient: process.env.MY_PHONE_NUMBER,
+        recipient: assignToUser.phone,
         subject: 'Message to Representative',
       }));
     }
@@ -135,10 +137,10 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
   closeConfirmationDialogAndResetInputs = (): void => {
     this.setState({
       isConfirmationDialogOpen: false,
-      messageToLead: '',
-      messageToRepresentative: '',
       sendLeadMessage: false,
+      leadMessageContents: '',
       sendRepresentativeMessage: false,
+      representativeMessageContents: '',
     });
   };
 
@@ -210,19 +212,26 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
    */
   handleToggleForRepresentativeMessage = (): void => {
     const { lead } = this.props;
+    const { representativeMessageContents } = this.state;
+    const altPhone = lead.altPhone === '' ? 'N/A' : lead.altPhone;
     const messageTemplate =
       `You were assigned a lead!%~%
             Customer: ${lead.leadName}
             Description: ${lead.description}
-            Source: ${lead.source}`;
+            Source: ${lead.source}
+            Phone: ${lead.phone}
+            Alt. Phone: ${altPhone}
+            Email: ${lead.email}
+            Address: ${lead.address}`;
 
-    // Multi-line template string includes tab characters, this
-    // removes them.
-    const dedentedMessage = getDedentedString(messageTemplate);
-    const messageToRepresentative = dedentedMessage.replace(/%~%/g, '\n');
+    let updatedMessage = representativeMessageContents;
+    if (updatedMessage === '') {
+      // Multi-line template string includes tab characters, this removes them.
+      updatedMessage = getDedentedString(messageTemplate).replace(/%~%/g, '\n');
+    }
     this.setState({
       sendRepresentativeMessage: true,
-      messageToRepresentative,
+      representativeMessageContents: updatedMessage,
     });
   };
 
@@ -253,7 +262,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
     event: Event,
     child: Object,
   ): void => {
-    this.setState({ messageToLead: child.key });
+    this.setState({ leadMessageContents: child.key });
   };
 
   /**
@@ -277,10 +286,10 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
 
     const {
       isConfirmationDialogOpen,
-      messageToLead,
-      messageToRepresentative,
       sendLeadMessage,
+      leadMessageContents,
       sendRepresentativeMessage,
+      representativeMessageContents,
     } = this.state;
 
     const textTemplates = this.getPopulatedTextTemplates();
@@ -300,11 +309,11 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
       />,
     ];
 
-    const MessageBlock = glamorous.div({ margin: '24px 0' });
+    const messageBlockMargin = '24px 0';
 
     // FUTURE: Enable this for messaging once initial release is successful.
     const leadMessageBlock = (
-      <MessageBlock>
+      <glamorous.Div margin={messageBlockMargin}>
         <Toggle
           label="Send message to lead"
           name="sendLeadMessage"
@@ -328,16 +337,16 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
             floatingLabelText="Message to Lead"
             fullWidth={true}
             multiLine={true}
-            name="messageToLead"
+            name="leadMessageContents"
             onChange={this.handleInputChange}
-            value={messageToLead}
+            value={leadMessageContents}
           />
         </glamorous.Div>
-      </MessageBlock>
+      </glamorous.Div>
     );
 
     const representativeMessageBlock = (
-      <MessageBlock>
+      <glamorous.Div margin={messageBlockMargin}>
         <Toggle
           label="Send message to representative"
           name="sendRepresentativeMessage"
@@ -350,11 +359,11 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
           floatingLabelText="Message to Representative"
           fullWidth={true}
           multiLine={true}
-          name="messageToRepresentative"
+          name="representativeMessageContents"
           onChange={this.handleInputChange}
-          value={messageToRepresentative}
+          value={representativeMessageContents}
         />
-      </MessageBlock>
+      </glamorous.Div>
     );
 
     return (

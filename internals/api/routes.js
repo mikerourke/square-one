@@ -27,7 +27,9 @@ module.exports = (router, server) => {
       parentIds.push(parent.id);
       if (childName) {
         const childEntities = parent[`${childName}s`];
-        childEntities.forEach(child => childIds.push(child.id));
+        if (childEntities) {
+          childEntities.forEach(child => childIds.push(child.id));
+        }
       }
     });
 

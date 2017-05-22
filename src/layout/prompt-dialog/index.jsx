@@ -68,6 +68,7 @@ const PromptDialog = ({
       maxWidth: 400,
       width: '50%',
     }}
+    style={{ zIndex: 1550 }}
     titleStyle={getTitleStyleByActionType(promptDialog.get('actionType'))}
   >
     {promptDialog.get('message')}

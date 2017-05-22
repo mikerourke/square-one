@@ -198,20 +198,25 @@ class SearchableTable extends Component<DefaultProps, Props, State> {
     const endOfData = (startOfData + rowSize);
     const paginatedData = data.slice(startOfData, endOfData);
 
+    // FUTURE: Reactivate this after filtering added.
+    const filterDropdown = (
+      <IconDropdown
+        handleItemTouchTap={this.handleFilterMenuChange}
+        hasAddButton={true}
+        menuIconName="filter_list"
+        selections={filterSelections}
+        subheaderText="Existing Filters"
+        menuStyle={{ width: 128 }}
+      />
+    );
+
     return (
       <div>
         <SearchToolbar
           handleSearchBoxChange={this.handleSearchBoxChange}
           isStandalone={true}
         >
-          <IconDropdown
-            handleItemTouchTap={this.handleFilterMenuChange}
-            hasAddButton={true}
-            menuIconName="filter_list"
-            selections={filterSelections}
-            subheaderText="Existing Filters"
-            menuStyle={{ width: 128 }}
-          />
+          {/* {filterDropdown} */}
         </SearchToolbar>
         <Paper
           style={{

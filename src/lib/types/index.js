@@ -35,6 +35,6 @@ export type Dispatch = (action: Action | ThunkAction | PromiseAction) => any;
 export type PromiseAction = Promise<Action>;
 export type ThunkAction = (dispatch: Dispatch, getState: GetState) => any;
 
-type ByIdMap = Map<number, Record<*>>;
-type ErrorMap = Map<string, any>;
-export type EntityState = Map<string, ByIdMap, ErrorMap>;
+type ByIdMap = Map<number | string, Record<*>>;
+type ErrorMap = Map<number | string, any>;
+export type EntityState = Map<string, ByIdMap & ErrorMap>;

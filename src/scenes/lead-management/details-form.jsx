@@ -11,7 +11,7 @@ import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 
 /* Internal dependencies */
-import { togglePromptDialog } from 'state/gui/actions';
+import { errorMessages } from 'lib/form-validation';
 import { selectListSettings } from 'state/settings/selectors';
 import { Lead } from 'state/entities/models';
 import FormColumn from 'components/forms/form-column';
@@ -24,14 +24,12 @@ import type { MapLocation } from 'lib/types';
 
 type DefaultProps = {
   listSettings: Object,
-  showPromptDialog: (title: string, message: string) => void;
 };
 
 type Props = {
   handleDeleteTouchTap: () => void,
   handleFieldChange: (lead: Lead) => void,
   handleSaveTouchTap: (lead: Lead) => void,
-  showPromptDialog?: (title: string, message: string) => void;
   lead: Lead,
   listSettings: Object,
 };
@@ -43,12 +41,6 @@ type State = {
 
 const mapStateToProps = state => ({
   listSettings: selectListSettings(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  dispatch,
-  showPromptDialog: (title, message) =>
-    dispatch(togglePromptDialog(title, message)),
 });
 
 /**
@@ -67,7 +59,6 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
       representatives: [],
       sources: [],
     },
-    showPromptDialog: () => {},
   };
 
   constructor(props: Props): void {
@@ -92,15 +83,24 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
    * @param {string} fieldName Name of the field to update.
    * @param {string|number} newValue Value of the field.
    * @param {string} [errorText=''] Error text associated with the input.
+   * @param {Lead} [leadForState] Lead to update in state.  This is optionally
+   *    specified due to the Location input having three aspects (latitude,
+   *    longitude, and address).
    */
   updateLeadInState = (
     fieldName: string,
     newValue: string | number,
     errorText?: string = '',
+    leadForState?: ?Lead,
   ): void => {
     const { handleFieldChange } = this.props;
     const { lead, fieldErrors } = this.state;
-    const updatedLead = lead.set(fieldName, newValue);
+    let updatedLead = new Lead();
+    if (leadForState) {
+      updatedLead = leadForState;
+    } else {
+      updatedLead = lead.set(fieldName, newValue);
+    }
     const updatedFieldErrors = fieldErrors.set(fieldName, errorText);
     this.setState({
       lead: updatedLead,
@@ -117,7 +117,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
    * @param {string} [errorText=''] Error text associated with the input.
    */
   handleInputChange = (
-    event: Event & { currentTarget: HTMLInputElement },
+    event: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement },
     newValue: string | number,
     errorText?: string = '',
   ): void => {
@@ -131,12 +131,19 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
    * @param {string} fieldName Name of the field associated with the select
    *    field.
    * @param {string} newValue Value of the selected item.
+   * @param {boolean} [isRequired=false] Indicates if the field requires a
+   *    value.
    */
   handleSelectionChange = (
     fieldName: string,
     newValue: string,
+    isRequired?: boolean = false,
   ): void => {
-    this.updateLeadInState(fieldName, newValue);
+    let errorText = '';
+    if (isRequired && newValue === '') {
+      errorText = errorMessages.isRequired;
+    }
+    this.updateLeadInState(fieldName, newValue, errorText);
   };
 
   /**
@@ -148,8 +155,12 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
   handleLocationChange = (newLocation: MapLocation): void => {
     const { lead } = this.state;
     const { address, lat, lng } = newLocation;
+    let errorText = '';
+    if (address === '') {
+      errorText = errorMessages.isRequired;
+    }
     const updatedLead = lead.merge({ address, lat, lng });
-    this.setState({ lead: updatedLead });
+    this.updateLeadInState('address', '', errorText, updatedLead);
   };
 
   /**
@@ -194,10 +205,11 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
           <FormColumn>
             <SelectField
               disabled={(lead.id === 0)}
+              errorText={lead.status === '' ? errorMessages.isRequired : ''}
               floatingLabelText="Status"
               fullWidth={true}
               onChange={(event, key, value) => {
-                this.handleSelectionChange('status', value);
+                this.handleSelectionChange('status', value, true);
               }}
               value={lead.status}
             >
@@ -210,7 +222,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               fullWidth={true}
               isRequired={true}
               name="leadName"
-              onInputChange={this.handleInputChange}
+              onInputUpdate={this.handleInputChange}
               value={lead.leadName}
             />
             <FormTextField
@@ -219,16 +231,16 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               fullWidth={true}
               isRequired={false}
               name="contactName"
-              onInputChange={this.handleInputChange}
+              onInputUpdate={this.handleInputChange}
               value={lead.contactName}
             />
             <SelectField
-              errorText={lead.source === '' ? 'Required' : ''}
+              errorText={lead.source === '' ? errorMessages.isRequired : ''}
               floatingLabelText="Source"
               fullWidth={true}
               name="source"
               onChange={(event, key, value) => {
-                this.handleSelectionChange('source', value);
+                this.handleSelectionChange('source', value, true);
               }}
               value={lead.source}
             >
@@ -240,7 +252,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               fullWidth={true}
               isRequired={false}
               name="leadFee"
-              onInputChange={this.handleInputChange}
+              onInputUpdate={this.handleInputChange}
               value={lead.leadFee === 0 ? '' : lead.leadFee}
             />
             <glamorous.Div
@@ -254,7 +266,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                 format="phone"
                 isRequired={true}
                 name="phone"
-                onInputChange={this.handleInputChange}
+                onInputUpdate={this.handleInputChange}
                 style={phoneInputStyle}
                 value={lead.phone}
               />
@@ -264,7 +276,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
                 format="phone"
                 isRequired={false}
                 name="altPhone"
-                onInputChange={this.handleInputChange}
+                onInputUpdate={this.handleInputChange}
                 style={phoneInputStyle}
                 value={lead.altPhone}
               />
@@ -275,7 +287,7 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
               fullWidth={true}
               isRequired={false}
               name="email"
-              onInputChange={this.handleInputChange}
+              onInputUpdate={this.handleInputChange}
               value={lead.email}
             />
           </FormColumn>
@@ -334,4 +346,4 @@ export class LeadDetailsForm extends Component<DefaultProps, Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeadDetailsForm);
+export default connect(mapStateToProps)(LeadDetailsForm);

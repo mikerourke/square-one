@@ -4,7 +4,9 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
+
+/* Internal dependencies */
+import FormTextField from 'components/forms/form-text-field';
 
 /**
  * Dialog used to edit the contents of the specified note.
@@ -12,7 +14,7 @@ import TextField from 'material-ui/TextField';
  *    is pressed.
  * @param {Function} handleCancelTouchTap Action to perform when the Cancel
  *    button is pressed.
- * @param {Function} handleInputChange Action to perform when contents are
+ * @param {Function} handleContentsChange Action to perform when contents are
  *    changed.
  * @param {string} title Title to display in the dialog.
  * @param {string} contents Contents of the note.
@@ -21,16 +23,16 @@ import TextField from 'material-ui/TextField';
 const EditNoteDialog = ({
   handleSaveTouchTap,
   handleCancelTouchTap,
-  handleInputChange,
+  handleContentsChange,
   title,
   contents,
   open,
 }: {
   handleSaveTouchTap: () => void,
   handleCancelTouchTap: () => void,
-  handleInputChange: (event: Event & {
+  handleContentsChange: (event: Event & {
     currentTarget: HTMLInputElement | HTMLTextAreaElement,
-  }, newValue: string) => void,
+  }, newValue: string | number) => void,
   title: string,
   contents: string,
   open: boolean,
@@ -52,14 +54,16 @@ const EditNoteDialog = ({
     open={open}
     title={title}
   >
-    <TextField
+    <FormTextField
       floatingLabelText="Contents"
       fullWidth={true}
+      isRequired={true}
       multiLine={true}
-      rows={4}
-      rowsMax={4}
       name="contents"
-      onChange={handleInputChange}
+      onInputUpdate={handleContentsChange}
+      rows={4}
+      rowsMax={8}
+      showErrorOnRender={false}
       value={contents}
     />
   </Dialog>

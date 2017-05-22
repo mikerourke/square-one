@@ -6,6 +6,7 @@
       "fullName": "Mike Rourke",
       "title": "Warlock",
       "password": "mike",
+      "phone": "+2345678901",
       "role": "admin"
     },
     {
@@ -14,6 +15,7 @@
       "fullName": "Elisabeth Rourke",
       "title": "Bookeeper",
       "password": "lis",
+      "phone": "+2345678901",
       "role": "office"
     },
     {
@@ -22,6 +24,7 @@
       "fullName": "Joe Legend",
       "title": "President",
       "password": "joe",
+      "phone": "+2345678901",
       "role": "manager"
     },
     {
@@ -30,6 +33,7 @@
       "fullName": "Josh Legend",
       "title": "President",
       "password": "josh",
+      "phone": "+2345678901",
       "role": "manager"
     }
   ],
@@ -73,9 +77,9 @@
       "category": "lists",
       "settingName": "representatives",
       "data": [
-        "Scott",
-        "Chuckles",
-        "Biscuits"
+        "Josh Legend",
+        "Joe Legend",
+        "Mike Rourke"
       ]
     },
     {

@@ -89,8 +89,8 @@ export class LeadsList extends Component<*, Props, State> {
       return (<ProgressIndicator />);
     }
 
-    // TODO: Add filter selection handling and saving.
-    const filterSelections = ['Test 1', 'Test 2'];
+    // FUTURE: Add filter selection handling and saving.
+    const filterSelections = [];
 
     const leadData = leads
       .toList()

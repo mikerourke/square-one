@@ -193,6 +193,18 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
       return (<ProgressIndicator />);
     }
 
+    // FUTURE: Add Forgot Password button.
+    const forgotPasswordButton = (
+      <FlatButton
+        label="Forgot Password?"
+        name="forgot-password"
+        style={{
+          marginTop: 24,
+          width: '100%',
+        }}
+      />
+    );
+
     return (
       <glamorous.Div
         display="flex"
@@ -241,14 +253,7 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
               primary={true}
               style={{ marginTop: 24 }}
             />
-            <FlatButton
-              label="Forgot Password?"
-              name="forgot-password"
-              style={{
-                marginTop: 24,
-                width: '100%',
-              }}
-            />
+            {/* {forgotPasswordButton} */}
           </form>
         </Paper>
       </glamorous.Div>

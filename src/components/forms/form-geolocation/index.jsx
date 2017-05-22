@@ -15,6 +15,9 @@ import glamorous from 'glamorous';
 import GoogleMapsLoader from 'google-maps';
 import TextField from 'material-ui/TextField';
 
+/* Internal dependencies */
+import { errorMessages } from 'lib/form-validation';
+
 /* Types */
 import type { MapLocation } from 'lib/types';
 import type {
@@ -72,11 +75,15 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
   constructor(props: Props): void {
     super(props);
     const { address, lat, lng } = props.startingLocation;
+    let errorText = '';
+    if (address === '') {
+      errorText = errorMessages.isRequired;
+    }
     this.state = {
       address,
       lat,
       lng,
-      errorText: '',
+      errorText,
     };
   }
 
@@ -212,11 +219,13 @@ class FormGeolocation extends Component<DefaultProps, Props, State> {
   handleBlur = (): void => {
     const { isRequired } = this.props;
     const { address } = this.state;
+    let errorText = '';
     if (isRequired) {
       if (address === '') {
-        this.setState({ errorText: 'Field is required' });
+        errorText = errorMessages.isRequired;
       }
     }
+    this.setState({ errorText });
   };
 
   /**

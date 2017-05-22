@@ -1,5 +1,6 @@
 /* External dependencies */
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import * as muiColors from 'material-ui/styles/colors';
 
 /* Internal dependencies */
 import palette from './palette';
@@ -32,6 +33,7 @@ export default getMuiTheme({
     selectedTextColor: palette.primary1Color,
   },
   textField: {
+    errorColor: muiColors.orange500,
     floatingLabelColor: palette.primary2Color,
     hintColor: palette.primary2Color,
   },

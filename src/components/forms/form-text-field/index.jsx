@@ -8,6 +8,9 @@ import isEmail from 'validator/lib/isEmail';
 import normalizeEmail from 'validator/lib/normalizeEmail';
 import TextField from 'material-ui/TextField';
 
+/* Internal dependencies */
+import { errorMessages } from 'lib/form-validation';
+
 /* Types */
 type DataType = 'text' | 'number' | 'any';
 type Format = 'phone' | 'email' | 'none';
@@ -16,16 +19,19 @@ type DefaultProps = {
   dataType: DataType,
   format: Format,
   isRequired: boolean,
+  showErrorOnRender: boolean,
   value: string | number,
 };
 
 type Props = {
+  name: string,
+  onInputUpdate: (event: Event & {
+    currentTarget: HTMLInputElement | HTMLTextAreaElement
+  }, newValue: string | number, fieldName: string) => void,
   dataType?: 'text' | 'number' | 'any',
   format?: 'phone' | 'email' | 'none',
   isRequired?: boolean,
-  name: string,
-  onInputChange: (event: Event & { currentTarget: HTMLInputElement },
-    newValue: string | number, fieldName: string) => void,
+  showErrorOnRender?: boolean,
   value?: string | number,
 };
 
@@ -37,14 +43,17 @@ type State = {
 /**
  * Text field on forms with validation, requirement check, and format
  *    cleanup.
- * @param {string} dataType Indicates the type of data in the field.
- * @param {string} format Special formatting that needs to be applied to the
- *    field.
- * @param {boolean} [isRequired=false] Indicates if the field is required.
  * @param {string} name Name of the field.
- * @param {Function} onValidInputChange Action to perform after a valid input
+ * @param {Function} onInputUpdate Action to perform after a valid input
  *    is entered into the field.
- * @param {string|number} value Initial value of the field.
+ * @param {string} [dataType="any"] Indicates the type of data in the field.
+ * @param {string} [format="none"] Special formatting that needs to be applied
+ *    to the field.
+ * @param {boolean} [isRequired=false] Indicates if the field is required.
+ * @param {boolean} [showErrorOnRender=true] If true, the error text is shown
+ *    immediately when the component renders, rather than be based on the
+ *    onBlur event.
+ * @param {string|number} [value=""] Initial value of the field.
  */
 class FormTextField extends Component<DefaultProps, Props, State> {
   props: Props;
@@ -54,19 +63,20 @@ class FormTextField extends Component<DefaultProps, Props, State> {
     dataType: 'any',
     format: 'none',
     isRequired: false,
+    showErrorOnRender: true,
     value: '',
   };
 
   constructor(props: Props): void {
     super(props);
-    const { isRequired, value } = this.props;
+    const { isRequired, showErrorOnRender, value } = this.props;
     let errorText = '';
     let inputValue = '';
     if (value) {
       inputValue = value;
     }
-    if (value === '' && isRequired) {
-      errorText = 'Required';
+    if (value === '' && isRequired && showErrorOnRender) {
+      errorText = errorMessages.isRequired;
     }
     this.state = {
       errorText,
@@ -87,12 +97,12 @@ class FormTextField extends Component<DefaultProps, Props, State> {
       const parsedPhone = phones.parse(newValue);
 
       if (!phones.validate(parsedPhone)) {
-        return 'Invalid phone number';
+        return errorMessages.invalidPhone;
       }
     }
     if (format === 'email') {
       if (!isEmail(newValue)) {
-        return 'Invalid email address';
+        return errorMessages.invalidEmail;
       }
     }
     return '';
@@ -125,10 +135,10 @@ class FormTextField extends Component<DefaultProps, Props, State> {
           }
         });
         if (invalidCount > 0) {
-          return 'Field can only contain letters, commas, periods, or dashes';
+          return errorMessages.invalidText;
         }
       } else {
-        return 'Field cannot be a number';
+        return errorMessages.cannotBeNumber;
       }
     }
 
@@ -136,7 +146,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
     // text indicating it's an invalid value.
     if (dataType === 'number') {
       if (isNaN(newValue)) {
-        return 'Field must be a number';
+        return errorMessages.mustBeNumber;
       }
     }
 
@@ -152,7 +162,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
   errorTextForRequiredField = (newValue: string | number): string => {
     const { isRequired } = this.props;
     if (newValue === '' && isRequired) {
-      return 'Required';
+      return errorMessages.isRequired;
     }
 
     return '';
@@ -195,12 +205,12 @@ class FormTextField extends Component<DefaultProps, Props, State> {
    * @param {string} errorText Error text associated with the input (if any).
    */
   updateInput = (
-    event: Event & { currentTarget: HTMLInputElement },
+    event: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement },
     newValue: string | number,
     errorText: string,
   ): void => {
-    const { onInputChange } = this.props;
-    onInputChange(event, newValue, errorText);
+    const { onInputUpdate } = this.props;
+    onInputUpdate(event, newValue, errorText);
     this.setState({
       errorText,
       value: newValue,
@@ -233,7 +243,9 @@ class FormTextField extends Component<DefaultProps, Props, State> {
    *    the input loses focus.
    * @param {Event} event Event associated with the input.
    */
-  handleBlur = (event: Event & { currentTarget: HTMLInputElement }): void => {
+  handleBlur = (event: Event & {
+    currentTarget: HTMLInputElement | HTMLTextAreaElement
+  }): void => {
     const newValue = this.formatValueAfterBlur(event.currentTarget.value);
     const errorText = this.errorTextByPrecedence(newValue);
     this.updateInput(event, newValue, errorText);
@@ -246,7 +258,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
    * @param {string|number} newValue New value of the input.
    */
   handleChange = (
-    event: Event & { currentTarget: HTMLInputElement },
+    event: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement },
     newValue: string | number,
   ): void => {
     this.setState({ value: newValue });
@@ -257,7 +269,8 @@ class FormTextField extends Component<DefaultProps, Props, State> {
       dataType,
       format,
       isRequired,
-      onInputChange,
+      onInputUpdate,
+      showErrorOnRender,
       ...props
     } = this.props;
 

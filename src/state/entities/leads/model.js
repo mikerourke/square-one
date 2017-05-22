@@ -43,6 +43,7 @@ export default class Lead extends Record({
     return compareRecords(this, lead);
   }
 
+  // TODO: Add comment header to this.
   getEntityForApiCall() {
     const lead = this.toJS();
     return {

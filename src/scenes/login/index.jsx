@@ -148,13 +148,10 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
    *    default page.
    */
   hydrateStateAndLogin = (): void => {
-    const getAllLeadsFn = this.props.getAllLeads;
-    const getAllSettingsFn = this.props.getAllSettings;
-    const getAllUsersFn = this.props.getAllUsers;
     this.setState({ isLoading: true });
-    getAllSettingsFn()
-      .then(getAllUsersFn)
-      .then(getAllLeadsFn)
+    this.props.getAllSettings()
+      .then(this.props.getAllUsers)
+      .then(this.props.getAllLeads)
       .then(() => {
         this.setState({ isLoading: false });
         browserHistory.push('/leads');
@@ -205,6 +202,8 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
       />
     );
 
+    const formStyle = { marginBottom: 56 };
+
     return (
       <glamorous.Div
         display="flex"
@@ -226,7 +225,7 @@ export class LoginPage extends Component<DefaultProps, Props, State> {
               width={64}
             />
           </glamorous.Div>
-          <form>
+          <form style={formStyle}>
             <TextField
               errorText={usernameErrorText}
               floatingLabelText="Login"

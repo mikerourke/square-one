@@ -1,4 +1,16 @@
 {
+  "features": [
+    {
+      "name": "resetPasswordFeature",
+      "description": "Allow user to reset the password from the Login page.",
+      "isEnabled": false
+    },
+    {
+      "name": "sendLeadMessageFeature",
+      "description": "Allow user to text send messages to a Lead.",
+      "isEnabled": false
+    }
+  ],
   "users": [
     {
       "id": 1,

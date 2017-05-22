@@ -12,7 +12,7 @@ import Toggle from 'material-ui/Toggle';
 
 /* Internal dependencies */
 import { getDedentedString } from 'lib/display-formats';
-import { togglePromptDialog } from 'state/gui/actions';
+import { toggleGlobalDialog, toggleGlobalSnackbar } from 'state/gui/actions';
 import { selectListSettings } from 'state/settings/selectors';
 import { selectAssignToUserForLead } from 'state/entities/users/selectors';
 import { sendMessages } from 'state/entities/messages/actions';
@@ -21,6 +21,8 @@ import ConfirmationDialog from 'components/confirmation-dialog';
 import IconDropdown from 'components/icon-dropdown';
 
 /* Types */
+import type { NoticeType } from 'lib/types';
+
 type DefaultProps = {
   assignToUser: User,
   textTemplates: Array<string>,
@@ -33,6 +35,7 @@ type Props = {
   assignToUser: User,
   lead: Lead,
   sendMessages: (lead: Lead, messages: Array<Message>) => Promise<*>,
+  toggleGlobalSnackbar: (message: string, noticeType: NoticeType) => void,
   textTemplates?: Array<string>,
 };
 
@@ -53,8 +56,10 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   dispatch,
   sendMessages: (lead, messages) => dispatch(sendMessages(lead, messages)),
-  togglePromptDialog: (title, message, actionType) =>
-    dispatch(togglePromptDialog(title, message, actionType)),
+  toggleGlobalSnackbar: (message, noticeType) =>
+    dispatch(toggleGlobalSnackbar(message, noticeType)),
+  toggleGlobalDialog: (title, message, noticeType) =>
+    dispatch(toggleGlobalDialog(title, message, noticeType)),
 });
 
 /**
@@ -168,24 +173,26 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
    *    redirects the user to the Leads List (if applicable).
    */
   handleSubmitTouchTap = (): void => {
-    const {
-      handleTouchTap,
-      redirectToLeads,
-    } = this.props;
+    //const {
+    //  handleTouchTap,
+    //  redirectToLeads,
+    //} = this.props;
+    //
+    //// Hide the messages dialog form.
+    //handleTouchTap();
+    //
+    //// Since messages are optional, the same actions need to be performed
+    //// regardless of whether messages are sent.
+    //this.sendMessagesIfRequired()
+    //  .then(() => {
+    //    this.closeConfirmationDialogAndResetInputs();
+    //    if (redirectToLeads) {
+    //      browserHistory.push('/leads');
+    //    }
+    //  })
+    //  .catch(error => console.error(error)); // TODO: Add alert message.
 
-    // Hide the messages dialog form.
-    handleTouchTap();
-
-    // Since messages are optional, the same actions need to be performed
-    // regardless of whether messages are sent.
-    this.sendMessagesIfRequired()
-      .then(() => {
-        this.closeConfirmationDialogAndResetInputs();
-        if (redirectToLeads) {
-          browserHistory.push('/leads');
-        }
-      })
-      .catch(error => console.error(error)); // TODO: Add alert message.
+    this.props.toggleGlobalSnackbar('Yo dawg!');
   };
 
   /**

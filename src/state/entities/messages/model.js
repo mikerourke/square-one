@@ -15,6 +15,7 @@ export default class Message extends Record({
   updatedAt: (null: ?Date),
   typeName: ('message': string),
 }) {
+  // TODO: Add comment header to this.
   getEntityForApiCall() {
     const message = this.toJS();
     return {

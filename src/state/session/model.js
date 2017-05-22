@@ -11,5 +11,4 @@ export default class Session extends Record({
   role: ('': string),
   isAuthenticated: (false: boolean),
   error: (null: ?any),
-}) {
-}
+}) {}

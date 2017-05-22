@@ -7,7 +7,7 @@ import { List } from 'immutable';
 
 /* Internal dependencies */
 import { getDisplayDate } from 'lib/display-formats';
-import { togglePromptDialog } from 'state/gui/actions';
+import { toggleGlobalDialog } from 'state/gui/actions';
 import {
   createNote,
   deleteNote,
@@ -21,6 +21,7 @@ import EditNoteDialog from './edit-dialog';
 
 /* Types */
 import type { CardEntity } from 'components/card-list';
+import type { NoticeType } from 'lib/types';
 
 type DefaultProps = {
   notes: List<Note>,
@@ -30,8 +31,8 @@ type Props = {
   createNote: (lead: Lead, note: Note) => Promise<*>,
   deleteNote: (lead: Lead, id: number) => Promise<*>,
   updateNote: (lead: Lead, note: Note) => Promise<*>,
-  togglePromptDialog: (title: string, message: string,
-    actionType: string) => void;
+  toggleGlobalDialog: (title: string, message: string,
+    noticeType: NoticeType) => void;
   showAddButton: boolean,
   lead: Lead,
   notes: List<Note>,
@@ -54,8 +55,8 @@ const mapDispatchToProps = dispatch => ({
   createNote: (lead, note) => dispatch(createNote(lead, note)),
   deleteNote: (lead, id) => dispatch(deleteNote(lead, id)),
   updateNote: (lead, note) => dispatch(updateNote(lead, note)),
-  togglePromptDialog: (title, message, actionType) =>
-    dispatch(togglePromptDialog(title, message, actionType)),
+  toggleGlobalDialog: (title, message, noticeType) =>
+    dispatch(toggleGlobalDialog(title, message, noticeType)),
 });
 
 /**
@@ -179,7 +180,7 @@ export class NotesList extends Component<DefaultProps, Props, State> {
     const { note } = this.state;
     const { lead } = this.props;
     if (note.contents === '') {
-      this.props.togglePromptDialog('Error',
+      this.props.toggleGlobalDialog('Error',
         'The Contents field cannot be blank.', 'error');
       return;
     }

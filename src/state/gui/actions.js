@@ -3,25 +3,37 @@
 /* Internal dependencies */
 import {
   GUI_TOGGLE_APP_SIDEBAR,
-  GUI_TOGGLE_PROMPT_DIALOG,
+  GUI_TOGGLE_GLOBAL_DIALOG,
+  GUI_TOGGLE_GLOBAL_SNACKBAR,
 } from '../action-types';
 
 /* Types */
-import type { Action } from 'lib/types';
+import type { Action, NoticeType } from 'lib/types';
 
 export const toggleAppSidebar = (): Action => ({
   type: GUI_TOGGLE_APP_SIDEBAR,
 });
 
-export const togglePromptDialog = (
+export const toggleGlobalDialog = (
   title?: string = '',
   message?: string = '',
-  actionType?: string = '',
+  noticeType?: NoticeType = 'inform',
 ): Action => ({
-  type: GUI_TOGGLE_PROMPT_DIALOG,
+  type: GUI_TOGGLE_GLOBAL_DIALOG,
   payload: {
     title,
     message,
-    actionType,
+    noticeType,
+  },
+});
+
+export const toggleGlobalSnackbar = (
+  message?: string,
+  noticeType?: NoticeType = 'inform',
+): Action => ({
+  type: GUI_TOGGLE_GLOBAL_SNACKBAR,
+  payload: {
+    message,
+    noticeType,
   },
 });

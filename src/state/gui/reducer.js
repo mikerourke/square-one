@@ -6,7 +6,8 @@ import { fromJS, Map } from 'immutable';
 /* Internal dependencies */
 import {
   GUI_TOGGLE_APP_SIDEBAR,
-  GUI_TOGGLE_PROMPT_DIALOG,
+  GUI_TOGGLE_GLOBAL_DIALOG,
+  GUI_TOGGLE_GLOBAL_SNACKBAR,
 } from '../action-types';
 
 /* Types */
@@ -18,11 +19,16 @@ const initialState = fromJS({
   layout: {
     sidebarOpen: false,
   },
-  promptDialog: {
+  globalDialog: {
     open: false,
     title: '',
     message: '',
-    actionType: '',
+    noticeType: 'inform',
+  },
+  globalSnackbar: {
+    open: false,
+    message: '',
+    noticeType: 'inform',
   },
 });
 
@@ -35,14 +41,23 @@ export default function reducer(
       const sidebarStatus = state.getIn(['layout', 'sidebarOpen']);
       return state.setIn(['layout', 'sidebarOpen'], !sidebarStatus);
 
-    case GUI_TOGGLE_PROMPT_DIALOG:
-      const { payload: { title, message, actionType } } = (action: Object);
-      const isOpen = state.getIn(['promptDialog', 'open']);
-      return state.set('promptDialog', fromJS({
-        open: !isOpen,
-        title,
-        message,
-        actionType,
+    case GUI_TOGGLE_GLOBAL_DIALOG:
+      const { payload: dialog } = (action: Object);
+      const isDialogOpen = state.getIn(['globalDialog', 'open']);
+      return state.set('globalDialog', fromJS({
+        open: !isDialogOpen,
+        title: dialog.title,
+        message: dialog.message,
+        noticeType: dialog.noticeType,
+      }));
+
+    case GUI_TOGGLE_GLOBAL_SNACKBAR:
+      const { payload: snackbar } = (action: Object);
+      const isSnackbarOpen = state.getIn(['globalSnackbar', 'open']);
+      return state.set('globalSnackbar', fromJS({
+        open: !isSnackbarOpen,
+        message: snackbar.message,
+        noticeType: snackbar.noticeType,
       }));
 
     default:

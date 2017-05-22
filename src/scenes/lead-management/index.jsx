@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 /* Internal dependencies */
-import { togglePromptDialog } from 'state/gui/actions';
+import { toggleGlobalDialog } from 'state/gui/actions';
 import { deleteLead, updateLead } from 'state/entities/leads/actions';
 import { selectAllLeads } from 'state/entities/leads/selectors';
 import { Lead } from 'state/entities/models';
@@ -21,13 +21,14 @@ import TabsPage from 'components/tabs-page';
 
 /* Types */
 import type { Map } from 'immutable';
+import type { NoticeType } from 'lib/types';
 
 type Props = {
   lead: Lead,
   deleteLead: (id: number) => Promise<*>,
   updateLead: (lead: Lead) => Promise<*>,
-  togglePromptDialog: (title: string, message: string,
-    actionType: string) => void;
+  toggleGlobalDialog: (title: string, message: string,
+    noticeType: NoticeType) => void;
 };
 
 type State = {
@@ -57,8 +58,8 @@ const mapDispatchToProps = dispatch => ({
   dispatch,
   deleteLead: id => dispatch(deleteLead(id)),
   updateLead: lead => dispatch(updateLead(lead)),
-  togglePromptDialog: (title, message, actionType) =>
-    dispatch(togglePromptDialog(title, message, actionType)),
+  toggleGlobalDialog: (title, message, noticeType) =>
+    dispatch(toggleGlobalDialog(title, message, noticeType)),
 });
 
 /**
@@ -182,7 +183,7 @@ export class LeadManagementPage extends Component<*, Props, State> {
       errorCount = errorText !== '' ? errorCount += 1 : errorCount;
     });
     if (errorCount > 0) {
-      this.props.togglePromptDialog('Errors Found',
+      this.props.toggleGlobalDialog('Errors Found',
         'Please fix any invalid inputs and ensure all required fields are populated.',
         'error');
     }

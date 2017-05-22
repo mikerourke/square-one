@@ -18,6 +18,16 @@ export const borderColor: string = muiColors.grey300;
 export const pickerHeaderColor: string = muiColors.grey500;
 export const canvasColor: string = muiColors.white;
 
+/**
+ * Colors to use for notifications based on notice type.
+ * @type {Object}
+ */
+export const noticeColors = {
+  error: muiColors.orange700,
+  inform: muiColors.grey800,
+  success: muiColors.green700,
+};
+
 export default {
   primary1Color,
   primary2Color,

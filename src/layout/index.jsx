@@ -10,8 +10,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { getMuiTheme } from 'style/mui';
 import { toggleAppSidebar } from 'state/gui/actions';
 import Session from 'state/session/model';
+import GlobalDialog from './global-dialog';
+import GlobalSnackbar from './global-snackbar';
 import Header from './header';
-import PromptDialog from './prompt-dialog';
 import Sidebar from './sidebar';
 
 /* Types */
@@ -47,7 +48,7 @@ const Layout = ({
   children: React.Element<*>,
   appLayout: Map<string, any>,
   session: Session,
-  toggleSidebar: () => Promise<*>,
+  toggleSidebar: () => void,
 }): React.Element<*> => (
   <MuiThemeProvider muiTheme={getMuiTheme}>
     <div>
@@ -64,7 +65,8 @@ const Layout = ({
       >
         {children}
       </glamorous.Div>
-      <PromptDialog />
+      <GlobalDialog />
+      <GlobalSnackbar />
     </div>
   </MuiThemeProvider>
 );

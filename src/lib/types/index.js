@@ -13,11 +13,33 @@ export type MapLocation = {
     lng: number,
 };
 
+/**
+ * Difference between two Record values.
+ * @typedef RecordDiff
+ */
 export type RecordDiff = {
     key: string,
     fromValue: string | number,
     toValue: string | number,
 };
+
+/**
+ * Where style is to be applied (for Material-UI components).
+ * @typedef StyleTarget
+ */
+export type StyleTarget =
+    'body'
+  | 'content'
+  | 'title';
+
+/**
+ * Nature of notice associated with global Dialog or Snackbar.
+ * @typedef NoticeType
+ */
+export type NoticeType =
+    'error'
+  | 'inform'
+  | 'success';
 
 /**
  * Types associated with Redux.

@@ -13,7 +13,7 @@ export default class Note extends Record({
   updatedAt: (null: ?Date),
   typeName: ('note': string),
 }) {
-  // FIXME: Fix response for this issue.
+  // TODO: Add comment header to this.
   getEntityForApiCall() {
     const note = this.toJS();
     return {

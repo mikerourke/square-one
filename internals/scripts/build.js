@@ -31,6 +31,38 @@ const copyFavicon = () => {
 };
 
 /**
+ * Creates a JSON file with Webpack statistics so the bundle details can be
+ *    viewed using a visualizer.
+ * @param {Object} stats Stats object from Webpack.
+ */
+const createStatsJson = (stats) => new Promise((resolve, reject) => {
+  const jsonStats = stats.toJson();
+
+  // Print any errors to the console.
+  if (jsonStats.hasErrors) {
+    console.log(yellow('Webpack encountered these errors: '));
+    return jsonStats.errors.map(error => console.log(red(error)));
+  }
+
+  // Print any warnings to the console.
+  if (jsonStats.hasWarnings) {
+    console.log(yellow('Webpack generated these warnings: '));
+    jsonStats.warnings.map(warning => console.log(yellow(warning)));
+  }
+
+  console.log(blue('Writing stats to file.'));
+  const statsPath = path.join(process.cwd(), 'stats.json');
+  fs.writeFile(statsPath, JSON.stringify(jsonStats), (error) => {
+    if (error) {
+      console.log(red(error));
+      reject();
+    }
+    console.log(green('Stats successfully written.'));
+    resolve();
+  });
+});
+
+/**
  * Generates the Webpack bundles and copies them to the client directory.  It
  *    also writes the stats to a JSON file for evaluation.
  */
@@ -46,37 +78,21 @@ const generateBundles = () => {
       console.log(cyan(percentageText, message));
     }));
 
+    const generateStats = (process.argv.slice(2).toString() === 'true');
+
     compiler.run((error, stats) => {
       // Fatal error occurred. Stop here.
       if (error) {
         reject(`Webpack error: ${error}`);
       }
 
-      const jsonStats = stats.toJson();
-
-      // Print any errors to the console.
-      if (jsonStats.hasErrors) {
-        console.log(yellow('Webpack encountered these errors: '));
-        return jsonStats.errors.map(error => console.log(red(error)));
-      }
-
-      // Print any warnings to the console.
-      if (jsonStats.hasWarnings) {
-        console.log(yellow('Webpack generated these warnings: '));
-        jsonStats.warnings.map(warning => console.log(yellow(warning)));
-      }
-
-      console.log(blue('Writing stats to file.'));
-      const statsPath = path.join(process.cwd(), 'stats.json');
-      fs.writeFile(statsPath, JSON.stringify(jsonStats), (error) => {
-        if (error) {
-          console.log(red(error));
-        }
-
-        // Build succeeded:
-        console.log(green('Compilation complete.'));
+      if (generateStats) {
+        createStatsJson(stats)
+          .then(() => resolve())
+          .catch(() => reject());
+      } else {
         resolve();
-      });
+      }
     });
   });
 };

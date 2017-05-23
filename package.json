@@ -7,6 +7,7 @@
     "api:watch": "nodemon internals/api/server.js",
     "prebuild": "rm -rf client && mkdir client",
     "build": "cross-env NODE_ENV=production node internals/scripts/build.js",
+    "build:stats": "npm run build -- true",
     "build:cleanup": "rm -rf client && rm stats.json || exit 0",
     "flow": "flow check || exit 0",
     "generate-data": "node internals/api/generator.js",
@@ -101,12 +102,13 @@
     "react-addons-test-utils": "^15.4.2",
     "redux-mock-store": "^1.2.2",
     "shelljs": "^0.7.6",
-    "style-loader": "^0.17.0",
+    "style-loader": "^0.18.1",
     "twilio": "^3.0.0",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-dev-server": "^2.3.0"
+    "webpack-dev-server": "^2.3.0",
+    "webpack-manifest-plugin": "^1.1.0"
   },
   "jest": {
     "moduleDirectories": [

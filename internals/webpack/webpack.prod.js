@@ -6,22 +6,73 @@
 const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
-/* Internal dependencies */
-const baseConfig = require('./webpack.base.js');
-
-module.exports = Object.assign(baseConfig, {
+module.exports = {
+  bail: true,
   entry: [
     path.join(process.cwd(), 'src/index.js'),
   ],
-  output: Object.assign({}, baseConfig.output, {
-    filename: 'main.js',
-  }),
+  output: {
+    path: path.resolve(process.cwd(), 'client'),
+    publicPath: '/',
+    filename: '[name].[chunkhash:8].js',
+    chunkFilename: '[name].[chunkhash:8].chunk.js',
+  },
+  module: {
+    strictExportPresence: true,
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        }
+      },
+      {
+        test: /(\.css)$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader',
+          publicPath: '/client'
+        }),
+      },
+      {
+        exclude: [
+          /\.html$/,
+          /\.(js|jsx)$/,
+          /\.css$/,
+          /\.json$/,
+          /\.bmp$/,
+          /\.gif$/,
+          /\.jpe?g$/,
+          /\.png$/,
+        ],
+        loader: 'file-loader',
+        options: {
+          name: '[name].[hash:8].[ext]',
+        },
+      },
+      {
+        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: '[name].[hash:8].[ext]',
+        },
+      },
+    ],
+  },
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+      },
+    }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
       compress: {
@@ -36,7 +87,6 @@ module.exports = Object.assign(baseConfig, {
         unused: true,
         warnings: false,
       },
-      mangle: true,
       output: {
         comments: false,
       },
@@ -44,6 +94,7 @@ module.exports = Object.assign(baseConfig, {
     }),
     new HtmlWebpackPlugin({
       inject: true,
+      template: path.resolve(process.cwd(), 'src/www/index.html'),
       minify: {
         collapseWhitespace: true,
         keepClosingSlash: true,
@@ -56,7 +107,13 @@ module.exports = Object.assign(baseConfig, {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
-      template: path.resolve(process.cwd(), 'src/www/index.html'),
+    }),
+    new ExtractTextPlugin({
+      filename: 'styles.css',
+      disable: false,
+    }),
+    new ManifestPlugin({
+      fileName: 'asset-manifest.json',
     }),
     new CompressionPlugin({
       asset: '[path].gz[query]',
@@ -68,7 +125,16 @@ module.exports = Object.assign(baseConfig, {
     new WebpackCleanupPlugin({
       exclude: [
         'index.html',
+        'favicon.ico',
       ],
-    })
-  ].concat(baseConfig.plugins),
-});
+    }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+  ],
+  resolve: {
+    modules: [
+      path.join(process.cwd(), 'src'),
+      'node_modules',
+    ],
+    extensions: ['.js', '.jsx', '.css'],
+  },
+};

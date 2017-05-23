@@ -217,11 +217,7 @@
               },
               "subject": {
                 "type": "string",
-                "chance": {
-                  "sentence": {
-                    "words": 5
-                  }
-                }
+                "pattern": "Message to Lead|Message to Representative"
               },
               "body": {
                 "type": "string",

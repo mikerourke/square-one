@@ -31,7 +31,7 @@ const mapDispatchToProps = dispatch => ({
  * @returns {Object}
  */
 const getStyleByNoticeType = (noticeType: NoticeType) => ({
-  color: getColorByNoticeType(noticeType),
+  backgroundColor: getColorByNoticeType(noticeType),
 });
 
 /**
@@ -50,6 +50,7 @@ const GlobalSnackbar = ({
   toggleSnackbar: (message: string, noticeType: NoticeType) => void,
 }): React.Element<*> => (
   <Snackbar
+    autoHideDuration={4000}
     bodyStyle={getStyleByNoticeType(globalSnackbar.get('noticeType'))}
     contentStyle={getStyleByNoticeType(globalSnackbar.get('noticeType'))}
     open={globalSnackbar.get('open')}

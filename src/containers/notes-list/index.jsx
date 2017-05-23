@@ -225,8 +225,8 @@ export class NotesList extends Component<DefaultProps, Props, State> {
         .sortBy(note => note.createdAt)
         .map(note => ({
           id: note.id,
-          title: note.getIn(['createdBy', 'fullName']),
-          subtitle: getDisplayDate(note.createdAt),
+          header: note.getIn(['createdBy', 'fullName']),
+          subheader: getDisplayDate(note.createdAt),
           contents: note.contents,
         }));
     }

@@ -6,9 +6,13 @@ import { connect } from 'react-redux';
 import { List } from 'immutable';
 
 /* Internal dependencies */
-import { getDisplayDate } from 'lib/display-formats';
+import {
+  getDisplayDate,
+  getDisplayPhone,
+  getProperCase,
+} from 'lib/display-formats';
 import { selectMessagesInLead } from 'state/entities/messages/selectors';
-import { Lead, Message } from 'state/entities/models';
+import { Lead, Message, User } from 'state/entities/models';
 import CardList from 'components/card-list';
 import MessagesDialog from '../messages-dialog/index';
 
@@ -71,6 +75,43 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
   };
 
   /**
+   * Returns the formatted title elements to display on the cards based on the
+   *    title line ("title" or "subtitle").
+   * @param {Message} message Message entity displayed on the card.
+   * @param {string} titleLine Title line to display text.
+   * @returns {string} Formatted title or subtitle.
+   */
+  getTitleElement = (message: Message, titleLine: 'title' | 'subtitle') => {
+    const { lead } = this.props;
+    const { subject, recipient, messageType } = message;
+
+    // If the message type was a text message, the recipient is set to a
+    // formatted phone number, otherwise it's set to a lowercase email address.
+    const formattedRecipient = messageType === 'text'
+      ? getDisplayPhone(recipient)
+      : recipient.toLowerCase();
+
+    // The default title is "Message to Lead" or "Message to Representative",
+    // this removes the "Message to " to determine the target.
+    const targetRole = subject.replace('Message to ', '');
+
+    // TODO: Fix so message reflects the representative the text was originally sent to, not the current assign to.
+    // If "Lead" was the target, the name of the recipient is set to the name
+    // of the lead, otherwise it's set to the representative that the lead
+    // was assigned to.
+    const targetName = (targetRole === 'Lead') ? lead.leadName : lead.assignTo;
+
+    // For the "title" element, replace the word "Lead" or "Representative" with
+    // either the name of the lead or the name of the representative that
+    // received the message and return it, otherwise ensure the message type
+    // is properly cased and return the message type and recipient as the
+    // subtitle:
+    return titleLine === 'title'
+      ? subject.replace(targetRole, targetName)
+      : `${getProperCase(messageType)} sent to ${formattedRecipient}`;
+  };
+
+  /**
    * Extrapolates the required properties for a card entity from the list of
    *    messages and returns a list of card entities.
    * @returns {Immutable.List}
@@ -82,15 +123,14 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
       cardEntities = messagesInLead
         .sortBy(message => message.createdAt)
         .reverse()
-        .map((message) => {
-          const displayDate = getDisplayDate(message.createdAt);
-          return {
-            id: message.id,
-            title: message.getIn(['createdBy', 'fullName']),
-            subtitle: displayDate,
-            contents: message.body,
-          };
-        });
+        .map(message => ({
+          id: message.id,
+          title: this.getTitleElement(message, 'title'),
+          subtitle: this.getTitleElement(message, 'subtitle'),
+          header: `Sent by ${message.getIn(['createdBy', 'fullName'])}`,
+          subheader: getDisplayDate(message.createdAt),
+          contents: message.body,
+        }));
     }
     return cardEntities;
   };
@@ -98,6 +138,8 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
   render(): React.Element<*> {
     const { lead, showAddButton } = this.props;
     const { isMessageDialogOpen } = this.state;
+    const fieldsToSearch =
+      ['title', 'subtitle', 'header', 'subheader', 'contents'];
 
     return (
       <div>
@@ -106,7 +148,7 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
           handleAddTouchTap={this.handleAddButtonTouchTap}
           hasActions={false}
           multipleCardsPerRow={false}
-          searchFieldInclusions={['body']}
+          searchFieldInclusions={fieldsToSearch}
           showAddButton={showAddButton}
         />
         <MessagesDialog

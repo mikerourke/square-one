@@ -257,26 +257,22 @@ export class LeadManagementPage extends Component<*, Props, State> {
         label: 'Notes',
         value: 'notes',
       },
+      {
+        content: (
+          <MessagesList
+            lead={leadOnForm}
+            showAddButton={activeTabName === 'messages'}
+          />
+        ),
+        label: 'Messages',
+        value: 'messages',
+      },
+      {
+        content: (<ChangesTimeline lead={lead} />),
+        label: 'History',
+        value: 'history',
+      },
     ];
-    if (lead.id !== 0) {
-      tabPagesToShow = tabPagesToShow.concat([
-        {
-          content: (
-            <MessagesList
-              lead={lead}
-              showAddButton={activeTabName === 'messages'}
-            />
-          ),
-          label: 'Messages',
-          value: 'messages',
-        },
-        {
-          content: (<ChangesTimeline lead={lead} />),
-          label: 'History',
-          value: 'history',
-        },
-      ]);
-    }
 
     return (
       <div>

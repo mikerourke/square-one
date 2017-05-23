@@ -7,11 +7,13 @@ import {
   CardActions,
   CardHeader,
   CardText,
+  CardTitle,
 } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import { List as MuiList } from 'material-ui/List';
 
 /* Internal dependencies */
+import { accent1Color } from 'style/mui/palette';
 import { getSearchResults } from 'lib/query-actions';
 import ActionButton from 'components/action-button';
 import SearchToolbar from 'components/search-toolbar';
@@ -21,8 +23,10 @@ import type { List } from 'immutable';
 
 export type CardEntity = {
   id: number,
-  title: string,
-  subtitle: string,
+  title?: string,
+  subtitle?: string,
+  header: string,
+  subheader: string,
   contents: string,
 };
 
@@ -93,6 +97,11 @@ class CardList extends Component<*, Props, State> {
     this.setState({ cardEntities: results });
   };
 
+  /**
+   * Returns an object representing the styles for the card elements based
+   *    on whether there are multiple cards per row.
+   * @returns {Object} Styles to apply to card elements.
+   */
   getStyles = (): Object => {
     const { multipleCardsPerRow } = this.props;
 
@@ -121,6 +130,11 @@ class CardList extends Component<*, Props, State> {
     };
   };
 
+  /**
+   * Returns the action buttons associated with the specified Card entity.
+   * @param {CardEntity} cardEntity Card entity to perform actions on.
+   * @returns {Node} React element with action buttons.
+   */
   getCardActions = (cardEntity: CardEntity): React.Element<*> => {
     const {
       handleDeleteTouchTap = () => {},
@@ -168,9 +182,17 @@ class CardList extends Component<*, Props, State> {
               key={cardEntity.id}
               style={styles.card}
             >
+              {cardEntity.title && (
+                <CardTitle
+                  title={cardEntity.title}
+                  subtitle={cardEntity.subtitle}
+                  subtitleColor={accent1Color}
+                  subtitleStyle={{ fontWeight: 500 }}
+                />
+              )}
               <CardHeader
-                subtitle={cardEntity.subtitle}
-                title={cardEntity.title}
+                title={cardEntity.header}
+                subtitle={cardEntity.subheader}
               />
               <CardText className="display-linebreak">
                 {cardEntity.contents}

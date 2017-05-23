@@ -1,7 +1,7 @@
 /* @flow */
 
 /* External dependencies */
-import { List } from 'immutable';
+import { List, is } from 'immutable';
 
 // TODO: Fix this for Flow.  For some reason disjoint unions aren't working.
 type QueryData = any;
@@ -26,9 +26,16 @@ export const getSearchResults = (
 
   return items.filter((item) => {
     const fieldsSearch = fieldsToInclude.map((fieldName) => {
-      const itemValue = item.get(fieldName).toLowerCase();
-      const searchValue = searchFor.toLowerCase();
-      return (itemValue.includes(searchValue));
+      let itemValue = '';
+      if (typeof item.get === 'function') {
+        itemValue = item.get(fieldName);
+      } else {
+        itemValue = item[fieldName];
+      }
+      if (itemValue) {
+        return (itemValue.toLowerCase().includes(searchFor.toLowerCase()));
+      }
+      return true;
     });
     return (fieldsSearch.includes(true));
   });

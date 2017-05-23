@@ -17,6 +17,7 @@ type Format = 'phone' | 'email' | 'none';
 
 type DefaultProps = {
   dataType: DataType,
+  disabled: boolean,
   format: Format,
   isRequired: boolean,
   showErrorOnRender: boolean,
@@ -29,6 +30,7 @@ type Props = {
     currentTarget: HTMLInputElement | HTMLTextAreaElement
   }, newValue: string | number, fieldName: string) => void,
   dataType?: 'text' | 'number' | 'any',
+  disabled?: boolean,
   format?: 'phone' | 'email' | 'none',
   isRequired?: boolean,
   showErrorOnRender?: boolean,
@@ -47,6 +49,7 @@ type State = {
  * @param {Function} onInputUpdate Action to perform after a valid input
  *    is entered into the field.
  * @param {string} [dataType="any"] Indicates the type of data in the field.
+ * @param {boolean} [disabled=false] Indicates if the field is disabled.
  * @param {string} [format="none"] Special formatting that needs to be applied
  *    to the field.
  * @param {boolean} [isRequired=false] Indicates if the field is required.
@@ -58,9 +61,11 @@ type State = {
 class FormTextField extends Component<DefaultProps, Props, State> {
   props: Props;
   state: State;
+  textField: HTMLInputElement | HTMLTextAreaElement;
 
   static defaultProps = {
     dataType: 'any',
+    disabled: false,
     format: 'none',
     isRequired: false,
     showErrorOnRender: true,
@@ -82,6 +87,15 @@ class FormTextField extends Component<DefaultProps, Props, State> {
       errorText,
       value: inputValue,
     };
+  }
+
+  componentWillReceiveProps(nextProps: Props): void {
+    const { value } = nextProps;
+    let errorText = this.errorTextByPrecedence(value);
+    if (nextProps.disabled) {
+      errorText = '';
+    }
+    this.setState({ value, errorText });
   }
 
   /**
@@ -261,7 +275,16 @@ class FormTextField extends Component<DefaultProps, Props, State> {
     event: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement },
     newValue: string | number,
   ): void => {
-    this.setState({ value: newValue });
+    const { isRequired } = this.props;
+    const { errorText } = this.state;
+    let newErrorText = errorText;
+    if (isRequired && newValue !== '') {
+      newErrorText = '';
+    }
+    this.setState({
+      errorText: newErrorText,
+      value: newValue,
+    });
   };
 
   render(): React.Element<*> {
@@ -285,6 +308,7 @@ class FormTextField extends Component<DefaultProps, Props, State> {
         errorText={errorText}
         onBlur={this.handleBlur}
         onChange={this.handleChange}
+        ref={(input) => { this.textField = input; }}
         value={value}
       />
     );

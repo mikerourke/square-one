@@ -18,6 +18,7 @@ import { selectAssignToUserForLead } from 'state/entities/users/selectors';
 import { sendMessages } from 'state/entities/messages/actions';
 import { Lead, Message, User } from 'state/entities/models';
 import ConfirmationDialog from 'components/confirmation-dialog';
+import FormTextField from 'components/forms/form-text-field';
 import IconDropdown from 'components/icon-dropdown';
 
 /* Types */
@@ -159,12 +160,20 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
     new Promise((resolve, reject) => {
       const { lead } = this.props;
       const messagesToSend = this.getMessagesToSend();
+      const toggleSnackbarFn = this.props.toggleGlobalSnackbar;
+
       if (messagesToSend.length === 0) {
         resolve();
       } else {
         this.props.sendMessages(lead, messagesToSend)
-          .then(() => resolve())
-          .catch(error => reject(error));
+          .then(() => {
+            toggleSnackbarFn('Message successfully sent', 'success');
+            resolve();
+          })
+          .catch((error) => {
+            toggleSnackbarFn('Error sending messages', 'error');
+            reject(error);
+          });
       }
     });
 
@@ -173,26 +182,25 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
    *    redirects the user to the Leads List (if applicable).
    */
   handleSubmitTouchTap = (): void => {
-    //const {
-    //  handleTouchTap,
-    //  redirectToLeads,
-    //} = this.props;
-    //
-    //// Hide the messages dialog form.
-    //handleTouchTap();
-    //
-    //// Since messages are optional, the same actions need to be performed
-    //// regardless of whether messages are sent.
-    //this.sendMessagesIfRequired()
-    //  .then(() => {
-    //    this.closeConfirmationDialogAndResetInputs();
-    //    if (redirectToLeads) {
-    //      browserHistory.push('/leads');
-    //    }
-    //  })
-    //  .catch(error => console.error(error)); // TODO: Add alert message.
+    const {
+      handleTouchTap,
+      redirectToLeads,
+    } = this.props;
 
-    this.props.toggleGlobalSnackbar('Yo dawg!');
+    // Hide the messages dialog form.
+    handleTouchTap();
+
+    // Since messages are optional, the same actions need to be performed
+    // regardless of whether messages are sent.
+    this.sendMessagesIfRequired()
+      .then(() => {
+        this.closeConfirmationDialogAndResetInputs();
+        if (redirectToLeads) {
+          browserHistory.push('/leads');
+        }
+      })
+      .catch(error => console.error(error));
+    // TODO: Add alert message.
   };
 
   /**
@@ -361,13 +369,14 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
           style={{ width: 300 }}
           toggled={sendRepresentativeMessage}
         />
-        <TextField
+        <FormTextField
           disabled={!sendRepresentativeMessage}
           floatingLabelText="Message to Representative"
           fullWidth={true}
+          isRequired={sendRepresentativeMessage}
           multiLine={true}
           name="representativeMessageContents"
-          onChange={this.handleInputChange}
+          onInputUpdate={this.handleInputChange}
           value={representativeMessageContents}
         />
       </glamorous.Div>

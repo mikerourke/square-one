@@ -234,7 +234,7 @@ export class LeadManagementPage extends Component<*, Props, State> {
       leadOnForm,
     } = this.state;
 
-    let tabPagesToShow = [
+    const tabPages = [
       {
         content: (
           <LeadDetailsForm
@@ -284,7 +284,7 @@ export class LeadManagementPage extends Component<*, Props, State> {
         <TabsPage
           handleTabPageChange={this.handleTabPageChange}
           paperStyle={{ minHeight: 620 }}
-          tabPages={tabPagesToShow}
+          tabPages={tabPages}
         />
         <MessagesDialog
           handleTouchTap={this.handleMessageDialogTouchTap}

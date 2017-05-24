@@ -230,7 +230,10 @@ export class Header extends Component<*, Props, State> {
             </glamorous.Div>
             <Divider />
             <MenuItem value="bug" primaryText="Report a bug" />
-            <MenuItem value="settings" primaryText="Settings" />
+            {
+              // FUTURE: Renable this when Settings functionality is added.
+              /* <MenuItem value="settings" primaryText="Settings" /> */
+            }
             <Divider />
             <MenuItem value="signout" primaryText="Sign out" />
           </Menu>

@@ -11,6 +11,7 @@ import {
   getDisplayPhone,
   getProperCase,
 } from 'lib/display-formats';
+import { toggleGlobalDialog } from 'state/gui/actions';
 import { selectMessagesInLead } from 'state/entities/messages/selectors';
 import { Lead, Message, User } from 'state/entities/models';
 import CardList from 'components/card-list';
@@ -18,6 +19,7 @@ import MessagesDialog from '../messages-dialog/index';
 
 /* Types */
 import type { CardEntity } from 'components/card-list';
+import type { NoticeType } from 'lib/types';
 
 type DefaultProps = {
   messages: List<Message>,
@@ -27,6 +29,8 @@ type Props = {
   lead: Lead,
   messages?: List<Message>,
   showAddButton: boolean,
+  toggleGlobalDialog: (title: string, message: string,
+    noticeType: NoticeType) => void;
 };
 
 type State = {
@@ -35,6 +39,12 @@ type State = {
 
 const mapStateToProps = (state, ownProps) => ({
   messages: selectMessagesInLead(state, ownProps),
+});
+
+const mapDispatchToProps = dispatch => ({
+  dispatch,
+  toggleGlobalDialog: (title, message, noticeType) =>
+    dispatch(toggleGlobalDialog(title, message, noticeType)),
 });
 
 /**
@@ -64,7 +74,12 @@ export class MessagesList extends Component<DefaultProps, Props, State> {
    * Show the messages dialog form when the Add button is pressed.
    */
   handleAddButtonTouchTap = (): void => {
-    this.setState({ isMessageDialogOpen: true });
+    const { lead } = this.props;
+    if (lead.assignTo === '') {
+      // TODO: Toggle dialog to let user know they need to specify an assigned to user.
+    } else {
+      this.setState({ isMessageDialogOpen: true });
+    }
   };
 
   /**

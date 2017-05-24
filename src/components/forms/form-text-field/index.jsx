@@ -90,12 +90,18 @@ class FormTextField extends Component<DefaultProps, Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props): void {
-    const { value } = nextProps;
-    let errorText = this.errorTextByPrecedence(value);
+    let newValue = '';
+    if (nextProps.value) {
+      newValue = nextProps.value;
+    }
+    let errorText = this.errorTextByPrecedence(newValue);
     if (nextProps.disabled) {
       errorText = '';
     }
-    this.setState({ value, errorText });
+    this.setState({
+      value: newValue,
+      errorText,
+    });
   }
 
   /**

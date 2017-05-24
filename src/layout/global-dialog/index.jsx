@@ -43,7 +43,7 @@ const getStyleByNoticeType = (noticeType: NoticeType) => ({
  *    shows the prompt.
  * @constructor
  */
-const PromptDialog = ({
+const GlobalDialog = ({
   globalDialog,
   toggleDialog,
 }: {
@@ -56,7 +56,7 @@ const PromptDialog = ({
       <FlatButton
         label="OK"
         primary={true}
-        onTouchTap={() => toggleDialog('', '', '')}
+        onTouchTap={() => toggleDialog('', '', 'none')}
       />,
     ]}
     title={globalDialog.get('title')}
@@ -73,5 +73,5 @@ const PromptDialog = ({
   </Dialog>
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(PromptDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(GlobalDialog);
 

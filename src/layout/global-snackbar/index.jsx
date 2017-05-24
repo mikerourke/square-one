@@ -55,7 +55,7 @@ const GlobalSnackbar = ({
     contentStyle={getStyleByNoticeType(globalSnackbar.get('noticeType'))}
     open={globalSnackbar.get('open')}
     message={globalSnackbar.get('message')}
-    onRequestClose={() => toggleSnackbar('', '')}
+    onRequestClose={() => toggleSnackbar('', 'none')}
   />
 );
 

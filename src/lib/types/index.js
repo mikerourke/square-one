@@ -24,6 +24,16 @@ export type RecordDiff = {
 };
 
 /**
+ * Represents a bug in the application.
+ * @typedef Bug
+ */
+export type Bug = {
+  description?: string,
+  submittedBy?: string,
+  dateSubmitted?: string,
+};
+
+/**
  * Where style is to be applied (for Material-UI components).
  * @typedef StyleTarget
  */
@@ -39,7 +49,8 @@ export type StyleTarget =
 export type NoticeType =
     'error'
   | 'inform'
-  | 'success';
+  | 'success'
+  | 'none';
 
 /**
  * Types associated with Redux.

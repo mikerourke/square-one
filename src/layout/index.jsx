@@ -9,6 +9,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 /* Internal dependencies */
 import { getMuiTheme } from 'style/mui';
 import { toggleAppSidebar } from 'state/gui/actions';
+import { selectGuiLayout } from 'state/gui/selectors';
 import Session from 'state/session/model';
 import GlobalDialog from './global-dialog';
 import GlobalSnackbar from './global-snackbar';
@@ -19,7 +20,7 @@ import Sidebar from './sidebar';
 import type { Map } from 'immutable';
 
 const mapStateToProps = state => ({
-  appLayout: state.getIn(['gui', 'layout']),
+  guiLayout: selectGuiLayout(state),
   session: state.get('session'),
 });
 
@@ -32,7 +33,7 @@ const mapDispatchToProps = dispatch => ({
  * Layout container for the application.  This is used to handle navigation
  *    within the entire application.
  * @param {Node} children Child components in layout.
- * @param {Map} appLayout Map representing the application layout in Redux
+ * @param {Map} guiLayout Map representing the application layout in Redux
  *    state.
  * @param {Session} session Session properties from Redux state.
  * @param {Function} toggleSidebar Dispatched action that toggles the Sidebar
@@ -41,12 +42,12 @@ const mapDispatchToProps = dispatch => ({
  */
 const Layout = ({
   children,
-  appLayout,
+  guiLayout,
   session,
   toggleSidebar,
 }: {
   children: React.Element<*>,
-  appLayout: Map<string, any>,
+  guiLayout: Map<string, any>,
   session: Session,
   toggleSidebar: () => void,
 }): React.Element<*> => (
@@ -56,8 +57,9 @@ const Layout = ({
        (<Header handleToggle={toggleSidebar} />)
       }
       <Sidebar
-        open={appLayout.get('sidebarOpen')}
+        open={guiLayout.get('sidebarOpen')}
         handleToggle={toggleSidebar}
+        fullNameOfUser={session.get('fullName')}
       />
       <glamorous.Div
         position="relative"

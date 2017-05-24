@@ -23,7 +23,7 @@ const Sidebar = ({
   fullNameOfUser = '',
 }: {
   open: boolean,
-  handleToggle: () => Promise<*>,
+  handleToggle: () => void,
   fullNameOfUser?: string,
 }): React.Element<*> => (
   <div>

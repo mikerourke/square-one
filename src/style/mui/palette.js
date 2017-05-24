@@ -23,9 +23,10 @@ export const canvasColor: string = muiColors.white;
  * @type {Object}
  */
 export const noticeColors = {
-  error: muiColors.orange700,
+  error: muiColors.pink700,
   inform: muiColors.grey800,
   success: muiColors.green700,
+  none: primary1Color,
 };
 
 export default {

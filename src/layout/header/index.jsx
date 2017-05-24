@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import axios from 'axios';
 import glamorous from 'glamorous';
 import AppBar from 'material-ui/AppBar';
 import Divider from 'material-ui/Divider';
@@ -14,17 +15,24 @@ import Popover from 'material-ui/Popover';
 
 /* Internal dependencies */
 import { primary1Color, primary2Color } from 'style/mui/palette';
+import { toggleGlobalSnackbar } from 'state/gui/actions';
 import { logout } from 'state/session/actions';
 import Session from 'state/session/model';
+import ReportBugDialog from 'components/report-bug-dialog';
 
 /* Types */
+import type { Bug, NoticeType } from 'lib/types';
+
 type Props = {
   handleToggle: () => Promise<*>,
   logout: (username: string) => Promise<*>,
   session: Session,
+  toggleGlobalSnackbar: (message: string, noticeType: NoticeType) => void,
 };
 
 type State = {
+  bug: Bug,
+  bugDialogOpen: boolean,
   popoverAnchorEl?: EventTarget,
   popoverOpen: boolean,
 };
@@ -36,6 +44,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   dispatch,
   logout: username => dispatch(logout(username)),
+  toggleGlobalSnackbar: (message, noticeType) =>
+    dispatch(toggleGlobalSnackbar(message, noticeType)),
 });
 
 /**
@@ -50,6 +60,8 @@ export class Header extends Component<*, Props, State> {
   constructor(props: Props): void {
     super(props);
     this.state = {
+      bug: {},
+      bugDialogOpen: false,
       popoverOpen: false,
     };
   }
@@ -82,12 +94,11 @@ export class Header extends Component<*, Props, State> {
     const logoutFn = this.props.logout;
     const { props: { value } } = menuItem;
     switch (value) {
-      case 'refresh':
-        // TODO: Add code to handle Refresh.
-        break;
-
       case 'bug':
-        // TODO: Add code to handle Report a bug.
+        this.setState({
+          bugDialogOpen: true,
+          popoverOpen: false,
+        });
         break;
 
       case 'settings':
@@ -112,9 +123,66 @@ export class Header extends Component<*, Props, State> {
     this.setState({ popoverOpen: false });
   };
 
+  /**
+   * Hides the Report Bug Dialog component when the user presses the Cancel
+   *    button.
+   */
+  handleReportBugDialogCancelTouchTap = (): void => {
+    this.setState({ bugDialogOpen: false });
+  };
+
+  /**
+   * Submits the bug data as a post request to the API.  Regardless of the
+   *    outcome, the Promise resolves.
+   */
+  submitBug = () => new Promise((resolve) => {
+    const { bug } = this.state;
+    const toggleSnackbarFn = this.props.toggleGlobalSnackbar;
+    axios.post('/bugs', bug)
+      .then(() => {
+        toggleSnackbarFn('Bug submitted', 'success');
+        resolve();
+      })
+      .catch(() => {
+        toggleSnackbarFn('Error submitting bug', 'error');
+        resolve();
+      });
+  });
+
+  /**
+   * Submits the bug with specified details and hides the Report Bug Dialog
+   *    after pressing the Submit button.
+   */
+  handleReportBugDialogSubmitTouchTap = (): void => {
+    this.submitBug().then(() => {
+      this.setState({ bugDialogOpen: false });
+    });
+  };
+
+  /**
+   * Updates the local Bug entity in state based on the inputs specified on the
+   *    Report Bug Dialog component.
+   * @param {Event} event Event associated with the input.
+   * @param {string|number} newValue New value of the input.
+   */
+  handleReportBugDialogInputChange = (
+    event: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement },
+    newValue: string | number,
+  ): void => {
+    const { bug } = this.state;
+    const fieldName = event.currentTarget.name;
+    bug[fieldName] = newValue;
+    this.setState({ bug });
+  };
+
   render(): React.Element<*> {
     const { handleToggle, session } = this.props;
-    const { popoverAnchorEl, popoverOpen } = this.state;
+    const {
+      bug,
+      bugDialogOpen,
+      popoverAnchorEl,
+      popoverOpen,
+    } = this.state;
 
     const MenuHeaderItem = glamorous.div({
       fontSize: 14,
@@ -161,7 +229,6 @@ export class Header extends Component<*, Props, State> {
               </MenuHeaderItem>
             </glamorous.Div>
             <Divider />
-            <MenuItem value="refresh" primaryText="Refresh" />
             <MenuItem value="bug" primaryText="Report a bug" />
             <MenuItem value="settings" primaryText="Settings" />
             <Divider />
@@ -179,7 +246,15 @@ export class Header extends Component<*, Props, State> {
           position: 'fixed',
           top: 0,
         }}
-      />
+      >
+        <ReportBugDialog
+          bug={bug}
+          open={bugDialogOpen}
+          handleSubmitTouchTap={this.handleReportBugDialogSubmitTouchTap}
+          handleCancelTouchTap={this.handleReportBugDialogCancelTouchTap}
+          handleInputChange={this.handleReportBugDialogInputChange}
+        />
+      </AppBar>
     );
   }
 }

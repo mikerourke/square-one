@@ -257,7 +257,7 @@ export class MessagesDialog extends Component<DefaultProps, Props, State> {
    */
   handleInputChange = (
     event: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement },
-    newValue: string | boolean,
+    newValue: string | number | boolean,
   ): void => {
     const fieldName = event.currentTarget.name;
     if (fieldName === 'sendRepresentativeMessage' && newValue === true) {
